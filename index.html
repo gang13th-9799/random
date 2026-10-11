@@ -62,7 +62,8 @@
 
   <style>
     :root {
-      --app-content-font-size: 30px;
+      /* ปรับลดขนาดหัวข้อลง 2 ระดับ (จาก 30px -> 26px) */
+      --app-content-font-size: 26px;
       --app-desc-font-size: 22px;
       --theme-btn-gradient: linear-gradient(135deg, #DC2626 0%, #EF4444 50%, #F87171 100%);
     }
@@ -89,12 +90,12 @@
       overflow-wrap: break-word;
     }
 
-    .dynamic-title-scale {
+    .app-title-text, .dynamic-title-scale {
       font-size: var(--app-content-font-size) !important;
       line-height: 1.35 !important;
     }
 
-    .dynamic-desc-scale {
+    .app-desc-text, .dynamic-desc-scale {
       font-size: var(--app-desc-font-size) !important;
       line-height: 1.6 !important;
     }
@@ -284,7 +285,7 @@
             
             <div>
               <span class="text-xs font-bold uppercase tracking-wider text-slate-400 block mb-1">หมวดหมู่ที่เลือก</span>
-              <h2 id="stageCategoryTitle" class="dynamic-title-scale font-extrabold text-slate-900 dark:text-white tracking-normal leading-normal">
+              <h2 id="stageCategoryTitle" class="app-title-text font-extrabold text-slate-900 dark:text-white tracking-normal leading-normal">
                 ทุกหมวดหมู่
               </h2>
             </div>
@@ -422,7 +423,8 @@
         </div>
 
         <div class="space-y-1.5">
-          <h2 id="popupTitle" class="dynamic-title-scale font-extrabold text-slate-900 dark:text-white tracking-normal">
+          <!-- ขนาดหัวข้อหลักใน Pop-up ปรับลดลง 2 ระดับ -->
+          <h2 id="popupTitle" class="app-title-text font-extrabold text-slate-900 dark:text-white tracking-normal">
             หัวข้อข้อมูล
           </h2>
           <p id="popupSubtitle" class="text-sm sm:text-base font-semibold leading-normal text-slate-500 dark:text-slate-400">
@@ -430,16 +432,16 @@
           </p>
         </div>
 
-        <p id="popupDescription" class="dynamic-desc-scale text-slate-600 dark:text-slate-300 whitespace-pre-line font-normal">
+        <p id="popupDescription" class="app-desc-text text-slate-600 dark:text-slate-300 whitespace-pre-line font-normal">
           รายละเอียดเนื้อหา
         </p>
 
-        <!-- CONDITION STATS -->
+        <!-- CONDITION STATS: ซ่อนข้อที่มีค่าเป็น 0 อัตโนมัติ & เพิ่มขนาดตัวอักษรและไอคอน -->
         <div class="pt-2">
           <div class="grid grid-cols-1 sm:grid-cols-2 gap-3.5 sm:gap-4">
             
             <!-- สิ่งที่ต้องใช้ (Costs) -->
-            <div class="bg-gradient-to-br from-red-50/80 via-slate-50 to-white dark:from-red-950/25 dark:via-slate-800 dark:to-slate-800/90 rounded-2xl p-3.5 sm:p-4 border border-red-100 dark:border-red-950/60 shadow-sm space-y-3">
+            <div class="bg-gradient-to-br from-red-50/80 via-slate-50 to-white dark:from-red-950/25 dark:via-slate-800 dark:to-slate-800/90 rounded-2xl p-4 border border-red-100 dark:border-red-950/60 shadow-sm space-y-3">
               <div class="flex items-center justify-between border-b border-red-100 dark:border-red-900/40 pb-2">
                 <span class="text-sm font-extrabold text-red-600 flex items-center gap-2">
                   <i class="fa-solid fa-hand-holding-dollar text-base"></i>
@@ -448,48 +450,58 @@
                 <span class="text-[11px] bg-red-100 dark:bg-red-950 text-red-700 dark:text-red-300 px-2.5 py-0.5 rounded-full font-mono font-bold">COST (0-10)</span>
               </div>
 
-              <div class="flex items-center justify-between text-sm py-0.5">
-                <span class="flex items-center gap-2 font-medium text-slate-700 dark:text-slate-300">
-                  <i class="fa-solid fa-heart text-red-600 text-lg w-5 text-center"></i> หัวใจ
-                </span>
-                <div class="flex items-center gap-2">
-                  <div class="w-16 sm:w-24 bg-slate-200 dark:bg-slate-700 h-2.5 rounded-full overflow-hidden">
-                    <div id="popup-cost-heart-bar" class="bg-red-600 h-full rounded-full transition-all duration-300" style="width: 0%;"></div>
+              <div id="popup-cost-items-container" class="space-y-2.5">
+                <!-- รายการหัวใจ -->
+                <div id="cost-row-heart" class="flex items-center justify-between text-base py-0.5">
+                  <span class="flex items-center gap-2 font-medium text-slate-700 dark:text-slate-300">
+                    <i class="fa-solid fa-heart text-red-600 text-xl w-6 text-center"></i> หัวใจ
+                  </span>
+                  <div class="flex items-center gap-2">
+                    <div class="w-20 sm:w-28 bg-slate-200 dark:bg-slate-700 h-3 rounded-full overflow-hidden">
+                      <div id="popup-cost-heart-bar" class="bg-red-600 h-full rounded-full transition-all duration-300" style="width: 0%;"></div>
+                    </div>
+                    <span id="popup-cost-heart-val" class="font-mono font-black text-lg text-red-600 w-6 text-right">0</span>
+                    <span class="text-xs text-slate-400 font-mono">/10</span>
                   </div>
-                  <span id="popup-cost-heart-val" class="font-mono font-extrabold text-base text-red-600 w-5 text-right">0</span>
-                  <span class="text-xs text-slate-400 font-mono">/10</span>
                 </div>
-              </div>
 
-              <div class="flex items-center justify-between text-sm py-0.5">
-                <span class="flex items-center gap-2 font-medium text-slate-700 dark:text-slate-300">
-                  <i class="fa-solid fa-clock text-slate-500 text-lg w-5 text-center"></i> เวลา
-                </span>
-                <div class="flex items-center gap-2">
-                  <div class="w-16 sm:w-24 bg-slate-200 dark:bg-slate-700 h-2.5 rounded-full overflow-hidden">
-                    <div id="popup-cost-time-bar" class="bg-slate-500 h-full rounded-full transition-all duration-300" style="width: 0%;"></div>
+                <!-- รายการเวลา -->
+                <div id="cost-row-time" class="flex items-center justify-between text-base py-0.5">
+                  <span class="flex items-center gap-2 font-medium text-slate-700 dark:text-slate-300">
+                    <i class="fa-solid fa-clock text-slate-500 text-xl w-6 text-center"></i> เวลา
+                  </span>
+                  <div class="flex items-center gap-2">
+                    <div class="w-20 sm:w-28 bg-slate-200 dark:bg-slate-700 h-3 rounded-full overflow-hidden">
+                      <div id="popup-cost-time-bar" class="bg-slate-500 h-full rounded-full transition-all duration-300" style="width: 0%;"></div>
+                    </div>
+                    <span id="popup-cost-time-val" class="font-mono font-black text-lg text-slate-600 dark:text-slate-400 w-6 text-right">0</span>
+                    <span class="text-xs text-slate-400 font-mono">/10</span>
                   </div>
-                  <span id="popup-cost-time-val" class="font-mono font-extrabold text-base text-slate-600 dark:text-slate-400 w-5 text-right">0</span>
-                  <span class="text-xs text-slate-400 font-mono">/10</span>
                 </div>
-              </div>
 
-              <div class="flex items-center justify-between text-sm py-0.5">
-                <span class="flex items-center gap-2 font-medium text-slate-700 dark:text-slate-300">
-                  <i class="fa-solid fa-brain text-slate-500 dark:text-slate-400 text-lg w-5 text-center"></i> ความรู้
-                </span>
-                <div class="flex items-center gap-2">
-                  <div class="w-16 sm:w-24 bg-slate-200 dark:bg-slate-700 h-2.5 rounded-full overflow-hidden">
-                    <div id="popup-cost-knowledge-bar" class="bg-slate-600 dark:bg-slate-400 h-full rounded-full transition-all duration-300" style="width: 0%;"></div>
+                <!-- รายการความรู้ -->
+                <div id="cost-row-knowledge" class="flex items-center justify-between text-base py-0.5">
+                  <span class="flex items-center gap-2 font-medium text-slate-700 dark:text-slate-300">
+                    <i class="fa-solid fa-brain text-slate-500 dark:text-slate-400 text-xl w-6 text-center"></i> ความรู้
+                  </span>
+                  <div class="flex items-center gap-2">
+                    <div class="w-20 sm:w-28 bg-slate-200 dark:bg-slate-700 h-3 rounded-full overflow-hidden">
+                      <div id="popup-cost-knowledge-bar" class="bg-slate-600 dark:bg-slate-400 h-full rounded-full transition-all duration-300" style="width: 0%;"></div>
+                    </div>
+                    <span id="popup-cost-knowledge-val" class="font-mono font-black text-lg text-slate-700 dark:text-slate-200 w-6 text-right">0</span>
+                    <span class="text-xs text-slate-400 font-mono">/10</span>
                   </div>
-                  <span id="popup-cost-knowledge-val" class="font-mono font-extrabold text-base text-slate-700 dark:text-slate-200 w-5 text-right">0</span>
-                  <span class="text-xs text-slate-400 font-mono">/10</span>
+                </div>
+
+                <!-- แสดงกรณีเป็น 0 ทั้งหมด -->
+                <div id="cost-empty-notice" class="hidden text-center py-2 text-sm text-slate-400 font-medium">
+                  ไม่มีทรัพยากรที่ต้องใช้
                 </div>
               </div>
             </div>
 
             <!-- สิ่งที่ได้รับ (Rewards) -->
-            <div class="bg-gradient-to-br from-slate-50 via-slate-100 to-white dark:from-slate-800 dark:via-slate-800/90 dark:to-slate-900 rounded-2xl p-3.5 sm:p-4 border border-slate-200 dark:border-slate-700 shadow-sm space-y-3">
+            <div class="bg-gradient-to-br from-slate-50 via-slate-100 to-white dark:from-slate-800 dark:via-slate-800/90 dark:to-slate-900 rounded-2xl p-4 border border-slate-200 dark:border-slate-700 shadow-sm space-y-3">
               <div class="flex items-center justify-between border-b border-slate-200 dark:border-slate-700 pb-2">
                 <span class="text-sm font-extrabold text-slate-800 dark:text-white flex items-center gap-2">
                   <i class="fa-solid fa-gift text-base text-red-500"></i>
@@ -498,42 +510,52 @@
                 <span class="text-[11px] bg-slate-200 dark:bg-slate-700 text-slate-800 dark:text-slate-200 px-2.5 py-0.5 rounded-full font-mono font-bold">REWARD (0-10)</span>
               </div>
 
-              <div class="flex items-center justify-between text-sm py-0.5">
-                <span class="flex items-center gap-2 font-medium text-slate-700 dark:text-slate-300">
-                  <i class="fa-solid fa-heart text-red-600 text-lg w-5 text-center"></i> หัวใจ
-                </span>
-                <div class="flex items-center gap-2">
-                  <div class="w-16 sm:w-24 bg-slate-200 dark:bg-slate-700 h-2.5 rounded-full overflow-hidden">
-                    <div id="popup-reward-heart-bar" class="bg-red-600 h-full rounded-full transition-all duration-300"></div>
+              <div id="popup-reward-items-container" class="space-y-2.5">
+                <!-- รายการหัวใจ -->
+                <div id="reward-row-heart" class="flex items-center justify-between text-base py-0.5">
+                  <span class="flex items-center gap-2 font-medium text-slate-700 dark:text-slate-300">
+                    <i class="fa-solid fa-heart text-red-600 text-xl w-6 text-center"></i> หัวใจ
+                  </span>
+                  <div class="flex items-center gap-2">
+                    <div class="w-20 sm:w-28 bg-slate-200 dark:bg-slate-700 h-3 rounded-full overflow-hidden">
+                      <div id="popup-reward-heart-bar" class="bg-red-600 h-full rounded-full transition-all duration-300"></div>
+                    </div>
+                    <span id="popup-reward-heart-val" class="font-mono font-black text-lg text-red-600 w-8 text-right">+0</span>
+                    <span class="text-xs text-slate-400 font-mono">/10</span>
                   </div>
-                  <span id="popup-reward-heart-val" class="font-mono font-extrabold text-base text-red-600 w-7 text-right">+0</span>
-                  <span class="text-xs text-slate-400 font-mono">/10</span>
                 </div>
-              </div>
 
-              <div class="flex items-center justify-between text-sm py-0.5">
-                <span class="flex items-center gap-2 font-medium text-slate-700 dark:text-slate-300">
-                  <i class="fa-solid fa-clock text-slate-500 text-lg w-5 text-center"></i> เวลา
-                </span>
-                <div class="flex items-center gap-2">
-                  <div class="w-16 sm:w-24 bg-slate-200 dark:bg-slate-700 h-2.5 rounded-full overflow-hidden">
-                    <div id="popup-reward-time-bar" class="bg-slate-600 dark:bg-slate-400 h-full rounded-full transition-all duration-300"></div>
+                <!-- รายการเวลา -->
+                <div id="reward-row-time" class="flex items-center justify-between text-base py-0.5">
+                  <span class="flex items-center gap-2 font-medium text-slate-700 dark:text-slate-300">
+                    <i class="fa-solid fa-clock text-slate-500 text-xl w-6 text-center"></i> เวลา
+                  </span>
+                  <div class="flex items-center gap-2">
+                    <div class="w-20 sm:w-28 bg-slate-200 dark:bg-slate-700 h-3 rounded-full overflow-hidden">
+                      <div id="popup-reward-time-bar" class="bg-slate-600 dark:bg-slate-400 h-full rounded-full transition-all duration-300"></div>
+                    </div>
+                    <span id="popup-reward-time-val" class="font-mono font-black text-lg text-slate-700 dark:text-slate-300 w-8 text-right">+0</span>
+                    <span class="text-xs text-slate-400 font-mono">/10</span>
                   </div>
-                  <span id="popup-reward-time-val" class="font-mono font-extrabold text-base text-slate-700 dark:text-slate-300 w-7 text-right">+0</span>
-                  <span class="text-xs text-slate-400 font-mono">/10</span>
                 </div>
-              </div>
 
-              <div class="flex items-center justify-between text-sm py-0.5">
-                <span class="flex items-center gap-2 font-medium text-slate-700 dark:text-slate-300">
-                  <i class="fa-solid fa-brain text-slate-500 dark:text-slate-400 text-lg w-5 text-center"></i> ความรู้
-                </span>
-                <div class="flex items-center gap-2">
-                  <div class="w-16 sm:w-24 bg-slate-200 dark:bg-slate-700 h-2.5 rounded-full overflow-hidden">
-                    <div id="popup-reward-knowledge-bar" class="bg-slate-600 dark:bg-slate-400 h-full rounded-full transition-all duration-300"></div>
+                <!-- รายการความรู้ -->
+                <div id="reward-row-knowledge" class="flex items-center justify-between text-base py-0.5">
+                  <span class="flex items-center gap-2 font-medium text-slate-700 dark:text-slate-300">
+                    <i class="fa-solid fa-brain text-slate-500 dark:text-slate-400 text-xl w-6 text-center"></i> ความรู้
+                  </span>
+                  <div class="flex items-center gap-2">
+                    <div class="w-20 sm:w-28 bg-slate-200 dark:bg-slate-700 h-3 rounded-full overflow-hidden">
+                      <div id="popup-reward-knowledge-bar" class="bg-slate-600 dark:bg-slate-400 h-full rounded-full transition-all duration-300"></div>
+                    </div>
+                    <span id="popup-reward-knowledge-val" class="font-mono font-black text-lg text-slate-700 dark:text-slate-200 w-8 text-right">+0</span>
+                    <span class="text-xs text-slate-400 font-mono">/10</span>
                   </div>
-                  <span id="popup-reward-knowledge-val" class="font-mono font-extrabold text-base text-slate-700 dark:text-slate-200 w-7 text-right">+0</span>
-                  <span class="text-xs text-slate-400 font-mono">/10</span>
+                </div>
+
+                <!-- แสดงกรณีเป็น 0 ทั้งหมด -->
+                <div id="reward-empty-notice" class="hidden text-center py-2 text-sm text-slate-400 font-medium">
+                  ไม่มีทรัพยากรที่ได้รับ
                 </div>
               </div>
             </div>
@@ -556,7 +578,7 @@
 
       </div>
 
-      <!-- Pop-up Footer -->
+      <!-- Pop-up Footer: ราคาอยู่ด้านซ้ายของปุ่มสุ่มใหม่อีกครั้ง -->
       <div class="pt-3 border-t border-slate-100 dark:border-slate-700 flex flex-wrap items-center justify-between gap-3">
         <button onclick="closeResultModal()" class="px-4 py-2.5 rounded-xl text-slate-600 dark:text-slate-300 bg-slate-100 dark:bg-slate-700 hover:bg-slate-200 text-sm font-semibold transition">
           ปิด
@@ -794,7 +816,7 @@
         </button>
       </div>
 
-      <!-- Setting Section 2: Font Size Slider (ระดับ 5: 30px / 22px) -->
+      <!-- Setting Section 2: Font Size Slider (ลดหัวข้อลง 2 ระดับ: 26px / 22px) -->
       <div class="p-3.5 bg-slate-50 dark:bg-slate-900/60 rounded-2xl border border-slate-200 dark:border-slate-700/80 space-y-3">
         <div class="flex items-center justify-between">
           <div class="flex items-center gap-2">
@@ -807,16 +829,16 @@
         <div class="space-y-1">
           <input type="range" min="1" max="10" step="1" value="5" id="fontSizeSlider" oninput="handleFontSizeChange(this.value)" class="w-full text-red-600">
           <div class="flex justify-between text-[10px] text-slate-400 font-mono px-1">
-            <span>ระดับ 1 (22px)</span>
-            <span class="font-bold text-red-500">ระดับ 5 (30px)</span>
-            <span>ระดับ 10 (45px)</span>
+            <span>ระดับ 1 (18px)</span>
+            <span class="font-bold text-red-500">ระดับ 5 (26px)</span>
+            <span>ระดับ 10 (41px)</span>
           </div>
         </div>
 
         <!-- Preview Box Real-time -->
         <div class="p-3 rounded-xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-center space-y-1">
           <div id="fontSizePreviewTitle" class="app-title-text font-extrabold text-slate-800 dark:text-slate-100">
-            ตัวอย่างหัวข้อ (30px)
+            ตัวอย่างหัวข้อ (26px)
           </div>
           <div id="fontSizePreviewDesc" class="app-desc-text text-slate-500 dark:text-slate-400">
             ตัวอย่างรายละเอียดเนื้อหา (22px)
@@ -824,7 +846,7 @@
         </div>
 
         <button onclick="resetFontSizeDefault()" class="text-[11px] text-slate-500 hover:underline flex items-center gap-1 mx-auto font-semibold">
-          <i class="fa-solid fa-rotate-left text-[10px]"></i> คืนค่าเริ่มต้น (ระดับ 5: 30px/22px)
+          <i class="fa-solid fa-rotate-left text-[10px]"></i> คืนค่าเริ่มต้น (ระดับ 5: 26px/22px)
         </button>
       </div>
 
@@ -878,7 +900,7 @@
         category: "การทำงาน",
         price: 0,
         description: "สละเวลา 15 นาทีจัดลำดับความสำคัญของงานที่ต้องทำ 3 อันดับแรก เพื่อความชัดเจนในการลงมือทำ",
-        cost: { heart: 2, time: 3, knowledge: 2 },
+        cost: { heart: 2, time: 3, knowledge: 0 },
         reward: { heart: 4, time: 5, knowledge: 4 },
         favorite: true
       },
@@ -889,8 +911,8 @@
         category: "สุขภาพ",
         price: 0,
         description: "ช่วยกระตุ้นระบบขับถ่ายและการไหลเวียนโลหิตหลังร่างกายพักผ่อนมาตลอดทั้งคืน",
-        cost: { heart: 1, time: 1, knowledge: 1 },
-        reward: { heart: 5, time: 2, knowledge: 2 },
+        cost: { heart: 0, time: 1, knowledge: 0 },
+        reward: { heart: 5, time: 0, knowledge: 2 },
         favorite: false
       },
       {
@@ -900,8 +922,8 @@
         category: "ความรู้",
         price: 0,
         description: "เปิดรับแนวคิดและมุมมองใหม่ๆ วันละนิด เพื่อพัฒนาทักษะและการตัดสินใจในระยะยาว",
-        cost: { heart: 3, time: 4, knowledge: 2 },
-        reward: { heart: 4, time: 3, knowledge: 6 },
+        cost: { heart: 3, time: 4, knowledge: 0 },
+        reward: { heart: 0, time: 3, knowledge: 6 },
         favorite: false
       }
     ];
@@ -915,58 +937,52 @@
     let isDrawing = false;
     let soundEnabled = true;
 
-    // สเกลขนาดตัวอักษร 1-10 (ระดับ 5: หัวข้อ 30px / รายละเอียด 22px)
+    // ลดขนาดหัวข้อลง 2 ระดับ (ระดับ 5 จากเดิม 30px -> 26px)
     const FONT_SCALE_MAP = {
-      1: { title: "22px", desc: "16px" },
-      2: { title: "24px", desc: "17.5px" },
-      3: { title: "26px", desc: "19px" },
-      4: { title: "28px", desc: "20.5px" },
-      5: { title: "30px", desc: "22px" },
-      6: { title: "33px", desc: "23.5px" },
-      7: { title: "36px", desc: "25px" },
-      8: { title: "39px", desc: "26.5px" },
-      9: { title: "42px", desc: "28px" },
-      10: { title: "45px", desc: "30px" }
+      1: { title: "18px", desc: "16px" },
+      2: { title: "20px", desc: "17.5px" },
+      3: { title: "22px", desc: "19px" },
+      4: { title: "24px", desc: "20.5px" },
+      5: { title: "26px", desc: "22px" },
+      6: { title: "29px", desc: "23.5px" },
+      7: { title: "32px", desc: "25px" },
+      8: { title: "35px", desc: "26.5px" },
+      9: { title: "38px", desc: "28px" },
+      10: { title: "41px", desc: "30px" }
     };
 
     // Palette แถบสี 30 เฉดสี สำหรับหมวดหมู่
     const COLOR_PALETTES = {
-      // 1-5: โทนน้ำเงิน & ฟ้า
       blue: { id: "blue", name: "1. น้ำเงินรอยัล", hex: "#1D4ED8", gradient: "linear-gradient(90deg, #60A5FA 0%, #1D4ED8 50%, #1E40AF 100%)", badge: "bg-blue-100 text-blue-800 border-blue-200 dark:bg-blue-950/80 dark:text-blue-300 dark:border-blue-800" },
       sky: { id: "sky", name: "2. ฟ้าท้องฟ้า", hex: "#0284C7", gradient: "linear-gradient(90deg, #38BDF8 0%, #0284C7 50%, #0369A1 100%)", badge: "bg-sky-100 text-sky-800 border-sky-200 dark:bg-sky-950/80 dark:text-sky-300 dark:border-sky-800" },
       cyan: { id: "cyan", name: "3. ฟ้าไซแอน", hex: "#06B6D4", gradient: "linear-gradient(90deg, #67E8F9 0%, #06B6D4 50%, #0E7490 100%)", badge: "bg-cyan-100 text-cyan-800 border-cyan-200 dark:bg-cyan-950/80 dark:text-cyan-300 dark:border-cyan-800" },
       navy: { id: "navy", name: "4. น้ำเงินเข้มเนวี", hex: "#1E3A8A", gradient: "linear-gradient(90deg, #3B82F6 0%, #1E3A8A 50%, #172554 100%)", badge: "bg-indigo-100 text-indigo-900 border-indigo-200 dark:bg-indigo-950/80 dark:text-indigo-300 dark:border-indigo-800" },
       indigo: { id: "indigo", name: "5. น้ำเงินคราม", hex: "#4338CA", gradient: "linear-gradient(90deg, #818CF8 0%, #4338CA 50%, #312E81 100%)", badge: "bg-indigo-100 text-indigo-800 border-indigo-200 dark:bg-indigo-950/80 dark:text-indigo-300 dark:border-indigo-800" },
 
-      // 6-10: โทนแดง ส้ม ชมพู
       red: { id: "red", name: "6. แดงทับทิม", hex: "#EF4444", gradient: "linear-gradient(90deg, #F87171 0%, #EF4444 50%, #B91C1C 100%)", badge: "bg-red-100 text-red-800 border-red-200 dark:bg-red-950/80 dark:text-red-300 dark:border-red-800" },
       crimson: { id: "crimson", name: "7. แดงเข้มคริมสัน", hex: "#BE123C", gradient: "linear-gradient(90deg, #FB7185 0%, #BE123C 50%, #881337 100%)", badge: "bg-rose-100 text-rose-900 border-rose-200 dark:bg-rose-950/80 dark:text-rose-300 dark:border-rose-800" },
       rose: { id: "rose", name: "8. ชมพูกุหลาบ", hex: "#E11D48", gradient: "linear-gradient(90deg, #FDA4AF 0%, #E11D48 50%, #9F1239 100%)", badge: "bg-rose-100 text-rose-800 border-rose-200 dark:bg-rose-950/80 dark:text-rose-300 dark:border-rose-800" },
       pink: { id: "pink", name: "9. ชมพูสดใส", hex: "#EC4899", gradient: "linear-gradient(90deg, #F472B6 0%, #EC4899 50%, #BE185D 100%)", badge: "bg-pink-100 text-pink-800 border-pink-200 dark:bg-pink-950/80 dark:text-pink-300 dark:border-pink-800" },
       fuchsia: { id: "fuchsia", name: "10. ชมพูฟูเชีย", hex: "#D946EF", gradient: "linear-gradient(90deg, #E879F9 0%, #D946EF 50%, #A21CAF 100%)", badge: "bg-fuchsia-100 text-fuchsia-800 border-fuchsia-200 dark:bg-fuchsia-950/80 dark:text-fuchsia-300 dark:border-fuchsia-800" },
 
-      // 11-15: โทนม่วง
       purple: { id: "purple", name: "11. ม่วงไวโอเล็ต", hex: "#A855F7", gradient: "linear-gradient(90deg, #C084FC 0%, #A855F7 50%, #7E22CE 100%)", badge: "bg-purple-100 text-purple-800 border-purple-200 dark:bg-purple-950/80 dark:text-purple-300 dark:border-purple-800" },
       violet: { id: "violet", name: "12. ม่วงเข้ม", hex: "#7C3AED", gradient: "linear-gradient(90deg, #A78BFA 0%, #7C3AED 50%, #5B21B6 100%)", badge: "bg-violet-100 text-violet-800 border-violet-200 dark:bg-violet-950/80 dark:text-violet-300 dark:border-violet-800" },
       lavender: { id: "lavender", name: "13. ม่วงลาเวนเดอร์", hex: "#8B5CF6", gradient: "linear-gradient(90deg, #DDD6FE 0%, #8B5CF6 50%, #6D28D9 100%)", badge: "bg-purple-100 text-purple-900 border-purple-200 dark:bg-purple-950/80 dark:text-purple-300 dark:border-purple-800" },
       plum: { id: "plum", name: "14. ม่วงลูกพลัม", hex: "#581C87", gradient: "linear-gradient(90deg, #9333EA 0%, #581C87 50%, #3B0764 100%)", badge: "bg-purple-100 text-purple-950 border-purple-300 dark:bg-purple-950/80 dark:text-purple-200 dark:border-purple-800" },
       magenta: { id: "magenta", name: "15. ม่วงมาเจนต้า", hex: "#C026D3", gradient: "linear-gradient(90deg, #F0ABFC 0%, #C026D3 50%, #86198F 100%)", badge: "bg-fuchsia-100 text-fuchsia-900 border-fuchsia-200 dark:bg-fuchsia-950/80 dark:text-fuchsia-300 dark:border-fuchsia-800" },
 
-      // 16-20: โทนเขียว
       green: { id: "green", name: "16. เขียวใบไม้", hex: "#22C55E", gradient: "linear-gradient(90deg, #4ADE80 0%, #22C55E 50%, #15803D 100%)", badge: "bg-green-100 text-green-800 border-green-200 dark:bg-green-950/80 dark:text-green-300 dark:border-green-800" },
       emerald: { id: "emerald", name: "17. เขียวมรกต", hex: "#10B981", gradient: "linear-gradient(90deg, #34D399 0%, #10B981 50%, #047857 100%)", badge: "bg-emerald-100 text-emerald-800 border-emerald-200 dark:bg-emerald-950/80 dark:text-emerald-300 dark:border-emerald-800" },
       teal: { id: "teal", name: "18. เขียวอมฟ้าทีล", hex: "#0D9488", gradient: "linear-gradient(90deg, #2DD4BF 0%, #0D9488 50%, #115E59 100%)", badge: "bg-teal-100 text-teal-800 border-teal-200 dark:bg-teal-950/80 dark:text-teal-300 dark:border-teal-800" },
       lime: { id: "lime", name: "19. เขียวมะนาว", hex: "#84CC16", gradient: "linear-gradient(90deg, #A3E635 0%, #84CC16 50%, #4D7C0F 100%)", badge: "bg-lime-100 text-lime-800 border-lime-200 dark:bg-lime-950/80 dark:text-lime-300 dark:border-lime-800" },
       mint: { id: "mint", name: "20. เขียวมิ้นต์", hex: "#059669", gradient: "linear-gradient(90deg, #6EE7B7 0%, #059669 50%, #064E3B 100%)", badge: "bg-emerald-100 text-emerald-900 border-emerald-200 dark:bg-emerald-950/80 dark:text-emerald-300 dark:border-emerald-800" },
 
-      // 21-25: โทนเหลือง ส้ม น้ำตาล
       yellow: { id: "yellow", name: "21. เหลืองสดใส", hex: "#EAB308", gradient: "linear-gradient(90deg, #FDE047 0%, #EAB308 50%, #CA8A04 100%)", badge: "bg-amber-100 text-amber-900 border-amber-300 dark:bg-amber-950/80 dark:text-amber-300 dark:border-amber-800" },
       amber: { id: "amber", name: "22. ส้มอำพัน", hex: "#D97706", gradient: "linear-gradient(90deg, #FBBF24 0%, #D97706 50%, #92400E 100%)", badge: "bg-amber-100 text-amber-800 border-amber-200 dark:bg-amber-950/80 dark:text-amber-300 dark:border-amber-800" },
       orange: { id: "orange", name: "23. ส้มสด", hex: "#EA580C", gradient: "linear-gradient(90deg, #FB923C 0%, #EA580C 50%, #9A3412 100%)", badge: "bg-orange-100 text-orange-800 border-orange-200 dark:bg-orange-950/80 dark:text-orange-300 dark:border-orange-800" },
       coral: { id: "coral", name: "24. ส้มคอรัล", hex: "#F97316", gradient: "linear-gradient(90deg, #FDBA74 0%, #F97316 50%, #C2410C 100%)", badge: "bg-orange-100 text-orange-900 border-orange-200 dark:bg-orange-950/80 dark:text-orange-300 dark:border-orange-800" },
       brown: { id: "brown", name: "25. น้ำตาลเอิร์ธโทน", hex: "#78350F", gradient: "linear-gradient(90deg, #B45309 0%, #78350F 50%, #451A03 100%)", badge: "bg-amber-200/80 text-amber-950 border-amber-300 dark:bg-amber-950 dark:text-amber-200 dark:border-amber-900" },
 
-      // 26-30: โทนทอง เมทัลลิก เทา ขาว ดำ
       gold: { id: "gold", name: "26. ทองประกาย", hex: "#B45309", gradient: "linear-gradient(90deg, #FDE68A 0%, #D97706 50%, #78350F 100%)", badge: "bg-yellow-100 text-yellow-900 border-yellow-300 dark:bg-yellow-950/80 dark:text-yellow-200 dark:border-yellow-800" },
       slate: { id: "slate", name: "27. เทาสเลท", hex: "#64748B", gradient: "linear-gradient(90deg, #94A3B8 0%, #64748B 50%, #475569 100%)", badge: "bg-slate-200 text-slate-800 border-slate-300 dark:bg-slate-800 dark:text-slate-300 dark:border-slate-700" },
       zinc: { id: "zinc", name: "28. เทาซิงก์เข้ม", hex: "#52525B", gradient: "linear-gradient(90deg, #A1A1AA 0%, #52525B 50%, #27272A 100%)", badge: "bg-zinc-200 text-zinc-800 border-zinc-300 dark:bg-zinc-800 dark:text-zinc-300 dark:border-zinc-700" },
@@ -1196,7 +1212,7 @@
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(payload)
         });
-        setCloudStatus('บันทึกออนไลน์สำเร็จ', 'text-blue-500');
+        setCloudStatus('บันทึกออนไลน์สำเร็จ', 'text-emerald-500');
         showToast('บันทึกลง Google Sheets สำเร็จเรียบร้อย ☁️', 'success');
       } catch (err) {
         setCloudStatus('บันทึกออนไลน์ล้มเหลว', 'text-rose-500');
@@ -1426,19 +1442,77 @@
       const rewardT = Number(item.reward?.time) || 0;
       const rewardK = Number(item.reward?.knowledge) || 0;
 
-      document.getElementById('popup-cost-heart-val').innerText = costH;
-      document.getElementById('popup-cost-heart-bar').style.width = `${costH * 10}%`;
-      document.getElementById('popup-cost-time-val').innerText = costT;
-      document.getElementById('popup-cost-time-bar').style.width = `${costT * 10}%`;
-      document.getElementById('popup-cost-knowledge-val').innerText = costK;
-      document.getElementById('popup-cost-knowledge-bar').style.width = `${costK * 10}%`;
+      // จัดการซ่อน/แสดง รายการสิ่งที่ต้องใช้ (ซ่อนถ้าเป็น 0)
+      const rowCostH = document.getElementById('cost-row-heart');
+      const rowCostT = document.getElementById('cost-row-time');
+      const rowCostK = document.getElementById('cost-row-knowledge');
+      const emptyCostNotice = document.getElementById('cost-empty-notice');
 
-      document.getElementById('popup-reward-heart-val').innerText = `+${rewardH}`;
-      document.getElementById('popup-reward-heart-bar').style.width = `${rewardH * 10}%`;
-      document.getElementById('popup-reward-time-val').innerText = `+${rewardT}`;
-      document.getElementById('popup-reward-time-bar').style.width = `${rewardT * 10}%`;
-      document.getElementById('popup-reward-knowledge-val').innerText = `+${rewardK}`;
-      document.getElementById('popup-reward-knowledge-bar').style.width = `${rewardK * 10}%`;
+      if (costH > 0) {
+        rowCostH.classList.remove('hidden');
+        document.getElementById('popup-cost-heart-val').innerText = costH;
+        document.getElementById('popup-cost-heart-bar').style.width = `${costH * 10}%`;
+      } else {
+        rowCostH.classList.add('hidden');
+      }
+
+      if (costT > 0) {
+        rowCostT.classList.remove('hidden');
+        document.getElementById('popup-cost-time-val').innerText = costT;
+        document.getElementById('popup-cost-time-bar').style.width = `${costT * 10}%`;
+      } else {
+        rowCostT.classList.add('hidden');
+      }
+
+      if (costK > 0) {
+        rowCostK.classList.remove('hidden');
+        document.getElementById('popup-cost-knowledge-val').innerText = costK;
+        document.getElementById('popup-cost-knowledge-bar').style.width = `${costK * 10}%`;
+      } else {
+        rowCostK.classList.add('hidden');
+      }
+
+      if (costH === 0 && costT === 0 && costK === 0) {
+        emptyCostNotice.classList.remove('hidden');
+      } else {
+        emptyCostNotice.classList.add('hidden');
+      }
+
+      // จัดการซ่อน/แสดง รายการสิ่งที่ได้รับ (ซ่อนถ้าเป็น 0)
+      const rowRewH = document.getElementById('reward-row-heart');
+      const rowRewT = document.getElementById('reward-row-time');
+      const rowRewK = document.getElementById('reward-row-knowledge');
+      const emptyRewNotice = document.getElementById('reward-empty-notice');
+
+      if (rewardH > 0) {
+        rowRewH.classList.remove('hidden');
+        document.getElementById('popup-reward-heart-val').innerText = `+${rewardH}`;
+        document.getElementById('popup-reward-heart-bar').style.width = `${rewardH * 10}%`;
+      } else {
+        rowRewH.classList.add('hidden');
+      }
+
+      if (rewardT > 0) {
+        rowRewT.classList.remove('hidden');
+        document.getElementById('popup-reward-time-val').innerText = `+${rewardT}`;
+        document.getElementById('popup-reward-time-bar').style.width = `${rewardT * 10}%`;
+      } else {
+        rowRewT.classList.add('hidden');
+      }
+
+      if (rewardK > 0) {
+        rowRewK.classList.remove('hidden');
+        document.getElementById('popup-reward-knowledge-val').innerText = `+${rewardK}`;
+        document.getElementById('popup-reward-knowledge-bar').style.width = `${rewardK * 10}%`;
+      } else {
+        rowRewK.classList.add('hidden');
+      }
+
+      if (rewardH === 0 && rewardT === 0 && rewardK === 0) {
+        emptyRewNotice.classList.remove('hidden');
+      } else {
+        emptyRewNotice.classList.add('hidden');
+      }
 
       const netGain = (rewardH + rewardT + rewardK) - (costH + costT + costK);
       const netGainEl = document.getElementById('popupNetGainValue');
@@ -1497,7 +1571,19 @@
       const rewardK = Number(currentItem.reward?.knowledge) || 0;
       const priceText = currentItem.price > 0 ? `฿${parseFloat(currentItem.price).toLocaleString()}` : 'ฟรี';
 
-      const shareText = `🎲 สุ่มได้: "${currentItem.title}"\n📂 หมวดหมู่: ${currentItem.category} | ราคา: ${priceText}\n\n🔻 สิ่งที่ต้องใช้: หัวใจ ${costH}/10 | เวลา ${costT}/10 | ความรู้ ${costK}/10\n🔺 สิ่งที่ได้รับ: หัวใจ +${rewardH} | เวลา +${rewardT} | ความรู้ +${rewardK}\n\n${currentItem.description || ''}`;
+      let costParts = [];
+      if (costH > 0) costParts.push(`หัวใจ ${costH}/10`);
+      if (costT > 0) costParts.push(`เวลา ${costT}/10`);
+      if (costK > 0) costParts.push(`ความรู้ ${costK}/10`);
+      const costStr = costParts.length > 0 ? costParts.join(' | ') : 'ไม่มี';
+
+      let rewParts = [];
+      if (rewardH > 0) rewParts.push(`หัวใจ +${rewardH}`);
+      if (rewardT > 0) rewParts.push(`เวลา +${rewardT}`);
+      if (rewardK > 0) rewParts.push(`ความรู้ +${rewardK}`);
+      const rewStr = rewParts.length > 0 ? rewParts.join(' | ') : 'ไม่มี';
+
+      const shareText = `🎲 สุ่มได้: "${currentItem.title}"\n📂 หมวดหมู่: ${currentItem.category} | ราคา: ${priceText}\n\n🔻 สิ่งที่ต้องใช้: ${costStr}\n🔺 สิ่งที่ได้รับ: ${rewStr}\n\n${currentItem.description || ''}`;
       if (navigator.clipboard) {
         navigator.clipboard.writeText(shareText).then(() => showToast('คัดลอกข้อความแชร์เรียบร้อยแล้ว!', 'success'));
       }
@@ -2118,7 +2204,7 @@
       handleFontSizeChange(5);
       const slider = document.getElementById('fontSizeSlider');
       if (slider) slider.value = 5;
-      showToast('คืนค่าขนาดตัวอักษรเริ่มต้น (ระดับ 5: 30px/22px) แล้ว', 'info');
+      showToast('คืนค่าขนาดตัวอักษรเริ่มต้น (ระดับ 5: 26px/22px) แล้ว', 'info');
     }
 
     function initFontSize() {
