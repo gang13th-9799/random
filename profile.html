@@ -215,7 +215,7 @@
         </div>
       </div>
 
-      <!-- SECTION 3: เช็คลิสต์ คุณสมบัติ (FL, 12%, 21%) -->
+      <!-- SECTION 3: เช็คลิสต์ คุณสมบัติ (FL 3 ข้อ, 12% 5 ข้อ, 21% 5 ข้อ) -->
       <div class="bg-white dark:bg-slate-800 rounded-3xl p-5 sm:p-7 border border-slate-200 dark:border-slate-700 card-vibrant-glow space-y-4">
         <div class="flex items-center gap-2.5 border-b border-slate-100 dark:border-slate-700 pb-3">
           <div class="w-8 h-8 rounded-xl bg-red-100 dark:bg-red-950/70 text-red-600 flex items-center justify-center text-sm font-bold">
@@ -223,37 +223,130 @@
           </div>
           <div>
             <h2 class="text-base font-bold text-slate-900 dark:text-white">3. เช็คลิสต์คุณสมบัติความก้าวหน้า</h2>
-            <span class="text-[11px] text-slate-400">บันทึกเป้าหมายและวันที่ผ่านคุณสมบัติ</span>
+            <span class="text-[11px] text-slate-400">เช็กลิสต์เงื่อนไข FL (3 ข้อ), 12% (5 ข้อ), และ 21% (5 ข้อ)</span>
           </div>
         </div>
 
-        <div class="grid grid-cols-1 sm:grid-cols-3 gap-3.5">
-          <!-- FL -->
-          <div class="p-4 rounded-2xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-900/50 space-y-2">
-            <label class="flex items-center gap-2.5 cursor-pointer select-none">
-              <input type="checkbox" id="qualifyFL" class="w-4 h-4 rounded text-red-600 focus:ring-red-500">
-              <span class="text-sm font-bold text-slate-800 dark:text-white">คุณสมบัติ FL</span>
-            </label>
-            <input type="date" id="dateFL" class="w-full bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-700 rounded-xl px-2.5 py-1.5 text-xs text-slate-600 dark:text-slate-300">
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-4">
+          
+          <!-- คุณสมบัติ FL: เช็กลิสต์ 3 ข้อ -->
+          <div class="p-4 rounded-2xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-900/50 space-y-3 flex flex-col justify-between">
+            <div class="space-y-3">
+              <div class="flex items-center justify-between border-b border-slate-200 dark:border-slate-700 pb-2">
+                <span class="text-sm font-black text-slate-800 dark:text-white flex items-center gap-1.5">
+                  <span class="w-5 h-5 rounded-md bg-red-600 text-white flex items-center justify-center text-[10px] font-mono font-bold">FL</span>
+                  <span>คุณสมบัติ FL</span>
+                </span>
+                <span class="text-[10px] font-bold text-slate-400 bg-white dark:bg-slate-800 px-2 py-0.5 rounded-full border border-slate-200 dark:border-slate-700">3 ข้อ</span>
+              </div>
+
+              <!-- รายการ 3 ข้อ -->
+              <div class="space-y-2 text-xs">
+                <label class="flex items-start gap-2.5 cursor-pointer select-none p-1.5 rounded-lg hover:bg-white dark:hover:bg-slate-800 transition">
+                  <input type="checkbox" id="qualify_fl_1" class="w-4 h-4 rounded text-red-600 focus:ring-red-500 mt-0.5">
+                  <span class="text-slate-700 dark:text-slate-300 font-medium">1. เงื่อนไข FL ข้อที่ 1 (รออัพเดท)</span>
+                </label>
+                <label class="flex items-start gap-2.5 cursor-pointer select-none p-1.5 rounded-lg hover:bg-white dark:hover:bg-slate-800 transition">
+                  <input type="checkbox" id="qualify_fl_2" class="w-4 h-4 rounded text-red-600 focus:ring-red-500 mt-0.5">
+                  <span class="text-slate-700 dark:text-slate-300 font-medium">2. เงื่อนไข FL ข้อที่ 2 (รออัพเดท)</span>
+                </label>
+                <label class="flex items-start gap-2.5 cursor-pointer select-none p-1.5 rounded-lg hover:bg-white dark:hover:bg-slate-800 transition">
+                  <input type="checkbox" id="qualify_fl_3" class="w-4 h-4 rounded text-red-600 focus:ring-red-500 mt-0.5">
+                  <span class="text-slate-700 dark:text-slate-300 font-medium">3. เงื่อนไข FL ข้อที่ 3 (รออัพเดท)</span>
+                </label>
+              </div>
+            </div>
+
+            <div class="pt-2 border-t border-slate-200 dark:border-slate-700">
+              <label class="block text-[11px] font-bold uppercase text-slate-400 mb-1">วันที่ผ่านคุณสมบัติ</label>
+              <input type="date" id="dateFL" class="w-full bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-700 rounded-xl px-2.5 py-1.5 text-xs text-slate-600 dark:text-slate-300">
+            </div>
           </div>
 
-          <!-- 12% -->
-          <div class="p-4 rounded-2xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-900/50 space-y-2">
-            <label class="flex items-center gap-2.5 cursor-pointer select-none">
-              <input type="checkbox" id="qualify12" class="w-4 h-4 rounded text-red-600 focus:ring-red-500">
-              <span class="text-sm font-bold text-slate-800 dark:text-white">คุณสมบัติ 12%</span>
-            </label>
-            <input type="date" id="date12" class="w-full bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-700 rounded-xl px-2.5 py-1.5 text-xs text-slate-600 dark:text-slate-300">
+          <!-- คุณสมบัติ 12%: เช็กลิสต์ 5 ข้อ -->
+          <div class="p-4 rounded-2xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-900/50 space-y-3 flex flex-col justify-between">
+            <div class="space-y-3">
+              <div class="flex items-center justify-between border-b border-slate-200 dark:border-slate-700 pb-2">
+                <span class="text-sm font-black text-slate-800 dark:text-white flex items-center gap-1.5">
+                  <span class="w-5 h-5 rounded-md bg-blue-600 text-white flex items-center justify-center text-[10px] font-mono font-bold">12%</span>
+                  <span>คุณสมบัติ 12%</span>
+                </span>
+                <span class="text-[10px] font-bold text-slate-400 bg-white dark:bg-slate-800 px-2 py-0.5 rounded-full border border-slate-200 dark:border-slate-700">5 ข้อ</span>
+              </div>
+
+              <!-- รายการ 5 ข้อ -->
+              <div class="space-y-2 text-xs">
+                <label class="flex items-start gap-2.5 cursor-pointer select-none p-1.5 rounded-lg hover:bg-white dark:hover:bg-slate-800 transition">
+                  <input type="checkbox" id="qualify_12_1" class="w-4 h-4 rounded text-blue-600 focus:ring-blue-500 mt-0.5">
+                  <span class="text-slate-700 dark:text-slate-300 font-medium">1. เงื่อนไข 12% ข้อที่ 1 (รออัพเดท)</span>
+                </label>
+                <label class="flex items-start gap-2.5 cursor-pointer select-none p-1.5 rounded-lg hover:bg-white dark:hover:bg-slate-800 transition">
+                  <input type="checkbox" id="qualify_12_2" class="w-4 h-4 rounded text-blue-600 focus:ring-blue-500 mt-0.5">
+                  <span class="text-slate-700 dark:text-slate-300 font-medium">2. เงื่อนไข 12% ข้อที่ 2 (รออัพเดท)</span>
+                </label>
+                <label class="flex items-start gap-2.5 cursor-pointer select-none p-1.5 rounded-lg hover:bg-white dark:hover:bg-slate-800 transition">
+                  <input type="checkbox" id="qualify_12_3" class="w-4 h-4 rounded text-blue-600 focus:ring-blue-500 mt-0.5">
+                  <span class="text-slate-700 dark:text-slate-300 font-medium">3. เงื่อนไข 12% ข้อที่ 3 (รออัพเดท)</span>
+                </label>
+                <label class="flex items-start gap-2.5 cursor-pointer select-none p-1.5 rounded-lg hover:bg-white dark:hover:bg-slate-800 transition">
+                  <input type="checkbox" id="qualify_12_4" class="w-4 h-4 rounded text-blue-600 focus:ring-blue-500 mt-0.5">
+                  <span class="text-slate-700 dark:text-slate-300 font-medium">4. เงื่อนไข 12% ข้อที่ 4 (รออัพเดท)</span>
+                </label>
+                <label class="flex items-start gap-2.5 cursor-pointer select-none p-1.5 rounded-lg hover:bg-white dark:hover:bg-slate-800 transition">
+                  <input type="checkbox" id="qualify_12_5" class="w-4 h-4 rounded text-blue-600 focus:ring-blue-500 mt-0.5">
+                  <span class="text-slate-700 dark:text-slate-300 font-medium">5. เงื่อนไข 12% ข้อที่ 5 (รออัพเดท)</span>
+                </label>
+              </div>
+            </div>
+
+            <div class="pt-2 border-t border-slate-200 dark:border-slate-700">
+              <label class="block text-[11px] font-bold uppercase text-slate-400 mb-1">วันที่ผ่านคุณสมบัติ</label>
+              <input type="date" id="date12" class="w-full bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-700 rounded-xl px-2.5 py-1.5 text-xs text-slate-600 dark:text-slate-300">
+            </div>
           </div>
 
-          <!-- 21% -->
-          <div class="p-4 rounded-2xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-900/50 space-y-2">
-            <label class="flex items-center gap-2.5 cursor-pointer select-none">
-              <input type="checkbox" id="qualify21" class="w-4 h-4 rounded text-red-600 focus:ring-red-500">
-              <span class="text-sm font-bold text-slate-800 dark:text-white">คุณสมบัติ 21% (Silver Producer)</span>
-            </label>
-            <input type="date" id="date21" class="w-full bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-700 rounded-xl px-2.5 py-1.5 text-xs text-slate-600 dark:text-slate-300">
+          <!-- คุณสมบัติ 21%: เช็กลิสต์ 5 ข้อ -->
+          <div class="p-4 rounded-2xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-900/50 space-y-3 flex flex-col justify-between">
+            <div class="space-y-3">
+              <div class="flex items-center justify-between border-b border-slate-200 dark:border-slate-700 pb-2">
+                <span class="text-sm font-black text-slate-800 dark:text-white flex items-center gap-1.5">
+                  <span class="w-5 h-5 rounded-md bg-emerald-600 text-white flex items-center justify-center text-[10px] font-mono font-bold">21%</span>
+                  <span>คุณสมบัติ 21% (Silver)</span>
+                </span>
+                <span class="text-[10px] font-bold text-slate-400 bg-white dark:bg-slate-800 px-2 py-0.5 rounded-full border border-slate-200 dark:border-slate-700">5 ข้อ</span>
+              </div>
+
+              <!-- รายการ 5 ข้อ -->
+              <div class="space-y-2 text-xs">
+                <label class="flex items-start gap-2.5 cursor-pointer select-none p-1.5 rounded-lg hover:bg-white dark:hover:bg-slate-800 transition">
+                  <input type="checkbox" id="qualify_21_1" class="w-4 h-4 rounded text-emerald-600 focus:ring-emerald-500 mt-0.5">
+                  <span class="text-slate-700 dark:text-slate-300 font-medium">1. เงื่อนไข 21% ข้อที่ 1 (รออัพเดท)</span>
+                </label>
+                <label class="flex items-start gap-2.5 cursor-pointer select-none p-1.5 rounded-lg hover:bg-white dark:hover:bg-slate-800 transition">
+                  <input type="checkbox" id="qualify_21_2" class="w-4 h-4 rounded text-emerald-600 focus:ring-emerald-500 mt-0.5">
+                  <span class="text-slate-700 dark:text-slate-300 font-medium">2. เงื่อนไข 21% ข้อที่ 2 (รออัพเดท)</span>
+                </label>
+                <label class="flex items-start gap-2.5 cursor-pointer select-none p-1.5 rounded-lg hover:bg-white dark:hover:bg-slate-800 transition">
+                  <input type="checkbox" id="qualify_21_3" class="w-4 h-4 rounded text-emerald-600 focus:ring-emerald-500 mt-0.5">
+                  <span class="text-slate-700 dark:text-slate-300 font-medium">3. เงื่อนไข 21% ข้อที่ 3 (รออัพเดท)</span>
+                </label>
+                <label class="flex items-start gap-2.5 cursor-pointer select-none p-1.5 rounded-lg hover:bg-white dark:hover:bg-slate-800 transition">
+                  <input type="checkbox" id="qualify_21_4" class="w-4 h-4 rounded text-emerald-600 focus:ring-emerald-500 mt-0.5">
+                  <span class="text-slate-700 dark:text-slate-300 font-medium">4. เงื่อนไข 21% ข้อที่ 4 (รออัพเดท)</span>
+                </label>
+                <label class="flex items-start gap-2.5 cursor-pointer select-none p-1.5 rounded-lg hover:bg-white dark:hover:bg-slate-800 transition">
+                  <input type="checkbox" id="qualify_21_5" class="w-4 h-4 rounded text-emerald-600 focus:ring-emerald-500 mt-0.5">
+                  <span class="text-slate-700 dark:text-slate-300 font-medium">5. เงื่อนไข 21% ข้อที่ 5 (รออัพเดท)</span>
+                </label>
+              </div>
+            </div>
+
+            <div class="pt-2 border-t border-slate-200 dark:border-slate-700">
+              <label class="block text-[11px] font-bold uppercase text-slate-400 mb-1">วันที่ผ่านคุณสมบัติ</label>
+              <input type="date" id="date21" class="w-full bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-700 rounded-xl px-2.5 py-1.5 text-xs text-slate-600 dark:text-slate-300">
+            </div>
           </div>
+
         </div>
       </div>
 
@@ -318,9 +411,7 @@
         </div>
 
         <!-- Grid 6 สายงาน -->
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4" id="legsContainer">
-          <!-- A, B, C, D, E, F จะถูกเรนเดอร์ผ่าน JavaScript ด้านล่าง -->
-        </div>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4" id="legsContainer"></div>
 
         <!-- Total Group Summary Box -->
         <div class="p-4 rounded-2xl bg-slate-50 dark:bg-slate-900/80 border border-slate-200 dark:border-slate-700 flex flex-wrap items-center justify-between gap-4">
@@ -361,7 +452,7 @@
         <i class="fa-solid fa-triangle-exclamation"></i>
       </div>
       <h3 class="font-bold text-base text-slate-900 dark:text-white">ยืนยันการล้างข้อมูล?</h3>
-      <p class="text-xs text-slate-400">ข้อมูลโปรไฟล์ อาชีพ และสายงานทั้งหมดจะถูกรีเซ็ตเป็นค่าเริ่มต้น</p>
+      <p class="text-xs text-slate-400">ข้อมูลโปรไฟล์ อาชีพ และเช็กลิสต์ทั้งหมดจะถูกรีเซ็ตเป็นค่าเริ่มต้น</p>
       <div class="flex justify-center gap-2 pt-2">
         <button onclick="closeResetModal()" class="px-4 py-2 rounded-xl text-xs font-bold bg-slate-100 dark:bg-slate-700">ยกเลิก</button>
         <button onclick="executeResetProfile()" class="px-4 py-2 rounded-xl text-xs font-bold text-white bg-red-600 hover:bg-red-700">ล้างข้อมูล</button>
@@ -377,7 +468,7 @@
 
   <!-- JAVASCRIPT LOGIC -->
   <script>
-    // ฐานข้อมูลอาชีพในเกม 7 อาชีพ (เตรียมไว้รองรับการอัปเดต)
+    // ฐานข้อมูลอาชีพในเกม 7 อาชีพ
     const GAME_CAREERS_DB = [
       { id: "business_owner", name: "เจ้าของธุรกิจส่วนตัว", salary: 75000, expense: 45000, heart: 6, time: 4, knowledge: 8 },
       { id: "software_engineer", name: "วิศวกรซอฟต์แวร์ / โปรแกรมเมอร์", salary: 65000, expense: 32000, heart: 5, time: 3, knowledge: 9 },
@@ -389,14 +480,14 @@
     ];
 
     const LEGS = ['A', 'B', 'C', 'D', 'E', 'F'];
-    let isEditMode = true; // ค่าเริ่มต้นเปิดให้กรอก
+    let isEditMode = true;
 
     window.addEventListener('DOMContentLoaded', () => {
       initTheme();
       renderCareersDropdown();
       renderLegsUI();
       loadProfileData();
-      checkDrawResultParams(); // ตรวจสอบว่ามีข้อมูลส่งมาจากหน้า index.html หรือไม่
+      checkDrawResultParams();
     });
 
     // 1. เรนเดอร์ Dropdown อาชีพ 7 อาชีพ
@@ -406,7 +497,6 @@
         GAME_CAREERS_DB.map(c => `<option value="${c.id}">${c.name}</option>`).join('');
     }
 
-    // เมื่อเลือกอาชีพ อัปเดตเงินเดือน รายจ่าย และค่าสเตตัสเริ่มต้น
     function onCareerSelected(careerId) {
       const career = GAME_CAREERS_DB.find(c => c.id === careerId);
       if (career) {
@@ -431,19 +521,16 @@
             </span>
           </div>
 
-          <!-- PV รวม -->
           <div>
             <label class="block text-[11px] font-bold uppercase text-slate-400 mb-0.5">PV รวม</label>
             <input type="number" id="leg_${leg}_pv" oninput="calculateTotalSummary()" placeholder="0" class="w-full bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-700 rounded-xl px-2.5 py-1.5 text-xs font-mono font-bold text-blue-600 focus:ring-2 focus:ring-blue-500">
           </div>
 
-          <!-- Active Income -->
           <div>
             <label class="block text-[11px] font-bold uppercase text-green-500 mb-0.5">Active Income (฿)</label>
             <input type="number" id="leg_${leg}_active" oninput="calculateTotalSummary()" placeholder="0" class="w-full bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-700 rounded-xl px-2.5 py-1.5 text-xs font-mono font-bold text-green-500 focus:ring-2 focus:ring-green-500">
           </div>
 
-          <!-- Passive Income -->
           <div>
             <label class="block text-[11px] font-bold uppercase text-emerald-600 mb-0.5">Passive Income (฿)</label>
             <input type="number" id="leg_${leg}_passive" oninput="calculateTotalSummary()" placeholder="0" class="w-full bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-700 rounded-xl px-2.5 py-1.5 text-xs font-mono font-bold text-emerald-500 focus:ring-2 focus:ring-emerald-500">
@@ -452,13 +539,11 @@
       `).join('');
     }
 
-    // 3. ปรับสเตตัสหลอดพลัง
     function updateStatBadge(type, value) {
       document.getElementById(`slider${type}`).value = value;
       document.getElementById(`stat${type}Val`).innerText = `${value}/10`;
     }
 
-    // 4. คำนวณสรุปรวมทั้งกลุ่ม (ส่วนตัว + 6 สายงาน)
     function calculateTotalSummary() {
       let totalPV = parseFloat(document.getElementById('personalPV').value) || 0;
       let totalActive = parseFloat(document.getElementById('personalActive').value) || 0;
@@ -476,7 +561,7 @@
       document.getElementById('summaryTotalPassive').innerText = `฿${totalPassive.toLocaleString()}`;
     }
 
-    // 5. บันทึกข้อมูลลง LocalStorage
+    // บันทึกข้อมูล
     function handleProfileSubmit(e) {
       e.preventDefault();
 
@@ -493,9 +578,34 @@
           knowledge: parseInt(document.getElementById('sliderKnowledge').value, 10)
         },
         qualification: {
-          fl: { checked: document.getElementById('qualifyFL').checked, date: document.getElementById('dateFL').value },
-          q12: { checked: document.getElementById('qualify12').checked, date: document.getElementById('date12').value },
-          q21: { checked: document.getElementById('qualify21').checked, date: document.getElementById('date21').value }
+          fl: {
+            items: [
+              document.getElementById('qualify_fl_1').checked,
+              document.getElementById('qualify_fl_2').checked,
+              document.getElementById('qualify_fl_3').checked
+            ],
+            date: document.getElementById('dateFL').value
+          },
+          q12: {
+            items: [
+              document.getElementById('qualify_12_1').checked,
+              document.getElementById('qualify_12_2').checked,
+              document.getElementById('qualify_12_3').checked,
+              document.getElementById('qualify_12_4').checked,
+              document.getElementById('qualify_12_5').checked
+            ],
+            date: document.getElementById('date12').value
+          },
+          q21: {
+            items: [
+              document.getElementById('qualify_21_1').checked,
+              document.getElementById('qualify_21_2').checked,
+              document.getElementById('qualify_21_3').checked,
+              document.getElementById('qualify_21_4').checked,
+              document.getElementById('qualify_21_5').checked
+            ],
+            date: document.getElementById('date21').value
+          }
         },
         personalAmway: {
           pv: parseFloat(document.getElementById('personalPV').value) || 0,
@@ -514,10 +624,10 @@
       });
 
       localStorage.setItem('game_user_profile', JSON.stringify(profileData));
-      showToast('บันทึกข้อมูลส่วนตัวเรียบร้อยแล้ว ✅', 'success');
+      showToast('บันทึกข้อมูลโปรไฟล์และเช็กลิสต์เรียบร้อยแล้ว ✅', 'success');
     }
 
-    // 6. โหลดข้อมูลที่เคยบันทึกไว้
+    // โหลดข้อมูล
     function loadProfileData() {
       try {
         const saved = localStorage.getItem('game_user_profile');
@@ -540,12 +650,34 @@
           updateStatBadge('Knowledge', data.stats.knowledge ?? 5);
         }
 
+        // โหลดข้อมูลเช็กลิสต์คุณสมบัติ
         if (data.qualification) {
-          document.getElementById('qualifyFL').checked = !!data.qualification.fl?.checked;
+          // FL (3 ข้อ)
+          if (data.qualification.fl?.items) {
+            document.getElementById('qualify_fl_1').checked = !!data.qualification.fl.items[0];
+            document.getElementById('qualify_fl_2').checked = !!data.qualification.fl.items[1];
+            document.getElementById('qualify_fl_3').checked = !!data.qualification.fl.items[2];
+          }
           document.getElementById('dateFL').value = data.qualification.fl?.date || '';
-          document.getElementById('qualify12').checked = !!data.qualification.q12?.checked;
+
+          // 12% (5 ข้อ)
+          if (data.qualification.q12?.items) {
+            document.getElementById('qualify_12_1').checked = !!data.qualification.q12.items[0];
+            document.getElementById('qualify_12_2').checked = !!data.qualification.q12.items[1];
+            document.getElementById('qualify_12_3').checked = !!data.qualification.q12.items[2];
+            document.getElementById('qualify_12_4').checked = !!data.qualification.q12.items[3];
+            document.getElementById('qualify_12_5').checked = !!data.qualification.q12.items[4];
+          }
           document.getElementById('date12').value = data.qualification.q12?.date || '';
-          document.getElementById('qualify21').checked = !!data.qualification.q21?.checked;
+
+          // 21% (5 ข้อ)
+          if (data.qualification.q21?.items) {
+            document.getElementById('qualify_21_1').checked = !!data.qualification.q21.items[0];
+            document.getElementById('qualify_21_2').checked = !!data.qualification.q21.items[1];
+            document.getElementById('qualify_21_3').checked = !!data.qualification.q21.items[2];
+            document.getElementById('qualify_21_4').checked = !!data.qualification.q21.items[3];
+            document.getElementById('qualify_21_5').checked = !!data.qualification.q21.items[4];
+          }
           document.getElementById('date21').value = data.qualification.q21?.date || '';
         }
 
@@ -569,7 +701,6 @@
       } catch (err) {}
     }
 
-    // 7. สลับโหมดแก้ไข / ล็อคฟอร์ม
     function toggleEditMode() {
       isEditMode = !isEditMode;
       const inputs = document.querySelectorAll('#profileForm input, #profileForm select, #profileForm textarea');
@@ -589,13 +720,11 @@
       }
     }
 
-    // 8. ตรวจสอบข้อมูลจากการสุ่มจากหน้า index.html
     function checkDrawResultParams() {
       try {
         const rawLastDraw = localStorage.getItem('last_drawn_card_result');
         if (rawLastDraw) {
           const card = JSON.parse(rawLastDraw);
-          // อัปเดตรายได้และค่าสเตตัสจากการ์ดล่าสุดลงโปรไฟล์
           if (card.activeIncome > 0) {
             const current = parseFloat(document.getElementById('personalActive').value) || 0;
             document.getElementById('personalActive').value = current + card.activeIncome;
@@ -605,13 +734,12 @@
             document.getElementById('personalPassive').value = current + card.passiveIncome;
           }
           calculateTotalSummary();
-          localStorage.removeItem('last_drawn_card_result'); // เคลียร์เพื่อไม่ให้บวกซ้ำ
+          localStorage.removeItem('last_drawn_card_result');
           showToast(`นำผลลัพธ์จากการสุ่ม "${card.title}" อัปเดตลงโปรไฟล์แล้ว! 🎉`, 'success');
         }
       } catch (e) {}
     }
 
-    // ล้างข้อมูล
     function confirmResetProfile() {
       document.getElementById('resetConfirmModal').classList.remove('hidden');
     }
@@ -629,7 +757,6 @@
       showToast('ล้างข้อมูลเรียบร้อยแล้ว', 'info');
     }
 
-    // โหมดสว่าง/มืด
     function toggleTheme() {
       const isDark = document.documentElement.classList.toggle('dark');
       localStorage.setItem('rnd_theme_dark', isDark ? 'true' : 'false');
@@ -642,7 +769,6 @@
       document.getElementById('themeIcon').className = isDark ? 'fa-solid fa-moon text-xs' : 'fa-solid fa-sun text-xs text-amber-500';
     }
 
-    // Toast
     function showToast(msg, type = 'info') {
       const toast = document.getElementById('toastNotification');
       document.getElementById('toastMessage').innerText = msg;
