@@ -30,21 +30,22 @@
           },
           colors: {
             brand: {
-              green: '#059669',
-              greenHover: '#047857',
-              greenLight: '#D1FAE5',
-              greenBg: '#ECFDF5',
-              red: '#DC2626',
-              redHover: '#B91C1C',
-              redLight: '#FEE2E2',
-              blue: '#0284C7',
-              blueHover: '#0369A1',
-              blueLight: '#E0F2FE',
-              grayBg: '#F8FAFC',
-              grayCard: '#FFFFFF',
-              grayBorder: '#E2E8F0',
-              grayText: '#334155',
-              grayMuted: '#64748B'
+              // 1. น้ำเงิน (สีหลัก)
+              blue: '#1D4ED8',
+              blueHover: '#1E40AF',
+              blueLight: '#DBEAFE',
+              blueBg: '#EFF6FF',
+              // 2. ขาว & 3. เทา (พื้นผิวและข้อความ)
+              white: '#FFFFFF',
+              grayBg: '#0F172A',
+              grayCard: '#1E293B',
+              grayBorder: '#334155',
+              grayText: '#F8FAFC',
+              grayMuted: '#94A3B8',
+              // 4. แดง (สีเสริม/แจ้งเตือน/Cost)
+              red: '#EF4444',
+              redHover: '#DC2626',
+              redLight: '#FEE2E2'
             }
           },
           animation: {
@@ -73,8 +74,9 @@
 
   <style>
     :root {
+      /* ระดับ 5: หัวข้อ 30px / รายละเอียด 22px */
       --app-content-font-size: 30px;
-      --app-desc-font-size: 18px;
+      --app-desc-font-size: 22px;
     }
 
     html {
@@ -88,13 +90,12 @@
       -webkit-tap-highlight-color: transparent;
       background-color: #F8FAFC;
       background-image: 
-        radial-gradient(at 0% 0%, rgba(5, 150, 105, 0.08) 0px, transparent 50%),
-        radial-gradient(at 100% 0%, rgba(2, 132, 199, 0.06) 0px, transparent 50%),
-        radial-gradient(at 50% 100%, rgba(220, 38, 38, 0.04) 0px, transparent 70%);
+        radial-gradient(at 0% 0%, rgba(29, 78, 216, 0.08) 0px, transparent 50%),
+        radial-gradient(at 100% 0%, rgba(148, 163, 184, 0.08) 0px, transparent 50%),
+        radial-gradient(at 50% 100%, rgba(239, 68, 68, 0.04) 0px, transparent 70%);
       background-attachment: fixed;
     }
 
-    /* จัดการการตัดคำและระยะบรรทัดภาษาไทย ไม่ให้สระซ้อนทับกัน */
     body, h1, h2, h3, h4, p, span, div, li, button {
       word-break: break-word;
       overflow-wrap: break-word;
@@ -112,31 +113,31 @@
 
     .bg-grid-pattern {
       background-size: 36px 36px;
-      background-image: linear-gradient(to right, rgba(203, 213, 225, 0.35) 1px, transparent 1px),
-                        linear-gradient(to bottom, rgba(203, 213, 225, 0.35) 1px, transparent 1px);
+      background-image: linear-gradient(to right, rgba(203, 213, 225, 0.4) 1px, transparent 1px),
+                        linear-gradient(to bottom, rgba(203, 213, 225, 0.4) 1px, transparent 1px);
     }
 
     .dark body {
-      background-color: #0F172A;
+      background-color: #0B1120;
       background-image: 
-        radial-gradient(at 0% 0%, rgba(5, 150, 105, 0.15) 0px, transparent 50%),
-        radial-gradient(at 100% 0%, rgba(2, 132, 199, 0.1) 0px, transparent 50%),
-        radial-gradient(at 50% 100%, rgba(15, 23, 42, 1) 0px, transparent 70%);
+        radial-gradient(at 0% 0%, rgba(29, 78, 216, 0.18) 0px, transparent 50%),
+        radial-gradient(at 100% 0%, rgba(100, 116, 139, 0.12) 0px, transparent 50%),
+        radial-gradient(at 50% 100%, rgba(239, 68, 68, 0.05) 0px, transparent 70%);
     }
 
     .dark .bg-grid-pattern {
-      background-image: linear-gradient(to right, rgba(51, 65, 85, 0.25) 1px, transparent 1px),
-                        linear-gradient(to bottom, rgba(51, 65, 85, 0.25) 1px, transparent 1px);
+      background-image: linear-gradient(to right, rgba(51, 65, 85, 0.3) 1px, transparent 1px),
+                        linear-gradient(to bottom, rgba(51, 65, 85, 0.3) 1px, transparent 1px);
     }
 
     .card-rim-glow {
       box-shadow: 0 0 0 1px rgba(226, 232, 240, 0.8),
-                  0 15px 35px -5px rgba(5, 150, 105, 0.07),
-                  0 10px 20px -5px rgba(2, 132, 199, 0.04);
+                  0 15px 35px -5px rgba(29, 78, 216, 0.08),
+                  0 10px 20px -5px rgba(100, 116, 139, 0.05);
     }
     .dark .card-rim-glow {
       box-shadow: 0 0 0 1px rgba(51, 65, 85, 0.8),
-                  0 20px 40px -10px rgba(0, 0, 0, 0.6);
+                  0 20px 40px -10px rgba(0, 0, 0, 0.7);
     }
 
     input[type=range] {
@@ -151,7 +152,7 @@
       height: 20px;
       width: 20px;
       border-radius: 50%;
-      background: #ffffff;
+      background: #FFFFFF;
       border: 3px solid currentColor;
       box-shadow: 0 2px 5px rgba(0,0,0,0.25);
       cursor: pointer;
@@ -172,11 +173,12 @@
       background: #334155;
     }
 
-    .btn-draw-green-shimmer {
-      background: linear-gradient(90deg, #059669 0%, #10B981 40%, #34D399 50%, #10B981 60%, #059669 100%);
+    /* ปุ่มสุ่มข้อมูล: สีน้ำเงินไล่ระดับประกายแสง */
+    .btn-draw-blue-shimmer {
+      background: linear-gradient(90deg, #1D4ED8 0%, #2563EB 40%, #60A5FA 50%, #2563EB 60%, #1D4ED8 100%);
       background-size: 250% 100%;
     }
-    .btn-draw-green-shimmer:hover {
+    .btn-draw-blue-shimmer:hover {
       animation: shimmer 1.8s infinite linear;
     }
   </style>
@@ -187,17 +189,17 @@
   <header class="sticky top-0 z-40 bg-white/90 dark:bg-slate-900/90 backdrop-blur-md border-b border-slate-200 dark:border-slate-800 shadow-sm transition-colors">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
       
-      <!-- Brand Logo -->
+      <!-- Brand Logo (น้ำเงิน-ขาว) -->
       <div class="flex items-center space-x-3 cursor-pointer" onclick="switchTab('categories')">
-        <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-brand-green to-emerald-400 flex items-center justify-center text-white shadow-md shadow-brand-green/20 transform transition hover:scale-105 shrink-0">
+        <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-blue-700 to-blue-500 flex items-center justify-center text-white shadow-md shadow-blue-500/25 transform transition hover:scale-105 shrink-0">
           <i class="fa-solid fa-cloud-arrow-up text-xl animate-pulse-subtle"></i>
         </div>
         <div>
           <div class="flex items-center space-x-1.5">
-            <span class="font-extrabold text-lg tracking-tight bg-gradient-to-r from-brand-green via-slate-800 to-emerald-600 bg-clip-text text-transparent dark:from-emerald-400 dark:via-white dark:to-teal-400">
+            <span class="font-extrabold text-lg tracking-tight bg-gradient-to-r from-blue-600 via-slate-800 to-blue-400 bg-clip-text text-transparent dark:from-blue-400 dark:via-white dark:to-blue-300">
               RANDOM HUB
             </span>
-            <span class="text-[10px] font-bold px-1.5 py-0.5 rounded bg-brand-green text-white uppercase tracking-wider">Cloud</span>
+            <span class="text-[10px] font-bold px-1.5 py-0.5 rounded bg-blue-600 text-white uppercase tracking-wider">Cloud</span>
           </div>
           <p id="cloudSyncStatus" class="text-[11px] text-slate-500 dark:text-slate-400 font-medium hidden sm:flex items-center gap-1">
             <i class="fa-solid fa-circle text-[8px] text-slate-400"></i> กำลังเตรียมระบบ...
@@ -207,7 +209,7 @@
 
       <!-- Desktop Nav Tabs -->
       <nav class="hidden md:flex items-center space-x-1 bg-slate-100 dark:bg-slate-800/80 p-1 rounded-xl border border-slate-200 dark:border-slate-700">
-        <button id="nav-btn-categories" onclick="switchTab('categories')" class="px-3.5 py-1.5 rounded-lg text-sm font-semibold transition-all flex items-center space-x-2 bg-white dark:bg-slate-700 text-brand-green shadow-sm">
+        <button id="nav-btn-categories" onclick="switchTab('categories')" class="px-3.5 py-1.5 rounded-lg text-sm font-semibold transition-all flex items-center space-x-2 bg-white dark:bg-slate-700 text-blue-600 dark:text-blue-400 shadow-sm">
           <i class="fa-solid fa-folder-tree text-sm"></i>
           <span>หมวดหมู่</span>
         </button>
@@ -227,16 +229,16 @@
 
       <!-- Sync Button & Settings Gear Button -->
       <div class="flex items-center space-x-2">
-        <button onclick="fetchFromGoogleSheets()" title="ดึงข้อมูลล่าสุดจาก Google Sheets" class="px-2.5 py-1.5 rounded-lg border border-emerald-300 dark:border-emerald-800 bg-emerald-50 dark:bg-emerald-950/50 text-brand-green dark:text-emerald-300 hover:bg-emerald-100 text-xs font-bold transition flex items-center gap-1.5 shadow-sm">
+        <button onclick="fetchFromGoogleSheets()" title="ดึงข้อมูลล่าสุดจาก Google Sheets" class="px-2.5 py-1.5 rounded-lg border border-blue-300 dark:border-blue-900 bg-blue-50 dark:bg-blue-950/50 text-blue-600 dark:text-blue-300 hover:bg-blue-100 text-xs font-bold transition flex items-center gap-1.5 shadow-sm">
           <i id="syncIcon" class="fa-solid fa-rotate text-xs"></i>
           <span class="hidden sm:inline">Sync Cloud</span>
         </button>
 
-        <button id="soundToggleBtn" onclick="toggleSound()" title="เปิด/ปิดเสียง" class="w-8 h-8 rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:text-brand-green flex items-center justify-center transition shadow-sm">
+        <button id="soundToggleBtn" onclick="toggleSound()" title="เปิด/ปิดเสียง" class="w-8 h-8 rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:text-blue-600 flex items-center justify-center transition shadow-sm">
           <i id="soundIcon" class="fa-solid fa-volume-high text-xs"></i>
         </button>
 
-        <button id="settingModalBtn" onclick="openSettingModal()" title="การตั้งค่า (Settings)" class="w-8 h-8 rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:text-brand-green hover:border-brand-green flex items-center justify-center transition shadow-sm group">
+        <button id="settingModalBtn" onclick="openSettingModal()" title="การตั้งค่า (Settings)" class="w-8 h-8 rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:text-blue-600 hover:border-blue-500 flex items-center justify-center transition shadow-sm group">
           <i class="fa-solid fa-gear text-sm group-hover:rotate-90 transition-transform duration-300"></i>
         </button>
       </div>
@@ -249,17 +251,17 @@
     
     <!-- VIEW 1: CATEGORIES HOME -->
     <section id="view-categories" class="space-y-6 animate-pop-in">
-      <div class="bg-gradient-to-r from-emerald-700 via-teal-800 to-slate-900 rounded-3xl p-6 sm:p-8 text-white shadow-xl relative overflow-hidden">
-        <div class="absolute -right-10 -bottom-10 w-48 h-48 bg-emerald-400/20 rounded-full blur-2xl"></div>
+      <div class="bg-gradient-to-r from-blue-900 via-slate-900 to-slate-950 rounded-3xl p-6 sm:p-8 text-white shadow-xl relative overflow-hidden border border-blue-900/40">
+        <div class="absolute -right-10 -bottom-10 w-48 h-48 bg-blue-500/20 rounded-full blur-2xl"></div>
         <div class="relative z-10 max-w-2xl space-y-3">
-          <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/10 backdrop-blur border border-white/20 text-xs font-semibold text-emerald-200">
+          <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/10 backdrop-blur border border-white/20 text-xs font-semibold text-blue-200">
             <i class="fa-solid fa-palette"></i>
-            <span>ระบบเลือกแถบแม่สี & ไอคอนหมวดหมู่</span>
+            <span>ระบบสุ่มการ์ดข้อมูลออนไลน์ เชื่อมต่อ Google Sheets</span>
           </div>
           <h1 class="text-2xl sm:text-4xl font-extrabold tracking-tight leading-snug">
             เลือกหมวดหมู่ที่ต้องการสุ่มข้อมูล
           </h1>
-          <p class="text-sm sm:text-base text-emerald-100 font-light leading-relaxed">
+          <p class="text-sm sm:text-base text-slate-300 font-light leading-relaxed">
             เลือกหมวดหมู่ด้านล่าง จากนั้นกดปุ่มเพื่อเริ่มสุ่มข้อมูลแบบ Pop-up แสดงผลลัพธ์ทันที
           </p>
         </div>
@@ -268,10 +270,10 @@
       <div class="space-y-3">
         <div class="flex items-center justify-between">
           <h2 class="text-base font-bold text-slate-800 dark:text-white flex items-center gap-2">
-            <i class="fa-solid fa-layer-group text-brand-green"></i>
+            <i class="fa-solid fa-layer-group text-blue-600 dark:text-blue-400"></i>
             <span>หมวดหมู่ทั้งหมดในระบบ</span>
           </h2>
-          <button onclick="openCategoryModal()" class="text-xs font-semibold text-brand-green hover:underline flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-emerald-50 dark:bg-emerald-950/60 border border-emerald-200 dark:border-emerald-800">
+          <button onclick="openCategoryModal()" class="text-xs font-semibold text-blue-600 dark:text-blue-400 hover:underline flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-blue-50 dark:bg-blue-950/60 border border-blue-200 dark:border-blue-900">
             <i class="fa-solid fa-gear"></i> จัดการหมวดหมู่ (แถบสี & ไอคอน)
           </button>
         </div>
@@ -279,14 +281,14 @@
       </div>
 
       <div id="emptyCategoryState" class="hidden p-10 text-center bg-white dark:bg-slate-800 rounded-3xl border border-slate-200 dark:border-slate-700 space-y-4">
-        <div class="w-16 h-16 rounded-full bg-emerald-100 dark:bg-emerald-950/60 text-brand-green flex items-center justify-center mx-auto text-2xl">
+        <div class="w-16 h-16 rounded-full bg-blue-100 dark:bg-blue-950/60 text-blue-600 flex items-center justify-center mx-auto text-2xl">
           <i class="fa-solid fa-box-open"></i>
         </div>
         <div class="space-y-1">
           <h3 class="font-bold text-slate-800 dark:text-white">ยังไม่มีข้อมูลในระบบ Google Sheets</h3>
           <p class="text-xs text-slate-500 max-w-sm mx-auto">เริ่มต้นด้วยการเพิ่มข้อมูลการ์ดใหม่ ข้อมูลจะถูกบันทึกลงชีตออนไลน์ทันที</p>
         </div>
-        <button onclick="openAddEditModal()" class="px-4 py-2 bg-brand-green text-white text-xs font-bold rounded-xl hover:bg-brand-greenHover transition shadow">
+        <button onclick="openAddEditModal()" class="px-4 py-2 bg-blue-600 text-white text-xs font-bold rounded-xl hover:bg-blue-700 transition shadow">
           <i class="fa-solid fa-plus mr-1"></i> เพิ่มข้อมูลแรก
         </button>
       </div>
@@ -303,7 +305,7 @@
         <div class="flex items-center gap-2">
           <label class="flex items-center gap-2 cursor-pointer select-none bg-white dark:bg-slate-800 px-3 py-1.5 rounded-xl border border-slate-200 dark:border-slate-700 shadow-sm">
             <input type="checkbox" id="uniqueDrawToggle" onchange="toggleUniqueDrawMode()" class="sr-only peer">
-            <div class="w-8 h-4 bg-slate-300 rounded-full peer dark:bg-slate-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border after:rounded-full after:h-3 after:w-3 after:transition-all peer-checked:bg-brand-green relative"></div>
+            <div class="w-8 h-4 bg-slate-300 rounded-full peer dark:bg-slate-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border after:rounded-full after:h-3 after:w-3 after:transition-all peer-checked:bg-blue-600 relative"></div>
             <span class="text-xs font-semibold text-slate-700 dark:text-slate-300">สุ่มไม่ซ้ำ</span>
           </label>
         </div>
@@ -311,7 +313,7 @@
 
       <!-- MAIN DRAW STAGE CARD -->
       <div class="relative max-w-xl mx-auto">
-        <div class="absolute -inset-1 rounded-3xl bg-gradient-to-r from-brand-green/30 via-teal-400/20 to-brand-blue/20 blur-xl opacity-60"></div>
+        <div class="absolute -inset-1 rounded-3xl bg-gradient-to-r from-blue-600/30 via-slate-400/20 to-blue-400/20 blur-xl opacity-60"></div>
         
         <div class="relative bg-white dark:bg-slate-800 rounded-3xl border border-slate-200 dark:border-slate-700 card-rim-glow p-8 sm:p-12 text-center shadow-xl space-y-8">
           
@@ -329,12 +331,12 @@
 
             <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-slate-100 dark:bg-slate-700/80 text-xs font-mono font-semibold text-slate-600 dark:text-slate-300">
               <i class="fa-solid fa-layer-group text-[10px]"></i>
-              <span>คงเหลือในกอง: <strong id="poolRemainingBadge" class="text-brand-green">0/0</strong></span>
+              <span>คงเหลือในกอง: <strong id="poolRemainingBadge" class="text-blue-600 dark:text-blue-400">0/0</strong></span>
             </div>
           </div>
 
           <div class="pt-2">
-            <button id="drawActionBtn" onclick="triggerRandomDraw()" class="w-full btn-draw-green-shimmer text-white py-5 px-8 rounded-2xl font-extrabold text-xl sm:text-2xl shadow-xl shadow-brand-green/30 hover:scale-[1.02] active:scale-[0.98] transition-all flex items-center justify-center gap-3 group">
+            <button id="drawActionBtn" onclick="triggerRandomDraw()" class="w-full btn-draw-blue-shimmer text-white py-5 px-8 rounded-2xl font-extrabold text-xl sm:text-2xl shadow-xl shadow-blue-600/30 hover:scale-[1.02] active:scale-[0.98] transition-all flex items-center justify-center gap-3 group">
               <i id="drawBtnIcon" class="fa-solid fa-dice-five text-3xl group-hover:rotate-180 transition-transform duration-500"></i>
               <span>สุ่มข้อมูล</span>
               <span class="text-xs font-mono font-normal bg-white/20 px-2.5 py-1 rounded-full uppercase tracking-widest hidden sm:inline">Space</span>
@@ -352,19 +354,19 @@
       <div class="bg-white/80 dark:bg-slate-800/80 backdrop-blur border border-slate-200 dark:border-slate-700 rounded-2xl p-4 shadow-sm flex flex-col md:flex-row items-stretch md:items-center justify-between gap-3">
         <div class="flex flex-wrap items-center gap-2 flex-1">
           <div class="relative flex-1 min-w-[200px]">
-            <input type="text" id="searchInput" oninput="renderDataTable()" placeholder="ค้นหาข้อมูล, หัวข้อ, ราคา..." class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-300 dark:border-slate-700 text-sm rounded-xl pl-9 pr-3 py-2 focus:ring-2 focus:ring-brand-green">
+            <input type="text" id="searchInput" oninput="renderDataTable()" placeholder="ค้นหาข้อมูล, หัวข้อ, ราคา..." class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-300 dark:border-slate-700 text-sm rounded-xl pl-9 pr-3 py-2 focus:ring-2 focus:ring-blue-600">
             <i class="fa-solid fa-magnifying-glass absolute left-3 top-2.5 text-slate-400 text-xs"></i>
           </div>
           <div class="relative w-44">
-            <select id="tableCategoryFilter" onchange="renderDataTable()" class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-300 dark:border-slate-700 text-sm rounded-xl px-3 py-2 pr-8 focus:ring-2 focus:ring-brand-green"></select>
+            <select id="tableCategoryFilter" onchange="renderDataTable()" class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-300 dark:border-slate-700 text-sm rounded-xl px-3 py-2 pr-8 focus:ring-2 focus:ring-blue-600"></select>
             <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2.5 text-slate-400"><i class="fa-solid fa-chevron-down text-xs"></i></div>
           </div>
         </div>
         <div class="flex flex-wrap items-center gap-2">
-          <button onclick="openAddEditModal()" class="px-4 py-2 bg-brand-green text-white font-semibold text-sm rounded-xl hover:bg-brand-greenHover shadow-md transition flex items-center gap-2">
+          <button onclick="openAddEditModal()" class="px-4 py-2 bg-blue-600 text-white font-semibold text-sm rounded-xl hover:bg-blue-700 shadow-md transition flex items-center gap-2">
             <i class="fa-solid fa-plus"></i><span>เพิ่มข้อมูลใหม่</span>
           </button>
-          <button onclick="fetchFromGoogleSheets()" class="px-3.5 py-2 bg-emerald-50 dark:bg-emerald-950/50 border border-emerald-300 dark:border-emerald-800 text-brand-green text-sm font-semibold rounded-xl hover:bg-emerald-100 transition flex items-center gap-1.5">
+          <button onclick="fetchFromGoogleSheets()" class="px-3.5 py-2 bg-blue-50 dark:bg-blue-950/50 border border-blue-300 dark:border-blue-900 text-blue-600 dark:text-blue-300 text-sm font-semibold rounded-xl hover:bg-blue-100 transition flex items-center gap-1.5">
             <i class="fa-solid fa-arrows-rotate"></i><span>รีเฟรชข้อมูล</span>
           </button>
         </div>
@@ -399,10 +401,10 @@
     <section id="view-history" class="hidden space-y-4 animate-pop-in">
       <div class="bg-white/80 dark:bg-slate-800/80 backdrop-blur border border-slate-200 dark:border-slate-700 rounded-2xl p-4 shadow-sm flex items-center justify-between">
         <div>
-          <h3 class="font-bold text-slate-800 dark:text-white flex items-center gap-2"><i class="fa-solid fa-clock-rotate-left text-brand-green"></i><span>ประวัติการสุ่มข้อมูล</span></h3>
+          <h3 class="font-bold text-slate-800 dark:text-white flex items-center gap-2"><i class="fa-solid fa-clock-rotate-left text-blue-600 dark:text-blue-400"></i><span>ประวัติการสุ่มข้อมูล</span></h3>
           <p class="text-xs text-slate-500">บันทึก 50 รายการล่าสุดบนคลาวด์</p>
         </div>
-        <button onclick="clearHistoryLog()" class="px-3.5 py-1.5 text-xs font-semibold text-brand-red hover:bg-rose-50 rounded-xl transition border border-rose-200 flex items-center gap-1.5">
+        <button onclick="clearHistoryLog()" class="px-3.5 py-1.5 text-xs font-semibold text-brand-red hover:bg-rose-50 dark:hover:bg-rose-950/40 rounded-xl transition border border-rose-200 dark:border-rose-900 flex items-center gap-1.5">
           <i class="fa-solid fa-trash-can"></i><span>Clear ประวัติ</span>
         </button>
       </div>
@@ -418,16 +420,16 @@
 
   <!-- Mobile Bottom Nav -->
   <nav class="md:hidden fixed bottom-0 inset-x-0 bg-white/95 dark:bg-slate-900/95 backdrop-blur-lg border-t border-slate-200 dark:border-slate-800 z-50 px-2 py-2 flex items-center justify-around shadow-lg">
-    <button onclick="switchTab('categories')" id="m-nav-categories" class="flex flex-col items-center gap-1 text-brand-green font-bold"><i class="fa-solid fa-folder-tree text-lg"></i><span class="text-[10px]">หมวดหมู่</span></button>
+    <button onclick="switchTab('categories')" id="m-nav-categories" class="flex flex-col items-center gap-1 text-blue-600 dark:text-blue-400 font-bold"><i class="fa-solid fa-folder-tree text-lg"></i><span class="text-[10px]">หมวดหมู่</span></button>
     <button onclick="switchTab('draw')" id="m-nav-draw" class="flex flex-col items-center gap-1 text-slate-400 font-medium"><i class="fa-solid fa-shuffle text-lg"></i><span class="text-[10px]">สุ่มข้อมูล</span></button>
     <button onclick="switchTab('data')" id="m-nav-data" class="flex flex-col items-center gap-1 text-slate-400 font-medium"><i class="fa-solid fa-layer-group text-lg"></i><span class="text-[10px]">คลังข้อมูล</span></button>
     <button onclick="switchTab('history')" id="m-nav-history" class="flex flex-col items-center gap-1 text-slate-400 font-medium"><i class="fa-solid fa-clock-rotate-left text-lg"></i><span class="text-[10px]">ประวัติ</span></button>
   </nav>
 
   <!-- ======================================================== -->
-  <!-- POP-UP RESULT MODAL (ปรับขนาด Stats ใหญ่ขึ้น & ย้ายราคาลงซ้ายล่าง) -->
+  <!-- POP-UP RESULT MODAL -->
   <!-- ======================================================== -->
-  <div id="resultModal" class="hidden fixed inset-0 z-50 bg-slate-900/75 backdrop-blur-md flex items-center justify-center p-3 sm:p-4 overflow-y-auto">
+  <div id="resultModal" class="hidden fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-md flex items-center justify-center p-3 sm:p-4 overflow-y-auto">
     <div class="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-3xl max-w-2xl w-full p-4 sm:p-7 shadow-2xl relative my-auto animate-pop-in space-y-4">
       
       <!-- Top Card Meta inside Pop-up -->
@@ -445,7 +447,7 @@
             <i class="fa-regular fa-heart text-base"></i>
           </button>
           
-          <button onclick="shareCurrentCard()" title="คัดลอกแชร์" class="w-8 h-8 rounded-lg text-slate-400 hover:text-brand-green flex items-center justify-center transition">
+          <button onclick="shareCurrentCard()" title="คัดลอกแชร์" class="w-8 h-8 rounded-lg text-slate-400 hover:text-blue-500 flex items-center justify-center transition">
             <i class="fa-solid fa-arrow-up-right-from-square text-sm"></i>
           </button>
 
@@ -466,7 +468,7 @@
           <h2 id="popupTitle" class="dynamic-title-scale font-extrabold text-slate-900 dark:text-white tracking-normal">
             หัวข้อข้อมูล
           </h2>
-          <p id="popupSubtitle" class="text-sm sm:text-base font-semibold text-brand-green dark:text-emerald-400 leading-normal">
+          <p id="popupSubtitle" class="text-sm sm:text-base font-semibold text-blue-600 dark:text-blue-400 leading-normal">
             หัวข้อย่อย
           </p>
         </div>
@@ -475,11 +477,11 @@
           รายละเอียดเนื้อหา
         </p>
 
-        <!-- CONDITION STATS: ขยายขนาดแสดงผลของสิ่งที่ต้องใช้ และสิ่งที่ได้รับ (Icons & Numbers ใหญ่ขึ้น) -->
+        <!-- CONDITION STATS: ขยายขนาดแสดงผลของสิ่งที่ต้องใช้ และสิ่งที่ได้รับ -->
         <div class="pt-2">
           <div class="grid grid-cols-1 sm:grid-cols-2 gap-3.5 sm:gap-4">
             
-            <!-- สิ่งที่ต้องใช้ (Costs) -->
+            <!-- สิ่งที่ต้องใช้ (Costs: เน้นโทนแดงและเทา) -->
             <div class="bg-gradient-to-br from-red-50/80 via-slate-50 to-white dark:from-red-950/25 dark:via-slate-800 dark:to-slate-800/90 rounded-2xl p-3.5 sm:p-4 border border-red-100 dark:border-red-950/60 shadow-sm space-y-3">
               <div class="flex items-center justify-between border-b border-red-100 dark:border-red-900/40 pb-2">
                 <span class="text-sm font-extrabold text-brand-red flex items-center gap-2">
@@ -506,13 +508,13 @@
               <!-- 2. เวลา -->
               <div class="flex items-center justify-between text-sm py-0.5">
                 <span class="flex items-center gap-2 font-medium text-slate-700 dark:text-slate-300">
-                  <i class="fa-solid fa-clock text-brand-blue text-lg w-5 text-center"></i> เวลา
+                  <i class="fa-solid fa-clock text-blue-500 text-lg w-5 text-center"></i> เวลา
                 </span>
                 <div class="flex items-center gap-2">
                   <div class="w-16 sm:w-24 bg-slate-200 dark:bg-slate-700 h-2.5 rounded-full overflow-hidden">
-                    <div id="popup-cost-time-bar" class="bg-brand-blue h-full rounded-full transition-all duration-300" style="width: 0%;"></div>
+                    <div id="popup-cost-time-bar" class="bg-blue-500 h-full rounded-full transition-all duration-300" style="width: 0%;"></div>
                   </div>
-                  <span id="popup-cost-time-val" class="font-mono font-extrabold text-base text-brand-blue w-5 text-right">0</span>
+                  <span id="popup-cost-time-val" class="font-mono font-extrabold text-base text-blue-600 dark:text-blue-400 w-5 text-right">0</span>
                   <span class="text-xs text-slate-400 font-mono">/10</span>
                 </div>
               </div>
@@ -532,14 +534,14 @@
               </div>
             </div>
 
-            <!-- สิ่งที่ได้รับ (Rewards) -->
-            <div class="bg-gradient-to-br from-emerald-50/80 via-slate-50 to-white dark:from-emerald-950/25 dark:via-slate-800 dark:to-slate-800/90 rounded-2xl p-3.5 sm:p-4 border border-emerald-100 dark:border-emerald-950/60 shadow-sm space-y-3">
-              <div class="flex items-center justify-between border-b border-emerald-100 dark:border-emerald-900/40 pb-2">
-                <span class="text-sm font-extrabold text-brand-green dark:text-emerald-400 flex items-center gap-2">
+            <!-- สิ่งที่ได้รับ (Rewards: เน้นโทนน้ำเงินและขาว) -->
+            <div class="bg-gradient-to-br from-blue-50/80 via-slate-50 to-white dark:from-blue-950/25 dark:via-slate-800 dark:to-slate-800/90 rounded-2xl p-3.5 sm:p-4 border border-blue-100 dark:border-blue-900/60 shadow-sm space-y-3">
+              <div class="flex items-center justify-between border-b border-blue-100 dark:border-blue-900/40 pb-2">
+                <span class="text-sm font-extrabold text-blue-600 dark:text-blue-400 flex items-center gap-2">
                   <i class="fa-solid fa-gift text-base"></i>
                   <span>สิ่งที่ได้รับ</span>
                 </span>
-                <span class="text-[11px] bg-emerald-100 dark:bg-emerald-950 text-emerald-800 dark:text-emerald-300 px-2.5 py-0.5 rounded-full font-mono font-bold">REWARD (0-10)</span>
+                <span class="text-[11px] bg-blue-100 dark:bg-blue-950 text-blue-700 dark:text-blue-300 px-2.5 py-0.5 rounded-full font-mono font-bold">REWARD (0-10)</span>
               </div>
 
               <!-- 1. หัวใจ -->
@@ -559,13 +561,13 @@
               <!-- 2. เวลา -->
               <div class="flex items-center justify-between text-sm py-0.5">
                 <span class="flex items-center gap-2 font-medium text-slate-700 dark:text-slate-300">
-                  <i class="fa-solid fa-clock text-brand-blue text-lg w-5 text-center"></i> เวลา
+                  <i class="fa-solid fa-clock text-blue-500 text-lg w-5 text-center"></i> เวลา
                 </span>
                 <div class="flex items-center gap-2">
                   <div class="w-16 sm:w-24 bg-slate-200 dark:bg-slate-700 h-2.5 rounded-full overflow-hidden">
-                    <div id="popup-reward-time-bar" class="bg-brand-blue h-full rounded-full transition-all duration-300" style="width: 0%;"></div>
+                    <div id="popup-reward-time-bar" class="bg-blue-600 dark:bg-blue-400 h-full rounded-full transition-all duration-300" style="width: 0%;"></div>
                   </div>
-                  <span id="popup-reward-time-val" class="font-mono font-extrabold text-base text-brand-blue w-7 text-right">+0</span>
+                  <span id="popup-reward-time-val" class="font-mono font-extrabold text-base text-blue-600 dark:text-blue-400 w-7 text-right">+0</span>
                   <span class="text-xs text-slate-400 font-mono">/10</span>
                 </div>
               </div>
@@ -590,14 +592,14 @@
 
         <div class="flex items-center justify-between pt-2 border-t border-slate-100 dark:border-slate-700 text-xs sm:text-sm">
           <div id="popupLinkContainer">
-            <a id="popupActionLink" href="#" target="_blank" class="inline-flex items-center gap-1.5 font-semibold text-brand-green hover:underline">
+            <a id="popupActionLink" href="#" target="_blank" class="inline-flex items-center gap-1.5 font-semibold text-blue-600 dark:text-blue-400 hover:underline">
               <span>อ่านรายละเอียดเพิ่มเติม</span>
               <i class="fa-solid fa-external-link text-[10px]"></i>
             </a>
           </div>
           <div class="flex items-center gap-1.5 font-mono">
             <span class="text-slate-400">ความคุ้มค่าสุทธิ:</span>
-            <span id="popupNetGainValue" class="font-bold text-brand-green text-sm sm:text-base">+0</span>
+            <span id="popupNetGainValue" class="font-bold text-blue-600 dark:text-blue-400 text-sm sm:text-base">+0</span>
           </div>
         </div>
 
@@ -612,14 +614,14 @@
 
         <div class="flex items-center gap-3 ml-auto">
           <!-- Price Badge -->
-          <div id="popupPriceBadge" class="px-3.5 py-2 rounded-xl bg-emerald-50 dark:bg-emerald-950/70 border border-emerald-300 dark:border-emerald-800 text-brand-green dark:text-emerald-400 text-sm font-bold font-mono flex items-center gap-1.5 shadow-sm">
+          <div id="popupPriceBadge" class="px-3.5 py-2 rounded-xl bg-blue-50 dark:bg-blue-950/70 border border-blue-300 dark:border-blue-800 text-blue-700 dark:text-blue-300 text-sm font-bold font-mono flex items-center gap-1.5 shadow-sm">
             <span class="text-xs text-slate-400 font-sans font-medium">ราคา:</span>
             <i class="fa-solid fa-baht-sign text-xs"></i>
             <span id="popupPriceValue" class="text-base font-extrabold">฿0</span>
           </div>
 
           <!-- ปุ่มสุ่มใหม่อีกครั้ง -->
-          <button onclick="triggerRandomDraw()" class="px-5 sm:px-6 py-2.5 rounded-xl bg-brand-green text-white text-sm font-bold hover:bg-brand-greenHover transition shadow flex items-center gap-2">
+          <button onclick="triggerRandomDraw()" class="px-5 sm:px-6 py-2.5 rounded-xl bg-blue-600 hover:bg-blue-700 text-white text-sm font-bold transition shadow flex items-center gap-2">
             <i class="fa-solid fa-dice-five"></i>
             <span>สุ่มใหม่อีกครั้ง</span>
           </button>
@@ -631,48 +633,48 @@
   </div>
 
   <!-- Add / Edit Modal -->
-  <div id="itemModal" class="hidden fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-3 sm:p-4 overflow-y-auto">
+  <div id="itemModal" class="hidden fixed inset-0 z-50 bg-slate-950/70 backdrop-blur-sm flex items-center justify-center p-3 sm:p-4 overflow-y-auto">
     <div class="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-3xl max-w-xl w-full p-5 sm:p-6 shadow-2xl relative my-auto animate-pop-in">
       <div class="flex items-center justify-between pb-3 border-b border-slate-100 dark:border-slate-700">
-        <h3 id="itemModalTitle" class="text-lg font-bold text-slate-900 dark:text-white flex items-center gap-2"><i class="fa-solid fa-pen-to-square text-brand-green"></i><span>เพิ่มข้อมูลใหม่</span></h3>
+        <h3 id="itemModalTitle" class="text-lg font-bold text-slate-900 dark:text-white flex items-center gap-2"><i class="fa-solid fa-pen-to-square text-blue-600"></i><span>เพิ่มข้อมูลใหม่</span></h3>
         <button onclick="closeAddEditModal()" class="w-8 h-8 rounded-lg text-slate-400 hover:text-slate-700"><i class="fa-solid fa-xmark text-lg"></i></button>
       </div>
       <form id="itemForm" onsubmit="handleItemFormSubmit(event)" class="space-y-4 pt-3">
         <input type="hidden" id="formItemId">
         <div>
           <label class="block text-xs font-bold uppercase text-slate-600 dark:text-slate-300 mb-1">หัวข้อ / ชื่อเรื่อง <span class="text-rose-500">*</span></label>
-          <input type="text" id="formTitle" required placeholder="ระบุหัวข้อข้อมูล..." class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded-xl px-3.5 py-2.5 text-sm focus:ring-2 focus:ring-brand-green">
+          <input type="text" id="formTitle" required placeholder="ระบุหัวข้อข้อมูล..." class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded-xl px-3.5 py-2.5 text-sm focus:ring-2 focus:ring-blue-600">
         </div>
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
           <div>
             <label class="block text-xs font-bold uppercase text-slate-600 dark:text-slate-300 mb-1">หมวดหมู่ <span class="text-rose-500">*</span></label>
             <div class="flex gap-1.5">
-              <select id="formCategory" required class="flex-1 bg-slate-50 dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded-xl px-3 py-2 text-sm focus:ring-2 focus:ring-brand-green"></select>
+              <select id="formCategory" required class="flex-1 bg-slate-50 dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded-xl px-3 py-2 text-sm focus:ring-2 focus:ring-blue-600"></select>
               <button type="button" onclick="openCategoryModal()" class="px-2.5 bg-slate-100 dark:bg-slate-700 rounded-xl"><i class="fa-solid fa-plus text-xs"></i></button>
             </div>
           </div>
           <div>
             <label class="block text-xs font-bold uppercase text-slate-600 dark:text-slate-300 mb-1">ราคา (บาท / ฿)</label>
             <div class="relative">
-              <input type="number" id="formPrice" min="0" step="any" placeholder="0 หรือ ปล่อยว่างถ้าฟรี" class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded-xl pl-8 pr-3 py-2 text-sm focus:ring-2 focus:ring-brand-green">
+              <input type="number" id="formPrice" min="0" step="any" placeholder="0 หรือ ปล่อยว่างถ้าฟรี" class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded-xl pl-8 pr-3 py-2 text-sm focus:ring-2 focus:ring-blue-600">
               <span class="absolute left-3 top-2 text-slate-400 font-bold text-xs">฿</span>
             </div>
           </div>
         </div>
         <div>
           <label class="block text-xs font-bold uppercase text-slate-600 dark:text-slate-300 mb-1">หัวข้อย่อย</label>
-          <input type="text" id="formSubtitle" placeholder="เช่น รายละเอียดสั้นๆ หรือ หมวดย่อย" class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded-xl px-3.5 py-2.5 text-sm focus:ring-2 focus:ring-brand-green">
+          <input type="text" id="formSubtitle" placeholder="เช่น รายละเอียดสั้นๆ หรือ หมวดย่อย" class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded-xl px-3.5 py-2.5 text-sm focus:ring-2 focus:ring-blue-600">
         </div>
         <div>
           <label class="block text-xs font-bold uppercase text-slate-600 dark:text-slate-300 mb-1">รายละเอียดเนื้อหา</label>
-          <textarea id="formDescription" rows="3" placeholder="ระบุรายละเอียดเพิ่มเติม..." class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded-xl px-3.5 py-2.5 text-sm focus:ring-2 focus:ring-brand-green"></textarea>
+          <textarea id="formDescription" rows="3" placeholder="ระบุรายละเอียดเพิ่มเติม..." class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded-xl px-3.5 py-2.5 text-sm focus:ring-2 focus:ring-blue-600"></textarea>
         </div>
 
         <!-- 0-10 Sliders -->
         <div class="p-3.5 bg-slate-50 dark:bg-slate-900/80 rounded-2xl border border-slate-200 dark:border-slate-700 space-y-3">
           <div class="flex items-center justify-between">
             <span class="text-xs font-bold text-slate-700 dark:text-slate-200 uppercase">เงื่อนไขทรัพยากร (0 - 10)</span>
-            <button type="button" onclick="randomizeFormSliders()" class="text-[11px] text-brand-green font-semibold hover:underline flex items-center gap-1"><i class="fa-solid fa-dice"></i> สุ่มตัวเลข 0-10</button>
+            <button type="button" onclick="randomizeFormSliders()" class="text-[11px] text-blue-600 font-semibold hover:underline flex items-center gap-1"><i class="fa-solid fa-dice"></i> สุ่มตัวเลข 0-10</button>
           </div>
           <div class="space-y-2 border-b border-slate-200 dark:border-slate-700/80 pb-3">
             <span class="text-[11px] font-bold text-brand-red flex items-center gap-1"><i class="fa-solid fa-hand-holding-dollar"></i> สิ่งที่ต้องใช้ (Cost: 0-10)</span>
@@ -682,9 +684,9 @@
               <span id="badgeCostHeart" class="w-7 text-center font-mono font-bold text-brand-red bg-red-100 dark:bg-red-950/80 py-0.5 rounded">0</span>
             </div>
             <div class="flex items-center gap-2 text-xs">
-              <span class="w-20 font-medium text-slate-600 dark:text-slate-300"><i class="fa-solid fa-clock text-brand-blue"></i> เวลา:</span>
-              <input type="range" min="0" max="10" value="0" id="sliderCostTime" oninput="updateSliderBadge('CostTime')" class="flex-1 text-brand-blue">
-              <span id="badgeCostTime" class="w-7 text-center font-mono font-bold text-brand-blue bg-sky-100 dark:bg-sky-950/80 py-0.5 rounded">0</span>
+              <span class="w-20 font-medium text-slate-600 dark:text-slate-300"><i class="fa-solid fa-clock text-blue-500"></i> เวลา:</span>
+              <input type="range" min="0" max="10" value="0" id="sliderCostTime" oninput="updateSliderBadge('CostTime')" class="flex-1 text-blue-500">
+              <span id="badgeCostTime" class="w-7 text-center font-mono font-bold text-blue-600 bg-blue-100 dark:bg-blue-950/80 py-0.5 rounded">0</span>
             </div>
             <div class="flex items-center gap-2 text-xs">
               <span class="w-20 font-medium text-slate-600 dark:text-slate-300"><i class="fa-solid fa-brain text-slate-600 dark:text-slate-400"></i> ความรู้:</span>
@@ -693,16 +695,16 @@
             </div>
           </div>
           <div class="space-y-2 pt-1">
-            <span class="text-[11px] font-bold text-brand-green flex items-center gap-1"><i class="fa-solid fa-gift"></i> สิ่งที่ได้รับ (Reward: 0-10)</span>
+            <span class="text-[11px] font-bold text-blue-600 flex items-center gap-1"><i class="fa-solid fa-gift"></i> สิ่งที่ได้รับ (Reward: 0-10)</span>
             <div class="flex items-center gap-2 text-xs">
               <span class="w-20 font-medium text-slate-600 dark:text-slate-300"><i class="fa-solid fa-heart text-brand-red"></i> หัวใจ:</span>
               <input type="range" min="0" max="10" value="0" id="sliderRewardHeart" oninput="updateSliderBadge('RewardHeart')" class="flex-1 text-brand-red">
               <span id="badgeRewardHeart" class="w-7 text-center font-mono font-bold text-brand-red bg-red-100 dark:bg-red-950/80 py-0.5 rounded">+0</span>
             </div>
             <div class="flex items-center gap-2 text-xs">
-              <span class="w-20 font-medium text-slate-600 dark:text-slate-300"><i class="fa-solid fa-clock text-brand-blue"></i> เวลา:</span>
-              <input type="range" min="0" max="10" value="0" id="sliderRewardTime" oninput="updateSliderBadge('RewardTime')" class="flex-1 text-brand-blue">
-              <span id="badgeRewardTime" class="w-7 text-center font-mono font-bold text-brand-blue bg-sky-100 dark:bg-sky-950/80 py-0.5 rounded">+0</span>
+              <span class="w-20 font-medium text-slate-600 dark:text-slate-300"><i class="fa-solid fa-clock text-blue-500"></i> เวลา:</span>
+              <input type="range" min="0" max="10" value="0" id="sliderRewardTime" oninput="updateSliderBadge('RewardTime')" class="flex-1 text-blue-500">
+              <span id="badgeRewardTime" class="w-7 text-center font-mono font-bold text-blue-600 bg-blue-100 dark:bg-blue-950/80 py-0.5 rounded">+0</span>
             </div>
             <div class="flex items-center gap-2 text-xs">
               <span class="w-20 font-medium text-slate-600 dark:text-slate-300"><i class="fa-solid fa-brain text-slate-600 dark:text-slate-400"></i> ความรู้:</span>
@@ -715,17 +717,17 @@
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
           <div>
             <label class="block text-xs font-bold uppercase text-slate-600 dark:text-slate-300 mb-1">Image URL</label>
-            <input type="url" id="formImageUrl" placeholder="https://..." class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded-xl px-3 py-2 text-sm focus:ring-2 focus:ring-brand-green">
+            <input type="url" id="formImageUrl" placeholder="https://..." class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded-xl px-3 py-2 text-sm focus:ring-2 focus:ring-blue-600">
           </div>
           <div>
             <label class="block text-xs font-bold uppercase text-slate-600 dark:text-slate-300 mb-1">External Link</label>
-            <input type="url" id="formLinkUrl" placeholder="https://..." class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded-xl px-3 py-2 text-sm focus:ring-2 focus:ring-brand-green">
+            <input type="url" id="formLinkUrl" placeholder="https://..." class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded-xl px-3 py-2 text-sm focus:ring-2 focus:ring-blue-600">
           </div>
         </div>
 
         <div class="pt-3 border-t border-slate-100 dark:border-slate-700 flex items-center justify-end gap-2">
           <button type="button" onclick="closeAddEditModal()" class="px-4 py-2 rounded-xl text-slate-600 dark:text-slate-300 text-sm font-semibold">ยกเลิก</button>
-          <button type="submit" id="saveSubmitBtn" class="px-5 py-2 rounded-xl bg-brand-green text-white text-sm font-semibold hover:bg-brand-greenHover transition flex items-center gap-1.5">
+          <button type="submit" id="saveSubmitBtn" class="px-5 py-2 rounded-xl bg-blue-600 hover:bg-blue-700 text-white text-sm font-semibold transition flex items-center gap-1.5">
             <i class="fa-solid fa-cloud-arrow-up"></i>
             <span>บันทึกลงชีตออนไลน์</span>
           </button>
@@ -735,12 +737,12 @@
   </div>
 
   <!-- Category Manager Modal -->
-  <div id="categoryModal" class="hidden fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-3 sm:p-4 overflow-y-auto">
+  <div id="categoryModal" class="hidden fixed inset-0 z-50 bg-slate-950/70 backdrop-blur-sm flex items-center justify-center p-3 sm:p-4 overflow-y-auto">
     <div class="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-3xl max-w-lg w-full p-5 sm:p-6 shadow-2xl relative my-auto animate-pop-in">
       <div class="flex items-center justify-between pb-3 border-b border-slate-100 dark:border-slate-700">
         <div>
           <h3 class="text-base font-bold text-slate-900 dark:text-white flex items-center gap-2">
-            <i class="fa-solid fa-folder-tree text-brand-green"></i>
+            <i class="fa-solid fa-folder-tree text-blue-600"></i>
             <span>จัดการหมวดหมู่ (แถบสี & ไอคอน)</span>
           </h3>
           <p class="text-xs text-slate-500 mt-0.5">กดแถบสีเพื่อเปลี่ยนสี, กดไอคอนเพื่อเปลี่ยนรูป, หรือกดลูกศรจัดลำดับ</p>
@@ -751,16 +753,16 @@
       <div class="pt-3 space-y-4">
         <div class="flex items-center gap-2">
           <button type="button" id="newCatColorBtn" onclick="openColorPicker(-1)" title="เลือกแถบสีหมวดหมู่" class="h-10 px-3 rounded-xl border border-slate-200 dark:border-slate-600 bg-white dark:bg-slate-700 flex items-center gap-2 hover:bg-slate-100 transition shadow-sm">
-            <span id="newCatColorPill" class="w-5 h-5 rounded-full shadow-sm bg-emerald-500"></span>
+            <span id="newCatColorPill" class="w-5 h-5 rounded-full shadow-sm bg-blue-600"></span>
             <i class="fa-solid fa-chevron-down text-[10px] text-slate-400"></i>
           </button>
 
-          <button type="button" id="newCatIconBtn" onclick="openIconPicker(-1)" title="เลือกไอคอน" class="w-10 h-10 rounded-xl bg-slate-100 dark:bg-slate-700 border border-slate-200 dark:border-slate-600 text-brand-green flex items-center justify-center text-lg hover:bg-slate-200 transition shrink-0">
+          <button type="button" id="newCatIconBtn" onclick="openIconPicker(-1)" title="เลือกไอคอน" class="w-10 h-10 rounded-xl bg-slate-100 dark:bg-slate-700 border border-slate-200 dark:border-slate-600 text-blue-600 flex items-center justify-center text-lg hover:bg-slate-200 transition shrink-0">
             <i id="newCatIconPreview" class="fa-solid fa-folder"></i>
           </button>
 
-          <input type="text" id="newCategoryInput" placeholder="ชื่อหมวดหมู่ใหม่..." class="flex-1 bg-slate-50 dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded-xl px-3 py-2 text-sm focus:ring-2 focus:ring-brand-green">
-          <button onclick="handleAddCategory()" class="px-4 py-2 bg-brand-green text-white rounded-xl text-sm font-semibold hover:bg-brand-greenHover transition flex items-center gap-1 shrink-0">
+          <input type="text" id="newCategoryInput" placeholder="ชื่อหมวดหมู่ใหม่..." class="flex-1 bg-slate-50 dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded-xl px-3 py-2 text-sm focus:ring-2 focus:ring-blue-600">
+          <button onclick="handleAddCategory()" class="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-xl text-sm font-semibold transition flex items-center gap-1 shrink-0">
             <i class="fa-solid fa-plus text-xs"></i>
             <span>เพิ่ม</span>
           </button>
@@ -772,12 +774,12 @@
   </div>
 
   <!-- COLOR BAR PICKER MODAL -->
-  <div id="colorPickerModal" class="hidden fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4">
+  <div id="colorPickerModal" class="hidden fixed inset-0 z-50 bg-slate-950/70 backdrop-blur-sm flex items-center justify-center p-4">
     <div class="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-3xl max-w-md w-full p-5 shadow-2xl relative animate-pop-in space-y-4">
       <div class="flex items-center justify-between pb-2 border-b border-slate-100 dark:border-slate-700">
         <div>
           <h4 class="font-bold text-sm text-slate-800 dark:text-white flex items-center gap-2">
-            <i class="fa-solid fa-palette text-brand-green"></i>
+            <i class="fa-solid fa-palette text-blue-600"></i>
             <span>เลือกแถบสีประจำหมวดหมู่</span>
           </h4>
           <p class="text-xs text-slate-400 mt-0.5">รวมแม่สีหลัก (ขาว ดำ แดง เหลือง เขียว ฟ้า น้ำเงิน ม่วง น้ำตาล)</p>
@@ -792,11 +794,11 @@
   </div>
 
   <!-- Icon Picker Modal -->
-  <div id="iconPickerModal" class="hidden fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4">
+  <div id="iconPickerModal" class="hidden fixed inset-0 z-50 bg-slate-950/70 backdrop-blur-sm flex items-center justify-center p-4">
     <div class="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-3xl max-w-md w-full p-5 shadow-2xl relative animate-pop-in space-y-3">
       <div class="flex items-center justify-between pb-2 border-b border-slate-100 dark:border-slate-700">
         <h4 class="font-bold text-sm text-slate-800 dark:text-white flex items-center gap-2">
-          <i class="fa-solid fa-icons text-brand-green"></i>
+          <i class="fa-solid fa-icons text-blue-600"></i>
           <span>เลือกรูป Icon สำหรับหมวดหมู่</span>
         </h4>
         <button onclick="closeIconPicker()" class="w-7 h-7 rounded-lg text-slate-400 hover:text-slate-700 flex items-center justify-center">
@@ -808,13 +810,13 @@
   </div>
 
   <!-- SETTING MODAL -->
-  <div id="settingModal" class="hidden fixed inset-0 z-50 bg-slate-900/70 backdrop-blur-sm flex items-center justify-center p-4">
+  <div id="settingModal" class="hidden fixed inset-0 z-50 bg-slate-950/70 backdrop-blur-sm flex items-center justify-center p-4">
     <div class="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-3xl max-w-md w-full p-5 sm:p-6 shadow-2xl relative animate-pop-in space-y-5">
       
       <!-- Setting Header -->
       <div class="flex items-center justify-between pb-3 border-b border-slate-100 dark:border-slate-700">
         <div class="flex items-center gap-2.5">
-          <div class="w-9 h-9 rounded-xl bg-emerald-100 dark:bg-emerald-950/70 text-brand-green flex items-center justify-center text-lg shadow-sm">
+          <div class="w-9 h-9 rounded-xl bg-blue-100 dark:bg-blue-950/70 text-blue-600 dark:text-blue-400 flex items-center justify-center text-lg shadow-sm">
             <i class="fa-solid fa-gear"></i>
           </div>
           <div>
@@ -830,7 +832,7 @@
       <!-- Setting Section 1: Theme Toggle (Light / Dark) -->
       <div class="p-3.5 bg-slate-50 dark:bg-slate-900/60 rounded-2xl border border-slate-200 dark:border-slate-700/80 flex items-center justify-between">
         <div class="flex items-center gap-3">
-          <div id="settingThemeIconBox" class="w-9 h-9 rounded-xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 flex items-center justify-center text-base text-amber-500 shadow-sm">
+          <div id="settingThemeIconBox" class="w-9 h-9 rounded-xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 flex items-center justify-center text-base text-blue-500 shadow-sm">
             <i id="settingThemeIcon" class="fa-solid fa-sun"></i>
           </div>
           <div>
@@ -840,30 +842,30 @@
         </div>
 
         <button onclick="toggleTheme()" class="px-3.5 py-1.5 rounded-xl text-xs font-bold transition flex items-center gap-1.5 border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-800 hover:bg-slate-100 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 shadow-sm">
-          <i class="fa-solid fa-circle-half-stroke text-brand-green"></i>
+          <i class="fa-solid fa-circle-half-stroke text-blue-600"></i>
           <span>สลับธีม</span>
         </button>
       </div>
 
-      <!-- Setting Section 2: Font Size Slider (1 - 10, ระดับ 5 = 30px) -->
+      <!-- Setting Section 2: Font Size Slider (ระดับ 5: หัวข้อ 30px / รายละเอียด 22px) -->
       <div class="p-4 bg-slate-50 dark:bg-slate-900/60 rounded-2xl border border-slate-200 dark:border-slate-700/80 space-y-3">
         <div class="flex items-center justify-between">
           <div class="flex items-center gap-2">
-            <i class="fa-solid fa-font text-brand-green text-sm"></i>
+            <i class="fa-solid fa-font text-blue-600 dark:text-blue-400 text-sm"></i>
             <span class="text-sm font-bold text-slate-800 dark:text-white">ขนาดตัวอักษร</span>
           </div>
           <div class="flex items-center gap-1.5">
             <span class="text-xs text-slate-400">ระดับ:</span>
-            <span id="fontSizeLevelBadge" class="font-mono font-bold text-xs text-brand-green px-2 py-0.5 rounded-lg bg-emerald-100 dark:bg-emerald-950/80 border border-emerald-200 dark:border-emerald-800">ระดับ 5</span>
+            <span id="fontSizeLevelBadge" class="font-mono font-bold text-xs text-blue-600 dark:text-blue-400 px-2 py-0.5 rounded-lg bg-blue-100 dark:bg-blue-950/80 border border-blue-200 dark:border-blue-800">ระดับ 5</span>
           </div>
         </div>
 
         <!-- Slider -->
         <div class="space-y-1 pt-1">
-          <input type="range" min="1" max="10" step="1" value="5" id="fontSizeSlider" oninput="handleFontSizeChange(this.value)" class="w-full text-brand-green">
+          <input type="range" min="1" max="10" step="1" value="5" id="fontSizeSlider" oninput="handleFontSizeChange(this.value)" class="w-full text-blue-600">
           <div class="flex justify-between text-[11px] text-slate-400 font-mono px-1">
             <span>ระดับ 1</span>
-            <span class="text-brand-green font-bold">ระดับ 5 (ค่าเริ่มต้น)</span>
+            <span class="text-blue-600 dark:text-blue-400 font-bold">ระดับ 5 (ค่าเริ่มต้น)</span>
             <span>ระดับ 10</span>
           </div>
         </div>
@@ -876,14 +878,14 @@
           </p>
         </div>
 
-        <button onclick="resetFontSizeDefault()" class="text-xs text-brand-green hover:underline flex items-center gap-1 mx-auto pt-1 font-semibold">
+        <button onclick="resetFontSizeDefault()" class="text-xs text-blue-600 dark:text-blue-400 hover:underline flex items-center gap-1 mx-auto pt-1 font-semibold">
           <i class="fa-solid fa-rotate-left text-[10px]"></i> คืนค่าเริ่มต้น (ระดับ 5)
         </button>
       </div>
 
       <!-- Setting Footer -->
       <div class="pt-2 flex justify-end">
-        <button onclick="closeSettingModal()" class="px-5 py-2 rounded-xl bg-brand-green text-white text-xs font-bold hover:bg-brand-greenHover transition shadow">
+        <button onclick="closeSettingModal()" class="px-5 py-2 rounded-xl bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold transition shadow">
           เสร็จสิ้น
         </button>
       </div>
@@ -892,7 +894,7 @@
   </div>
 
   <!-- Confirm Dialog Modal -->
-  <div id="confirmDialogModal" class="hidden fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4">
+  <div id="confirmDialogModal" class="hidden fixed inset-0 z-50 bg-slate-950/70 backdrop-blur-sm flex items-center justify-center p-4">
     <div class="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-2xl max-w-sm w-full p-5 shadow-2xl text-center space-y-3 animate-pop-in">
       <div class="w-12 h-12 rounded-full bg-rose-100 dark:bg-rose-950/80 text-brand-red flex items-center justify-center mx-auto text-xl"><i class="fa-solid fa-triangle-exclamation"></i></div>
       <h4 id="confirmDialogTitle" class="font-bold text-base text-slate-800 dark:text-white">ยืนยันการดำเนินการ</h4>
@@ -906,7 +908,7 @@
 
   <!-- Toast Notification -->
   <div id="toastNotification" class="fixed top-20 right-4 z-50 transform translate-x-full opacity-0 transition-all duration-300 bg-slate-900 dark:bg-white text-white dark:text-slate-900 px-4 py-2.5 rounded-xl shadow-xl flex items-center gap-2 text-xs font-semibold">
-    <i id="toastIcon" class="fa-solid fa-check text-emerald-400"></i>
+    <i id="toastIcon" class="fa-solid fa-check text-blue-500"></i>
     <span id="toastMessage">แจ้งเตือน</span>
   </div>
 
@@ -917,7 +919,7 @@
     // Application States
     let items = [];
     let categories = [
-      { name: "ทั่วไป", icon: "fa-folder", color: "emerald" }
+      { name: "ทั่วไป", icon: "fa-folder", color: "blue" }
     ];
     let selectedCategory = "ALL";
     let historyLog = [];
@@ -926,36 +928,47 @@
     let isDrawing = false;
     let soundEnabled = true;
 
-    // Desktop Scale (ระดับ 5 = 30px)
+    // Desktop Scale (ระดับ 5: หัวข้อ 30px / รายละเอียด 22px)
     const FONT_SCALE_MAP = {
-      1: { title: "22px", desc: "15px" },
-      2: { title: "24px", desc: "15.5px" },
-      3: { title: "26px", desc: "16px" },
-      4: { title: "28px", desc: "17px" },
-      5: { title: "30px", desc: "18px" }, // ค่าเริ่มต้นระดับ 5
-      6: { title: "32px", desc: "19px" },
-      7: { title: "34px", desc: "20px" },
-      8: { title: "36px", desc: "21px" },
-      9: { title: "38px", desc: "22px" },
-      10: { title: "40px", desc: "23px" }
+      1: { title: "22px", desc: "16px" },
+      2: { title: "24px", desc: "17.5px" },
+      3: { title: "26px", desc: "19px" },
+      4: { title: "28px", desc: "20.5px" },
+      5: { title: "30px", desc: "22px" }, // ระดับ 5 (ค่าเริ่มต้น)
+      6: { title: "33px", desc: "23.5px" },
+      7: { title: "36px", desc: "25px" },
+      8: { title: "39px", desc: "26.5px" },
+      9: { title: "42px", desc: "28px" },
+      10: { title: "45px", desc: "30px" }
     };
 
-    // Mobile Responsive Scale ป้องกันข้อความบวมล้นจอแนวตั้ง
+    // Mobile Responsive Scale
     const MOBILE_FONT_SCALE_MAP = {
-      1: { title: "18px", desc: "14px" },
-      2: { title: "20px", desc: "14.5px" },
-      3: { title: "22px", desc: "15px" },
-      4: { title: "23.5px", desc: "15.5px" },
-      5: { title: "25px", desc: "16px" }, // ค่าเริ่มต้นบนมือถือ ชัดเจนกำลังดี
-      6: { title: "27px", desc: "17px" },
-      7: { title: "29px", desc: "18px" },
-      8: { title: "31px", desc: "19px" },
-      9: { title: "33px", desc: "20px" },
-      10: { title: "35px", desc: "21px" }
+      1: { title: "18px", desc: "15px" },
+      2: { title: "20px", desc: "16px" },
+      3: { title: "22px", desc: "17px" },
+      4: { title: "24px", desc: "18px" },
+      5: { title: "26px", desc: "19px" }, // ระดับ 5 บนมือถือ
+      6: { title: "28px", desc: "20.5px" },
+      7: { title: "30px", desc: "22px" },
+      8: { title: "32px", desc: "23.5px" },
+      9: { title: "34px", desc: "25px" },
+      10: { title: "36px", desc: "26.5px" }
     };
 
-    // Palette แถบสี (รวมแม่สีและสีหลัก: ขาว ดำ แดง เหลือง เขียว ฟ้า น้ำเงิน ม่วง น้ำตาล)
+    // Palette แถบสี (เรียงลำดับความสำคัญและเพิ่มโทนหลัก)
     const COLOR_PALETTES = {
+      blue: {
+        id: "blue",
+        name: "สีน้ำเงิน (Royal Blue)",
+        hex: "#1D4ED8",
+        gradient: "linear-gradient(90deg, #60A5FA 0%, #1D4ED8 50%, #1E40AF 100%)",
+        bgLight: "bg-blue-50 dark:bg-blue-950/60",
+        border: "border-blue-200 dark:border-blue-800",
+        text: "text-blue-700 dark:text-blue-300",
+        badge: "bg-blue-100 text-blue-800 border-blue-200 dark:bg-blue-950/80 dark:text-blue-300 dark:border-blue-800",
+        accent: "text-blue-600 dark:text-blue-400"
+      },
       white: {
         id: "white",
         name: "สีขาว (Pure White)",
@@ -977,6 +990,17 @@
         text: "text-slate-900 dark:text-slate-100",
         badge: "bg-slate-900 text-white border-slate-800 dark:bg-black dark:text-white dark:border-slate-700",
         accent: "text-slate-900 dark:text-slate-100"
+      },
+      slate: {
+        id: "slate",
+        name: "สีเทา (Cool Slate)",
+        hex: "#64748B",
+        gradient: "linear-gradient(90deg, #94A3B8 0%, #64748B 50%, #475569 100%)",
+        bgLight: "bg-slate-100 dark:bg-slate-800",
+        border: "border-slate-300 dark:border-slate-700",
+        text: "text-slate-700 dark:text-slate-300",
+        badge: "bg-slate-200 text-slate-800 border-slate-300 dark:bg-slate-800 dark:text-slate-300 dark:border-slate-700",
+        accent: "text-slate-600 dark:text-slate-400"
       },
       red: {
         id: "red",
@@ -1022,17 +1046,6 @@
         badge: "bg-cyan-100 text-cyan-800 border-cyan-200 dark:bg-cyan-950/80 dark:text-cyan-300 dark:border-cyan-800",
         accent: "text-cyan-600 dark:text-cyan-400"
       },
-      blue: {
-        id: "blue",
-        name: "สีน้ำเงิน (Royal Blue)",
-        hex: "#2563EB",
-        gradient: "linear-gradient(90deg, #60A5FA 0%, #2563EB 50%, #1D4ED8 100%)",
-        bgLight: "bg-blue-50 dark:bg-blue-950/60",
-        border: "border-blue-200 dark:border-blue-800",
-        text: "text-blue-700 dark:text-blue-300",
-        badge: "bg-blue-100 text-blue-800 border-blue-200 dark:bg-blue-950/80 dark:text-blue-300 dark:border-blue-800",
-        accent: "text-blue-600 dark:text-blue-400"
-      },
       purple: {
         id: "purple",
         name: "สีม่วง (Vibrant Purple)",
@@ -1054,17 +1067,6 @@
         text: "text-amber-950 dark:text-amber-200",
         badge: "bg-amber-200/80 text-amber-950 border-amber-300 dark:bg-amber-950 dark:text-amber-200 dark:border-amber-900",
         accent: "text-amber-900 dark:text-amber-300"
-      },
-      emerald: {
-        id: "emerald",
-        name: "เขียวมรกต (Emerald Green)",
-        hex: "#059669",
-        gradient: "linear-gradient(90deg, #10B981 0%, #059669 50%, #047857 100%)",
-        bgLight: "bg-emerald-50 dark:bg-emerald-950/60",
-        border: "border-emerald-200 dark:border-emerald-800",
-        text: "text-emerald-700 dark:text-emerald-300",
-        badge: "bg-emerald-100 text-emerald-800 border-emerald-200 dark:bg-emerald-950/80 dark:text-emerald-300 dark:border-emerald-800",
-        accent: "text-emerald-600 dark:text-emerald-400"
       }
     };
 
@@ -1082,7 +1084,7 @@
     let iconPickerTargetIdx = -1;
     let newCategorySelectedIcon = "fa-folder";
     let colorPickerTargetIdx = -1;
-    let newCategorySelectedColor = "emerald";
+    let newCategorySelectedColor = "blue";
 
     // Web Audio Synthesizer
     let audioCtx = null;
@@ -1129,6 +1131,157 @@
       } catch (e) {}
     }
 
+    function openSettingModal() {
+      updateSettingUI();
+      document.getElementById('settingModal').classList.remove('hidden');
+    }
+
+    function closeSettingModal() {
+      document.getElementById('settingModal').classList.add('hidden');
+    }
+
+    function updateSettingUI() {
+      const isDark = document.documentElement.classList.contains('dark');
+      const themeIcon = document.getElementById('settingThemeIcon');
+      const themeStatus = document.getElementById('settingThemeStatusText');
+      const themeBox = document.getElementById('settingThemeIconBox');
+
+      if (isDark) {
+        themeIcon.className = "fa-solid fa-moon text-blue-400";
+        themeStatus.innerText = "Night Mode (โหมดมืด)";
+        themeBox.className = "w-9 h-9 rounded-xl bg-slate-800 border border-slate-700 flex items-center justify-center text-base text-blue-400 shadow-sm";
+      } else {
+        themeIcon.className = "fa-solid fa-sun text-amber-500";
+        themeStatus.innerText = "Light Mode (โหมดสว่าง)";
+        themeBox.className = "w-9 h-9 rounded-xl bg-white border border-slate-200 flex items-center justify-center text-base text-amber-500 shadow-sm";
+      }
+
+      const savedLevel = localStorage.getItem('rnd_font_scale_level') || "5";
+      const slider = document.getElementById('fontSizeSlider');
+      if (slider) slider.value = savedLevel;
+      updateFontSizeBadge(savedLevel);
+    }
+
+    function handleFontSizeChange(level) {
+      const val = parseInt(level, 10);
+      const isMobile = window.innerWidth < 640;
+      const config = isMobile 
+        ? (MOBILE_FONT_SCALE_MAP[val] || MOBILE_FONT_SCALE_MAP[5])
+        : (FONT_SCALE_MAP[val] || FONT_SCALE_MAP[5]);
+
+      document.documentElement.style.setProperty('--app-content-font-size', config.title);
+      document.documentElement.style.setProperty('--app-desc-font-size', config.desc);
+
+      localStorage.setItem('rnd_font_scale_level', val);
+      updateFontSizeBadge(val);
+    }
+
+    function updateFontSizeBadge(level) {
+      const badge = document.getElementById('fontSizeLevelBadge');
+      const preview = document.getElementById('fontSizePreviewText');
+      const val = parseInt(level, 10);
+      const isMobile = window.innerWidth < 640;
+      const config = isMobile 
+        ? (MOBILE_FONT_SCALE_MAP[val] || MOBILE_FONT_SCALE_MAP[5])
+        : (FONT_SCALE_MAP[val] || FONT_SCALE_MAP[5]);
+
+      if (badge) {
+        badge.innerText = val === 5 ? `ระดับ 5 (ค่าเริ่มต้น: ${config.title}/${config.desc})` : `ระดับ ${val} (${config.title}/${config.desc})`;
+      }
+      if (preview) {
+        preview.style.fontSize = config.desc;
+      }
+    }
+
+    function resetFontSizeDefault() {
+      handleFontSizeChange(5);
+      const slider = document.getElementById('fontSizeSlider');
+      if (slider) slider.value = 5;
+      showToast('คืนค่าขนาดตัวอักษรเริ่มต้น (ระดับ 5: 30px/22px) แล้ว', 'info');
+    }
+
+    function initFontSize() {
+      const savedLevel = localStorage.getItem('rnd_font_scale_level') || "5";
+      handleFontSizeChange(savedLevel);
+    }
+
+    function switchTab(tabId) {
+      ['categories', 'draw', 'data', 'history'].forEach(v => {
+        const viewEl = document.getElementById(`view-${v}`);
+        if (viewEl) viewEl.classList.toggle('hidden', v !== tabId);
+
+        const dBtn = document.getElementById(`nav-btn-${v}`);
+        if (dBtn) dBtn.className = v === tabId ? 'px-3.5 py-1.5 rounded-lg text-sm font-semibold transition-all flex items-center space-x-2 bg-white dark:bg-slate-700 text-blue-600 dark:text-blue-400 shadow-sm' : 'px-3.5 py-1.5 rounded-lg text-sm font-semibold transition-all flex items-center space-x-2 text-slate-600 dark:text-slate-300 hover:text-slate-900';
+
+        const mBtn = document.getElementById(`m-nav-${v}`);
+        if (mBtn) mBtn.className = v === tabId ? 'flex flex-col items-center gap-1 text-blue-600 dark:text-blue-400 font-bold' : 'flex flex-col items-center gap-1 text-slate-400 font-medium';
+      });
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function toggleSound() {
+      soundEnabled = !soundEnabled;
+      document.getElementById('soundIcon').className = soundEnabled ? 'fa-solid fa-volume-high text-xs' : 'fa-solid fa-volume-xmark text-xs text-slate-400';
+      showToast(soundEnabled ? 'เปิดเสียงเอฟเฟกต์' : 'ปิดเสียงเอฟเฟกต์', 'info');
+    }
+
+    function toggleTheme() {
+      const isDark = document.documentElement.classList.toggle('dark');
+      localStorage.setItem('rnd_theme_dark', isDark ? 'true' : 'false');
+      updateSettingUI();
+      showToast(isDark ? 'เปลี่ยนเป็น Night Mode' : 'เปลี่ยนเป็น Light Mode', 'info');
+    }
+
+    function initTheme() {
+      const savedTheme = localStorage.getItem('rnd_theme_dark');
+      const isDark = (savedTheme === null || savedTheme === 'true');
+      
+      if (isDark) {
+        document.documentElement.classList.add('dark');
+      } else {
+        document.documentElement.classList.remove('dark');
+      }
+    }
+
+    function launchConfetti() {
+      if (typeof confetti === 'function') {
+        confetti({ particleCount: 50, spread: 60, origin: { y: 0.75 }, colors: ['#1D4ED8', '#2563EB', '#60A5FA', '#FFFFFF', '#94A3B8', '#EF4444'] });
+      }
+    }
+
+    function showToast(msg, type = 'info') {
+      const toast = document.getElementById('toastNotification');
+      const msgEl = document.getElementById('toastMessage');
+      const icon = document.getElementById('toastIcon');
+
+      msgEl.innerText = msg;
+      if (type === 'success') icon.className = 'fa-solid fa-check text-blue-500';
+      else if (type === 'warning') icon.className = 'fa-solid fa-triangle-exclamation text-amber-400';
+      else if (type === 'danger') icon.className = 'fa-solid fa-xmark text-rose-400';
+      else icon.className = 'fa-solid fa-circle-info text-blue-400';
+
+      toast.classList.remove('translate-x-full', 'opacity-0');
+      clearTimeout(window._toastTimeout);
+      window._toastTimeout = setTimeout(() => toast.classList.add('translate-x-full', 'opacity-0'), 2600);
+    }
+
+    function openCustomConfirm(title, message, onConfirm) {
+      const modal = document.getElementById('confirmDialogModal');
+      document.getElementById('confirmDialogTitle').innerText = title;
+      document.getElementById('confirmDialogMessage').innerText = message;
+      const confirmBtn = document.getElementById('confirmActionBtn');
+      const cancelBtn = document.getElementById('confirmCancelBtn');
+      const cleanup = () => { modal.classList.add('hidden'); confirmBtn.onclick = null; };
+      confirmBtn.onclick = () => { cleanup(); if (onConfirm) onConfirm(); };
+      cancelBtn.onclick = cleanup;
+      modal.classList.remove('hidden');
+    }
+
+    function escapeHTML(str) {
+      if (!str) return '';
+      return String(str).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#039;');
+    }
+
     window.addEventListener('DOMContentLoaded', () => {
       initTheme();
       initFontSize();
@@ -1158,15 +1311,15 @@
     });
 
     function normalizeCategories(rawCats) {
-      if (!Array.isArray(rawCats)) return [{ name: "ทั่วไป", icon: "fa-folder", color: "emerald" }];
+      if (!Array.isArray(rawCats)) return [{ name: "ทั่วไป", icon: "fa-folder", color: "blue" }];
       return rawCats.map(c => {
         if (typeof c === 'string') {
-          return { name: c, icon: "fa-folder", color: "emerald" };
+          return { name: c, icon: "fa-folder", color: "blue" };
         }
         return {
           name: c.name || "ทั่วไป",
           icon: c.icon || "fa-folder",
-          color: c.color && COLOR_PALETTES[c.color] ? c.color : "emerald"
+          color: c.color && COLOR_PALETTES[c.color] ? c.color : "blue"
         };
       });
     }
@@ -1180,14 +1333,14 @@
       if (found) {
         return {
           icon: found.icon || "fa-tag",
-          colorId: found.color || "emerald",
-          theme: COLOR_PALETTES[found.color] || COLOR_PALETTES.emerald
+          colorId: found.color || "blue",
+          theme: COLOR_PALETTES[found.color] || COLOR_PALETTES.blue
         };
       }
       return {
         icon: "fa-tag",
-        colorId: "emerald",
-        theme: COLOR_PALETTES.emerald
+        colorId: "blue",
+        theme: COLOR_PALETTES.blue
       };
     }
 
@@ -1243,7 +1396,7 @@
           if (Array.isArray(data.historyLog)) historyLog = data.historyLog;
           
           saveLocalCache();
-          setCloudStatus('ออนไลน์ (เชื่อมต่อชีตแล้ว)', 'text-emerald-500');
+          setCloudStatus('ออนไลน์ (เชื่อมต่อชีตแล้ว)', 'text-blue-500');
           showToast('ซิงก์ข้อมูลล่าสุดจาก Google Sheets สำเร็จ ☁️', 'success');
         }
       } catch (err) {
@@ -1279,7 +1432,7 @@
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(payload)
         });
-        setCloudStatus('บันทึกออนไลน์สำเร็จ', 'text-emerald-500');
+        setCloudStatus('บันทึกออนไลน์สำเร็จ', 'text-blue-500');
         showToast('บันทึกลง Google Sheets สำเร็จเรียบร้อย ☁️', 'success');
       } catch (err) {
         setCloudStatus('บันทึกออนไลน์ล้มเหลว', 'text-rose-500');
@@ -1300,26 +1453,26 @@
       if (!grid) return;
 
       if (!categories || categories.length === 0) {
-        categories = [{ name: "ทั่วไป", icon: "fa-folder", color: "emerald" }];
+        categories = [{ name: "ทั่วไป", icon: "fa-folder", color: "blue" }];
       }
 
       if (emptyState) emptyState.classList.add('hidden');
 
       let html = `
-        <div onclick="selectCategoryAndDraw('ALL')" class="group cursor-pointer bg-white dark:bg-slate-800 rounded-3xl p-5 border-2 border-emerald-500/40 hover:border-brand-green shadow-md hover:shadow-xl hover:-translate-y-1 transition duration-300 flex flex-col justify-between">
+        <div onclick="selectCategoryAndDraw('ALL')" class="group cursor-pointer bg-white dark:bg-slate-800 rounded-3xl p-5 border-2 border-blue-500/40 hover:border-blue-600 shadow-md hover:shadow-xl hover:-translate-y-1 transition duration-300 flex flex-col justify-between">
           <div>
             <div class="flex items-center justify-between mb-3">
-              <div class="w-12 h-12 rounded-2xl bg-brand-green text-white flex items-center justify-center text-xl shadow-md shadow-brand-green/30">
+              <div class="w-12 h-12 rounded-2xl bg-blue-600 text-white flex items-center justify-center text-xl shadow-md shadow-blue-600/30">
                 <i class="fa-solid fa-dice"></i>
               </div>
-              <span class="text-xs font-mono font-bold px-2.5 py-1 rounded-full bg-emerald-100 text-emerald-800 dark:bg-emerald-950 dark:text-emerald-300">
+              <span class="text-xs font-mono font-bold px-2.5 py-1 rounded-full bg-blue-100 text-blue-800 dark:bg-blue-950 dark:text-blue-300">
                 ${items.length} รายการ
               </span>
             </div>
-            <h3 class="font-extrabold text-lg text-slate-800 dark:text-white group-hover:text-brand-green transition">สุ่มจากทุกหมวดหมู่</h3>
+            <h3 class="font-extrabold text-lg text-slate-800 dark:text-white group-hover:text-blue-600 dark:group-hover:text-blue-400 transition">สุ่มจากทุกหมวดหมู่</h3>
             <p class="text-xs text-slate-500 mt-1">สุ่มการ์ดข้อมูลจากคลังทั้งหมดที่มีอยู่ในระบบ</p>
           </div>
-          <div class="mt-4 pt-3 border-t border-slate-100 dark:border-slate-700/60 flex items-center justify-between text-xs font-bold text-brand-green">
+          <div class="mt-4 pt-3 border-t border-slate-100 dark:border-slate-700/60 flex items-center justify-between text-xs font-bold text-blue-600 dark:text-blue-400">
             <span>เข้าสู่หน้าสุ่มทันที</span>
             <i class="fa-solid fa-arrow-right group-hover:translate-x-1 transition"></i>
           </div>
@@ -1371,7 +1524,7 @@
       if (selectedCategory === 'ALL') {
         titleEl.innerText = "🌟 ทุกหมวดหมู่";
         iconEl.className = "fa-solid fa-dice text-white";
-        wrapperEl.className = "inline-flex items-center justify-center p-3.5 rounded-2xl shadow-sm bg-brand-green text-white";
+        wrapperEl.className = "inline-flex items-center justify-center p-3.5 rounded-2xl shadow-sm bg-blue-600 text-white";
       } else {
         const meta = getCategoryMeta(selectedCategory);
         titleEl.innerText = selectedCategory;
@@ -1525,7 +1678,7 @@
       const netGain = (rewardH + rewardT + rewardK) - (costH + costT + costK);
       const netGainEl = document.getElementById('popupNetGainValue');
       netGainEl.innerText = (netGain >= 0 ? `+${netGain}` : `${netGain}`);
-      netGainEl.className = netGain >= 0 ? 'font-mono font-bold text-brand-green' : 'font-mono font-bold text-brand-red';
+      netGainEl.className = netGain >= 0 ? 'font-mono font-bold text-blue-600 dark:text-blue-400' : 'font-mono font-bold text-brand-red';
 
       const imgContainer = document.getElementById('popupImageContainer');
       const imgEl = document.getElementById('popupImage');
@@ -1628,14 +1781,14 @@
               <div class="flex items-center gap-2">
                 <span class="text-xs font-bold text-slate-800 dark:text-white truncate">${escapeHTML(h.title)}</span>
                 <span class="text-[10px] px-2 py-0.5 rounded-full ${meta.theme.badge} font-medium">${escapeHTML(h.category)}</span>
-                <span class="text-[10px] font-mono font-bold text-brand-green">${priceStr}</span>
+                <span class="text-[10px] font-mono font-bold text-blue-600 dark:text-blue-400">${priceStr}</span>
               </div>
               <div class="flex items-center gap-3 text-[11px] text-slate-400">
                 <span><i class="fa-solid fa-clock text-[10px]"></i> ${timeStr}</span>
                 <span class="text-brand-red"><i class="fa-solid fa-heart text-[10px]"></i> ${costH} ➔ +${rewardH}</span>
               </div>
             </div>
-            <button onclick="previewHistoryItem('${h.id}')" class="text-xs font-semibold text-brand-green hover:underline whitespace-nowrap">
+            <button onclick="previewHistoryItem('${h.id}')" class="text-xs font-semibold text-blue-600 dark:text-blue-400 hover:underline whitespace-nowrap">
               เปิดดู
             </button>
           </li>
@@ -1699,26 +1852,26 @@
             <tr class="hover:bg-slate-50 dark:hover:bg-slate-700/40 transition">
               <td class="py-3 px-4 text-center font-mono text-xs text-slate-400">${idx + 1}</td>
               <td class="py-3 px-4 font-bold text-slate-800 dark:text-white">${escapeHTML(item.title)}</td>
-              <td class="py-3 px-4 font-mono font-bold text-xs text-brand-green">${priceFormatted}</td>
+              <td class="py-3 px-4 font-mono font-bold text-xs text-blue-600 dark:text-blue-400">${priceFormatted}</td>
               <td class="py-3 px-4">
                 <span class="text-xs px-2.5 py-1 rounded-full font-semibold border ${meta.theme.badge}">${escapeHTML(item.category)}</span>
               </td>
               <td class="py-3 px-4 text-xs font-mono">
                 <div class="flex items-center gap-2">
                   <span class="text-brand-red"><i class="fa-solid fa-heart"></i> ${costH}</span>
-                  <span class="text-brand-blue"><i class="fa-solid fa-clock"></i> ${costT}</span>
+                  <span class="text-blue-500"><i class="fa-solid fa-clock"></i> ${costT}</span>
                   <span class="text-slate-500 dark:text-slate-400"><i class="fa-solid fa-brain"></i> ${costK}</span>
                 </div>
               </td>
               <td class="py-3 px-4 text-xs font-mono">
                 <div class="flex items-center gap-2">
                   <span class="text-brand-red font-bold"><i class="fa-solid fa-heart"></i> +${rewardH}</span>
-                  <span class="text-brand-blue font-bold"><i class="fa-solid fa-clock"></i> +${rewardT}</span>
-                  <span class="text-brand-green font-bold"><i class="fa-solid fa-brain"></i> +${rewardK}</span>
+                  <span class="text-blue-600 dark:text-blue-400 font-bold"><i class="fa-solid fa-clock"></i> +${rewardT}</span>
+                  <span class="text-slate-700 dark:text-slate-200 font-bold"><i class="fa-solid fa-brain"></i> +${rewardK}</span>
                 </div>
               </td>
               <td class="py-3 px-4 text-right">
-                <button onclick="openAddEditModal('${item.id}')" class="p-1.5 text-slate-400 hover:text-brand-green"><i class="fa-solid fa-pen text-xs"></i></button>
+                <button onclick="openAddEditModal('${item.id}')" class="p-1.5 text-slate-400 hover:text-blue-600"><i class="fa-solid fa-pen text-xs"></i></button>
                 <button onclick="confirmDeleteItem('${item.id}')" class="p-1.5 text-slate-400 hover:text-brand-red"><i class="fa-solid fa-trash-can text-xs"></i></button>
               </td>
             </tr>
@@ -1753,14 +1906,14 @@
                 <div>
                   <span class="text-slate-400 block text-[9px] uppercase font-bold">ใช้:</span>
                   <span class="text-brand-red"><i class="fa-solid fa-heart"></i> ${costH}</span> |
-                  <span class="text-brand-blue"><i class="fa-solid fa-clock"></i> ${costT}</span> |
+                  <span class="text-blue-500"><i class="fa-solid fa-clock"></i> ${costT}</span> |
                   <span><i class="fa-solid fa-brain"></i> ${costK}</span>
                 </div>
                 <div>
                   <span class="text-slate-400 block text-[9px] uppercase font-bold">ได้:</span>
                   <span class="text-brand-red font-bold">+${rewardH}</span> |
-                  <span class="text-brand-blue font-bold">+${rewardT}</span> |
-                  <span class="text-brand-green font-bold">+${rewardK}</span>
+                  <span class="text-blue-600 dark:text-blue-400 font-bold">+${rewardT}</span> |
+                  <span class="text-slate-700 dark:text-slate-200 font-bold">+${rewardK}</span>
                 </div>
               </div>
             </div>
@@ -1883,10 +2036,9 @@
       });
     }
 
-    // Category Management
     function openCategoryModal() {
       newCategorySelectedIcon = "fa-folder";
-      newCategorySelectedColor = "emerald";
+      newCategorySelectedColor = "blue";
       document.getElementById('newCatIconPreview').className = "fa-solid fa-folder";
       updateNewCatColorBtnUI();
       renderCategoryModalList();
@@ -1899,7 +2051,7 @@
 
     function updateNewCatColorBtnUI() {
       const pill = document.getElementById('newCatColorPill');
-      const palette = COLOR_PALETTES[newCategorySelectedColor] || COLOR_PALETTES.emerald;
+      const palette = COLOR_PALETTES[newCategorySelectedColor] || COLOR_PALETTES.blue;
       pill.style.backgroundColor = palette.hex;
     }
 
@@ -1931,15 +2083,15 @@
             </div>
 
             <div class="flex items-center gap-1">
-              <button onclick="moveCategoryOrder(${idx}, -1)" ${isFirst ? 'disabled class="p-1.5 text-slate-300 dark:text-slate-600 cursor-not-allowed"' : 'class="p-1.5 text-slate-400 hover:text-brand-green hover:bg-emerald-50 rounded-lg transition"'} title="เลื่อนขึ้น">
+              <button onclick="moveCategoryOrder(${idx}, -1)" ${isFirst ? 'disabled class="p-1.5 text-slate-300 dark:text-slate-600 cursor-not-allowed"' : 'class="p-1.5 text-slate-400 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition"'} title="เลื่อนขึ้น">
                 <i class="fa-solid fa-arrow-up text-xs"></i>
               </button>
               
-              <button onclick="moveCategoryOrder(${idx}, 1)" ${isLast ? 'disabled class="p-1.5 text-slate-300 dark:text-slate-600 cursor-not-allowed"' : 'class="p-1.5 text-slate-400 hover:text-brand-green hover:bg-emerald-50 rounded-lg transition"'} title="เลื่อนลง">
+              <button onclick="moveCategoryOrder(${idx}, 1)" ${isLast ? 'disabled class="p-1.5 text-slate-300 dark:text-slate-600 cursor-not-allowed"' : 'class="p-1.5 text-slate-400 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition"'} title="เลื่อนลง">
                 <i class="fa-solid fa-arrow-down text-xs"></i>
               </button>
 
-              <button onclick="promptRenameCategory(${idx})" class="p-1.5 text-slate-400 hover:text-brand-blue hover:bg-sky-50 rounded-lg transition" title="แก้ไขชื่อหมวดหมู่">
+              <button onclick="promptRenameCategory(${idx})" class="p-1.5 text-slate-400 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition" title="แก้ไขชื่อหมวดหมู่">
                 <i class="fa-solid fa-pen text-xs"></i>
               </button>
 
@@ -1966,12 +2118,12 @@
       categories.push({
         name: name,
         icon: newCategorySelectedIcon || "fa-folder",
-        color: newCategorySelectedColor || "emerald"
+        color: newCategorySelectedColor || "blue"
       });
 
       input.value = '';
       newCategorySelectedIcon = "fa-folder";
-      newCategorySelectedColor = "emerald";
+      newCategorySelectedColor = "blue";
       document.getElementById('newCatIconPreview').className = "fa-solid fa-folder";
       updateNewCatColorBtnUI();
 
@@ -2033,7 +2185,6 @@
       showToast('จัดเรียงลำดับหมวดหมู่เรียบร้อย', 'info');
     }
 
-    // Color Bar Picker Logic
     function renderColorPickerGrid() {
       const grid = document.getElementById('colorPickerGrid');
       grid.innerHTML = Object.values(COLOR_PALETTES).map(palette => `
@@ -2075,11 +2226,10 @@
       closeColorPicker();
     }
 
-    // Icon Picker Logic
     function renderIconPickerGrid() {
       const grid = document.getElementById('iconPickerGrid');
       grid.innerHTML = ICON_PRESETS.map(icon => `
-        <button type="button" onclick="selectIcon('${icon}')" class="w-10 h-10 rounded-xl bg-slate-50 dark:bg-slate-700 hover:bg-emerald-100 border border-slate-200 dark:border-slate-600 text-slate-700 dark:text-slate-200 hover:text-brand-green flex items-center justify-center text-base transition">
+        <button type="button" onclick="selectIcon('${icon}')" class="w-10 h-10 rounded-xl bg-slate-50 dark:bg-slate-700 hover:bg-blue-100 dark:hover:bg-blue-950/60 border border-slate-200 dark:border-slate-600 text-slate-700 dark:text-slate-200 hover:text-blue-600 flex items-center justify-center text-base transition">
           <i class="fa-solid ${icon}"></i>
         </button>
       `).join('');
@@ -2137,160 +2287,6 @@
         resetPool();
         showToast(`ลบหมวดหมู่ "${catName}" เรียบร้อยแล้ว`, 'info');
       });
-    }
-
-    // ==========================================
-    // SETTING MODAL: THEME & FONT SCALE (1-10)
-    // ==========================================
-    function openSettingModal() {
-      updateSettingUI();
-      document.getElementById('settingModal').classList.remove('hidden');
-    }
-
-    function closeSettingModal() {
-      document.getElementById('settingModal').classList.add('hidden');
-    }
-
-    function updateSettingUI() {
-      const isDark = document.documentElement.classList.contains('dark');
-      const themeIcon = document.getElementById('settingThemeIcon');
-      const themeStatus = document.getElementById('settingThemeStatusText');
-      const themeBox = document.getElementById('settingThemeIconBox');
-
-      if (isDark) {
-        themeIcon.className = "fa-solid fa-moon text-indigo-400";
-        themeStatus.innerText = "Night Mode (โหมดมืด)";
-        themeBox.className = "w-9 h-9 rounded-xl bg-slate-800 border border-slate-700 flex items-center justify-center text-base text-indigo-400 shadow-sm";
-      } else {
-        themeIcon.className = "fa-solid fa-sun text-amber-500";
-        themeStatus.innerText = "Light Mode (โหมดสว่าง)";
-        themeBox.className = "w-9 h-9 rounded-xl bg-white border border-slate-200 flex items-center justify-center text-base text-amber-500 shadow-sm";
-      }
-
-      const savedLevel = localStorage.getItem('rnd_font_scale_level') || "5";
-      const slider = document.getElementById('fontSizeSlider');
-      if (slider) slider.value = savedLevel;
-      updateFontSizeBadge(savedLevel);
-    }
-
-    function handleFontSizeChange(level) {
-      const val = parseInt(level, 10);
-      const isMobile = window.innerWidth < 640;
-      const config = isMobile 
-        ? (MOBILE_FONT_SCALE_MAP[val] || MOBILE_FONT_SCALE_MAP[5])
-        : (FONT_SCALE_MAP[val] || FONT_SCALE_MAP[5]);
-
-      document.documentElement.style.setProperty('--app-content-font-size', config.title);
-      document.documentElement.style.setProperty('--app-desc-font-size', config.desc);
-
-      localStorage.setItem('rnd_font_scale_level', val);
-      updateFontSizeBadge(val);
-    }
-
-    function updateFontSizeBadge(level) {
-      const badge = document.getElementById('fontSizeLevelBadge');
-      const preview = document.getElementById('fontSizePreviewText');
-      const val = parseInt(level, 10);
-      const isMobile = window.innerWidth < 640;
-      const config = isMobile 
-        ? (MOBILE_FONT_SCALE_MAP[val] || MOBILE_FONT_SCALE_MAP[5])
-        : (FONT_SCALE_MAP[val] || FONT_SCALE_MAP[5]);
-
-      if (badge) {
-        badge.innerText = val === 5 ? "ระดับ 5 (ค่าเริ่มต้น)" : `ระดับ ${val}`;
-      }
-      if (preview) {
-        preview.style.fontSize = config.desc;
-      }
-    }
-
-    function resetFontSizeDefault() {
-      handleFontSizeChange(5);
-      const slider = document.getElementById('fontSizeSlider');
-      if (slider) slider.value = 5;
-      showToast('คืนค่าขนาดตัวอักษรเริ่มต้น (ระดับ 5) แล้ว', 'info');
-    }
-
-    function initFontSize() {
-      const savedLevel = localStorage.getItem('rnd_font_scale_level') || "5";
-      handleFontSizeChange(savedLevel);
-    }
-
-    // Tab Navigation
-    function switchTab(tabId) {
-      ['categories', 'draw', 'data', 'history'].forEach(v => {
-        const viewEl = document.getElementById(`view-${v}`);
-        if (viewEl) viewEl.classList.toggle('hidden', v !== tabId);
-
-        const dBtn = document.getElementById(`nav-btn-${v}`);
-        if (dBtn) dBtn.className = v === tabId ? 'px-3.5 py-1.5 rounded-lg text-sm font-semibold transition-all flex items-center space-x-2 bg-white dark:bg-slate-700 text-brand-green shadow-sm' : 'px-3.5 py-1.5 rounded-lg text-sm font-semibold transition-all flex items-center space-x-2 text-slate-600 dark:text-slate-300 hover:text-slate-900';
-
-        const mBtn = document.getElementById(`m-nav-${v}`);
-        if (mBtn) mBtn.className = v === tabId ? 'flex flex-col items-center gap-1 text-brand-green font-bold' : 'flex flex-col items-center gap-1 text-slate-400 font-medium';
-      });
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-    }
-
-    function toggleSound() {
-      soundEnabled = !soundEnabled;
-      document.getElementById('soundIcon').className = soundEnabled ? 'fa-solid fa-volume-high text-xs' : 'fa-solid fa-volume-xmark text-xs text-slate-400';
-    }
-
-    function toggleTheme() {
-      const isDark = document.documentElement.classList.toggle('dark');
-      localStorage.setItem('rnd_theme_dark', isDark ? 'true' : 'false');
-      updateSettingUI();
-      showToast(isDark ? 'เปลี่ยนเป็น Night Mode' : 'เปลี่ยนเป็น Light Mode', 'info');
-    }
-
-    function initTheme() {
-      const savedTheme = localStorage.getItem('rnd_theme_dark');
-      const isDark = (savedTheme === null || savedTheme === 'true');
-      
-      if (isDark) {
-        document.documentElement.classList.add('dark');
-      } else {
-        document.documentElement.classList.remove('dark');
-      }
-    }
-
-    function launchConfetti() {
-      if (typeof confetti === 'function') {
-        confetti({ particleCount: 50, spread: 60, origin: { y: 0.75 }, colors: ['#059669', '#10B981', '#DC2626', '#0284C7', '#FFFFFF', '#EAB308', '#A855F7'] });
-      }
-    }
-
-    function showToast(msg, type = 'info') {
-      const toast = document.getElementById('toastNotification');
-      const msgEl = document.getElementById('toastMessage');
-      const icon = document.getElementById('toastIcon');
-
-      msgEl.innerText = msg;
-      if (type === 'success') icon.className = 'fa-solid fa-check text-emerald-400';
-      else if (type === 'warning') icon.className = 'fa-solid fa-triangle-exclamation text-amber-400';
-      else if (type === 'danger') icon.className = 'fa-solid fa-xmark text-rose-400';
-      else icon.className = 'fa-solid fa-circle-info text-sky-400';
-
-      toast.classList.remove('translate-x-full', 'opacity-0');
-      clearTimeout(window._toastTimeout);
-      window._toastTimeout = setTimeout(() => toast.classList.add('translate-x-full', 'opacity-0'), 2600);
-    }
-
-    function openCustomConfirm(title, message, onConfirm) {
-      const modal = document.getElementById('confirmDialogModal');
-      document.getElementById('confirmDialogTitle').innerText = title;
-      document.getElementById('confirmDialogMessage').innerText = message;
-      const confirmBtn = document.getElementById('confirmActionBtn');
-      const cancelBtn = document.getElementById('confirmCancelBtn');
-      const cleanup = () => { modal.classList.add('hidden'); confirmBtn.onclick = null; };
-      confirmBtn.onclick = () => { cleanup(); if (onConfirm) onConfirm(); };
-      cancelBtn.onclick = cleanup;
-      modal.classList.remove('hidden');
-    }
-
-    function escapeHTML(str) {
-      if (!str) return '';
-      return String(str).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#039;');
     }
   </script>
 </body>
