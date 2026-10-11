@@ -677,9 +677,7 @@
     </div>
   </div>
 
-  <!-- ========================================== -->
-  <!-- COLOR BAR PICKER MODAL (เลือกแบบแถบสี) -->
-  <!-- ========================================== -->
+  <!-- COLOR BAR PICKER MODAL -->
   <div id="colorPickerModal" class="hidden fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4">
     <div class="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-3xl max-w-md w-full p-5 shadow-2xl relative animate-pop-in space-y-4">
       <div class="flex items-center justify-between pb-2 border-b border-slate-100 dark:border-slate-700">
@@ -696,9 +694,7 @@
       </div>
 
       <!-- Color Strips List -->
-      <div class="space-y-2 max-h-80 overflow-y-auto pr-1" id="colorPickerGrid">
-        <!-- Dynamically rendered color bars -->
-      </div>
+      <div class="space-y-2 max-h-80 overflow-y-auto pr-1" id="colorPickerGrid"></div>
     </div>
   </div>
 
@@ -1023,7 +1019,10 @@
       if (syncIcon) syncIcon.classList.add('animate-spin');
 
       try {
-        const response = await fetch(GOOGLE_SHEET_API_URL);
+        const response = await fetch(GOOGLE_SHEET_API_URL, {
+          method: 'GET',
+          headers: { 'Accept': 'application/json' }
+        });
         const data = await response.json();
 
         if (data) {
@@ -1034,18 +1033,17 @@
           if (Array.isArray(data.historyLog)) historyLog = data.historyLog;
           
           saveLocalCache();
-          updateCategoryDropdowns();
-          renderCategoryHomeCards();
-          resetPool();
-          renderDataTable();
-          renderHistoryList();
           setCloudStatus('ออนไลน์ (เชื่อมต่อชีตแล้ว)', 'text-emerald-500');
           showToast('ซิงก์ข้อมูลล่าสุดจาก Google Sheets สำเร็จ ☁️', 'success');
         }
       } catch (err) {
-        setCloudStatus('การเชื่อมต่อขัดข้อง', 'text-rose-500');
-        showToast('ไม่สามารถดึงข้อมูลจากชีตได้ (ใช้ข้อมูลในเครื่อง)', 'warning');
+        setCloudStatus('ใช้ออฟไลน์ / ติดต่อชีตไม่ได้', 'text-amber-500');
       } finally {
+        updateCategoryDropdowns();
+        renderCategoryHomeCards();
+        resetPool();
+        renderDataTable();
+        renderHistoryList();
         if (syncIcon) syncIcon.classList.remove('animate-spin');
       }
     }
@@ -1092,12 +1090,11 @@
       const emptyState = document.getElementById('emptyCategoryState');
       if (!grid) return;
 
-      if (items.length === 0 && categories.length <= 1) {
-        grid.innerHTML = '';
-        emptyState.classList.remove('hidden');
-        return;
+      if (!categories || categories.length === 0) {
+        categories = [{ name: "ทั่วไป", icon: "fa-folder", color: "emerald" }];
       }
-      emptyState.classList.add('hidden');
+
+      if (emptyState) emptyState.classList.add('hidden');
 
       let html = `
         <div onclick="selectCategoryAndDraw('ALL')" class="group cursor-pointer bg-white dark:bg-slate-800 rounded-3xl p-5 border-2 border-emerald-500/40 hover:border-brand-green shadow-md hover:shadow-xl hover:-translate-y-1 transition duration-300 flex flex-col justify-between">
@@ -1368,6 +1365,11 @@
       if (navigator.clipboard) {
         navigator.clipboard.writeText(shareText).then(() => showToast('คัดลอกข้อความแชร์เรียบร้อยแล้ว!', 'success'));
       }
+    }
+
+    function clearCurrentCard() {
+      resetPool();
+      showToast('เติมกองสุ่มเต็ม 100% เรียบร้อยแล้ว', 'info');
     }
 
     function logHistory(item) {
@@ -1767,9 +1769,7 @@
       showToast('จัดเรียงลำดับหมวดหมู่เรียบร้อย', 'info');
     }
 
-    // ==========================================
-    // COLOR BAR PICKER LOGIC (แบบแถบสี)
-    // ==========================================
+    // Color Bar Picker Logic
     function renderColorPickerGrid() {
       const grid = document.getElementById('colorPickerGrid');
       grid.innerHTML = Object.values(COLOR_PALETTES).map(palette => `
@@ -1778,7 +1778,6 @@
             <span class="w-7 h-7 rounded-full shadow-inner shrink-0" style="background-color: ${palette.hex};"></span>
             <div>
               <span class="text-xs font-bold text-slate-800 dark:text-white block">${palette.name}</span>
-              <!-- แถบสีไล่ระดับ Spectrum Stripe -->
               <div class="w-28 sm:w-36 h-2 rounded-full mt-1 opacity-90 group-hover:opacity-100 transition" style="background: ${palette.gradient};"></div>
             </div>
           </div>
