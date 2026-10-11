@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-  <title>Random Data Card Hub (Theme Customizable)</title>
+  <title>Random Data Card Hub (30 Custom Category Colors)</title>
   
   <!-- Google Fonts: Prompt & Inter -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -66,7 +66,7 @@
       --app-content-font-size: 30px;
       --app-desc-font-size: 22px;
       
-      /* Default Theme 3: น้ำเงินเป็นหลัก */
+      /* Theme 3 (Default): น้ำเงินหลัก */
       --theme-primary: #1D4ED8;
       --theme-primary-hover: #1E40AF;
       --theme-secondary: #64748B;
@@ -75,7 +75,6 @@
       --theme-btn-gradient: linear-gradient(135deg, #1D4ED8 0%, #2563EB 50%, #3B82F6 100%);
     }
 
-    /* 1. ขาวหลัก, แดง เทา น้ำเงิน รอง */
     body.theme-white {
       --theme-primary: #FFFFFF;
       --theme-primary-hover: #F1F5F9;
@@ -85,7 +84,6 @@
       --theme-btn-gradient: linear-gradient(135deg, #FFFFFF 0%, #F1F5F9 50%, #CBD5E1 100%);
     }
 
-    /* 2. แดงหลัก, ขาว เทา น้ำเงิน รอง */
     body.theme-red {
       --theme-primary: #DC2626;
       --theme-primary-hover: #B91C1C;
@@ -95,7 +93,6 @@
       --theme-btn-gradient: linear-gradient(135deg, #DC2626 0%, #EF4444 50%, #F87171 100%);
     }
 
-    /* 3. น้ำเงินหลัก, ขาว เทา แดง รอง */
     body.theme-blue {
       --theme-primary: #1D4ED8;
       --theme-primary-hover: #1E40AF;
@@ -105,7 +102,6 @@
       --theme-btn-gradient: linear-gradient(135deg, #1D4ED8 0%, #2563EB 50%, #3B82F6 100%);
     }
 
-    /* 4. เทาหลัก, แดง ขาว น้ำเงิน รอง */
     body.theme-gray {
       --theme-primary: #475569;
       --theme-primary-hover: #334155;
@@ -125,7 +121,6 @@
       touch-action: manipulation;
       -webkit-tap-highlight-color: transparent;
       background-color: #F8FAFC;
-      background-attachment: fixed;
     }
 
     .dark body {
@@ -147,16 +142,6 @@
       line-height: 1.6 !important;
     }
 
-    .bg-grid-pattern {
-      background-size: 36px 36px;
-      background-image: linear-gradient(to right, rgba(203, 213, 225, 0.4) 1px, transparent 1px),
-                        linear-gradient(to bottom, rgba(203, 213, 225, 0.4) 1px, transparent 1px);
-    }
-    .dark .bg-grid-pattern {
-      background-image: linear-gradient(to right, rgba(51, 65, 85, 0.25) 1px, transparent 1px),
-                        linear-gradient(to bottom, rgba(51, 65, 85, 0.25) 1px, transparent 1px);
-    }
-
     .card-vibrant-glow {
       box-shadow: 0 0 0 1px rgba(226, 232, 240, 0.8),
                   0 20px 45px -10px rgba(0, 0, 0, 0.08);
@@ -168,6 +153,10 @@
 
     .btn-theme-action {
       background: var(--theme-btn-gradient);
+    }
+
+    body.theme-white .btn-theme-action {
+      color: #0F172A !important;
     }
 
     input[type=range] {
@@ -204,10 +193,10 @@
     }
   </style>
 </head>
-<body class="text-slate-800 dark:text-slate-100 min-h-screen flex flex-col font-sans transition-colors duration-200 bg-grid-pattern pb-20 md:pb-6 theme-blue">
+<body class="text-slate-800 dark:text-slate-100 min-h-screen flex flex-col font-sans transition-colors duration-200 pb-20 md:pb-6 theme-blue">
 
   <!-- Top Navigation Header -->
-  <header class="sticky top-0 z-40 bg-white/90 dark:bg-slate-900/90 backdrop-blur-md border-b border-slate-200 dark:border-slate-800 shadow-sm transition-colors">
+  <header class="sticky top-0 z-40 bg-white/95 dark:bg-slate-900/95 backdrop-blur-md border-b border-slate-200 dark:border-slate-800 shadow-sm transition-colors">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
       
       <!-- Brand Logo -->
@@ -294,7 +283,7 @@
             <span>หมวดหมู่ทั้งหมดในระบบ</span>
           </h2>
           <button onclick="openCategoryModal()" class="text-xs font-semibold hover:underline flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-slate-100 dark:bg-slate-800 border border-slate-300 dark:border-slate-700">
-            <i class="fa-solid fa-gear"></i> จัดการหมวดหมู่ (แถบสี & ไอคอน)
+            <i class="fa-solid fa-gear"></i> จัดการหมวดหมู่ (แถบสี 30 สี & ไอคอน)
           </button>
         </div>
         <div id="categoryCardsGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3.5 sm:gap-4"></div>
@@ -562,7 +551,7 @@
                 </span>
                 <div class="flex items-center gap-2">
                   <div class="w-16 sm:w-24 bg-slate-200 dark:bg-slate-700 h-2.5 rounded-full overflow-hidden">
-                    <div id="popup-reward-heart-bar" class="bg-brand-red h-full rounded-full transition-all duration-300" style="width: 0%;"></div>
+                    <div id="popup-reward-heart-bar" class="bg-brand-red h-full rounded-full transition-all duration-300"></div>
                   </div>
                   <span id="popup-reward-heart-val" class="font-mono font-extrabold text-base text-brand-red w-7 text-right">+0</span>
                   <span class="text-xs text-slate-400 font-mono">/10</span>
@@ -575,7 +564,7 @@
                 </span>
                 <div class="flex items-center gap-2">
                   <div class="w-16 sm:w-24 bg-slate-200 dark:bg-slate-700 h-2.5 rounded-full overflow-hidden">
-                    <div id="popup-reward-time-bar" class="bg-blue-600 dark:bg-blue-400 h-full rounded-full transition-all duration-300" style="width: 0%;"></div>
+                    <div id="popup-reward-time-bar" class="bg-blue-600 dark:bg-blue-400 h-full rounded-full transition-all duration-300"></div>
                   </div>
                   <span id="popup-reward-time-val" class="font-mono font-extrabold text-base text-blue-600 dark:text-blue-400 w-7 text-right">+0</span>
                   <span class="text-xs text-slate-400 font-mono">/10</span>
@@ -588,7 +577,7 @@
                 </span>
                 <div class="flex items-center gap-2">
                   <div class="w-16 sm:w-24 bg-slate-200 dark:bg-slate-700 h-2.5 rounded-full overflow-hidden">
-                    <div id="popup-reward-knowledge-bar" class="bg-slate-600 dark:bg-slate-400 h-full rounded-full transition-all duration-300" style="width: 0%;"></div>
+                    <div id="popup-reward-knowledge-bar" class="bg-slate-600 dark:bg-slate-400 h-full rounded-full transition-all duration-300"></div>
                   </div>
                   <span id="popup-reward-knowledge-val" class="font-mono font-extrabold text-base text-slate-700 dark:text-slate-200 w-7 text-right">+0</span>
                   <span class="text-xs text-slate-400 font-mono">/10</span>
@@ -614,14 +603,13 @@
 
       </div>
 
-      <!-- Pop-up Footer: ราคาอยู่ด้านซ้ายของปุ่ม "สุ่มใหม่อีกครั้ง" -->
+      <!-- Pop-up Footer -->
       <div class="pt-3 border-t border-slate-100 dark:border-slate-700 flex flex-wrap items-center justify-between gap-3">
         <button onclick="closeResultModal()" class="px-4 py-2.5 rounded-xl text-slate-600 dark:text-slate-300 bg-slate-100 dark:bg-slate-700 hover:bg-slate-200 text-sm font-semibold transition">
           ปิด
         </button>
 
         <div class="flex items-center gap-3 ml-auto">
-          <!-- Price Badge -->
           <div id="popupPriceBadge" class="px-3.5 py-2 rounded-xl bg-slate-100 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 text-slate-800 dark:text-slate-200 text-sm font-bold font-mono flex items-center gap-1.5 shadow-sm">
             <span class="text-xs text-slate-400 font-sans font-medium">ราคา:</span>
             <i class="fa-solid fa-baht-sign text-xs"></i>
@@ -749,7 +737,7 @@
         <div>
           <h3 class="text-base font-bold text-slate-900 dark:text-white flex items-center gap-2">
             <i class="fa-solid fa-folder-tree text-blue-600"></i>
-            <span>จัดการหมวดหมู่ (แถบสี & ไอคอน)</span>
+            <span>จัดการหมวดหมู่ (แถบสี 30 สี & ไอคอน)</span>
           </h3>
           <p class="text-xs text-slate-500 mt-0.5">กดแถบสีเพื่อเปลี่ยนสี, กดไอคอนเพื่อเปลี่ยนรูป, หรือกดลูกศรจัดลำดับ</p>
         </div>
@@ -779,16 +767,16 @@
     </div>
   </div>
 
-  <!-- COLOR BAR PICKER MODAL -->
+  <!-- COLOR BAR PICKER MODAL (30 เฉดสี) -->
   <div id="colorPickerModal" class="hidden fixed inset-0 z-50 bg-slate-950/70 backdrop-blur-sm flex items-center justify-center p-4">
-    <div class="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-3xl max-w-md w-full p-5 shadow-2xl relative animate-pop-in space-y-4">
+    <div class="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-3xl max-w-lg w-full p-5 shadow-2xl relative animate-pop-in space-y-4">
       <div class="flex items-center justify-between pb-2 border-b border-slate-100 dark:border-slate-700">
         <div>
           <h4 class="font-bold text-sm text-slate-800 dark:text-white flex items-center gap-2">
             <i class="fa-solid fa-palette text-blue-600"></i>
-            <span>เลือกแถบสีประจำหมวดหมู่</span>
+            <span>เลือกแถบสีประจำหมวดหมู่ (30 เฉดสี)</span>
           </h4>
-          <p class="text-xs text-slate-400 mt-0.5">รวมแม่สีหลัก (ขาว ดำ แดง เหลือง เขียว ฟ้า น้ำเงิน ม่วง น้ำตาล)</p>
+          <p class="text-xs text-slate-400 mt-0.5">คลิกเลือกสีที่ต้องการเพื่อใช้แยกหมวดหมู่อย่างอิสระ</p>
         </div>
         <button onclick="closeColorPicker()" class="w-7 h-7 rounded-lg text-slate-400 hover:text-slate-700 flex items-center justify-center">
           <i class="fa-solid fa-xmark"></i>
@@ -815,9 +803,7 @@
     </div>
   </div>
 
-  <!-- ========================================== -->
-  <!-- SETTING MODAL (เพิ่มระบบเปลี่ยนธีม 4 สี) -->
-  <!-- ========================================== -->
+  <!-- SETTING MODAL -->
   <div id="settingModal" class="hidden fixed inset-0 z-50 bg-slate-950/70 backdrop-blur-sm flex items-center justify-center p-4">
     <div class="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-3xl max-w-md w-full p-5 sm:p-6 shadow-2xl relative animate-pop-in space-y-5">
       
@@ -837,65 +823,27 @@
         </button>
       </div>
 
-      <!-- Setting Section 1: Color Schemes (4 ธีมหลัก) -->
+      <!-- Setting Section 1: Dropdown List เลือกธีมสี -->
       <div class="space-y-2">
-        <label class="text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 flex items-center gap-1.5">
+        <label for="themeDropdownSelect" class="text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 flex items-center gap-1.5">
           <i class="fa-solid fa-palette text-blue-500"></i>
-          <span>เลือกธีมสีเว็บไซต์ (4 รูปแบบ)</span>
+          <span>เลือกธีมสีเว็บไซต์ (Theme Palette)</span>
         </label>
         
-        <div class="grid grid-cols-1 gap-2">
-          <!-- ธีม 1: ขาวหลัก -->
-          <button type="button" onclick="setAppTheme('theme-white')" id="theme-btn-white" class="w-full p-2.5 rounded-xl border border-slate-200 dark:border-slate-700 hover:border-slate-400 flex items-center justify-between text-left transition">
-            <div class="flex items-center gap-2.5">
-              <span class="w-5 h-5 rounded-full border border-slate-300 bg-white shadow-sm shrink-0"></span>
-              <div>
-                <span class="text-xs font-bold text-slate-800 dark:text-white block">1. สีขาวเป็นสีหลัก</span>
-                <span class="text-[10px] text-slate-400">แดง, เทา, น้ำเงิน เป็นสีรอง</span>
-              </div>
-            </div>
-            <i class="fa-solid fa-check text-blue-500 text-xs hidden theme-check-icon"></i>
-          </button>
-
-          <!-- ธีม 2: แดงหลัก -->
-          <button type="button" onclick="setAppTheme('theme-red')" id="theme-btn-red" class="w-full p-2.5 rounded-xl border border-slate-200 dark:border-slate-700 hover:border-slate-400 flex items-center justify-between text-left transition">
-            <div class="flex items-center gap-2.5">
-              <span class="w-5 h-5 rounded-full bg-red-600 shadow-sm shrink-0"></span>
-              <div>
-                <span class="text-xs font-bold text-slate-800 dark:text-white block">2. สีแดงเป็นสีหลัก</span>
-                <span class="text-[10px] text-slate-400">ขาว, เทา, น้ำเงิน เป็นสีรอง</span>
-              </div>
-            </div>
-            <i class="fa-solid fa-check text-blue-500 text-xs hidden theme-check-icon"></i>
-          </button>
-
-          <!-- ธีม 3: น้ำเงินหลัก -->
-          <button type="button" onclick="setAppTheme('theme-blue')" id="theme-btn-blue" class="w-full p-2.5 rounded-xl border border-slate-200 dark:border-slate-700 hover:border-slate-400 flex items-center justify-between text-left transition">
-            <div class="flex items-center gap-2.5">
-              <span class="w-5 h-5 rounded-full bg-blue-600 shadow-sm shrink-0"></span>
-              <div>
-                <span class="text-xs font-bold text-slate-800 dark:text-white block">3. สีน้ำเงินเป็นสีหลัก</span>
-                <span class="text-[10px] text-slate-400">ขาว, เทา, แดง เป็นสีรอง</span>
-              </div>
-            </div>
-            <i class="fa-solid fa-check text-blue-500 text-xs hidden theme-check-icon"></i>
-          </button>
-
-          <!-- ธีม 4: เทาหลัก -->
-          <button type="button" onclick="setAppTheme('theme-gray')" id="theme-btn-gray" class="w-full p-2.5 rounded-xl border border-slate-200 dark:border-slate-700 hover:border-slate-400 flex items-center justify-between text-left transition">
-            <div class="flex items-center gap-2.5">
-              <span class="w-5 h-5 rounded-full bg-slate-600 shadow-sm shrink-0"></span>
-              <div>
-                <span class="text-xs font-bold text-slate-800 dark:text-white block">4. สีเทาเป็นสีหลัก</span>
-                <span class="text-[10px] text-slate-400">แดง, ขาว, น้ำเงิน เป็นสีรอง</span>
-              </div>
-            </div>
-            <i class="fa-solid fa-check text-blue-500 text-xs hidden theme-check-icon"></i>
-          </button>
+        <div class="relative">
+          <select id="themeDropdownSelect" onchange="setAppTheme(this.value)" class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded-xl px-3.5 py-2.5 pr-10 text-sm font-semibold text-slate-800 dark:text-white focus:ring-2 focus:ring-blue-600 appearance-none cursor-pointer">
+            <option value="theme-white">1. สีขาวเป็นสีหลัก (แดง, เทา, น้ำเงิน เป็นสีรอง)</option>
+            <option value="theme-red">2. สีแดงเป็นสีหลัก (ขาว, เทา, น้ำเงิน เป็นสีรอง)</option>
+            <option value="theme-blue">3. สีน้ำเงินเป็นสีหลัก (ขาว, เทา, แดง เป็นสีรอง)</option>
+            <option value="theme-gray">4. สีเทาเป็นสีหลัก (แดง, ขาว, น้ำเงิน เป็นสีรอง)</option>
+          </select>
+          <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-3 text-slate-400">
+            <i class="fa-solid fa-chevron-down text-xs"></i>
+          </div>
         </div>
       </div>
 
-      <!-- Setting Section 2: Theme Toggle (Light / Dark) -->
+      <!-- Setting Section 2: Mode Toggle -->
       <div class="p-3 bg-slate-50 dark:bg-slate-900/60 rounded-2xl border border-slate-200 dark:border-slate-700/80 flex items-center justify-between">
         <div class="flex items-center gap-3">
           <div id="settingThemeIconBox" class="w-8 h-8 rounded-xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 flex items-center justify-center text-sm shadow-sm">
@@ -939,7 +887,7 @@
         </div>
 
         <button onclick="resetFontSizeDefault()" class="text-[11px] text-slate-500 hover:underline flex items-center gap-1 mx-auto font-semibold">
-          <i class="fa-solid fa-rotate-left text-[10px]"></i> คืนค่าเริ่มต้น (ระดับ 5)
+          <i class="fa-solid fa-rotate-left text-[10px]"></i> คืนค่าเริ่มต้น (ระดับ 5: 30px/22px)
         </button>
       </div>
 
@@ -987,7 +935,7 @@
     let isDrawing = false;
     let soundEnabled = true;
 
-    // Scale Mapping
+    // Desktop Scale (ระดับ 5: 30px / 22px)
     const FONT_SCALE_MAP = {
       1: { title: "22px", desc: "16px" },
       2: { title: "24px", desc: "17.5px" },
@@ -1001,6 +949,7 @@
       10: { title: "45px", desc: "30px" }
     };
 
+    // Mobile Responsive Scale
     const MOBILE_FONT_SCALE_MAP = {
       1: { title: "18px", desc: "15px" },
       2: { title: "20px", desc: "16px" },
@@ -1014,17 +963,49 @@
       10: { title: "36px", desc: "26.5px" }
     };
 
+    // Palette แถบสี 30 เฉดสี สำหรับหมวดหมู่
     const COLOR_PALETTES = {
-      blue: { id: "blue", name: "สีน้ำเงิน", hex: "#1D4ED8", gradient: "linear-gradient(90deg, #60A5FA 0%, #1D4ED8 50%, #1E40AF 100%)", badge: "bg-blue-100 text-blue-800 border-blue-200 dark:bg-blue-950/80 dark:text-blue-300 dark:border-blue-800" },
-      white: { id: "white", name: "สีขาว", hex: "#F8FAFC", gradient: "linear-gradient(90deg, #FFFFFF 0%, #F1F5F9 50%, #E2E8F0 100%)", badge: "bg-white text-slate-800 border-slate-300 dark:bg-slate-700 dark:text-white dark:border-slate-600" },
-      black: { id: "black", name: "สีดำ", hex: "#0F172A", gradient: "linear-gradient(90deg, #334155 0%, #1E293B 50%, #0F172A 100%)", badge: "bg-slate-900 text-white border-slate-800 dark:bg-black dark:text-white dark:border-slate-700" },
-      slate: { id: "slate", name: "สีเทา", hex: "#64748B", gradient: "linear-gradient(90deg, #94A3B8 0%, #64748B 50%, #475569 100%)", badge: "bg-slate-200 text-slate-800 border-slate-300 dark:bg-slate-800 dark:text-slate-300 dark:border-slate-700" },
-      red: { id: "red", name: "สีแดง", hex: "#EF4444", gradient: "linear-gradient(90deg, #F87171 0%, #EF4444 50%, #B91C1C 100%)", badge: "bg-red-100 text-red-800 border-red-200 dark:bg-red-950/80 dark:text-red-300 dark:border-red-800" },
-      yellow: { id: "yellow", name: "สีเหลือง", hex: "#EAB308", gradient: "linear-gradient(90deg, #FDE047 0%, #EAB308 50%, #CA8A04 100%)", badge: "bg-amber-100 text-amber-900 border-amber-300 dark:bg-amber-950/80 dark:text-amber-300 dark:border-amber-800" },
-      green: { id: "green", name: "สีเขียว", hex: "#22C55E", gradient: "linear-gradient(90deg, #4ADE80 0%, #22C55E 50%, #15803D 100%)", badge: "bg-green-100 text-green-800 border-green-200 dark:bg-green-950/80 dark:text-green-300 dark:border-green-800" },
-      cyan: { id: "cyan", name: "สีฟ้า", hex: "#06B6D4", gradient: "linear-gradient(90deg, #67E8F9 0%, #06B6D4 50%, #0E7490 100%)", badge: "bg-cyan-100 text-cyan-800 border-cyan-200 dark:bg-cyan-950/80 dark:text-cyan-300 dark:border-cyan-800" },
-      purple: { id: "purple", name: "สีม่วง", hex: "#A855F7", gradient: "linear-gradient(90deg, #C084FC 0%, #A855F7 50%, #7E22CE 100%)", badge: "bg-purple-100 text-purple-800 border-purple-200 dark:bg-purple-950/80 dark:text-purple-300 dark:border-purple-800" },
-      brown: { id: "brown", name: "สีน้ำตาล", hex: "#78350F", gradient: "linear-gradient(90deg, #A16207 0%, #78350F 50%, #451A03 100%)", badge: "bg-amber-200/80 text-amber-950 border-amber-300 dark:bg-amber-950 dark:text-amber-200 dark:border-amber-900" }
+      // 1-5: โทนน้ำเงิน & ฟ้า
+      blue: { id: "blue", name: "1. น้ำเงินรอยัล", hex: "#1D4ED8", gradient: "linear-gradient(90deg, #60A5FA 0%, #1D4ED8 50%, #1E40AF 100%)", badge: "bg-blue-100 text-blue-800 border-blue-200 dark:bg-blue-950/80 dark:text-blue-300 dark:border-blue-800" },
+      sky: { id: "sky", name: "2. ฟ้าท้องฟ้า", hex: "#0284C7", gradient: "linear-gradient(90deg, #38BDF8 0%, #0284C7 50%, #0369A1 100%)", badge: "bg-sky-100 text-sky-800 border-sky-200 dark:bg-sky-950/80 dark:text-sky-300 dark:border-sky-800" },
+      cyan: { id: "cyan", name: "3. ฟ้าไซแอน", hex: "#06B6D4", gradient: "linear-gradient(90deg, #67E8F9 0%, #06B6D4 50%, #0E7490 100%)", badge: "bg-cyan-100 text-cyan-800 border-cyan-200 dark:bg-cyan-950/80 dark:text-cyan-300 dark:border-cyan-800" },
+      navy: { id: "navy", name: "4. น้ำเงินเข้มเนวี", hex: "#1E3A8A", gradient: "linear-gradient(90deg, #3B82F6 0%, #1E3A8A 50%, #172554 100%)", badge: "bg-indigo-100 text-indigo-900 border-indigo-200 dark:bg-indigo-950/80 dark:text-indigo-300 dark:border-indigo-800" },
+      indigo: { id: "indigo", name: "5. น้ำเงินคราม", hex: "#4338CA", gradient: "linear-gradient(90deg, #818CF8 0%, #4338CA 50%, #312E81 100%)", badge: "bg-indigo-100 text-indigo-800 border-indigo-200 dark:bg-indigo-950/80 dark:text-indigo-300 dark:border-indigo-800" },
+
+      // 6-10: โทนแดง ส้ม ชมพู
+      red: { id: "red", name: "6. แดงทับทิม", hex: "#EF4444", gradient: "linear-gradient(90deg, #F87171 0%, #EF4444 50%, #B91C1C 100%)", badge: "bg-red-100 text-red-800 border-red-200 dark:bg-red-950/80 dark:text-red-300 dark:border-red-800" },
+      crimson: { id: "crimson", name: "7. แดงเข้มคริมสัน", hex: "#BE123C", gradient: "linear-gradient(90deg, #FB7185 0%, #BE123C 50%, #881337 100%)", badge: "bg-rose-100 text-rose-900 border-rose-200 dark:bg-rose-950/80 dark:text-rose-300 dark:border-rose-800" },
+      rose: { id: "rose", name: "8. ชมพูกุหลาบ", hex: "#E11D48", gradient: "linear-gradient(90deg, #FDA4AF 0%, #E11D48 50%, #9F1239 100%)", badge: "bg-rose-100 text-rose-800 border-rose-200 dark:bg-rose-950/80 dark:text-rose-300 dark:border-rose-800" },
+      pink: { id: "pink", name: "9. ชมพูสดใส", hex: "#EC4899", gradient: "linear-gradient(90deg, #F472B6 0%, #EC4899 50%, #BE185D 100%)", badge: "bg-pink-100 text-pink-800 border-pink-200 dark:bg-pink-950/80 dark:text-pink-300 dark:border-pink-800" },
+      fuchsia: { id: "fuchsia", name: "10. ชมพูฟูเชีย", hex: "#D946EF", gradient: "linear-gradient(90deg, #E879F9 0%, #D946EF 50%, #A21CAF 100%)", badge: "bg-fuchsia-100 text-fuchsia-800 border-fuchsia-200 dark:bg-fuchsia-950/80 dark:text-fuchsia-300 dark:border-fuchsia-800" },
+
+      // 11-15: โทนม่วง
+      purple: { id: "purple", name: "11. ม่วงไวโอเล็ต", hex: "#A855F7", gradient: "linear-gradient(90deg, #C084FC 0%, #A855F7 50%, #7E22CE 100%)", badge: "bg-purple-100 text-purple-800 border-purple-200 dark:bg-purple-950/80 dark:text-purple-300 dark:border-purple-800" },
+      violet: { id: "violet", name: "12. ม่วงเข้ม", hex: "#7C3AED", gradient: "linear-gradient(90deg, #A78BFA 0%, #7C3AED 50%, #5B21B6 100%)", badge: "bg-violet-100 text-violet-800 border-violet-200 dark:bg-violet-950/80 dark:text-violet-300 dark:border-violet-800" },
+      lavender: { id: "lavender", name: "13. ม่วงลาเวนเดอร์", hex: "#8B5CF6", gradient: "linear-gradient(90deg, #DDD6FE 0%, #8B5CF6 50%, #6D28D9 100%)", badge: "bg-purple-100 text-purple-900 border-purple-200 dark:bg-purple-950/80 dark:text-purple-300 dark:border-purple-800" },
+      plum: { id: "plum", name: "14. ม่วงลูกพลัม", hex: "#581C87", gradient: "linear-gradient(90deg, #9333EA 0%, #581C87 50%, #3B0764 100%)", badge: "bg-purple-100 text-purple-950 border-purple-300 dark:bg-purple-950/80 dark:text-purple-200 dark:border-purple-800" },
+      magenta: { id: "magenta", name: "15. ม่วงมาเจนต้า", hex: "#C026D3", gradient: "linear-gradient(90deg, #F0ABFC 0%, #C026D3 50%, #86198F 100%)", badge: "bg-fuchsia-100 text-fuchsia-900 border-fuchsia-200 dark:bg-fuchsia-950/80 dark:text-fuchsia-300 dark:border-fuchsia-800" },
+
+      // 16-20: โทนเขียว
+      green: { id: "green", name: "16. เขียวใบไม้", hex: "#22C55E", gradient: "linear-gradient(90deg, #4ADE80 0%, #22C55E 50%, #15803D 100%)", badge: "bg-green-100 text-green-800 border-green-200 dark:bg-green-950/80 dark:text-green-300 dark:border-green-800" },
+      emerald: { id: "emerald", name: "17. เขียวมรกต", hex: "#10B981", gradient: "linear-gradient(90deg, #34D399 0%, #10B981 50%, #047857 100%)", badge: "bg-emerald-100 text-emerald-800 border-emerald-200 dark:bg-emerald-950/80 dark:text-emerald-300 dark:border-emerald-800" },
+      teal: { id: "teal", name: "18. เขียวอมฟ้าทีล", hex: "#0D9488", gradient: "linear-gradient(90deg, #2DD4BF 0%, #0D9488 50%, #115E59 100%)", badge: "bg-teal-100 text-teal-800 border-teal-200 dark:bg-teal-950/80 dark:text-teal-300 dark:border-teal-800" },
+      lime: { id: "lime", name: "19. เขียวมะนาว", hex: "#84CC16", gradient: "linear-gradient(90deg, #A3E635 0%, #84CC16 50%, #4D7C0F 100%)", badge: "bg-lime-100 text-lime-800 border-lime-200 dark:bg-lime-950/80 dark:text-lime-300 dark:border-lime-800" },
+      mint: { id: "mint", name: "20. เขียวมิ้นต์", hex: "#059669", gradient: "linear-gradient(90deg, #6EE7B7 0%, #059669 50%, #064E3B 100%)", badge: "bg-emerald-100 text-emerald-900 border-emerald-200 dark:bg-emerald-950/80 dark:text-emerald-300 dark:border-emerald-800" },
+
+      // 21-25: โทนเหลือง ส้ม น้ำตาล
+      yellow: { id: "yellow", name: "21. เหลืองสดใส", hex: "#EAB308", gradient: "linear-gradient(90deg, #FDE047 0%, #EAB308 50%, #CA8A04 100%)", badge: "bg-amber-100 text-amber-900 border-amber-300 dark:bg-amber-950/80 dark:text-amber-300 dark:border-amber-800" },
+      amber: { id: "amber", name: "22. ส้มอำพัน", hex: "#D97706", gradient: "linear-gradient(90deg, #FBBF24 0%, #D97706 50%, #92400E 100%)", badge: "bg-amber-100 text-amber-800 border-amber-200 dark:bg-amber-950/80 dark:text-amber-300 dark:border-amber-800" },
+      orange: { id: "orange", name: "23. ส้มสด", hex: "#EA580C", gradient: "linear-gradient(90deg, #FB923C 0%, #EA580C 50%, #9A3412 100%)", badge: "bg-orange-100 text-orange-800 border-orange-200 dark:bg-orange-950/80 dark:text-orange-300 dark:border-orange-800" },
+      coral: { id: "coral", name: "24. ส้มคอรัล", hex: "#F97316", gradient: "linear-gradient(90deg, #FDBA74 0%, #F97316 50%, #C2410C 100%)", badge: "bg-orange-100 text-orange-900 border-orange-200 dark:bg-orange-950/80 dark:text-orange-300 dark:border-orange-800" },
+      brown: { id: "brown", name: "25. น้ำตาลเอิร์ธโทน", hex: "#78350F", gradient: "linear-gradient(90deg, #B45309 0%, #78350F 50%, #451A03 100%)", badge: "bg-amber-200/80 text-amber-950 border-amber-300 dark:bg-amber-950 dark:text-amber-200 dark:border-amber-900" },
+
+      // 26-30: โทนทอง เมทัลลิก เทา ขาว ดำ
+      gold: { id: "gold", name: "26. ทองประกาย", hex: "#B45309", gradient: "linear-gradient(90deg, #FDE68A 0%, #D97706 50%, #78350F 100%)", badge: "bg-yellow-100 text-yellow-900 border-yellow-300 dark:bg-yellow-950/80 dark:text-yellow-200 dark:border-yellow-800" },
+      slate: { id: "slate", name: "27. เทาสเลท", hex: "#64748B", gradient: "linear-gradient(90deg, #94A3B8 0%, #64748B 50%, #475569 100%)", badge: "bg-slate-200 text-slate-800 border-slate-300 dark:bg-slate-800 dark:text-slate-300 dark:border-slate-700" },
+      zinc: { id: "zinc", name: "28. เทาซิงก์เข้ม", hex: "#52525B", gradient: "linear-gradient(90deg, #A1A1AA 0%, #52525B 50%, #27272A 100%)", badge: "bg-zinc-200 text-zinc-800 border-zinc-300 dark:bg-zinc-800 dark:text-zinc-300 dark:border-zinc-700" },
+      white: { id: "white", name: "29. ขาวบริสุทธิ์", hex: "#F8FAFC", gradient: "linear-gradient(90deg, #FFFFFF 0%, #F1F5F9 50%, #CBD5E1 100%)", badge: "bg-white text-slate-800 border-slate-300 dark:bg-slate-700 dark:text-white dark:border-slate-600 shadow-sm" },
+      black: { id: "black", name: "30. ดำสนิท", hex: "#0F172A", gradient: "linear-gradient(90deg, #334155 0%, #1E293B 50%, #0F172A 100%)", badge: "bg-slate-900 text-white border-slate-800 dark:bg-black dark:text-white dark:border-slate-700" }
     };
 
     const ICON_PRESETS = [
@@ -1087,7 +1068,6 @@
       } catch (e) {}
     }
 
-    // Initialize App & Setup Data
     window.addEventListener('DOMContentLoaded', () => {
       initTheme();
       initAppColorTheme();
@@ -1112,37 +1092,22 @@
       });
     });
 
-    // Theme Switcher Functions
     function setAppTheme(themeClass) {
       document.body.classList.remove('theme-white', 'theme-red', 'theme-blue', 'theme-gray');
       document.body.classList.add(themeClass);
       localStorage.setItem('rnd_app_color_theme', themeClass);
-      updateThemeSelectionUI();
+      
+      const dropdown = document.getElementById('themeDropdownSelect');
+      if (dropdown) dropdown.value = themeClass;
     }
 
     function initAppColorTheme() {
       const saved = localStorage.getItem('rnd_app_color_theme') || 'theme-blue';
       document.body.classList.remove('theme-white', 'theme-red', 'theme-blue', 'theme-gray');
       document.body.classList.add(saved);
-      updateThemeSelectionUI();
-    }
-
-    function updateThemeSelectionUI() {
-      const current = localStorage.getItem('rnd_app_color_theme') || 'theme-blue';
-      ['theme-white', 'theme-red', 'theme-blue', 'theme-gray'].forEach(t => {
-        const btnId = t.replace('theme-', 'theme-btn-');
-        const btn = document.getElementById(btnId);
-        if (btn) {
-          const icon = btn.querySelector('.theme-check-icon');
-          if (t === current) {
-            btn.classList.add('border-blue-500', 'bg-blue-50/50', 'dark:bg-slate-700/60');
-            if (icon) icon.classList.remove('hidden');
-          } else {
-            btn.classList.remove('border-blue-500', 'bg-blue-50/50', 'dark:bg-slate-700/60');
-            if (icon) icon.classList.add('hidden');
-          }
-        }
-      });
+      
+      const dropdown = document.getElementById('themeDropdownSelect');
+      if (dropdown) dropdown.value = saved;
     }
 
     function normalizeCategories(rawCats) {
@@ -1279,7 +1244,7 @@
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(payload)
         });
-        setCloudStatus('บันทึกออนไลน์สำเร็จ', 'text-emerald-500');
+        setCloudStatus('บันทึกออนไลน์สำเร็จ', 'text-blue-500');
         showToast('บันทึกลง Google Sheets สำเร็จเรียบร้อย ☁️', 'success');
       } catch (err) {
         setCloudStatus('บันทึกออนไลน์ล้มเหลว', 'text-rose-500');
@@ -2027,9 +1992,10 @@
       renderCategoryModalList();
       renderCategoryHomeCards();
       updateCategoryDropdowns();
-      showToast('จัดเรียงลำวดหมู่เรียบร้อย', 'info');
+      showToast('จัดเรียงลำดับหมวดหมู่เรียบร้อย', 'info');
     }
 
+    // Color Bar Picker Render (30 เฉดสี)
     function renderColorPickerGrid() {
       const grid = document.getElementById('colorPickerGrid');
       grid.innerHTML = Object.values(COLOR_PALETTES).map(palette => `
@@ -2038,7 +2004,7 @@
             <span class="w-7 h-7 rounded-full shadow-inner border border-slate-200 shrink-0" style="background-color: ${palette.hex};"></span>
             <div>
               <span class="text-xs font-bold text-slate-800 dark:text-white block">${palette.name}</span>
-              <div class="w-28 sm:w-36 h-2 rounded-full mt-1 opacity-90 group-hover:opacity-100 transition border border-slate-200/50" style="background: ${palette.gradient};"></div>
+              <div class="w-32 sm:w-44 h-2 rounded-full mt-1 opacity-90 group-hover:opacity-100 transition border border-slate-200/50" style="background: ${palette.gradient};"></div>
             </div>
           </div>
           <span class="text-xs font-semibold px-2 py-0.5 rounded-lg border ${palette.badge}">ตัวอย่าง</span>
@@ -2134,6 +2100,7 @@
       });
     }
 
+    // Setting Modal Logic
     function openSettingModal() {
       updateSettingUI();
       document.getElementById('settingModal').classList.remove('hidden');
@@ -2160,7 +2127,10 @@
       const slider = document.getElementById('fontSizeSlider');
       if (slider) slider.value = savedLevel;
       updateFontSizeBadge(savedLevel);
-      updateThemeSelectionUI();
+
+      const savedTheme = localStorage.getItem('rnd_app_color_theme') || 'theme-blue';
+      const dropdown = document.getElementById('themeDropdownSelect');
+      if (dropdown) dropdown.value = savedTheme;
     }
 
     function handleFontSizeChange(level) {
