@@ -72,15 +72,15 @@
   </script>
 
   <style>
-    /* Global Dynamic Font Scaling */
     :root {
-      /* ระดับ 5 คือ Default ขนาด 30px */
-      --app-font-scale: 30px;
+      --app-content-font-size: 30px;
+      --app-desc-font-size: 18px;
     }
 
     html {
-      font-size: var(--app-font-scale);
-      line-height: 1.6;
+      font-size: 16px;
+      line-height: 1.5;
+      -webkit-text-size-adjust: 100%;
     }
 
     body {
@@ -92,6 +92,22 @@
         radial-gradient(at 100% 0%, rgba(2, 132, 199, 0.06) 0px, transparent 50%),
         radial-gradient(at 50% 100%, rgba(220, 38, 38, 0.04) 0px, transparent 70%);
       background-attachment: fixed;
+    }
+
+    /* จัดการการตัดคำและระยะบรรทัดภาษาไทย ไม่ให้สระซ้อนทับกัน */
+    body, h1, h2, h3, h4, p, span, div, li, button {
+      word-break: break-word;
+      overflow-wrap: break-word;
+    }
+
+    .dynamic-title-scale {
+      font-size: var(--app-content-font-size) !important;
+      line-height: 1.35 !important;
+    }
+
+    .dynamic-desc-scale {
+      font-size: var(--app-desc-font-size) !important;
+      line-height: 1.6 !important;
     }
 
     .bg-grid-pattern {
@@ -132,18 +148,18 @@
     }
     input[type=range]::-webkit-slider-thumb {
       -webkit-appearance: none;
-      height: 22px;
-      width: 22px;
+      height: 20px;
+      width: 20px;
       border-radius: 50%;
       background: #ffffff;
       border: 3px solid currentColor;
       box-shadow: 0 2px 5px rgba(0,0,0,0.25);
       cursor: pointer;
-      margin-top: -8px;
+      margin-top: -7px;
       transition: transform 0.15s ease;
     }
     input[type=range]::-webkit-slider-thumb:hover {
-      transform: scale(1.2);
+      transform: scale(1.15);
     }
     input[type=range]::-webkit-slider-runnable-track {
       width: 100%;
@@ -220,7 +236,6 @@
           <i id="soundIcon" class="fa-solid fa-volume-high text-xs"></i>
         </button>
 
-        <!-- Setting Button (ฟันเฟือง) -->
         <button id="settingModalBtn" onclick="openSettingModal()" title="การตั้งค่า (Settings)" class="w-8 h-8 rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:text-brand-green hover:border-brand-green flex items-center justify-center transition shadow-sm group">
           <i class="fa-solid fa-gear text-sm group-hover:rotate-90 transition-transform duration-300"></i>
         </button>
@@ -241,7 +256,7 @@
             <i class="fa-solid fa-palette"></i>
             <span>ระบบเลือกแถบแม่สี & ไอคอนหมวดหมู่</span>
           </div>
-          <h1 class="text-2xl sm:text-4xl font-extrabold tracking-tight">
+          <h1 class="text-2xl sm:text-4xl font-extrabold tracking-tight leading-snug">
             เลือกหมวดหมู่ที่ต้องการสุ่มข้อมูล
           </h1>
           <p class="text-sm sm:text-base text-emerald-100 font-light leading-relaxed">
@@ -307,7 +322,7 @@
             
             <div>
               <span class="text-xs font-bold uppercase tracking-wider text-slate-400 block mb-1">หมวดหมู่ที่เลือก</span>
-              <h2 id="stageCategoryTitle" class="text-2xl sm:text-3xl font-extrabold text-slate-900 dark:text-white tracking-tight">
+              <h2 id="stageCategoryTitle" class="text-2xl sm:text-3xl font-extrabold text-slate-900 dark:text-white tracking-normal leading-normal">
                 ทุกหมวดหมู่
               </h2>
             </div>
@@ -413,7 +428,7 @@
   <!-- POP-UP RESULT MODAL (ปรับขนาด Stats ใหญ่ขึ้น & ย้ายราคาลงซ้ายล่าง) -->
   <!-- ======================================================== -->
   <div id="resultModal" class="hidden fixed inset-0 z-50 bg-slate-900/75 backdrop-blur-md flex items-center justify-center p-3 sm:p-4 overflow-y-auto">
-    <div class="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-3xl max-w-2xl w-full p-5 sm:p-7 shadow-2xl relative my-auto animate-pop-in space-y-4">
+    <div class="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-3xl max-w-2xl w-full p-4 sm:p-7 shadow-2xl relative my-auto animate-pop-in space-y-4">
       
       <!-- Top Card Meta inside Pop-up -->
       <div class="flex items-center justify-between gap-2 border-b border-slate-100 dark:border-slate-700 pb-3">
@@ -441,31 +456,31 @@
       </div>
 
       <!-- Pop-up Content -->
-      <div class="space-y-4 max-h-[70vh] overflow-y-auto pr-1">
+      <div class="space-y-4 max-h-[72vh] overflow-y-auto pr-1">
         
         <div id="popupImageContainer" class="hidden w-full max-h-56 rounded-2xl overflow-hidden border border-slate-200 dark:border-slate-700 bg-slate-100 dark:bg-slate-900 shadow-inner">
           <img id="popupImage" src="" alt="Card Banner" class="w-full h-full object-cover">
         </div>
 
-        <div class="space-y-1">
-          <h2 id="popupTitle" class="text-xl sm:text-2xl md:text-3xl font-extrabold text-slate-900 dark:text-white tracking-tight leading-snug">
+        <div class="space-y-1.5">
+          <h2 id="popupTitle" class="dynamic-title-scale font-extrabold text-slate-900 dark:text-white tracking-normal">
             หัวข้อข้อมูล
           </h2>
-          <p id="popupSubtitle" class="text-sm font-semibold text-brand-green dark:text-emerald-400">
+          <p id="popupSubtitle" class="text-sm sm:text-base font-semibold text-brand-green dark:text-emerald-400 leading-normal">
             หัวข้อย่อย
           </p>
         </div>
 
-        <p id="popupDescription" class="text-slate-600 dark:text-slate-300 text-sm sm:text-base leading-relaxed whitespace-pre-line font-normal">
+        <p id="popupDescription" class="dynamic-desc-scale text-slate-600 dark:text-slate-300 whitespace-pre-line font-normal">
           รายละเอียดเนื้อหา
         </p>
 
         <!-- CONDITION STATS: ขยายขนาดแสดงผลของสิ่งที่ต้องใช้ และสิ่งที่ได้รับ (Icons & Numbers ใหญ่ขึ้น) -->
         <div class="pt-2">
-          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3.5 sm:gap-4">
             
             <!-- สิ่งที่ต้องใช้ (Costs) -->
-            <div class="bg-gradient-to-br from-red-50/80 via-slate-50 to-white dark:from-red-950/25 dark:via-slate-800 dark:to-slate-800/90 rounded-2xl p-4 border border-red-100 dark:border-red-950/60 shadow-sm space-y-3">
+            <div class="bg-gradient-to-br from-red-50/80 via-slate-50 to-white dark:from-red-950/25 dark:via-slate-800 dark:to-slate-800/90 rounded-2xl p-3.5 sm:p-4 border border-red-100 dark:border-red-950/60 shadow-sm space-y-3">
               <div class="flex items-center justify-between border-b border-red-100 dark:border-red-900/40 pb-2">
                 <span class="text-sm font-extrabold text-brand-red flex items-center gap-2">
                   <i class="fa-solid fa-hand-holding-dollar text-base"></i>
@@ -479,8 +494,8 @@
                 <span class="flex items-center gap-2 font-medium text-slate-700 dark:text-slate-300">
                   <i class="fa-solid fa-heart text-brand-red text-lg w-5 text-center"></i> หัวใจ
                 </span>
-                <div class="flex items-center gap-2.5">
-                  <div class="w-20 sm:w-24 bg-slate-200 dark:bg-slate-700 h-2.5 rounded-full overflow-hidden">
+                <div class="flex items-center gap-2">
+                  <div class="w-16 sm:w-24 bg-slate-200 dark:bg-slate-700 h-2.5 rounded-full overflow-hidden">
                     <div id="popup-cost-heart-bar" class="bg-brand-red h-full rounded-full transition-all duration-300" style="width: 0%;"></div>
                   </div>
                   <span id="popup-cost-heart-val" class="font-mono font-extrabold text-base text-brand-red w-5 text-right">0</span>
@@ -493,8 +508,8 @@
                 <span class="flex items-center gap-2 font-medium text-slate-700 dark:text-slate-300">
                   <i class="fa-solid fa-clock text-brand-blue text-lg w-5 text-center"></i> เวลา
                 </span>
-                <div class="flex items-center gap-2.5">
-                  <div class="w-20 sm:w-24 bg-slate-200 dark:bg-slate-700 h-2.5 rounded-full overflow-hidden">
+                <div class="flex items-center gap-2">
+                  <div class="w-16 sm:w-24 bg-slate-200 dark:bg-slate-700 h-2.5 rounded-full overflow-hidden">
                     <div id="popup-cost-time-bar" class="bg-brand-blue h-full rounded-full transition-all duration-300" style="width: 0%;"></div>
                   </div>
                   <span id="popup-cost-time-val" class="font-mono font-extrabold text-base text-brand-blue w-5 text-right">0</span>
@@ -507,8 +522,8 @@
                 <span class="flex items-center gap-2 font-medium text-slate-700 dark:text-slate-300">
                   <i class="fa-solid fa-brain text-slate-500 dark:text-slate-400 text-lg w-5 text-center"></i> ความรู้
                 </span>
-                <div class="flex items-center gap-2.5">
-                  <div class="w-20 sm:w-24 bg-slate-200 dark:bg-slate-700 h-2.5 rounded-full overflow-hidden">
+                <div class="flex items-center gap-2">
+                  <div class="w-16 sm:w-24 bg-slate-200 dark:bg-slate-700 h-2.5 rounded-full overflow-hidden">
                     <div id="popup-cost-knowledge-bar" class="bg-slate-600 dark:bg-slate-400 h-full rounded-full transition-all duration-300" style="width: 0%;"></div>
                   </div>
                   <span id="popup-cost-knowledge-val" class="font-mono font-extrabold text-base text-slate-700 dark:text-slate-200 w-5 text-right">0</span>
@@ -518,7 +533,7 @@
             </div>
 
             <!-- สิ่งที่ได้รับ (Rewards) -->
-            <div class="bg-gradient-to-br from-emerald-50/80 via-slate-50 to-white dark:from-emerald-950/25 dark:via-slate-800 dark:to-slate-800/90 rounded-2xl p-4 border border-emerald-100 dark:border-emerald-950/60 shadow-sm space-y-3">
+            <div class="bg-gradient-to-br from-emerald-50/80 via-slate-50 to-white dark:from-emerald-950/25 dark:via-slate-800 dark:to-slate-800/90 rounded-2xl p-3.5 sm:p-4 border border-emerald-100 dark:border-emerald-950/60 shadow-sm space-y-3">
               <div class="flex items-center justify-between border-b border-emerald-100 dark:border-emerald-900/40 pb-2">
                 <span class="text-sm font-extrabold text-brand-green dark:text-emerald-400 flex items-center gap-2">
                   <i class="fa-solid fa-gift text-base"></i>
@@ -532,8 +547,8 @@
                 <span class="flex items-center gap-2 font-medium text-slate-700 dark:text-slate-300">
                   <i class="fa-solid fa-heart text-brand-red text-lg w-5 text-center"></i> หัวใจ
                 </span>
-                <div class="flex items-center gap-2.5">
-                  <div class="w-20 sm:w-24 bg-slate-200 dark:bg-slate-700 h-2.5 rounded-full overflow-hidden">
+                <div class="flex items-center gap-2">
+                  <div class="w-16 sm:w-24 bg-slate-200 dark:bg-slate-700 h-2.5 rounded-full overflow-hidden">
                     <div id="popup-reward-heart-bar" class="bg-brand-red h-full rounded-full transition-all duration-300" style="width: 0%;"></div>
                   </div>
                   <span id="popup-reward-heart-val" class="font-mono font-extrabold text-base text-brand-red w-7 text-right">+0</span>
@@ -546,8 +561,8 @@
                 <span class="flex items-center gap-2 font-medium text-slate-700 dark:text-slate-300">
                   <i class="fa-solid fa-clock text-brand-blue text-lg w-5 text-center"></i> เวลา
                 </span>
-                <div class="flex items-center gap-2.5">
-                  <div class="w-20 sm:w-24 bg-slate-200 dark:bg-slate-700 h-2.5 rounded-full overflow-hidden">
+                <div class="flex items-center gap-2">
+                  <div class="w-16 sm:w-24 bg-slate-200 dark:bg-slate-700 h-2.5 rounded-full overflow-hidden">
                     <div id="popup-reward-time-bar" class="bg-brand-blue h-full rounded-full transition-all duration-300" style="width: 0%;"></div>
                   </div>
                   <span id="popup-reward-time-val" class="font-mono font-extrabold text-base text-brand-blue w-7 text-right">+0</span>
@@ -560,8 +575,8 @@
                 <span class="flex items-center gap-2 font-medium text-slate-700 dark:text-slate-300">
                   <i class="fa-solid fa-brain text-slate-500 dark:text-slate-400 text-lg w-5 text-center"></i> ความรู้
                 </span>
-                <div class="flex items-center gap-2.5">
-                  <div class="w-20 sm:w-24 bg-slate-200 dark:bg-slate-700 h-2.5 rounded-full overflow-hidden">
+                <div class="flex items-center gap-2">
+                  <div class="w-16 sm:w-24 bg-slate-200 dark:bg-slate-700 h-2.5 rounded-full overflow-hidden">
                     <div id="popup-reward-knowledge-bar" class="bg-slate-600 dark:bg-slate-400 h-full rounded-full transition-all duration-300" style="width: 0%;"></div>
                   </div>
                   <span id="popup-reward-knowledge-val" class="font-mono font-extrabold text-base text-slate-700 dark:text-slate-200 w-7 text-right">+0</span>
@@ -573,30 +588,28 @@
           </div>
         </div>
 
-        <div class="flex items-center justify-between pt-2 border-t border-slate-100 dark:border-slate-700 text-xs">
+        <div class="flex items-center justify-between pt-2 border-t border-slate-100 dark:border-slate-700 text-xs sm:text-sm">
           <div id="popupLinkContainer">
             <a id="popupActionLink" href="#" target="_blank" class="inline-flex items-center gap-1.5 font-semibold text-brand-green hover:underline">
               <span>อ่านรายละเอียดเพิ่มเติม</span>
               <i class="fa-solid fa-external-link text-[10px]"></i>
             </a>
           </div>
-          <div class="flex items-center gap-1.5 font-mono text-sm">
+          <div class="flex items-center gap-1.5 font-mono">
             <span class="text-slate-400">ความคุ้มค่าสุทธิ:</span>
-            <span id="popupNetGainValue" class="font-bold text-brand-green">+0</span>
+            <span id="popupNetGainValue" class="font-bold text-brand-green text-sm sm:text-base">+0</span>
           </div>
         </div>
 
       </div>
 
-      <!-- Pop-up Footer: ย้าย "ราคา" มาอยู่ด้านซ้ายของปุ่ม "สุ่มใหม่อีกครั้ง" -->
+      <!-- Pop-up Footer: ราคาอยู่ด้านซ้ายของปุ่ม "สุ่มใหม่อีกครั้ง" -->
       <div class="pt-3 border-t border-slate-100 dark:border-slate-700 flex flex-wrap items-center justify-between gap-3">
         
-        <!-- ฝั่งซ้าย: ปุ่มปิด -->
         <button onclick="closeResultModal()" class="px-4 py-2.5 rounded-xl text-slate-600 dark:text-slate-300 bg-slate-100 dark:bg-slate-700 hover:bg-slate-200 text-sm font-semibold transition">
           ปิด
         </button>
 
-        <!-- ฝั่งขวา: แสดงราคา (ซ้าย) + ปุ่มสุ่มใหม่อีกครั้ง (ขวา) -->
         <div class="flex items-center gap-3 ml-auto">
           <!-- Price Badge -->
           <div id="popupPriceBadge" class="px-3.5 py-2 rounded-xl bg-emerald-50 dark:bg-emerald-950/70 border border-emerald-300 dark:border-emerald-800 text-brand-green dark:text-emerald-400 text-sm font-bold font-mono flex items-center gap-1.5 shadow-sm">
@@ -606,7 +619,7 @@
           </div>
 
           <!-- ปุ่มสุ่มใหม่อีกครั้ง -->
-          <button onclick="triggerRandomDraw()" class="px-6 py-2.5 rounded-xl bg-brand-green text-white text-sm font-bold hover:bg-brand-greenHover transition shadow flex items-center gap-2">
+          <button onclick="triggerRandomDraw()" class="px-5 sm:px-6 py-2.5 rounded-xl bg-brand-green text-white text-sm font-bold hover:bg-brand-greenHover transition shadow flex items-center gap-2">
             <i class="fa-solid fa-dice-five"></i>
             <span>สุ่มใหม่อีกครั้ง</span>
           </button>
@@ -736,7 +749,6 @@
       </div>
       
       <div class="pt-3 space-y-4">
-        <!-- Add New Category with Icon & Color Strip Trigger -->
         <div class="flex items-center gap-2">
           <button type="button" id="newCatColorBtn" onclick="openColorPicker(-1)" title="เลือกแถบสีหมวดหมู่" class="h-10 px-3 rounded-xl border border-slate-200 dark:border-slate-600 bg-white dark:bg-slate-700 flex items-center gap-2 hover:bg-slate-100 transition shadow-sm">
             <span id="newCatColorPill" class="w-5 h-5 rounded-full shadow-sm bg-emerald-500"></span>
@@ -842,7 +854,7 @@
           </div>
           <div class="flex items-center gap-1.5">
             <span class="text-xs text-slate-400">ระดับ:</span>
-            <span id="fontSizeLevelBadge" class="font-mono font-bold text-xs text-brand-green px-2 py-0.5 rounded-lg bg-emerald-100 dark:bg-emerald-950/80 border border-emerald-200 dark:border-emerald-800">ระดับ 5 (30px)</span>
+            <span id="fontSizeLevelBadge" class="font-mono font-bold text-xs text-brand-green px-2 py-0.5 rounded-lg bg-emerald-100 dark:bg-emerald-950/80 border border-emerald-200 dark:border-emerald-800">ระดับ 5</span>
           </div>
         </div>
 
@@ -850,22 +862,22 @@
         <div class="space-y-1 pt-1">
           <input type="range" min="1" max="10" step="1" value="5" id="fontSizeSlider" oninput="handleFontSizeChange(this.value)" class="w-full text-brand-green">
           <div class="flex justify-between text-[11px] text-slate-400 font-mono px-1">
-            <span>ระดับ 1 (22px)</span>
-            <span class="text-brand-green font-bold">ระดับ 5 (30px)</span>
-            <span>ระดับ 10 (40px)</span>
+            <span>ระดับ 1</span>
+            <span class="text-brand-green font-bold">ระดับ 5 (ค่าเริ่มต้น)</span>
+            <span>ระดับ 10</span>
           </div>
         </div>
 
         <!-- Live Preview Box -->
         <div class="mt-2 p-3 rounded-xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-center">
-          <p class="text-slate-500 dark:text-slate-400 text-xs mb-0.5">ตัวอย่างข้อความ:</p>
-          <p id="fontSizePreviewText" class="font-semibold text-slate-800 dark:text-slate-100">
+          <p class="text-slate-500 dark:text-slate-400 text-xs mb-1">ตัวอย่างข้อความ:</p>
+          <p id="fontSizePreviewText" class="font-semibold text-slate-800 dark:text-slate-100 leading-normal">
             สุ่มข้อมูลขนาดตัวอักษรอ่านง่าย ชัดเจน
           </p>
         </div>
 
         <button onclick="resetFontSizeDefault()" class="text-xs text-brand-green hover:underline flex items-center gap-1 mx-auto pt-1 font-semibold">
-          <i class="fa-solid fa-rotate-left text-[10px]"></i> คืนค่าเริ่มต้น (ระดับ 5: 30px)
+          <i class="fa-solid fa-rotate-left text-[10px]"></i> คืนค่าเริ่มต้น (ระดับ 5)
         </button>
       </div>
 
@@ -914,18 +926,32 @@
     let isDrawing = false;
     let soundEnabled = true;
 
-    // Font Scale Mapping (ระดับ 1 - 10: ระดับ 5 คือค่าเริ่มต้น 30px)
+    // Desktop Scale (ระดับ 5 = 30px)
     const FONT_SCALE_MAP = {
-      1: "22px",
-      2: "24px",
-      3: "26px",
-      4: "28px",
-      5: "30px", // ค่าเริ่มต้น (ระดับ 5 = 30px)
-      6: "32px",
-      7: "34px",
-      8: "36px",
-      9: "38px",
-      10: "40px"
+      1: { title: "22px", desc: "15px" },
+      2: { title: "24px", desc: "15.5px" },
+      3: { title: "26px", desc: "16px" },
+      4: { title: "28px", desc: "17px" },
+      5: { title: "30px", desc: "18px" }, // ค่าเริ่มต้นระดับ 5
+      6: { title: "32px", desc: "19px" },
+      7: { title: "34px", desc: "20px" },
+      8: { title: "36px", desc: "21px" },
+      9: { title: "38px", desc: "22px" },
+      10: { title: "40px", desc: "23px" }
+    };
+
+    // Mobile Responsive Scale ป้องกันข้อความบวมล้นจอแนวตั้ง
+    const MOBILE_FONT_SCALE_MAP = {
+      1: { title: "18px", desc: "14px" },
+      2: { title: "20px", desc: "14.5px" },
+      3: { title: "22px", desc: "15px" },
+      4: { title: "23.5px", desc: "15.5px" },
+      5: { title: "25px", desc: "16px" }, // ค่าเริ่มต้นบนมือถือ ชัดเจนกำลังดี
+      6: { title: "27px", desc: "17px" },
+      7: { title: "29px", desc: "18px" },
+      8: { title: "31px", desc: "19px" },
+      9: { title: "33px", desc: "20px" },
+      10: { title: "35px", desc: "21px" }
     };
 
     // Palette แถบสี (รวมแม่สีและสีหลัก: ขาว ดำ แดง เหลือง เขียว ฟ้า น้ำเงิน ม่วง น้ำตาล)
@@ -1103,7 +1129,6 @@
       } catch (e) {}
     }
 
-    // Initialize App & Fetch Online Data
     window.addEventListener('DOMContentLoaded', () => {
       initTheme();
       initFontSize();
@@ -1118,6 +1143,11 @@
       switchTab('categories');
 
       fetchFromGoogleSheets();
+
+      window.addEventListener('resize', () => {
+        const savedLevel = localStorage.getItem('rnd_font_scale_level') || "5";
+        handleFontSizeChange(savedLevel);
+      });
 
       window.addEventListener('keydown', (e) => {
         if (e.code === 'Space' && e.target === document.body && !document.getElementById('view-draw').classList.contains('hidden')) {
@@ -1466,12 +1496,10 @@
       document.getElementById('popupCategoryBadge').className = `px-3.5 py-1.5 rounded-full text-xs font-bold tracking-wide uppercase border flex items-center gap-1.5 shadow-sm transition-colors ${meta.theme.badge}`;
       document.getElementById('popupIndexBadge').innerText = `#${item.id}`;
 
-      // Price Formatting
       const priceVal = parseFloat(item.price);
       const priceValueEl = document.getElementById('popupPriceValue');
       priceValueEl.innerText = (!isNaN(priceVal) && priceVal > 0) ? `฿${priceVal.toLocaleString()}` : 'FREE';
 
-      // ดึงค่าอย่างแม่นยำ
       const costH = Number(item.cost?.heart) || 0;
       const costT = Number(item.cost?.time) || 0;
       const costK = Number(item.cost?.knowledge) || 0;
@@ -1675,7 +1703,6 @@
               <td class="py-3 px-4">
                 <span class="text-xs px-2.5 py-1 rounded-full font-semibold border ${meta.theme.badge}">${escapeHTML(item.category)}</span>
               </td>
-              <!-- คอลัมน์ สิ่งที่ต้องใช้ (Cost) -->
               <td class="py-3 px-4 text-xs font-mono">
                 <div class="flex items-center gap-2">
                   <span class="text-brand-red"><i class="fa-solid fa-heart"></i> ${costH}</span>
@@ -1683,7 +1710,6 @@
                   <span class="text-slate-500 dark:text-slate-400"><i class="fa-solid fa-brain"></i> ${costK}</span>
                 </div>
               </td>
-              <!-- คอลัมน์ สิ่งที่ได้รับ (Reward) -->
               <td class="py-3 px-4 text-xs font-mono">
                 <div class="flex items-center gap-2">
                   <span class="text-brand-red font-bold"><i class="fa-solid fa-heart"></i> +${rewardH}</span>
@@ -2149,8 +2175,14 @@
 
     function handleFontSizeChange(level) {
       const val = parseInt(level, 10);
-      const fontSize = FONT_SCALE_MAP[val] || "30px";
-      document.documentElement.style.setProperty('--app-font-scale', fontSize);
+      const isMobile = window.innerWidth < 640;
+      const config = isMobile 
+        ? (MOBILE_FONT_SCALE_MAP[val] || MOBILE_FONT_SCALE_MAP[5])
+        : (FONT_SCALE_MAP[val] || FONT_SCALE_MAP[5]);
+
+      document.documentElement.style.setProperty('--app-content-font-size', config.title);
+      document.documentElement.style.setProperty('--app-desc-font-size', config.desc);
+
       localStorage.setItem('rnd_font_scale_level', val);
       updateFontSizeBadge(val);
     }
@@ -2159,13 +2191,16 @@
       const badge = document.getElementById('fontSizeLevelBadge');
       const preview = document.getElementById('fontSizePreviewText');
       const val = parseInt(level, 10);
-      const sizeStr = FONT_SCALE_MAP[val] || "30px";
+      const isMobile = window.innerWidth < 640;
+      const config = isMobile 
+        ? (MOBILE_FONT_SCALE_MAP[val] || MOBILE_FONT_SCALE_MAP[5])
+        : (FONT_SCALE_MAP[val] || FONT_SCALE_MAP[5]);
 
       if (badge) {
-        badge.innerText = val === 5 ? `ระดับ 5 (ค่าเริ่มต้น: ${sizeStr})` : `ระดับ ${val} (${sizeStr})`;
+        badge.innerText = val === 5 ? "ระดับ 5 (ค่าเริ่มต้น)" : `ระดับ ${val}`;
       }
       if (preview) {
-        preview.style.fontSize = sizeStr;
+        preview.style.fontSize = config.desc;
       }
     }
 
@@ -2173,7 +2208,7 @@
       handleFontSizeChange(5);
       const slider = document.getElementById('fontSizeSlider');
       if (slider) slider.value = 5;
-      showToast('คืนค่าขนาดตัวอักษรเริ่มต้น (ระดับ 5: 30px) แล้ว', 'info');
+      showToast('คืนค่าขนาดตัวอักษรเริ่มต้น (ระดับ 5) แล้ว', 'info');
     }
 
     function initFontSize() {
@@ -2228,7 +2263,14 @@
     function showToast(msg, type = 'info') {
       const toast = document.getElementById('toastNotification');
       const msgEl = document.getElementById('toastMessage');
+      const icon = document.getElementById('toastIcon');
+
       msgEl.innerText = msg;
+      if (type === 'success') icon.className = 'fa-solid fa-check text-emerald-400';
+      else if (type === 'warning') icon.className = 'fa-solid fa-triangle-exclamation text-amber-400';
+      else if (type === 'danger') icon.className = 'fa-solid fa-xmark text-rose-400';
+      else icon.className = 'fa-solid fa-circle-info text-sky-400';
+
       toast.classList.remove('translate-x-full', 'opacity-0');
       clearTimeout(window._toastTimeout);
       window._toastTimeout = setTimeout(() => toast.classList.add('translate-x-full', 'opacity-0'), 2600);
