@@ -274,7 +274,6 @@
 
         <div class="flex items-center gap-2">
           <label class="flex items-center gap-2 cursor-pointer select-none bg-white dark:bg-slate-800 px-3 py-1.5 rounded-xl border border-slate-200 dark:border-slate-700 shadow-sm">
-            <!-- ตั้งค่าเริ่มต้น: ไม่ checked เพื่อให้เป็นแบบสุ่มซ้ำได้ -->
             <input type="checkbox" id="uniqueDrawToggle" onchange="toggleUniqueDrawMode()" class="sr-only peer">
             <div class="w-8 h-4 bg-slate-300 rounded-full peer dark:bg-slate-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border after:rounded-full after:h-3 after:w-3 after:transition-all peer-checked:bg-brand-green relative"></div>
             <span class="text-xs font-semibold text-slate-700 dark:text-slate-300">สุ่มไม่ซ้ำ</span>
@@ -288,7 +287,6 @@
         
         <div class="relative bg-white dark:bg-slate-800 rounded-3xl border border-slate-200 dark:border-slate-700 card-rim-glow p-8 sm:p-12 text-center shadow-xl space-y-8">
           
-          <!-- Selected Category Display with Strip Effect -->
           <div class="space-y-3">
             <div class="inline-flex items-center justify-center p-3.5 rounded-2xl shadow-sm transition-all text-2xl" id="stageCategoryIconWrapper">
               <i id="stageCategoryIcon" class="fa-solid fa-dice"></i>
@@ -301,14 +299,12 @@
               </h2>
             </div>
 
-            <!-- Pool Counter Pill -->
             <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-slate-100 dark:bg-slate-700/80 text-xs font-mono font-semibold text-slate-600 dark:text-slate-300">
               <i class="fa-solid fa-layer-group text-[10px]"></i>
               <span>คงเหลือในกอง: <strong id="poolRemainingBadge" class="text-brand-green">0/0</strong></span>
             </div>
           </div>
 
-          <!-- Giant Draw Action Button -->
           <div class="pt-2">
             <button id="drawActionBtn" onclick="triggerRandomDraw()" class="w-full btn-draw-green-shimmer text-white py-5 px-8 rounded-2xl font-extrabold text-xl sm:text-2xl shadow-xl shadow-brand-green/30 hover:scale-[1.02] active:scale-[0.98] transition-all flex items-center justify-center gap-3 group">
               <i id="drawBtnIcon" class="fa-solid fa-dice-five text-3xl group-hover:rotate-180 transition-transform duration-500"></i>
@@ -437,12 +433,10 @@
       <!-- Pop-up Content -->
       <div class="space-y-4 max-h-[70vh] overflow-y-auto pr-1">
         
-        <!-- Image Banner -->
         <div id="popupImageContainer" class="hidden w-full max-h-52 rounded-2xl overflow-hidden border border-slate-200 dark:border-slate-700 bg-slate-100 dark:bg-slate-900 shadow-inner">
           <img id="popupImage" src="" alt="Card Banner" class="w-full h-full object-cover">
         </div>
 
-        <!-- Title & Subtitle -->
         <div class="space-y-1">
           <h2 id="popupTitle" class="text-xl sm:text-2xl font-extrabold text-slate-900 dark:text-white tracking-tight leading-snug">
             หัวข้อข้อมูล
@@ -452,7 +446,6 @@
           </p>
         </div>
 
-        <!-- Detailed Description -->
         <p id="popupDescription" class="text-slate-600 dark:text-slate-300 text-sm leading-relaxed whitespace-pre-line font-normal">
           รายละเอียดเนื้อหา
         </p>
@@ -502,7 +495,6 @@
           </div>
         </div>
 
-        <!-- External Link & Net Gain -->
         <div class="flex items-center justify-between pt-2 border-t border-slate-100 dark:border-slate-700 text-xs">
           <div id="popupLinkContainer">
             <a id="popupActionLink" href="#" target="_blank" class="inline-flex items-center gap-1.5 font-semibold text-brand-green hover:underline">
@@ -518,7 +510,6 @@
 
       </div>
 
-      <!-- Pop-up Footer Buttons -->
       <div class="pt-3 border-t border-slate-100 dark:border-slate-700 flex items-center justify-between gap-3">
         <button onclick="closeResultModal()" class="px-4 py-2.5 rounded-xl text-slate-600 dark:text-slate-300 bg-slate-100 dark:bg-slate-700 hover:bg-slate-200 text-sm font-semibold transition">
           ปิด
@@ -654,13 +645,11 @@
       <div class="pt-3 space-y-4">
         <!-- Add New Category with Icon & Color Strip Trigger -->
         <div class="flex items-center gap-2">
-          <!-- Color Strip Trigger Button -->
           <button type="button" id="newCatColorBtn" onclick="openColorPicker(-1)" title="เลือกแถบสีหมวดหมู่" class="h-10 px-3 rounded-xl border border-slate-200 dark:border-slate-600 bg-white dark:bg-slate-700 flex items-center gap-2 hover:bg-slate-100 transition shadow-sm">
             <span id="newCatColorPill" class="w-5 h-5 rounded-full shadow-sm bg-emerald-500"></span>
             <i class="fa-solid fa-chevron-down text-[10px] text-slate-400"></i>
           </button>
 
-          <!-- Icon Trigger Button -->
           <button type="button" id="newCatIconBtn" onclick="openIconPicker(-1)" title="เลือกไอคอน" class="w-10 h-10 rounded-xl bg-slate-100 dark:bg-slate-700 border border-slate-200 dark:border-slate-600 text-brand-green flex items-center justify-center text-lg hover:bg-slate-200 transition shrink-0">
             <i id="newCatIconPreview" class="fa-solid fa-folder"></i>
           </button>
@@ -672,7 +661,6 @@
           </button>
         </div>
 
-        <!-- Category List -->
         <div class="max-h-72 overflow-y-auto divide-y divide-slate-100 dark:divide-slate-700/60 pr-1" id="categoryListContainer"></div>
       </div>
     </div>
@@ -694,7 +682,6 @@
         </button>
       </div>
 
-      <!-- Color Strips List -->
       <div class="space-y-2 max-h-80 overflow-y-auto pr-1" id="colorPickerGrid"></div>
     </div>
   </div>
@@ -1291,24 +1278,30 @@
       const priceValueEl = document.getElementById('popupPriceValue');
       priceValueEl.innerText = (!isNaN(priceVal) && priceVal > 0) ? `฿${priceVal.toLocaleString()}` : 'FREE (ฟรี)';
 
-      const cost = item.cost || { heart: 0, time: 0, knowledge: 0 };
-      const reward = item.reward || { heart: 0, time: 0, knowledge: 0 };
+      // ดึงค่าอย่างแม่นยำ
+      const costH = Number(item.cost?.heart) || 0;
+      const costT = Number(item.cost?.time) || 0;
+      const costK = Number(item.cost?.knowledge) || 0;
 
-      document.getElementById('popup-cost-heart-val').innerText = cost.heart;
-      document.getElementById('popup-cost-heart-bar').style.width = `${cost.heart * 10}%`;
-      document.getElementById('popup-cost-time-val').innerText = cost.time;
-      document.getElementById('popup-cost-time-bar').style.width = `${cost.time * 10}%`;
-      document.getElementById('popup-cost-knowledge-val').innerText = cost.knowledge;
-      document.getElementById('popup-cost-knowledge-bar').style.width = `${cost.knowledge * 10}%`;
+      const rewardH = Number(item.reward?.heart) || 0;
+      const rewardT = Number(item.reward?.time) || 0;
+      const rewardK = Number(item.reward?.knowledge) || 0;
 
-      document.getElementById('popup-reward-heart-val').innerText = `+${reward.heart}`;
-      document.getElementById('popup-reward-heart-bar').style.width = `${reward.heart * 10}%`;
-      document.getElementById('popup-reward-time-val').innerText = `+${reward.time}`;
-      document.getElementById('popup-reward-time-bar').style.width = `${reward.time * 10}%`;
-      document.getElementById('popup-reward-knowledge-val').innerText = `+${reward.knowledge}`;
-      document.getElementById('popup-reward-knowledge-bar').style.width = `${reward.knowledge * 10}%`;
+      document.getElementById('popup-cost-heart-val').innerText = costH;
+      document.getElementById('popup-cost-heart-bar').style.width = `${costH * 10}%`;
+      document.getElementById('popup-cost-time-val').innerText = costT;
+      document.getElementById('popup-cost-time-bar').style.width = `${costT * 10}%`;
+      document.getElementById('popup-cost-knowledge-val').innerText = costK;
+      document.getElementById('popup-cost-knowledge-bar').style.width = `${costK * 10}%`;
 
-      const netGain = ((reward.heart || 0) + (reward.time || 0) + (reward.knowledge || 0)) - ((cost.heart || 0) + (cost.time || 0) + (cost.knowledge || 0));
+      document.getElementById('popup-reward-heart-val').innerText = `+${rewardH}`;
+      document.getElementById('popup-reward-heart-bar').style.width = `${rewardH * 10}%`;
+      document.getElementById('popup-reward-time-val').innerText = `+${rewardT}`;
+      document.getElementById('popup-reward-time-bar').style.width = `${rewardT * 10}%`;
+      document.getElementById('popup-reward-knowledge-val').innerText = `+${rewardK}`;
+      document.getElementById('popup-reward-knowledge-bar').style.width = `${rewardK * 10}%`;
+
+      const netGain = (rewardH + rewardT + rewardK) - (costH + costT + costK);
       const netGainEl = document.getElementById('popupNetGainValue');
       netGainEl.innerText = (netGain >= 0 ? `+${netGain}` : `${netGain}`);
       netGainEl.className = netGain >= 0 ? 'font-mono font-bold text-brand-green' : 'font-mono font-bold text-brand-red';
@@ -1358,10 +1351,15 @@
 
     function shareCurrentCard() {
       if (!currentItem) return;
-      const cost = currentItem.cost || { heart: 0, time: 0, knowledge: 0 };
-      const reward = currentItem.reward || { heart: 0, time: 0, knowledge: 0 };
+      const costH = Number(currentItem.cost?.heart) || 0;
+      const costT = Number(currentItem.cost?.time) || 0;
+      const costK = Number(currentItem.cost?.knowledge) || 0;
+      const rewardH = Number(currentItem.reward?.heart) || 0;
+      const rewardT = Number(currentItem.reward?.time) || 0;
+      const rewardK = Number(currentItem.reward?.knowledge) || 0;
       const priceText = currentItem.price > 0 ? `฿${parseFloat(currentItem.price).toLocaleString()}` : 'ฟรี';
-      const shareText = `🎲 สุ่มได้: "${currentItem.title}"\n📂 หมวดหมู่: ${currentItem.category} | ราคา: ${priceText}\n\n🔻 สิ่งที่ต้องใช้: หัวใจ ${cost.heart}/10 | เวลา ${cost.time}/10 | ความรู้ ${cost.knowledge}/10\n🔺 สิ่งที่ได้รับ: หัวใจ +${reward.heart} | เวลา +${reward.time} | ความรู้ +${reward.knowledge}\n\n${currentItem.description || ''}`;
+
+      const shareText = `🎲 สุ่มได้: "${currentItem.title}"\n📂 หมวดหมู่: ${currentItem.category} | ราคา: ${priceText}\n\n🔻 สิ่งที่ต้องใช้: หัวใจ ${costH}/10 | เวลา ${costT}/10 | ความรู้ ${costK}/10\n🔺 สิ่งที่ได้รับ: หัวใจ +${rewardH} | เวลา +${rewardT} | ความรู้ +${rewardK}\n\n${currentItem.description || ''}`;
       if (navigator.clipboard) {
         navigator.clipboard.writeText(shareText).then(() => showToast('คัดลอกข้อความแชร์เรียบร้อยแล้ว!', 'success'));
       }
@@ -1401,6 +1399,8 @@
         const timeStr = new Date(h.timestamp).toLocaleTimeString('th-TH', { hour: '2-digit', minute: '2-digit' });
         const priceStr = h.price > 0 ? `฿${parseFloat(h.price).toLocaleString()}` : 'ฟรี';
         const meta = getCategoryMeta(h.category);
+        const costH = Number(h.cost?.heart) || 0;
+        const rewardH = Number(h.reward?.heart) || 0;
         return `
           <li class="p-3.5 sm:p-4 hover:bg-slate-50 dark:hover:bg-slate-700/40 transition flex items-center justify-between gap-3">
             <div class="space-y-1 min-w-0">
@@ -1411,7 +1411,7 @@
               </div>
               <div class="flex items-center gap-3 text-[11px] text-slate-400">
                 <span><i class="fa-solid fa-clock text-[10px]"></i> ${timeStr}</span>
-                <span class="text-brand-red"><i class="fa-solid fa-heart text-[10px]"></i> ${h.cost?.heart || 0} ➔ +${h.reward?.heart || 0}</span>
+                <span class="text-brand-red"><i class="fa-solid fa-heart text-[10px]"></i> ${costH} ➔ +${rewardH}</span>
               </div>
             </div>
             <button onclick="previewHistoryItem('${h.id}')" class="text-xs font-semibold text-brand-green hover:underline whitespace-nowrap">
@@ -1438,6 +1438,7 @@
       });
     }
 
+    // แก้ไขคอลัมน์ "สิ่งที่ได้รับ (0-10)" ในตารางคลังข้อมูล
     function renderDataTable() {
       const query = (document.getElementById('searchInput')?.value || '').toLowerCase().trim();
       const filterCat = document.getElementById('tableCategoryFilter')?.value || 'ALL';
@@ -1462,8 +1463,14 @@
 
       if (desktopTbody) {
         desktopTbody.innerHTML = filtered.map((item, idx) => {
-          const cost = item.cost || { heart: 0, time: 0, knowledge: 0 };
-          const reward = item.reward || { heart: 0, time: 0, knowledge: 0 };
+          const costH = Number(item.cost?.heart) || 0;
+          const costT = Number(item.cost?.time) || 0;
+          const costK = Number(item.cost?.knowledge) || 0;
+
+          const rewardH = Number(item.reward?.heart) || 0;
+          const rewardT = Number(item.reward?.time) || 0;
+          const rewardK = Number(item.reward?.knowledge) || 0;
+
           const priceNum = parseFloat(item.price);
           const priceFormatted = (!isNaN(priceNum) && priceNum > 0) ? `฿${priceNum.toLocaleString()}` : '<span class="text-slate-400">ฟรี</span>';
           const meta = getCategoryMeta(item.category);
@@ -1476,8 +1483,22 @@
               <td class="py-3 px-4">
                 <span class="text-xs px-2.5 py-1 rounded-full font-semibold border ${meta.theme.badge}">${escapeHTML(item.category)}</span>
               </td>
-              <td class="py-3 px-4 text-xs font-mono"><span class="text-brand-red"><i class="fa-solid fa-heart"></i> ${cost.heart}</span> <span class="text-brand-blue"><i class="fa-solid fa-clock"></i> ${cost.time}</span></td>
-              <td class="py-3 px-4 text-xs font-mono"><span class="text-brand-red font-bold">+${reward.heart}</span> <span class="text-brand-blue font-bold">+${reward.time}</span></td>
+              <!-- คอลัมน์ สิ่งที่ต้องใช้ (Cost) -->
+              <td class="py-3 px-4 text-xs font-mono">
+                <div class="flex items-center gap-2">
+                  <span class="text-brand-red"><i class="fa-solid fa-heart"></i> ${costH}</span>
+                  <span class="text-brand-blue"><i class="fa-solid fa-clock"></i> ${costT}</span>
+                  <span class="text-slate-500 dark:text-slate-400"><i class="fa-solid fa-brain"></i> ${costK}</span>
+                </div>
+              </td>
+              <!-- คอลัมน์ สิ่งที่ได้รับ (Reward) ดึงค่าจริงจากฐานข้อมูลตรง 100% -->
+              <td class="py-3 px-4 text-xs font-mono">
+                <div class="flex items-center gap-2">
+                  <span class="text-brand-red font-bold"><i class="fa-solid fa-heart"></i> +${rewardH}</span>
+                  <span class="text-brand-blue font-bold"><i class="fa-solid fa-clock"></i> +${rewardT}</span>
+                  <span class="text-brand-green font-bold"><i class="fa-solid fa-brain"></i> +${rewardK}</span>
+                </div>
+              </td>
               <td class="py-3 px-4 text-right">
                 <button onclick="openAddEditModal('${item.id}')" class="p-1.5 text-slate-400 hover:text-brand-green"><i class="fa-solid fa-pen text-xs"></i></button>
                 <button onclick="confirmDeleteItem('${item.id}')" class="p-1.5 text-slate-400 hover:text-brand-red"><i class="fa-solid fa-trash-can text-xs"></i></button>
@@ -1490,6 +1511,14 @@
       if (mobileList) {
         mobileList.innerHTML = filtered.map(item => {
           const meta = getCategoryMeta(item.category);
+          const costH = Number(item.cost?.heart) || 0;
+          const costT = Number(item.cost?.time) || 0;
+          const costK = Number(item.cost?.knowledge) || 0;
+
+          const rewardH = Number(item.reward?.heart) || 0;
+          const rewardT = Number(item.reward?.time) || 0;
+          const rewardK = Number(item.reward?.knowledge) || 0;
+
           return `
             <div class="p-3 bg-white dark:bg-slate-800 rounded-xl space-y-2 border border-slate-100 dark:border-slate-700">
               <div class="flex justify-between items-start">
@@ -1500,6 +1529,20 @@
                 <div class="flex gap-1">
                   <button onclick="openAddEditModal('${item.id}')" class="p-1 text-slate-400"><i class="fa-solid fa-pen text-xs"></i></button>
                   <button onclick="confirmDeleteItem('${item.id}')" class="p-1 text-slate-400"><i class="fa-solid fa-trash-can text-xs"></i></button>
+                </div>
+              </div>
+              <div class="grid grid-cols-2 gap-2 text-[11px] bg-slate-50 dark:bg-slate-900/60 p-2 rounded-lg font-mono">
+                <div>
+                  <span class="text-slate-400 block text-[9px] uppercase font-bold">ใช้:</span>
+                  <span class="text-brand-red"><i class="fa-solid fa-heart"></i> ${costH}</span> |
+                  <span class="text-brand-blue"><i class="fa-solid fa-clock"></i> ${costT}</span> |
+                  <span><i class="fa-solid fa-brain"></i> ${costK}</span>
+                </div>
+                <div>
+                  <span class="text-slate-400 block text-[9px] uppercase font-bold">ได้:</span>
+                  <span class="text-brand-red font-bold">+${rewardH}</span> |
+                  <span class="text-brand-blue font-bold">+${rewardT}</span> |
+                  <span class="text-brand-green font-bold">+${rewardK}</span>
                 </div>
               </div>
             </div>
@@ -1526,14 +1569,20 @@
         document.getElementById('formImageUrl').value = item.imageUrl || '';
         document.getElementById('formLinkUrl').value = item.linkUrl || '';
 
-        const cost = item.cost || { heart: 0, time: 0, knowledge: 0 };
-        const reward = item.reward || { heart: 0, time: 0, knowledge: 0 };
-        document.getElementById('sliderCostHeart').value = cost.heart;
-        document.getElementById('sliderCostTime').value = cost.time;
-        document.getElementById('sliderCostKnowledge').value = cost.knowledge;
-        document.getElementById('sliderRewardHeart').value = reward.heart;
-        document.getElementById('sliderRewardTime').value = reward.time;
-        document.getElementById('sliderRewardKnowledge').value = reward.knowledge;
+        const costH = Number(item.cost?.heart) || 0;
+        const costT = Number(item.cost?.time) || 0;
+        const costK = Number(item.cost?.knowledge) || 0;
+
+        const rewardH = Number(item.reward?.heart) || 0;
+        const rewardT = Number(item.reward?.time) || 0;
+        const rewardK = Number(item.reward?.knowledge) || 0;
+
+        document.getElementById('sliderCostHeart').value = costH;
+        document.getElementById('sliderCostTime').value = costT;
+        document.getElementById('sliderCostKnowledge').value = costK;
+        document.getElementById('sliderRewardHeart').value = rewardH;
+        document.getElementById('sliderRewardTime').value = rewardT;
+        document.getElementById('sliderRewardKnowledge').value = rewardK;
       } else {
         document.getElementById('formItemId').value = '';
         randomizeFormSliders();
@@ -1576,14 +1625,14 @@
       const linkUrl = document.getElementById('formLinkUrl').value.trim();
 
       const cost = {
-        heart: parseInt(document.getElementById('sliderCostHeart').value) || 0,
-        time: parseInt(document.getElementById('sliderCostTime').value) || 0,
-        knowledge: parseInt(document.getElementById('sliderCostKnowledge').value) || 0
+        heart: Number(document.getElementById('sliderCostHeart').value) || 0,
+        time: Number(document.getElementById('sliderCostTime').value) || 0,
+        knowledge: Number(document.getElementById('sliderCostKnowledge').value) || 0
       };
       const reward = {
-        heart: parseInt(document.getElementById('sliderRewardHeart').value) || 0,
-        time: parseInt(document.getElementById('sliderRewardTime').value) || 0,
-        knowledge: parseInt(document.getElementById('sliderRewardKnowledge').value) || 0
+        heart: Number(document.getElementById('sliderRewardHeart').value) || 0,
+        time: Number(document.getElementById('sliderRewardTime').value) || 0,
+        knowledge: Number(document.getElementById('sliderRewardKnowledge').value) || 0
       };
 
       if (id) {
@@ -1651,10 +1700,8 @@
                 ${idx + 1}
               </span>
 
-              <!-- Color Strip Preview Button -->
               <button onclick="openColorPicker(${idx})" title="คลิกเพื่อเปลี่ยนแถบสีหมวดหมู่" class="w-7 h-5 rounded-md shadow-sm border border-slate-200 dark:border-slate-600 hover:scale-105 transition shrink-0" style="background: ${meta.theme.gradient};"></button>
 
-              <!-- Icon Selector Button -->
               <button onclick="openIconPicker(${idx})" title="คลิกเพื่อเปลี่ยนไอคอน" class="w-8 h-8 rounded-lg ${meta.theme.bgLight} border ${meta.theme.border} ${meta.theme.text} flex items-center justify-center text-sm hover:scale-105 transition shrink-0">
                 <i class="fa-solid ${escapeHTML(meta.icon)}"></i>
               </button>
@@ -1665,7 +1712,6 @@
               <span class="text-xs text-slate-400 font-mono">(${count})</span>
             </div>
 
-            <!-- Action Buttons -->
             <div class="flex items-center gap-1">
               <button onclick="moveCategoryOrder(${idx}, -1)" ${isFirst ? 'disabled class="p-1.5 text-slate-300 dark:text-slate-600 cursor-not-allowed"' : 'class="p-1.5 text-slate-400 hover:text-brand-green hover:bg-emerald-50 rounded-lg transition"'} title="เลื่อนขึ้น">
                 <i class="fa-solid fa-arrow-up text-xs"></i>
@@ -1902,7 +1948,6 @@
     }
 
     function initTheme() {
-      // ค่าเริ่มต้นเป็นโหมดมืด (Night Mode) เว้นแต่ผู้ใช้เคยตั้งค่าเป็น 'false' ชัดเจน
       const savedTheme = localStorage.getItem('rnd_theme_dark');
       const isDark = (savedTheme === null || savedTheme === 'true');
       
