@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-  <title>Random Data Card Hub (Income & Financial Edition)</title>
+  <title>Random Data Card Hub (Weighted Random Edition)</title>
 
   <!-- Google Fonts: Prompt & Inter -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -216,14 +216,14 @@
       <div id="homeHeroBanner" class="rounded-3xl p-6 sm:p-8 text-white shadow-xl relative overflow-hidden border border-white/10 btn-theme-action">
         <div class="relative z-10 max-w-2xl space-y-3">
           <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-black/20 backdrop-blur border border-white/20 text-xs font-semibold">
-            <i class="fa-solid fa-wallet"></i>
-            <span>ระบบสุ่มการ์ดข้อมูลรายได้และการเงิน อัจฉริยะ</span>
+            <i class="fa-solid fa-chart-pie"></i>
+            <span>ระบบสุ่มการ์ดข้อมูลแบบถ่วงน้ำหนักเปอร์เซ็นต์ (Weighted Random)</span>
           </div>
           <h1 class="text-2xl sm:text-4xl font-extrabold tracking-tight leading-snug">
             เลือกหมวดหมู่ที่ต้องการสุ่มข้อมูล
           </h1>
           <p class="text-sm sm:text-base opacity-90 font-light leading-relaxed">
-            เลือกหมวดหมู่ด้านล่าง จากนั้นกดปุ่มเพื่อเริ่มสุ่มข้อมูลแบบ Pop-up แสดงผลลัพธ์รายได้และเงื่อนไขทันที
+            เลือกหมวดหมู่ด้านล่างเพื่อเริ่มสุ่มข้อมูลตามอัตราเปอร์เซ็นต์ที่กำหนดไว้
           </p>
         </div>
       </div>
@@ -300,7 +300,7 @@
               <span>สุ่มข้อมูล</span>
               <span class="text-xs font-mono font-normal bg-black/20 px-2.5 py-1 rounded-full uppercase tracking-widest hidden sm:inline">Space</span>
             </button>
-            <p class="text-xs text-slate-400 mt-3 font-medium">กดปุ่มหรือเคาะ Spacebar เพื่อสุ่มและเปิด Pop-up รายละเอียด</p>
+            <p class="text-xs text-slate-400 mt-3 font-medium">สุ่มโดยคำนึงถึงค่าน้ำหนักโอกาส (Weight) ของแต่ละใบ</p>
           </div>
 
         </div>
@@ -337,12 +337,13 @@
               <tr>
                 <th class="py-3 px-4 w-12 text-center">#</th>
                 <th class="py-3 px-4">หัวข้อ</th>
-                <th class="py-3 px-4 w-28 text-red-600">ราคา</th>
-                <th class="py-3 px-4 w-32 text-green-500">Active Income</th>
-                <th class="py-3 px-4 w-32 text-emerald-600">Passive Income</th>
-                <th class="py-3 px-4 w-28">หมวดหมู่</th>
-                <th class="py-3 px-4 w-32">สิ่งที่ต้องใช้ (0-10)</th>
-                <th class="py-3 px-4 w-32">สิ่งที่ได้รับ (0-10)</th>
+                <th class="py-3 px-4 w-28 text-amber-500">โอกาสสุ่ม</th>
+                <th class="py-3 px-4 w-24 text-red-600">ราคา</th>
+                <th class="py-3 px-4 w-28 text-green-500">Active</th>
+                <th class="py-3 px-4 w-28 text-emerald-600">Passive</th>
+                <th class="py-3 px-4 w-24">หมวดหมู่</th>
+                <th class="py-3 px-4 w-28">สิ่งที่ต้องใช้</th>
+                <th class="py-3 px-4 w-28">สิ่งที่ได้รับ</th>
                 <th class="py-3 px-4 w-20 text-right">จัดการ</th>
               </tr>
             </thead>
@@ -572,10 +573,7 @@
       <!-- Pop-up Footer: Active & Passive Income อยู่ด้านบนของ ราคา (ซ่อนรายการที่เป็น 0) -->
       <div class="pt-3 border-t border-slate-100 dark:border-slate-700 space-y-3">
         
-        <!-- แถบแสดง Active & Passive Income (ซ่อนทั้งแถบหากไม่มีรายได้เลย) -->
         <div id="popupIncomeContainer" class="hidden grid-cols-1 sm:grid-cols-2 gap-2.5 p-3 rounded-2xl bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700">
-          
-          <!-- Active Income: สีเขียวอ่อน ขนาด 26px (ซ่อนเมื่อเป็น 0) -->
           <div id="popupActiveIncomeBox" class="hidden items-center justify-between sm:justify-start gap-3 px-2">
             <div class="flex items-center gap-1.5 text-xs font-bold text-slate-500 dark:text-slate-400">
               <i class="fa-solid fa-hand-holding-dollar text-green-400 text-sm"></i>
@@ -586,7 +584,6 @@
             </div>
           </div>
 
-          <!-- Passive Income: สีเขียวเข้ม ขนาด 26px (ซ่อนเมื่อเป็น 0) -->
           <div id="popupPassiveIncomeBox" class="hidden items-center justify-between sm:justify-start gap-3 px-2 border-t sm:border-t-0 sm:border-l border-slate-200 dark:border-slate-700 pt-2 sm:pt-0 sm:pl-3">
             <div class="flex items-center gap-1.5 text-xs font-bold text-slate-500 dark:text-slate-400">
               <i class="fa-solid fa-seedling text-emerald-600 text-sm"></i>
@@ -596,17 +593,14 @@
               <span id="popupPassiveIncomeVal">0</span><span class="text-xs ml-1 font-sans font-normal text-slate-400">฿/ด.</span>
             </div>
           </div>
-
         </div>
 
-        <!-- แถวล่าง: ปุ่มปิด, ราคา (ตัวสีแดง ขนาด 18px), และปุ่มสุ่มใหม่ -->
         <div class="flex flex-wrap items-center justify-between gap-3 pt-1">
           <button onclick="closeResultModal()" class="px-4 py-2.5 rounded-xl text-slate-600 dark:text-slate-300 bg-slate-100 dark:bg-slate-700 hover:bg-slate-200 text-sm font-semibold transition">
             ปิด
           </button>
 
           <div class="flex items-center gap-3 ml-auto">
-            <!-- ราคา: ตัวหนังสือสีแดง ขนาด 18px -->
             <div id="popupPriceBadge" class="px-4 py-2 rounded-xl bg-red-50 dark:bg-red-950/40 border border-red-200 dark:border-red-900/60 flex items-center gap-2 shadow-sm">
               <span class="text-xs text-slate-500 dark:text-slate-400 font-sans font-medium">ราคา:</span>
               <span id="popupPriceValue" class="text-red-600 font-mono font-black text-[18px]">฿0</span>
@@ -637,7 +631,8 @@
           <label class="block text-xs font-bold uppercase text-slate-600 dark:text-slate-300 mb-1">หัวข้อ / ชื่อเรื่อง <span class="text-rose-500">*</span></label>
           <input type="text" id="formTitle" required placeholder="ระบุหัวข้อข้อมูล..." class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded-xl px-3.5 py-2.5 text-sm focus:ring-2 focus:ring-red-600">
         </div>
-        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+        
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
           <div>
             <label class="block text-xs font-bold uppercase text-slate-600 dark:text-slate-300 mb-1">หมวดหมู่ <span class="text-rose-500">*</span></label>
             <div class="flex gap-1.5">
@@ -648,9 +643,17 @@
           <div>
             <label class="block text-xs font-bold uppercase text-slate-600 dark:text-slate-300 mb-1">ราคา (บาท / ฿)</label>
             <div class="relative">
-              <input type="number" id="formPrice" min="0" step="any" placeholder="0 หรือ ปล่อยว่างถ้าฟรี" class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded-xl pl-8 pr-3 py-2 text-sm focus:ring-2 focus:ring-red-600">
+              <input type="number" id="formPrice" min="0" step="any" placeholder="0" class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded-xl pl-8 pr-3 py-2 text-sm focus:ring-2 focus:ring-red-600">
               <span class="absolute left-3 top-2 text-slate-400 font-bold text-xs">฿</span>
             </div>
+          </div>
+          <!-- ช่องตั้งค่าน้ำหนักโอกาสสุ่ม (Weight) -->
+          <div>
+            <label class="block text-xs font-bold uppercase text-amber-500 mb-1 flex items-center gap-1">
+              <i class="fa-solid fa-scale-balanced text-xs"></i>
+              <span>น้ำหนักโอกาส (Weight)</span>
+            </label>
+            <input type="number" id="formWeight" min="1" step="1" value="10" placeholder="10" class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded-xl px-3 py-2 text-sm focus:ring-2 focus:ring-amber-500 font-mono font-bold">
           </div>
         </div>
 
@@ -925,7 +928,7 @@
   <script>
     const GOOGLE_SHEET_API_URL = "https://script.google.com/macros/s/AKfycbzq9oD33K3nf_r2JRq5RjCafAQIvt2o9ywvJ1EvXvVg4l9QyUalIuQvxxT7zQ890nR1/exec";
 
-    // ข้อมูลเริ่มต้นสำหรับสำรองการแสดงผล พร้อม Active/Passive Income
+    // ข้อมูลเริ่มต้นสำหรับสำรองการแสดงผล พร้อมค่าน้ำหนักโอกาส (Weight)
     const DEFAULT_INITIAL_CATEGORIES = [
       { name: "ทั่วไป", icon: "fa-folder", color: "red" },
       { name: "การทำงาน", icon: "fa-briefcase", color: "slate" },
@@ -941,6 +944,7 @@
         subtitle: "การบริหารเวลาและเพิ่ม Productivity",
         category: "การทำงาน",
         price: 350,
+        weight: 70, // โอกาสออกบ่อย
         activeIncome: 15000,
         passiveIncome: 0,
         description: "สละเวลา 15 นาทีจัดลำดับความสำคัญของงานที่ต้องทำ 3 อันดับแรก เพื่อความชัดเจนในการลงมือทำ",
@@ -954,6 +958,7 @@
         subtitle: "รีเฟรชร่างกายยามเช้า",
         category: "สุขภาพ",
         price: 0,
+        weight: 20, // โอกาสออกปานกลาง
         activeIncome: 0,
         passiveIncome: 500,
         description: "ช่วยกระตุ้นระบบขับถ่ายและการไหลเวียนโลหิตหลังร่างกายพักผ่อนมาตลอดทั้งคืน",
@@ -967,6 +972,7 @@
         subtitle: "สร้างกระแสเงินสดต่อเนื่อง",
         category: "การเงิน",
         price: 5000,
+        weight: 10, // โอกาสออกยาก
         activeIncome: 0,
         passiveIncome: 3500,
         description: "จัดพอร์ตลงทุนระยะยาว เพื่อรับเงินปันผลสม่ำเสมอในทุกไตรมาส",
@@ -1096,6 +1102,22 @@
           osc.stop(ctx.currentTime + idx * 0.06 + 0.35);
         });
       } catch (e) {}
+    }
+
+    // ฟังก์ชันคำนวณสุ่มแบบถ่วงน้ำหนัก (Weighted Random Algorithm)
+    function pickWeightedItem(itemList) {
+      if (!itemList || itemList.length === 0) return null;
+      const totalWeight = itemList.reduce((sum, item) => sum + (Number(item.weight) > 0 ? Number(item.weight) : 1), 0);
+      let randomNum = Math.random() * totalWeight;
+
+      for (let i = 0; i < itemList.length; i++) {
+        const w = Number(itemList[i].weight) > 0 ? Number(itemList[i].weight) : 1;
+        if (randomNum < w) {
+          return { item: itemList[i], index: i };
+        }
+        randomNum -= w;
+      }
+      return { item: itemList[itemList.length - 1], index: itemList.length - 1 };
     }
 
     window.addEventListener('DOMContentLoaded', () => {
@@ -1449,7 +1471,21 @@
 
         if (counter >= maxFlips) {
           clearInterval(interval);
-          let selectedItem = isUnique ? drawPool.splice(Math.floor(Math.random() * drawPool.length), 1)[0] : eligible[Math.floor(Math.random() * eligible.length)];
+          
+          let selectedItem = null;
+          if (isUnique) {
+            const picked = pickWeightedItem(drawPool);
+            if (picked) {
+              selectedItem = picked.item;
+              drawPool.splice(picked.index, 1);
+            }
+          } else {
+            const picked = pickWeightedItem(eligible);
+            if (picked) {
+              selectedItem = picked.item;
+            }
+          }
+
           updatePoolUI();
           logHistory(selectedItem);
           playSuccessChime();
@@ -1478,7 +1514,7 @@
       document.getElementById('popupCategoryBadge').className = `px-3.5 py-1.5 rounded-full text-xs font-bold tracking-wide uppercase border flex items-center gap-1.5 shadow-sm transition-colors ${meta.theme.badge}`;
       document.getElementById('popupIndexBadge').innerText = `#${item.id}`;
 
-      // ราคา: สีแดง ตัวอักษรขนาด 18px (ขยายขึ้น 1 ระดับ)
+      // ราคา: สีแดง ตัวอักษรขนาด 18px
       const priceVal = parseFloat(item.price);
       const priceValueEl = document.getElementById('popupPriceValue');
       priceValueEl.innerText = (!isNaN(priceVal) && priceVal > 0) ? `฿${priceVal.toLocaleString()}` : 'FREE';
@@ -1509,7 +1545,6 @@
         passiveBox.classList.remove('flex');
       }
 
-      // หากทั้งคู่เป็น 0 ซ่อนกล่องคอนเทนเนอร์รายได้ทั้งหมด
       if (activeInc === 0 && passiveInc === 0) {
         incomeContainer.classList.add('hidden');
         incomeContainer.classList.remove('grid');
@@ -1526,7 +1561,7 @@
       const rewardT = Number(item.reward?.time) || 0;
       const rewardK = Number(item.reward?.knowledge) || 0;
 
-      // จัดการซ่อน/แสดง รายการสิ่งที่ต้องใช้ (ซ่อนถ้าเป็น 0)
+      // ซ่อน/แสดง รายการสิ่งที่ต้องใช้ (ซ่อนถ้าเป็น 0)
       const rowCostH = document.getElementById('cost-row-heart');
       const rowCostT = document.getElementById('cost-row-time');
       const rowCostK = document.getElementById('cost-row-knowledge');
@@ -1562,7 +1597,7 @@
         emptyCostNotice.classList.add('hidden');
       }
 
-      // จัดการซ่อน/แสดง รายการสิ่งที่ได้รับ (ซ่อนถ้าเป็น 0)
+      // ซ่อน/แสดง รายการสิ่งที่ได้รับ (ซ่อนถ้าเป็น 0)
       const rowRewH = document.getElementById('reward-row-heart');
       const rowRewT = document.getElementById('reward-row-time');
       const rowRewK = document.getElementById('reward-row-knowledge');
@@ -1581,7 +1616,7 @@
         document.getElementById('popup-reward-time-val').innerText = `+${rewardT}`;
         document.getElementById('popup-reward-time-bar').style.width = `${rewardT * 10}%`;
       } else {
-        rowRewT.classList.add('hidden');
+        rowRewH.classList.add('hidden');
       }
 
       if (rewardK > 0) {
@@ -1687,6 +1722,7 @@
         title: item.title,
         category: item.category,
         price: item.price,
+        weight: item.weight,
         activeIncome: item.activeIncome,
         passiveIncome: item.passiveIncome,
         cost: item.cost,
@@ -1765,6 +1801,9 @@
         return matchesQuery && matchesCat;
       });
 
+      // รวมผลรวมน้ำหนักเพื่อคำนวณ % โอกาส
+      const totalFilteredWeight = filtered.reduce((sum, it) => sum + (Number(it.weight) > 0 ? Number(it.weight) : 1), 0);
+
       const desktopTbody = document.getElementById('tableBodyDesktop');
       const mobileList = document.getElementById('tableBodyMobile');
       const emptyState = document.getElementById('emptyDataState');
@@ -1797,11 +1836,19 @@
           const passiveFormatted = (!isNaN(passiveNum) && passiveNum > 0) ? `+฿${passiveNum.toLocaleString()}` : '<span class="text-slate-400">-</span>';
 
           const meta = getCategoryMeta(item.category);
+          
+          // คำนวณเปอร์เซ็นต์โอกาส
+          const w = Number(item.weight) > 0 ? Number(item.weight) : 1;
+          const chancePercent = totalFilteredWeight > 0 ? ((w / totalFilteredWeight) * 100).toFixed(1) : 0;
 
           return `
             <tr class="hover:bg-slate-50 dark:hover:bg-slate-700/40 transition">
               <td class="py-3 px-4 text-center font-mono text-xs text-slate-400">${idx + 1}</td>
               <td class="py-3 px-4 font-bold text-slate-800 dark:text-white">${escapeHTML(item.title)}</td>
+              <td class="py-3 px-4 font-mono font-bold text-xs text-amber-500">
+                <span>${chancePercent}%</span>
+                <span class="text-[10px] text-slate-400 ml-1">(${w})</span>
+              </td>
               <td class="py-3 px-4 font-mono font-black text-xs text-red-600">${priceFormatted}</td>
               <td class="py-3 px-4 font-mono font-bold text-xs text-green-500">${activeFormatted}</td>
               <td class="py-3 px-4 font-mono font-black text-xs text-emerald-600 dark:text-emerald-400">${passiveFormatted}</td>
@@ -1845,11 +1892,17 @@
           const activeNum = parseFloat(item.activeIncome) || 0;
           const passiveNum = parseFloat(item.passiveIncome) || 0;
 
+          const w = Number(item.weight) > 0 ? Number(item.weight) : 1;
+          const chancePercent = totalFilteredWeight > 0 ? ((w / totalFilteredWeight) * 100).toFixed(1) : 0;
+
           return `
             <div class="p-3 bg-white dark:bg-slate-800 rounded-xl space-y-2 border border-slate-100 dark:border-slate-700">
               <div class="flex justify-between items-start">
                 <div>
-                  <span class="text-[10px] px-2 py-0.5 rounded-full font-semibold border ${meta.theme.badge}">${escapeHTML(item.category)}</span>
+                  <div class="flex items-center gap-2">
+                    <span class="text-[10px] px-2 py-0.5 rounded-full font-semibold border ${meta.theme.badge}">${escapeHTML(item.category)}</span>
+                    <span class="text-[10px] font-mono font-bold text-amber-500 bg-amber-50 dark:bg-amber-950/40 px-2 py-0.5 rounded-md border border-amber-200 dark:border-amber-800">โอกาส: ${chancePercent}%</span>
+                  </div>
                   <h4 class="font-bold text-sm text-slate-800 dark:text-white mt-1">${escapeHTML(item.title)}</h4>
                 </div>
                 <div class="flex gap-1">
@@ -1896,6 +1949,7 @@
         document.getElementById('formSubtitle').value = item.subtitle || '';
         document.getElementById('formCategory').value = item.category;
         document.getElementById('formPrice').value = item.price || '';
+        document.getElementById('formWeight').value = item.weight || 10;
         document.getElementById('formActiveIncome').value = item.activeIncome || '';
         document.getElementById('formPassiveIncome').value = item.passiveIncome || '';
         document.getElementById('formDescription').value = item.description || '';
@@ -1918,6 +1972,7 @@
         document.getElementById('sliderRewardKnowledge').value = rewardK;
       } else {
         document.getElementById('formItemId').value = '';
+        document.getElementById('formWeight').value = 10;
         randomizeFormSliders();
       }
 
@@ -1953,6 +2008,7 @@
       const subtitle = document.getElementById('formSubtitle').value.trim();
       const category = document.getElementById('formCategory').value;
       const price = parseFloat(document.getElementById('formPrice').value) || 0;
+      const weight = Math.max(1, parseInt(document.getElementById('formWeight').value, 10) || 10);
       const activeIncome = parseFloat(document.getElementById('formActiveIncome').value) || 0;
       const passiveIncome = parseFloat(document.getElementById('formPassiveIncome').value) || 0;
       const description = document.getElementById('formDescription').value.trim();
@@ -1973,12 +2029,12 @@
       if (id) {
         const index = items.findIndex(i => i.id === id);
         if (index !== -1) {
-          items[index] = { ...items[index], title, subtitle, category, price, activeIncome, passiveIncome, description, imageUrl, linkUrl, cost, reward };
+          items[index] = { ...items[index], title, subtitle, category, price, weight, activeIncome, passiveIncome, description, imageUrl, linkUrl, cost, reward };
         }
       } else {
         items.unshift({
           id: `c-${Date.now().toString().slice(-4)}`,
-          title, subtitle, category, price, activeIncome, passiveIncome, description, imageUrl, linkUrl, cost, reward,
+          title, subtitle, category, price, weight, activeIncome, passiveIncome, description, imageUrl, linkUrl, cost, reward,
           favorite: false,
           createdAt: Date.now()
         });
