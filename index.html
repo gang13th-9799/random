@@ -225,8 +225,8 @@
         <div class="absolute -right-10 -bottom-10 w-48 h-48 bg-emerald-400/20 rounded-full blur-2xl"></div>
         <div class="relative z-10 max-w-2xl space-y-3">
           <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/10 backdrop-blur border border-white/20 text-xs font-semibold text-emerald-200">
-            <i class="fa-solid fa-shapes"></i>
-            <span>เลือกหมวดหมู่เพื่อเริ่มสุ่มข้อมูล</span>
+            <i class="fa-solid fa-palette"></i>
+            <span>ระบบเลือกแถบสีหมวดหมู่แบบใหม่</span>
           </div>
           <h1 class="text-2xl sm:text-4xl font-extrabold tracking-tight">
             เลือกหมวดหมู่ที่ต้องการสุ่มข้อมูล
@@ -244,7 +244,7 @@
             <span>หมวดหมู่ทั้งหมดในระบบ</span>
           </h2>
           <button onclick="openCategoryModal()" class="text-xs font-semibold text-brand-green hover:underline flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-emerald-50 dark:bg-emerald-950/60 border border-emerald-200 dark:border-emerald-800">
-            <i class="fa-solid fa-gear"></i> จัดการหมวดหมู่ (สี & ไอคอน)
+            <i class="fa-solid fa-gear"></i> จัดการหมวดหมู่ (แถบสี & ไอคอน)
           </button>
         </div>
         <div id="categoryCardsGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3.5 sm:gap-4"></div>
@@ -264,10 +264,8 @@
       </div>
     </section>
 
-    <!-- VIEW 2: RANDOM DRAW VIEW (MINIMALIST: แสดงแค่ชื่อหมวดหมู่และปุ่มสุ่ม) -->
+    <!-- VIEW 2: RANDOM DRAW VIEW (MINIMALIST) -->
     <section id="view-draw" class="hidden space-y-6 animate-pop-in">
-      
-      <!-- Top Navigation & Options -->
       <div class="max-w-xl mx-auto flex items-center justify-between">
         <button onclick="switchTab('categories')" class="px-3.5 py-2 text-xs font-semibold text-slate-700 dark:text-slate-200 bg-white dark:bg-slate-800 hover:bg-slate-100 dark:hover:bg-slate-700 rounded-xl transition flex items-center gap-2 border border-slate-200 dark:border-slate-700 shadow-sm">
           <i class="fa-solid fa-arrow-left"></i>
@@ -283,15 +281,15 @@
         </div>
       </div>
 
-      <!-- MAIN DRAW STAGE CARD: มีแค่ชื่อหมวดหมู่ และปุ่มสุ่ม -->
+      <!-- MAIN DRAW STAGE CARD -->
       <div class="relative max-w-xl mx-auto">
         <div class="absolute -inset-1 rounded-3xl bg-gradient-to-r from-brand-green/30 via-teal-400/20 to-brand-blue/20 blur-xl opacity-60"></div>
         
         <div class="relative bg-white dark:bg-slate-800 rounded-3xl border border-slate-200 dark:border-slate-700 card-rim-glow p-8 sm:p-12 text-center shadow-xl space-y-8">
           
-          <!-- Selected Category Display -->
+          <!-- Selected Category Display with Strip Effect -->
           <div class="space-y-3">
-            <div class="inline-flex items-center justify-center p-3 rounded-2xl shadow-sm transition-all text-2xl" id="stageCategoryIconWrapper">
+            <div class="inline-flex items-center justify-center p-3.5 rounded-2xl shadow-sm transition-all text-2xl" id="stageCategoryIconWrapper">
               <i id="stageCategoryIcon" class="fa-solid fa-dice"></i>
             </div>
             
@@ -401,9 +399,7 @@
     <button onclick="switchTab('history')" id="m-nav-history" class="flex flex-col items-center gap-1 text-slate-400 font-medium"><i class="fa-solid fa-clock-rotate-left text-lg"></i><span class="text-[10px]">ประวัติ</span></button>
   </nav>
 
-  <!-- ========================================== -->
-  <!-- POP-UP RESULT MODAL: ป็อปอัปแสดงผลลัพธ์ที่สุ่มได้ -->
-  <!-- ========================================== -->
+  <!-- POP-UP RESULT MODAL -->
   <div id="resultModal" class="hidden fixed inset-0 z-50 bg-slate-900/70 backdrop-blur-sm flex items-center justify-center p-3 sm:p-4 overflow-y-auto">
     <div class="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-3xl max-w-2xl w-full p-5 sm:p-7 shadow-2xl relative my-auto animate-pop-in space-y-4">
       
@@ -647,26 +643,29 @@
         <div>
           <h3 class="text-base font-bold text-slate-900 dark:text-white flex items-center gap-2">
             <i class="fa-solid fa-folder-tree text-brand-green"></i>
-            <span>จัดการหมวดหมู่ (สี & ไอคอน)</span>
+            <span>จัดการหมวดหมู่ (แถบสี & ไอคอน)</span>
           </h3>
-          <p class="text-xs text-slate-500 mt-0.5">กดวงกลมสีเพื่อเปลี่ยนสี, กดไอคอนเพื่อเปลี่ยนรูป, หรือกดลูกศรจัดลำดับ</p>
+          <p class="text-xs text-slate-500 mt-0.5">กดแถบสีเพื่อเปลี่ยนสี, กดไอคอนเพื่อเปลี่ยนรูป, หรือกดลูกศรจัดลำดับ</p>
         </div>
         <button onclick="closeCategoryModal()" class="w-8 h-8 rounded-lg text-slate-400 hover:text-slate-700"><i class="fa-solid fa-xmark"></i></button>
       </div>
       
       <div class="pt-3 space-y-4">
-        <!-- Add New Category with Icon & Color Trigger -->
+        <!-- Add New Category with Icon & Color Strip Trigger -->
         <div class="flex items-center gap-2">
-          <button type="button" id="newCatColorBtn" onclick="openColorPicker(-1)" title="เลือกสีหมวดหมู่" class="w-10 h-10 rounded-xl bg-emerald-500 text-white flex items-center justify-center shadow-sm hover:scale-105 transition">
-            <i class="fa-solid fa-palette text-sm"></i>
+          <!-- Color Strip Trigger Button -->
+          <button type="button" id="newCatColorBtn" onclick="openColorPicker(-1)" title="เลือกแถบสีหมวดหมู่" class="h-10 px-3 rounded-xl border border-slate-200 dark:border-slate-600 bg-white dark:bg-slate-700 flex items-center gap-2 hover:bg-slate-100 transition shadow-sm">
+            <span id="newCatColorPill" class="w-5 h-5 rounded-full shadow-sm bg-emerald-500"></span>
+            <i class="fa-solid fa-chevron-down text-[10px] text-slate-400"></i>
           </button>
 
-          <button type="button" id="newCatIconBtn" onclick="openIconPicker(-1)" title="เลือกไอคอน" class="w-10 h-10 rounded-xl bg-slate-100 dark:bg-slate-700 border border-slate-200 dark:border-slate-600 text-brand-green flex items-center justify-center text-lg hover:bg-slate-200 transition">
+          <!-- Icon Trigger Button -->
+          <button type="button" id="newCatIconBtn" onclick="openIconPicker(-1)" title="เลือกไอคอน" class="w-10 h-10 rounded-xl bg-slate-100 dark:bg-slate-700 border border-slate-200 dark:border-slate-600 text-brand-green flex items-center justify-center text-lg hover:bg-slate-200 transition shrink-0">
             <i id="newCatIconPreview" class="fa-solid fa-folder"></i>
           </button>
 
           <input type="text" id="newCategoryInput" placeholder="ชื่อหมวดหมู่ใหม่..." class="flex-1 bg-slate-50 dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded-xl px-3 py-2 text-sm focus:ring-2 focus:ring-brand-green">
-          <button onclick="handleAddCategory()" class="px-4 py-2 bg-brand-green text-white rounded-xl text-sm font-semibold hover:bg-brand-greenHover transition flex items-center gap-1">
+          <button onclick="handleAddCategory()" class="px-4 py-2 bg-brand-green text-white rounded-xl text-sm font-semibold hover:bg-brand-greenHover transition flex items-center gap-1 shrink-0">
             <i class="fa-solid fa-plus text-xs"></i>
             <span>เพิ่ม</span>
           </button>
@@ -678,19 +677,28 @@
     </div>
   </div>
 
-  <!-- Color Picker Modal -->
+  <!-- ========================================== -->
+  <!-- COLOR BAR PICKER MODAL (เลือกแบบแถบสี) -->
+  <!-- ========================================== -->
   <div id="colorPickerModal" class="hidden fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4">
-    <div class="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-3xl max-w-sm w-full p-5 shadow-2xl relative animate-pop-in space-y-3">
+    <div class="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-3xl max-w-md w-full p-5 shadow-2xl relative animate-pop-in space-y-4">
       <div class="flex items-center justify-between pb-2 border-b border-slate-100 dark:border-slate-700">
-        <h4 class="font-bold text-sm text-slate-800 dark:text-white flex items-center gap-2">
-          <i class="fa-solid fa-palette text-brand-green"></i>
-          <span>เลือกสีประจำหมวดหมู่</span>
-        </h4>
+        <div>
+          <h4 class="font-bold text-sm text-slate-800 dark:text-white flex items-center gap-2">
+            <i class="fa-solid fa-palette text-brand-green"></i>
+            <span>เลือกแถบสีประจำหมวดหมู่</span>
+          </h4>
+          <p class="text-xs text-slate-400 mt-0.5">คลิกแถบสีที่ต้องการเพื่อตั้งค่าธีมประจำหมวด</p>
+        </div>
         <button onclick="closeColorPicker()" class="w-7 h-7 rounded-lg text-slate-400 hover:text-slate-700 flex items-center justify-center">
           <i class="fa-solid fa-xmark"></i>
         </button>
       </div>
-      <div class="grid grid-cols-4 gap-3 p-1" id="colorPickerGrid"></div>
+
+      <!-- Color Strips List -->
+      <div class="space-y-2 max-h-80 overflow-y-auto pr-1" id="colorPickerGrid">
+        <!-- Dynamically rendered color bars -->
+      </div>
     </div>
   </div>
 
@@ -745,12 +753,13 @@
     let isDrawing = false;
     let soundEnabled = true;
 
-    // Palette สีที่รองรับ
+    // Palette แถบสี (10 แถบสี พร้อมไล่ระดับ Spectrum Bar)
     const COLOR_PALETTES = {
       emerald: {
         id: "emerald",
-        name: "Emerald Green",
+        name: "เขียวมรกต (Emerald Green)",
         hex: "#059669",
+        gradient: "linear-gradient(90deg, #10B981 0%, #059669 50%, #047857 100%)",
         bgLight: "bg-emerald-50 dark:bg-emerald-950/60",
         border: "border-emerald-200 dark:border-emerald-800",
         text: "text-emerald-700 dark:text-emerald-300",
@@ -759,8 +768,9 @@
       },
       blue: {
         id: "blue",
-        name: "Sky Blue",
+        name: "ฟ้าน้ำทะเล (Sky Blue)",
         hex: "#0284C7",
+        gradient: "linear-gradient(90deg, #38BDF8 0%, #0284C7 50%, #0369A1 100%)",
         bgLight: "bg-sky-50 dark:bg-sky-950/60",
         border: "border-sky-200 dark:border-sky-800",
         text: "text-sky-700 dark:text-sky-300",
@@ -769,8 +779,9 @@
       },
       red: {
         id: "red",
-        name: "Crimson Red",
+        name: "แดงทับทิม (Crimson Red)",
         hex: "#DC2626",
+        gradient: "linear-gradient(90deg, #F87171 0%, #DC2626 50%, #B91C1C 100%)",
         bgLight: "bg-red-50 dark:bg-red-950/60",
         border: "border-red-200 dark:border-red-800",
         text: "text-red-700 dark:text-red-300",
@@ -779,8 +790,9 @@
       },
       purple: {
         id: "purple",
-        name: "Violet Purple",
+        name: "ม่วงลาเวนเดอร์ (Violet Purple)",
         hex: "#9333EA",
+        gradient: "linear-gradient(90deg, #C084FC 0%, #9333EA 50%, #7E22CE 100%)",
         bgLight: "bg-purple-50 dark:bg-purple-950/60",
         border: "border-purple-200 dark:border-purple-800",
         text: "text-purple-700 dark:text-purple-300",
@@ -789,8 +801,9 @@
       },
       amber: {
         id: "amber",
-        name: "Amber Orange",
+        name: "ส้มอำพัน (Amber Gold)",
         hex: "#D97706",
+        gradient: "linear-gradient(90deg, #FBBF24 0%, #D97706 50%, #B45309 100%)",
         bgLight: "bg-amber-50 dark:bg-amber-950/60",
         border: "border-amber-200 dark:border-amber-800",
         text: "text-amber-700 dark:text-amber-300",
@@ -799,8 +812,9 @@
       },
       rose: {
         id: "rose",
-        name: "Bright Rose",
+        name: "ชมพูกุหลาบ (Bright Rose)",
         hex: "#E11D48",
+        gradient: "linear-gradient(90deg, #FB7185 0%, #E11D48 50%, #BE123C 100%)",
         bgLight: "bg-rose-50 dark:bg-rose-950/60",
         border: "border-rose-200 dark:border-rose-800",
         text: "text-rose-700 dark:text-rose-300",
@@ -809,18 +823,42 @@
       },
       indigo: {
         id: "indigo",
-        name: "Deep Indigo",
+        name: "น้ำเงินคราม (Deep Indigo)",
         hex: "#4F46E5",
+        gradient: "linear-gradient(90deg, #818CF8 0%, #4F46E5 50%, #3730A3 100%)",
         bgLight: "bg-indigo-50 dark:bg-indigo-950/60",
         border: "border-indigo-200 dark:border-indigo-800",
         text: "text-indigo-700 dark:text-indigo-300",
         badge: "bg-indigo-100 text-indigo-800 border-indigo-200 dark:bg-indigo-950/80 dark:text-indigo-300 dark:border-indigo-800",
         accent: "text-indigo-600 dark:text-indigo-400"
       },
+      teal: {
+        id: "teal",
+        name: "เขียวอมฟ้า (Ocean Teal)",
+        hex: "#0D9488",
+        gradient: "linear-gradient(90deg, #2DD4BF 0%, #0D9488 50%, #0F766E 100%)",
+        bgLight: "bg-teal-50 dark:bg-teal-950/60",
+        border: "border-teal-200 dark:border-teal-800",
+        text: "text-teal-700 dark:text-teal-300",
+        badge: "bg-teal-100 text-teal-800 border-teal-200 dark:bg-teal-950/80 dark:text-teal-300 dark:border-teal-800",
+        accent: "text-teal-600 dark:text-teal-400"
+      },
+      orange: {
+        id: "orange",
+        name: "ส้มสว่าง (Vibrant Orange)",
+        hex: "#EA580C",
+        gradient: "linear-gradient(90deg, #FB923C 0%, #EA580C 50%, #C2410C 100%)",
+        bgLight: "bg-orange-50 dark:bg-orange-950/60",
+        border: "border-orange-200 dark:border-orange-800",
+        text: "text-orange-700 dark:text-orange-300",
+        badge: "bg-orange-100 text-orange-800 border-orange-200 dark:bg-orange-950/80 dark:text-orange-300 dark:border-orange-800",
+        accent: "text-orange-600 dark:text-orange-400"
+      },
       slate: {
         id: "slate",
-        name: "Cool Slate",
+        name: "เทาโมเดิร์น (Cool Slate)",
         hex: "#475569",
+        gradient: "linear-gradient(90deg, #94A3B8 0%, #475569 50%, #334155 100%)",
         bgLight: "bg-slate-100 dark:bg-slate-700",
         border: "border-slate-300 dark:border-slate-600",
         text: "text-slate-700 dark:text-slate-200",
@@ -1188,7 +1226,6 @@
       if (badge) badge.innerText = `${drawPool.length}/${totalEligible}`;
     }
 
-    // TRIGGER RANDOM DRAW & SHOW POPUP
     function triggerRandomDraw() {
       if (isDrawing) return;
       if (items.length === 0) {
@@ -1230,7 +1267,6 @@
           playSuccessChime();
           launchConfetti();
 
-          // แสดงผลลัพธ์ผ่าน Pop-up Modal
           displayResultPopup(selectedItem);
 
           isDrawing = false;
@@ -1240,7 +1276,6 @@
       }, 70);
     }
 
-    // DISPLAY POPUP RESULT
     function displayResultPopup(item) {
       if (!item) return;
       currentItem = item;
@@ -1255,12 +1290,10 @@
       document.getElementById('popupCategoryBadge').className = `px-3 py-1 rounded-full text-xs font-bold tracking-wide uppercase border flex items-center gap-1.5 shadow-sm transition-colors ${meta.theme.badge}`;
       document.getElementById('popupIndexBadge').innerText = `#${item.id}`;
 
-      // Price Formatting
       const priceVal = parseFloat(item.price);
       const priceValueEl = document.getElementById('popupPriceValue');
       priceValueEl.innerText = (!isNaN(priceVal) && priceVal > 0) ? `฿${priceVal.toLocaleString()}` : 'FREE (ฟรี)';
 
-      // 0 - 10 Gauge Bars
       const cost = item.cost || { heart: 0, time: 0, knowledge: 0 };
       const reward = item.reward || { heart: 0, time: 0, knowledge: 0 };
 
@@ -1283,7 +1316,6 @@
       netGainEl.innerText = (netGain >= 0 ? `+${netGain}` : `${netGain}`);
       netGainEl.className = netGain >= 0 ? 'font-mono font-bold text-brand-green' : 'font-mono font-bold text-brand-red';
 
-      // Image
       const imgContainer = document.getElementById('popupImageContainer');
       const imgEl = document.getElementById('popupImage');
       if (item.imageUrl && item.imageUrl.trim() !== '') {
@@ -1293,7 +1325,6 @@
         imgContainer.classList.add('hidden');
       }
 
-      // External Link
       const linkContainer = document.getElementById('popupLinkContainer');
       const linkEl = document.getElementById('popupActionLink');
       if (item.linkUrl && item.linkUrl.trim() !== '') {
@@ -1337,11 +1368,6 @@
       if (navigator.clipboard) {
         navigator.clipboard.writeText(shareText).then(() => showToast('คัดลอกข้อความแชร์เรียบร้อยแล้ว!', 'success'));
       }
-    }
-
-    function clearCurrentCard() {
-      resetPool();
-      showToast('เติมกองสุ่มเต็ม 100% เรียบร้อยแล้ว', 'info');
     }
 
     function logHistory(item) {
@@ -1410,7 +1436,6 @@
       });
     }
 
-    // Data Table Operations
     function renderDataTable() {
       const query = (document.getElementById('searchInput')?.value || '').toLowerCase().trim();
       const filterCat = document.getElementById('tableCategoryFilter')?.value || 'ALL';
@@ -1481,7 +1506,6 @@
       }
     }
 
-    // Modal & Add/Edit
     function openAddEditModal(itemId = null) {
       updateCategoryDropdowns();
       const modal = document.getElementById('itemModal');
@@ -1550,363 +1574,4 @@
       const linkUrl = document.getElementById('formLinkUrl').value.trim();
 
       const cost = {
-        heart: parseInt(document.getElementById('sliderCostHeart').value) || 0,
-        time: parseInt(document.getElementById('sliderCostTime').value) || 0,
-        knowledge: parseInt(document.getElementById('sliderCostKnowledge').value) || 0
-      };
-      const reward = {
-        heart: parseInt(document.getElementById('sliderRewardHeart').value) || 0,
-        time: parseInt(document.getElementById('sliderRewardTime').value) || 0,
-        knowledge: parseInt(document.getElementById('sliderRewardKnowledge').value) || 0
-      };
-
-      if (id) {
-        const index = items.findIndex(i => i.id === id);
-        if (index !== -1) {
-          items[index] = { ...items[index], title, subtitle, category, price, description, imageUrl, linkUrl, cost, reward };
-        }
-      } else {
-        items.unshift({
-          id: `c-${Date.now().toString().slice(-4)}`,
-          title, subtitle, category, price, description, imageUrl, linkUrl, cost, reward,
-          favorite: false,
-          createdAt: Date.now()
-        });
-      }
-
-      pushToGoogleSheets();
-      resetPool();
-      renderDataTable();
-      closeAddEditModal();
-    }
-
-    function confirmDeleteItem(itemId) {
-      openCustomConfirm('ลบข้อมูลนี้?', 'คุณต้องการลบการ์ดข้อมูลนี้ออกจากระบบและคลาวด์หรือไม่?', () => {
-        items = items.filter(i => i.id !== itemId);
-        pushToGoogleSheets();
-        resetPool();
-        renderDataTable();
-        showToast('ลบรายการข้อมูลเรียบร้อยแล้ว', 'info');
-      });
-    }
-
-    // Category Management
-    function openCategoryModal() {
-      newCategorySelectedIcon = "fa-folder";
-      newCategorySelectedColor = "emerald";
-      document.getElementById('newCatIconPreview').className = "fa-solid fa-folder";
-      updateNewCatColorBtnUI();
-      renderCategoryModalList();
-      document.getElementById('categoryModal').classList.remove('hidden');
-    }
-    
-    function closeCategoryModal() {
-      document.getElementById('categoryModal').classList.add('hidden');
-    }
-
-    function updateNewCatColorBtnUI() {
-      const btn = document.getElementById('newCatColorBtn');
-      const palette = COLOR_PALETTES[newCategorySelectedColor] || COLOR_PALETTES.emerald;
-      btn.style.backgroundColor = palette.hex;
-    }
-
-    function renderCategoryModalList() {
-      const container = document.getElementById('categoryListContainer');
-      container.innerHTML = categories.map((cat, idx) => {
-        const count = items.filter(i => i.category === cat.name).length;
-        const isFirst = idx === 0;
-        const isLast = idx === categories.length - 1;
-        const meta = getCategoryMeta(cat.name);
-        
-        return `
-          <div class="py-2.5 flex items-center justify-between gap-2 group hover:bg-slate-50 dark:hover:bg-slate-700/30 px-2 rounded-xl transition">
-            <div class="flex items-center gap-2 flex-1 min-w-0">
-              <span class="w-5 h-5 rounded-lg bg-slate-100 dark:bg-slate-700 text-slate-500 flex items-center justify-center text-[10px] font-mono font-bold">
-                ${idx + 1}
-              </span>
-
-              <!-- Color Dot Selector -->
-              <button onclick="openColorPicker(${idx})" title="คลิกเพื่อเปลี่ยนสีหมวดหมู่" class="w-6 h-6 rounded-full border-2 border-white dark:border-slate-800 shadow-sm hover:scale-110 transition shrink-0" style="background-color: ${meta.theme.hex};"></button>
-
-              <!-- Icon Selector Button -->
-              <button onclick="openIconPicker(${idx})" title="คลิกเพื่อเปลี่ยนไอคอน" class="w-8 h-8 rounded-lg ${meta.theme.bgLight} border ${meta.theme.border} ${meta.theme.text} flex items-center justify-center text-sm hover:scale-105 transition shrink-0">
-                <i class="fa-solid ${escapeHTML(meta.icon)}"></i>
-              </button>
-
-              <span class="text-sm font-semibold text-slate-800 dark:text-white truncate" title="${escapeHTML(cat.name)}">
-                ${escapeHTML(cat.name)}
-              </span>
-              <span class="text-xs text-slate-400 font-mono">(${count})</span>
-            </div>
-
-            <!-- Action Buttons -->
-            <div class="flex items-center gap-1">
-              <button onclick="moveCategoryOrder(${idx}, -1)" ${isFirst ? 'disabled class="p-1.5 text-slate-300 dark:text-slate-600 cursor-not-allowed"' : 'class="p-1.5 text-slate-400 hover:text-brand-green hover:bg-emerald-50 rounded-lg transition"'} title="เลื่อนขึ้น">
-                <i class="fa-solid fa-arrow-up text-xs"></i>
-              </button>
-              
-              <button onclick="moveCategoryOrder(${idx}, 1)" ${isLast ? 'disabled class="p-1.5 text-slate-300 dark:text-slate-600 cursor-not-allowed"' : 'class="p-1.5 text-slate-400 hover:text-brand-green hover:bg-emerald-50 rounded-lg transition"'} title="เลื่อนลง">
-                <i class="fa-solid fa-arrow-down text-xs"></i>
-              </button>
-
-              <button onclick="promptRenameCategory(${idx})" class="p-1.5 text-slate-400 hover:text-brand-blue hover:bg-sky-50 rounded-lg transition" title="แก้ไขชื่อหมวดหมู่">
-                <i class="fa-solid fa-pen text-xs"></i>
-              </button>
-
-              <button onclick="promptDeleteCategory('${escapeHTML(cat.name)}', ${count})" class="p-1.5 text-slate-400 hover:text-brand-red hover:bg-rose-50 rounded-lg transition" title="ลบหมวดหมู่">
-                <i class="fa-solid fa-trash-can text-xs"></i>
-              </button>
-            </div>
-          </div>
-        `;
-      }).join('');
-    }
-
-    function handleAddCategory() {
-      const input = document.getElementById('newCategoryInput');
-      const name = input.value.trim();
-      if (!name) return;
-
-      const catNames = getCategoryNames();
-      if (catNames.includes(name)) {
-        showToast('มีหมวดหมู่นี้ในระบบแล้ว', 'warning');
-        return;
-      }
-
-      categories.push({
-        name: name,
-        icon: newCategorySelectedIcon || "fa-folder",
-        color: newCategorySelectedColor || "emerald"
-      });
-
-      input.value = '';
-      newCategorySelectedIcon = "fa-folder";
-      newCategorySelectedColor = "emerald";
-      document.getElementById('newCatIconPreview').className = "fa-solid fa-folder";
-      updateNewCatColorBtnUI();
-
-      pushToGoogleSheets();
-      updateCategoryDropdowns();
-      renderCategoryModalList();
-      renderCategoryHomeCards();
-      showToast(`เพิ่มหมวดหมู่ "${name}" สำเร็จ`, 'success');
-    }
-
-    function promptRenameCategory(index) {
-      const oldName = categories[index].name;
-      const newName = prompt('ระบุชื่อหมวดหมู่ใหม่:', oldName);
-      
-      if (!newName || newName.trim() === '' || newName.trim() === oldName) return;
-      const cleanNewName = newName.trim();
-
-      const catNames = getCategoryNames();
-      if (catNames.includes(cleanNewName)) {
-        showToast('มีชื่อหมวดหมู่นี้อยู่แล้ว', 'warning');
-        return;
-      }
-
-      categories[index].name = cleanNewName;
-
-      let updatedCount = 0;
-      items.forEach(item => {
-        if (item.category === oldName) {
-          item.category = cleanNewName;
-          updatedCount++;
-        }
-      });
-
-      if (selectedCategory === oldName) {
-        selectedCategory = cleanNewName;
-        updateStageCategoryUI();
-      }
-
-      pushToGoogleSheets();
-      updateCategoryDropdowns();
-      renderCategoryModalList();
-      renderCategoryHomeCards();
-      renderDataTable();
-      showToast(`เปลี่ยนชื่อเป็น "${cleanNewName}" แล้ว`, 'success');
-    }
-
-    function moveCategoryOrder(index, direction) {
-      const targetIndex = index + direction;
-      if (targetIndex < 0 || targetIndex >= categories.length) return;
-
-      const temp = categories[index];
-      categories[index] = categories[targetIndex];
-      categories[targetIndex] = temp;
-
-      pushToGoogleSheets();
-      renderCategoryModalList();
-      renderCategoryHomeCards();
-      updateCategoryDropdowns();
-      showToast('จัดเรียงลำดับหมวดหมู่เรียบร้อย', 'info');
-    }
-
-    // Color Picker Logic
-    function renderColorPickerGrid() {
-      const grid = document.getElementById('colorPickerGrid');
-      grid.innerHTML = Object.values(COLOR_PALETTES).map(palette => `
-        <button type="button" onclick="selectColor('${palette.id}')" class="p-2.5 rounded-2xl flex flex-col items-center gap-1.5 border border-slate-200 dark:border-slate-700 hover:scale-105 transition hover:shadow-md">
-          <span class="w-8 h-8 rounded-full shadow-sm" style="background-color: ${palette.hex};"></span>
-          <span class="text-[10px] font-bold text-slate-600 dark:text-slate-300 text-center leading-tight">${palette.name.split(' ')[0]}</span>
-        </button>
-      `).join('');
-    }
-
-    function openColorPicker(categoryIndex) {
-      colorPickerTargetIdx = categoryIndex;
-      document.getElementById('colorPickerModal').classList.remove('hidden');
-    }
-
-    function closeColorPicker() {
-      document.getElementById('colorPickerModal').classList.add('hidden');
-    }
-
-    function selectColor(colorId) {
-      if (colorPickerTargetIdx === -1) {
-        newCategorySelectedColor = colorId;
-        updateNewCatColorBtnUI();
-      } else if (colorPickerTargetIdx >= 0 && colorPickerTargetIdx < categories.length) {
-        categories[colorPickerTargetIdx].color = colorId;
-        updateStageCategoryUI();
-        pushToGoogleSheets();
-        renderCategoryModalList();
-        renderCategoryHomeCards();
-        renderDataTable();
-        showToast('เปลี่ยนสีหมวดหมู่เรียบร้อยแล้ว 🎨', 'success');
-      }
-      closeColorPicker();
-    }
-
-    // Icon Picker Logic
-    function renderIconPickerGrid() {
-      const grid = document.getElementById('iconPickerGrid');
-      grid.innerHTML = ICON_PRESETS.map(icon => `
-        <button type="button" onclick="selectIcon('${icon}')" class="w-10 h-10 rounded-xl bg-slate-50 dark:bg-slate-700 hover:bg-emerald-100 border border-slate-200 dark:border-slate-600 text-slate-700 dark:text-slate-200 hover:text-brand-green flex items-center justify-center text-base transition">
-          <i class="fa-solid ${icon}"></i>
-        </button>
-      `).join('');
-    }
-
-    function openIconPicker(categoryIndex) {
-      iconPickerTargetIdx = categoryIndex;
-      document.getElementById('iconPickerModal').classList.remove('hidden');
-    }
-
-    function closeIconPicker() {
-      document.getElementById('iconPickerModal').classList.add('hidden');
-    }
-
-    function selectIcon(iconClass) {
-      if (iconPickerTargetIdx === -1) {
-        newCategorySelectedIcon = iconClass;
-        document.getElementById('newCatIconPreview').className = `fa-solid ${iconClass}`;
-      } else if (iconPickerTargetIdx >= 0 && iconPickerTargetIdx < categories.length) {
-        categories[iconPickerTargetIdx].icon = iconClass;
-        updateStageCategoryUI();
-        pushToGoogleSheets();
-        renderCategoryModalList();
-        renderCategoryHomeCards();
-        showToast('เปลี่ยนไอคอนเรียบร้อยแล้ว', 'success');
-      }
-      closeIconPicker();
-    }
-
-    function promptDeleteCategory(catName, count) {
-      if (categories.length <= 1) {
-        showToast('ต้องมีหมวดหมู่อย่างน้อย 1 หมวดหมู่ในระบบ', 'warning');
-        return;
-      }
-
-      const confirmMsg = count > 0 
-        ? `มีข้อมูลในการ์ด ${count} รายการ ข้อมูลทั้งหมดจะถูกย้ายไปยังหมวดอื่น คุณต้องการลบหมวดหมู่นี้หรือไม่?`
-        : `คุณต้องการลบหมวดหมู่ "${catName}" หรือไม่?`;
-
-      openCustomConfirm(`ลบหมวดหมู่ "${catName}"`, confirmMsg, () => {
-        categories = categories.filter(c => c.name !== catName);
-        const fallback = categories[0].name;
-        items.forEach(i => { if (i.category === catName) i.category = fallback; });
-        
-        if (selectedCategory === catName) {
-          selectedCategory = "ALL";
-          updateStageCategoryUI();
-        }
-
-        pushToGoogleSheets();
-        updateCategoryDropdowns();
-        renderCategoryModalList();
-        renderCategoryHomeCards();
-        renderDataTable();
-        resetPool();
-        showToast(`ลบหมวดหมู่ "${catName}" เรียบร้อยแล้ว`, 'info');
-      });
-    }
-
-    // Tab Navigation
-    function switchTab(tabId) {
-      ['categories', 'draw', 'data', 'history'].forEach(v => {
-        const viewEl = document.getElementById(`view-${v}`);
-        if (viewEl) viewEl.classList.toggle('hidden', v !== tabId);
-
-        const dBtn = document.getElementById(`nav-btn-${v}`);
-        if (dBtn) dBtn.className = v === tabId ? 'px-3.5 py-1.5 rounded-lg text-sm font-semibold transition-all flex items-center space-x-2 bg-white dark:bg-slate-700 text-brand-green shadow-sm' : 'px-3.5 py-1.5 rounded-lg text-sm font-semibold transition-all flex items-center space-x-2 text-slate-600 dark:text-slate-300 hover:text-slate-900';
-
-        const mBtn = document.getElementById(`m-nav-${v}`);
-        if (mBtn) mBtn.className = v === tabId ? 'flex flex-col items-center gap-1 text-brand-green font-bold' : 'flex flex-col items-center gap-1 text-slate-400 font-medium';
-      });
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-    }
-
-    function toggleSound() {
-      soundEnabled = !soundEnabled;
-      document.getElementById('soundIcon').className = soundEnabled ? 'fa-solid fa-volume-high text-xs' : 'fa-solid fa-volume-xmark text-xs text-slate-400';
-    }
-
-    function toggleTheme() {
-      const isDark = document.documentElement.classList.toggle('dark');
-      localStorage.setItem('rnd_theme_dark', isDark ? 'true' : 'false');
-      document.getElementById('themeIcon').className = isDark ? 'fa-solid fa-sun text-xs text-amber-400' : 'fa-solid fa-moon text-xs';
-    }
-
-    function initTheme() {
-      if (localStorage.getItem('rnd_theme_dark') === 'true') {
-        document.documentElement.classList.add('dark');
-        document.getElementById('themeIcon').className = 'fa-solid fa-sun text-xs text-amber-400';
-      }
-    }
-
-    function launchConfetti() {
-      if (typeof confetti === 'function') {
-        confetti({ particleCount: 50, spread: 60, origin: { y: 0.75 }, colors: ['#059669', '#10B981', '#DC2626', '#0284C7', '#FFFFFF'] });
-      }
-    }
-
-    function showToast(msg, type = 'info') {
-      const toast = document.getElementById('toastNotification');
-      const msgEl = document.getElementById('toastMessage');
-      msgEl.innerText = msg;
-      toast.classList.remove('translate-x-full', 'opacity-0');
-      clearTimeout(window._toastTimeout);
-      window._toastTimeout = setTimeout(() => toast.classList.add('translate-x-full', 'opacity-0'), 2600);
-    }
-
-    function openCustomConfirm(title, message, onConfirm) {
-      const modal = document.getElementById('confirmDialogModal');
-      document.getElementById('confirmDialogTitle').innerText = title;
-      document.getElementById('confirmDialogMessage').innerText = message;
-      const confirmBtn = document.getElementById('confirmActionBtn');
-      const cancelBtn = document.getElementById('confirmCancelBtn');
-      const cleanup = () => { modal.classList.add('hidden'); confirmBtn.onclick = null; };
-      confirmBtn.onclick = () => { cleanup(); if (onConfirm) onConfirm(); };
-      cancelBtn.onclick = cleanup;
-      modal.classList.remove('hidden');
-    }
-
-    function escapeHTML(str) {
-      if (!str) return '';
-      return String(str).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#039;');
-    }
-  </script>
-</body>
-</html>
+        heart: parseInt(document.getElementById('sliderCostHeart
