@@ -184,15 +184,15 @@
           <i class="fa-solid fa-folder-tree text-sm"></i>
           <span>หมวดหมู่</span>
         </button>
-        <button id="nav-btn-draw" onclick="switchTab('draw')" class="px-3.5 py-1.5 rounded-lg text-sm font-semibold transition-all flex items-center space-x-2 text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white">
+        <button id="nav-btn-draw" onclick="switchTab('draw')" class="px-3.5 py-1.5 rounded-lg text-sm font-semibold transition-all flex items-center space-x-2 text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:white">
           <i class="fa-solid fa-shuffle text-sm"></i>
           <span>หน้าสุ่ม</span>
         </button>
-        <button id="nav-btn-data" onclick="switchTab('data')" class="px-3.5 py-1.5 rounded-lg text-sm font-semibold transition-all flex items-center space-x-2 text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white">
+        <button id="nav-btn-data" onclick="switchTab('data')" class="px-3.5 py-1.5 rounded-lg text-sm font-semibold transition-all flex items-center space-x-2 text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:white">
           <i class="fa-solid fa-layer-group text-sm"></i>
           <span>คลังข้อมูล (<span id="total-badge-count">0</span>)</span>
         </button>
-        <button id="nav-btn-history" onclick="switchTab('history')" class="px-3.5 py-1.5 rounded-lg text-sm font-semibold transition-all flex items-center space-x-2 text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white">
+        <button id="nav-btn-history" onclick="switchTab('history')" class="px-3.5 py-1.5 rounded-lg text-sm font-semibold transition-all flex items-center space-x-2 text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:white">
           <i class="fa-solid fa-clock-rotate-left text-sm"></i>
           <span>ประวัติ</span>
         </button>
@@ -226,7 +226,7 @@
         <div class="relative z-10 max-w-2xl space-y-3">
           <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/10 backdrop-blur border border-white/20 text-xs font-semibold text-emerald-200">
             <i class="fa-solid fa-palette"></i>
-            <span>ระบบเลือกแถบสีหมวดหมู่แบบใหม่</span>
+            <span>ระบบเลือกแถบแม่สี & ไอคอนหมวดหมู่</span>
           </div>
           <h1 class="text-2xl sm:text-4xl font-extrabold tracking-tight">
             เลือกหมวดหมู่ที่ต้องการสุ่มข้อมูล
@@ -677,7 +677,7 @@
     </div>
   </div>
 
-  <!-- COLOR BAR PICKER MODAL -->
+  <!-- COLOR BAR PICKER MODAL (เลือกแบบแถบสี) -->
   <div id="colorPickerModal" class="hidden fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4">
     <div class="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-3xl max-w-md w-full p-5 shadow-2xl relative animate-pop-in space-y-4">
       <div class="flex items-center justify-between pb-2 border-b border-slate-100 dark:border-slate-700">
@@ -686,7 +686,7 @@
             <i class="fa-solid fa-palette text-brand-green"></i>
             <span>เลือกแถบสีประจำหมวดหมู่</span>
           </h4>
-          <p class="text-xs text-slate-400 mt-0.5">คลิกแถบสีที่ต้องการเพื่อตั้งค่าธีมประจำหมวด</p>
+          <p class="text-xs text-slate-400 mt-0.5">รวมแม่สีหลัก (ขาว ดำ แดง เหลือง เขียว ฟ้า น้ำเงิน ม่วง น้ำตาล)</p>
         </div>
         <button onclick="closeColorPicker()" class="w-7 h-7 rounded-lg text-slate-400 hover:text-slate-700 flex items-center justify-center">
           <i class="fa-solid fa-xmark"></i>
@@ -749,8 +749,117 @@
     let isDrawing = false;
     let soundEnabled = true;
 
-    // Palette แถบสี (10 แถบสี พร้อมไล่ระดับ Spectrum Bar)
+    // Palette แถบสี (รวมแม่สีและสีหลัก: ขาว ดำ แดง เหลือง เขียว ฟ้า น้ำเงิน ม่วง น้ำตาล)
     const COLOR_PALETTES = {
+      // 1. สีขาว
+      white: {
+        id: "white",
+        name: "สีขาว (Pure White)",
+        hex: "#F8FAFC",
+        gradient: "linear-gradient(90deg, #FFFFFF 0%, #F1F5F9 50%, #E2E8F0 100%)",
+        bgLight: "bg-white dark:bg-slate-800",
+        border: "border-slate-300 dark:border-slate-600",
+        text: "text-slate-800 dark:text-slate-100",
+        badge: "bg-white text-slate-800 border-slate-300 dark:bg-slate-700 dark:text-white dark:border-slate-600 shadow-sm",
+        accent: "text-slate-900 dark:text-white"
+      },
+      // 2. สีดำ
+      black: {
+        id: "black",
+        name: "สีดำ (Pitch Black)",
+        hex: "#0F172A",
+        gradient: "linear-gradient(90deg, #334155 0%, #1E293B 50%, #0F172A 100%)",
+        bgLight: "bg-slate-900 text-white",
+        border: "border-slate-800 dark:border-slate-600",
+        text: "text-slate-900 dark:text-slate-100",
+        badge: "bg-slate-900 text-white border-slate-800 dark:bg-black dark:text-white dark:border-slate-700",
+        accent: "text-slate-900 dark:text-slate-100"
+      },
+      // 3. สีแดง (แม่สี)
+      red: {
+        id: "red",
+        name: "สีแดง (Pure Red)",
+        hex: "#EF4444",
+        gradient: "linear-gradient(90deg, #F87171 0%, #EF4444 50%, #B91C1C 100%)",
+        bgLight: "bg-red-50 dark:bg-red-950/60",
+        border: "border-red-200 dark:border-red-800",
+        text: "text-red-700 dark:text-red-300",
+        badge: "bg-red-100 text-red-800 border-red-200 dark:bg-red-950/80 dark:text-red-300 dark:border-red-800",
+        accent: "text-red-600 dark:text-red-400"
+      },
+      // 4. สีเหลือง (แม่สี)
+      yellow: {
+        id: "yellow",
+        name: "สีเหลือง (Sunny Yellow)",
+        hex: "#EAB308",
+        gradient: "linear-gradient(90deg, #FDE047 0%, #EAB308 50%, #CA8A04 100%)",
+        bgLight: "bg-amber-50 dark:bg-amber-950/60",
+        border: "border-amber-300 dark:border-amber-800",
+        text: "text-amber-800 dark:text-amber-300",
+        badge: "bg-amber-100 text-amber-900 border-amber-300 dark:bg-amber-950/80 dark:text-amber-300 dark:border-amber-800",
+        accent: "text-amber-700 dark:text-amber-400"
+      },
+      // 5. สีเขียว (แม่สีแสง)
+      green: {
+        id: "green",
+        name: "สีเขียว (Leaf Green)",
+        hex: "#22C55E",
+        gradient: "linear-gradient(90deg, #4ADE80 0%, #22C55E 50%, #15803D 100%)",
+        bgLight: "bg-green-50 dark:bg-green-950/60",
+        border: "border-green-200 dark:border-green-800",
+        text: "text-green-700 dark:text-green-300",
+        badge: "bg-green-100 text-green-800 border-green-200 dark:bg-green-950/80 dark:text-green-300 dark:border-green-800",
+        accent: "text-green-600 dark:text-green-400"
+      },
+      // 6. สีฟ้า
+      cyan: {
+        id: "cyan",
+        name: "สีฟ้า (Cyan Sky)",
+        hex: "#06B6D4",
+        gradient: "linear-gradient(90deg, #67E8F9 0%, #06B6D4 50%, #0E7490 100%)",
+        bgLight: "bg-cyan-50 dark:bg-cyan-950/60",
+        border: "border-cyan-200 dark:border-cyan-800",
+        text: "text-cyan-700 dark:text-cyan-300",
+        badge: "bg-cyan-100 text-cyan-800 border-cyan-200 dark:bg-cyan-950/80 dark:text-cyan-300 dark:border-cyan-800",
+        accent: "text-cyan-600 dark:text-cyan-400"
+      },
+      // 7. สีน้ำเงิน (แม่สี)
+      blue: {
+        id: "blue",
+        name: "สีน้ำเงิน (Royal Blue)",
+        hex: "#2563EB",
+        gradient: "linear-gradient(90deg, #60A5FA 0%, #2563EB 50%, #1D4ED8 100%)",
+        bgLight: "bg-blue-50 dark:bg-blue-950/60",
+        border: "border-blue-200 dark:border-blue-800",
+        text: "text-blue-700 dark:text-blue-300",
+        badge: "bg-blue-100 text-blue-800 border-blue-200 dark:bg-blue-950/80 dark:text-blue-300 dark:border-blue-800",
+        accent: "text-blue-600 dark:text-blue-400"
+      },
+      // 8. สีม่วง
+      purple: {
+        id: "purple",
+        name: "สีม่วง (Vibrant Purple)",
+        hex: "#A855F7",
+        gradient: "linear-gradient(90deg, #C084FC 0%, #A855F7 50%, #7E22CE 100%)",
+        bgLight: "bg-purple-50 dark:bg-purple-950/60",
+        border: "border-purple-200 dark:border-purple-800",
+        text: "text-purple-700 dark:text-purple-300",
+        badge: "bg-purple-100 text-purple-800 border-purple-200 dark:bg-purple-950/80 dark:text-purple-300 dark:border-purple-800",
+        accent: "text-purple-600 dark:text-purple-400"
+      },
+      // 9. สีน้ำตาล
+      brown: {
+        id: "brown",
+        name: "สีน้ำตาล (Earth Brown)",
+        hex: "#78350F",
+        gradient: "linear-gradient(90deg, #A16207 0%, #78350F 50%, #451A03 100%)",
+        bgLight: "bg-amber-100/70 dark:bg-amber-950/60",
+        border: "border-amber-300 dark:border-amber-900",
+        text: "text-amber-950 dark:text-amber-200",
+        badge: "bg-amber-200/80 text-amber-950 border-amber-300 dark:bg-amber-950 dark:text-amber-200 dark:border-amber-900",
+        accent: "text-amber-900 dark:text-amber-300"
+      },
+      // 10. สีเขียวมรกต (สีแบรนด์หลัก)
       emerald: {
         id: "emerald",
         name: "เขียวมรกต (Emerald Green)",
@@ -761,105 +870,6 @@
         text: "text-emerald-700 dark:text-emerald-300",
         badge: "bg-emerald-100 text-emerald-800 border-emerald-200 dark:bg-emerald-950/80 dark:text-emerald-300 dark:border-emerald-800",
         accent: "text-emerald-600 dark:text-emerald-400"
-      },
-      blue: {
-        id: "blue",
-        name: "ฟ้าน้ำทะเล (Sky Blue)",
-        hex: "#0284C7",
-        gradient: "linear-gradient(90deg, #38BDF8 0%, #0284C7 50%, #0369A1 100%)",
-        bgLight: "bg-sky-50 dark:bg-sky-950/60",
-        border: "border-sky-200 dark:border-sky-800",
-        text: "text-sky-700 dark:text-sky-300",
-        badge: "bg-sky-100 text-sky-800 border-sky-200 dark:bg-sky-950/80 dark:text-sky-300 dark:border-sky-800",
-        accent: "text-sky-600 dark:text-sky-400"
-      },
-      red: {
-        id: "red",
-        name: "แดงทับทิม (Crimson Red)",
-        hex: "#DC2626",
-        gradient: "linear-gradient(90deg, #F87171 0%, #DC2626 50%, #B91C1C 100%)",
-        bgLight: "bg-red-50 dark:bg-red-950/60",
-        border: "border-red-200 dark:border-red-800",
-        text: "text-red-700 dark:text-red-300",
-        badge: "bg-red-100 text-red-800 border-red-200 dark:bg-red-950/80 dark:text-red-300 dark:border-red-800",
-        accent: "text-red-600 dark:text-red-400"
-      },
-      purple: {
-        id: "purple",
-        name: "ม่วงลาเวนเดอร์ (Violet Purple)",
-        hex: "#9333EA",
-        gradient: "linear-gradient(90deg, #C084FC 0%, #9333EA 50%, #7E22CE 100%)",
-        bgLight: "bg-purple-50 dark:bg-purple-950/60",
-        border: "border-purple-200 dark:border-purple-800",
-        text: "text-purple-700 dark:text-purple-300",
-        badge: "bg-purple-100 text-purple-800 border-purple-200 dark:bg-purple-950/80 dark:text-purple-300 dark:border-purple-800",
-        accent: "text-purple-600 dark:text-purple-400"
-      },
-      amber: {
-        id: "amber",
-        name: "ส้มอำพัน (Amber Gold)",
-        hex: "#D97706",
-        gradient: "linear-gradient(90deg, #FBBF24 0%, #D97706 50%, #B45309 100%)",
-        bgLight: "bg-amber-50 dark:bg-amber-950/60",
-        border: "border-amber-200 dark:border-amber-800",
-        text: "text-amber-700 dark:text-amber-300",
-        badge: "bg-amber-100 text-amber-800 border-amber-200 dark:bg-amber-950/80 dark:text-amber-300 dark:border-amber-800",
-        accent: "text-amber-600 dark:text-amber-400"
-      },
-      rose: {
-        id: "rose",
-        name: "ชมพูกุหลาบ (Bright Rose)",
-        hex: "#E11D48",
-        gradient: "linear-gradient(90deg, #FB7185 0%, #E11D48 50%, #BE123C 100%)",
-        bgLight: "bg-rose-50 dark:bg-rose-950/60",
-        border: "border-rose-200 dark:border-rose-800",
-        text: "text-rose-700 dark:text-rose-300",
-        badge: "bg-rose-100 text-rose-800 border-rose-200 dark:bg-rose-950/80 dark:text-rose-300 dark:border-rose-800",
-        accent: "text-rose-600 dark:text-rose-400"
-      },
-      indigo: {
-        id: "indigo",
-        name: "น้ำเงินคราม (Deep Indigo)",
-        hex: "#4F46E5",
-        gradient: "linear-gradient(90deg, #818CF8 0%, #4F46E5 50%, #3730A3 100%)",
-        bgLight: "bg-indigo-50 dark:bg-indigo-950/60",
-        border: "border-indigo-200 dark:border-indigo-800",
-        text: "text-indigo-700 dark:text-indigo-300",
-        badge: "bg-indigo-100 text-indigo-800 border-indigo-200 dark:bg-indigo-950/80 dark:text-indigo-300 dark:border-indigo-800",
-        accent: "text-indigo-600 dark:text-indigo-400"
-      },
-      teal: {
-        id: "teal",
-        name: "เขียวอมฟ้า (Ocean Teal)",
-        hex: "#0D9488",
-        gradient: "linear-gradient(90deg, #2DD4BF 0%, #0D9488 50%, #0F766E 100%)",
-        bgLight: "bg-teal-50 dark:bg-teal-950/60",
-        border: "border-teal-200 dark:border-teal-800",
-        text: "text-teal-700 dark:text-teal-300",
-        badge: "bg-teal-100 text-teal-800 border-teal-200 dark:bg-teal-950/80 dark:text-teal-300 dark:border-teal-800",
-        accent: "text-teal-600 dark:text-teal-400"
-      },
-      orange: {
-        id: "orange",
-        name: "ส้มสว่าง (Vibrant Orange)",
-        hex: "#EA580C",
-        gradient: "linear-gradient(90deg, #FB923C 0%, #EA580C 50%, #C2410C 100%)",
-        bgLight: "bg-orange-50 dark:bg-orange-950/60",
-        border: "border-orange-200 dark:border-orange-800",
-        text: "text-orange-700 dark:text-orange-300",
-        badge: "bg-orange-100 text-orange-800 border-orange-200 dark:bg-orange-950/80 dark:text-orange-300 dark:border-orange-800",
-        accent: "text-orange-600 dark:text-orange-400"
-      },
-      slate: {
-        id: "slate",
-        name: "เทาโมเดิร์น (Cool Slate)",
-        hex: "#475569",
-        gradient: "linear-gradient(90deg, #94A3B8 0%, #475569 50%, #334155 100%)",
-        bgLight: "bg-slate-100 dark:bg-slate-700",
-        border: "border-slate-300 dark:border-slate-600",
-        text: "text-slate-700 dark:text-slate-200",
-        badge: "bg-slate-200 text-slate-800 border-slate-300 dark:bg-slate-700 dark:text-slate-200 dark:border-slate-600",
-        accent: "text-slate-600 dark:text-slate-400"
       }
     };
 
@@ -1084,7 +1094,6 @@
       }
     }
 
-    // Render Categories on Home View
     function renderCategoryHomeCards() {
       const grid = document.getElementById('categoryCardsGrid');
       const emptyState = document.getElementById('emptyCategoryState');
@@ -1126,10 +1135,10 @@
           <div onclick="selectCategoryAndDraw('${escapeHTML(cat.name)}')" class="group cursor-pointer bg-white dark:bg-slate-800 rounded-3xl p-5 border border-slate-200 dark:border-slate-700 hover:${theme.border} shadow-sm hover:shadow-lg hover:-translate-y-1 transition duration-300 flex flex-col justify-between">
             <div>
               <div class="flex items-center justify-between mb-3">
-                <div class="w-12 h-12 rounded-2xl ${theme.bgLight} ${theme.text} flex items-center justify-center text-xl transition group-hover:scale-105">
+                <div class="w-12 h-12 rounded-2xl ${theme.bgLight} ${theme.text} border ${theme.border} flex items-center justify-center text-xl transition group-hover:scale-105">
                   <i class="fa-solid ${escapeHTML(meta.icon)}"></i>
                 </div>
-                <span class="text-xs font-mono font-bold px-2.5 py-1 rounded-full ${theme.bgLight} ${theme.text}">
+                <span class="text-xs font-mono font-bold px-2.5 py-1 rounded-full ${theme.bgLight} ${theme.text} border ${theme.border}">
                   ${count} รายการ
                 </span>
               </div>
@@ -1769,16 +1778,16 @@
       showToast('จัดเรียงลำดับหมวดหมู่เรียบร้อย', 'info');
     }
 
-    // Color Bar Picker Logic
+    // Color Bar Picker Logic (รวมแม่สีและสีหลัก 10 สี)
     function renderColorPickerGrid() {
       const grid = document.getElementById('colorPickerGrid');
       grid.innerHTML = Object.values(COLOR_PALETTES).map(palette => `
         <button type="button" onclick="selectColor('${palette.id}')" class="w-full p-2.5 rounded-2xl flex items-center justify-between border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 hover:border-slate-400 dark:hover:border-slate-500 hover:shadow-md transition text-left group">
           <div class="flex items-center gap-3">
-            <span class="w-7 h-7 rounded-full shadow-inner shrink-0" style="background-color: ${palette.hex};"></span>
+            <span class="w-7 h-7 rounded-full shadow-inner border border-slate-200 shrink-0" style="background-color: ${palette.hex};"></span>
             <div>
               <span class="text-xs font-bold text-slate-800 dark:text-white block">${palette.name}</span>
-              <div class="w-28 sm:w-36 h-2 rounded-full mt-1 opacity-90 group-hover:opacity-100 transition" style="background: ${palette.gradient};"></div>
+              <div class="w-28 sm:w-36 h-2 rounded-full mt-1 opacity-90 group-hover:opacity-100 transition border border-slate-200/50" style="background: ${palette.gradient};"></div>
             </div>
           </div>
           <span class="text-xs font-semibold px-2 py-0.5 rounded-lg border ${palette.badge}">ตัวอย่าง</span>
@@ -1910,7 +1919,7 @@
 
     function launchConfetti() {
       if (typeof confetti === 'function') {
-        confetti({ particleCount: 50, spread: 60, origin: { y: 0.75 }, colors: ['#059669', '#10B981', '#DC2626', '#0284C7', '#FFFFFF'] });
+        confetti({ particleCount: 50, spread: 60, origin: { y: 0.75 }, colors: ['#059669', '#10B981', '#DC2626', '#0284C7', '#FFFFFF', '#EAB308', '#A855F7'] });
       }
     }
 
