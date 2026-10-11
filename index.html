@@ -794,8 +794,8 @@
         </button>
       </div>
 
-      <!-- Setting Section 2: Font Size Slider -->
-      <div class="p-3.5 bg-slate-50 dark:bg-slate-900/60 rounded-2xl border border-slate-200 dark:border-slate-700/80 space-y-2.5">
+      <!-- Setting Section 2: Font Size Slider (ระดับ 5: 30px / 22px) -->
+      <div class="p-3.5 bg-slate-50 dark:bg-slate-900/60 rounded-2xl border border-slate-200 dark:border-slate-700/80 space-y-3">
         <div class="flex items-center justify-between">
           <div class="flex items-center gap-2">
             <i class="fa-solid fa-font text-slate-500 text-xs"></i>
@@ -807,16 +807,20 @@
         <div class="space-y-1">
           <input type="range" min="1" max="10" step="1" value="5" id="fontSizeSlider" oninput="handleFontSizeChange(this.value)" class="w-full text-red-600">
           <div class="flex justify-between text-[10px] text-slate-400 font-mono px-1">
-            <span>ระดับ 1</span>
-            <span class="font-bold">ระดับ 5 (ค่าเริ่มต้น)</span>
-            <span>ระดับ 10</span>
+            <span>ระดับ 1 (22px)</span>
+            <span class="font-bold text-red-500">ระดับ 5 (30px)</span>
+            <span>ระดับ 10 (45px)</span>
           </div>
         </div>
 
-        <div class="p-2 rounded-xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-center">
-          <p id="fontSizePreviewText" class="font-semibold text-slate-800 dark:text-slate-100 leading-normal text-xs">
-            ตัวอย่างขนาดตัวอักษรบนหน้าจอ
-          </p>
+        <!-- Preview Box Real-time -->
+        <div class="p-3 rounded-xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-center space-y-1">
+          <div id="fontSizePreviewTitle" class="app-title-text font-extrabold text-slate-800 dark:text-slate-100">
+            ตัวอย่างหัวข้อ (30px)
+          </div>
+          <div id="fontSizePreviewDesc" class="app-desc-text text-slate-500 dark:text-slate-400">
+            ตัวอย่างรายละเอียดเนื้อหา (22px)
+          </div>
         </div>
 
         <button onclick="resetFontSizeDefault()" class="text-[11px] text-slate-500 hover:underline flex items-center gap-1 mx-auto font-semibold">
@@ -837,7 +841,7 @@
   <!-- Confirm Dialog Modal -->
   <div id="confirmDialogModal" class="hidden fixed inset-0 z-50 bg-slate-950/70 backdrop-blur-sm flex items-center justify-center p-4">
     <div class="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-2xl max-w-sm w-full p-5 shadow-2xl text-center space-y-3 animate-pop-in">
-      <div class="w-12 h-12 rounded-full bg-rose-100 dark:bg-rose-950/80 text-red-600 flex items-center justify-center mx-auto text-xl"><i class="fa-solid fa-triangle-exclamation"></i></div>
+      <div class="w-12 h-12 rounded-full bg-rose-100 dark:bg-rose-950/80 text-brand-red flex items-center justify-center mx-auto text-xl"><i class="fa-solid fa-triangle-exclamation"></i></div>
       <h4 id="confirmDialogTitle" class="font-bold text-base text-slate-800 dark:text-white">ยืนยันการดำเนินการ</h4>
       <p id="confirmDialogMessage" class="text-xs text-slate-500">คุณแน่ใจหรือไม่ว่าต้องการดำเนินการนี้?</p>
       <div class="flex items-center justify-center gap-2 pt-2">
@@ -911,7 +915,7 @@
     let isDrawing = false;
     let soundEnabled = true;
 
-    // Desktop Scale (ระดับ 5: 30px / 22px)
+    // สเกลขนาดตัวอักษร 1-10 (ระดับ 5: หัวข้อ 30px / รายละเอียด 22px)
     const FONT_SCALE_MAP = {
       1: { title: "22px", desc: "16px" },
       2: { title: "24px", desc: "17.5px" },
@@ -923,20 +927,6 @@
       8: { title: "39px", desc: "26.5px" },
       9: { title: "42px", desc: "28px" },
       10: { title: "45px", desc: "30px" }
-    };
-
-    // Mobile Responsive Scale
-    const MOBILE_FONT_SCALE_MAP = {
-      1: { title: "18px", desc: "15px" },
-      2: { title: "20px", desc: "16px" },
-      3: { title: "22px", desc: "17px" },
-      4: { title: "24px", desc: "18px" },
-      5: { title: "26px", desc: "19px" },
-      6: { title: "28px", desc: "20.5px" },
-      7: { title: "30px", desc: "22px" },
-      8: { title: "32px", desc: "23.5px" },
-      9: { title: "34px", desc: "25px" },
-      10: { title: "36px", desc: "26.5px" }
     };
 
     // Palette แถบสี 30 เฉดสี สำหรับหมวดหมู่
@@ -1206,7 +1196,7 @@
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(payload)
         });
-        setCloudStatus('บันทึกออนไลน์สำเร็จ', 'text-emerald-500');
+        setCloudStatus('บันทึกออนไลน์สำเร็จ', 'text-blue-500');
         showToast('บันทึกลง Google Sheets สำเร็จเรียบร้อย ☁️', 'success');
       } catch (err) {
         setCloudStatus('บันทึกออนไลน์ล้มเหลว', 'text-rose-500');
@@ -1857,19 +1847,19 @@
             </div>
 
             <div class="flex items-center gap-1">
-              <button onclick="moveCategoryOrder(${idx}, -1)" ${isFirst ? 'disabled class="p-1.5 text-slate-300 dark:text-slate-600 cursor-not-allowed"' : 'class="p-1.5 text-slate-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition"'} title="เลื่อนขึ้น">
+              <button onclick="moveCategoryOrder(${idx}, -1)" ${isFirst ? 'disabled class="p-1.5 text-slate-300 dark:text-slate-600 cursor-not-allowed"' : 'class="p-1.5 text-slate-400 hover:text-red-600 hover:bg-rose-50 rounded-lg transition"'} title="เลื่อนขึ้น">
                 <i class="fa-solid fa-arrow-up text-xs"></i>
               </button>
               
-              <button onclick="moveCategoryOrder(${idx}, 1)" ${isLast ? 'disabled class="p-1.5 text-slate-300 dark:text-slate-600 cursor-not-allowed"' : 'class="p-1.5 text-slate-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition"'} title="เลื่อนลง">
+              <button onclick="moveCategoryOrder(${idx}, 1)" ${isLast ? 'disabled class="p-1.5 text-slate-300 dark:text-slate-600 cursor-not-allowed"' : 'class="p-1.5 text-slate-400 hover:text-red-600 hover:bg-rose-50 rounded-lg transition"'} title="เลื่อนลง">
                 <i class="fa-solid fa-arrow-down text-xs"></i>
               </button>
 
-              <button onclick="promptRenameCategory(${idx})" class="p-1.5 text-slate-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition" title="แก้ไขชื่อหมวดหมู่">
+              <button onclick="promptRenameCategory(${idx})" class="p-1.5 text-slate-400 hover:text-red-600 hover:bg-sky-50 rounded-lg transition" title="แก้ไขชื่อหมวดหมู่">
                 <i class="fa-solid fa-pen text-xs"></i>
               </button>
 
-              <button onclick="promptDeleteCategory('${escapeHTML(cat.name)}', ${count})" class="p-1.5 text-slate-400 hover:text-red-600 hover:bg-rose-50 rounded-lg transition" title="ลบหมวดหมู่">
+              <button onclick="promptDeleteCategory('${escapeHTML(cat.name)}', ${count})" class="p-1.5 text-slate-400 hover:text-brand-red hover:bg-rose-50 rounded-lg transition" title="ลบหมวดหมู่">
                 <i class="fa-solid fa-trash-can text-xs"></i>
               </button>
             </div>
@@ -2095,10 +2085,7 @@
 
     function handleFontSizeChange(level) {
       const val = parseInt(level, 10);
-      const isMobile = window.innerWidth < 640;
-      const config = isMobile 
-        ? (MOBILE_FONT_SCALE_MAP[val] || MOBILE_FONT_SCALE_MAP[5])
-        : (FONT_SCALE_MAP[val] || FONT_SCALE_MAP[5]);
+      const config = FONT_SCALE_MAP[val] || FONT_SCALE_MAP[5];
 
       document.documentElement.style.setProperty('--app-content-font-size', config.title);
       document.documentElement.style.setProperty('--app-desc-font-size', config.desc);
@@ -2109,18 +2096,21 @@
 
     function updateFontSizeBadge(level) {
       const badge = document.getElementById('fontSizeLevelBadge');
-      const preview = document.getElementById('fontSizePreviewText');
+      const pTitle = document.getElementById('fontSizePreviewTitle');
+      const pDesc = document.getElementById('fontSizePreviewDesc');
       const val = parseInt(level, 10);
-      const isMobile = window.innerWidth < 640;
-      const config = isMobile 
-        ? (MOBILE_FONT_SCALE_MAP[val] || MOBILE_FONT_SCALE_MAP[5])
-        : (FONT_SCALE_MAP[val] || FONT_SCALE_MAP[5]);
+      const config = FONT_SCALE_MAP[val] || FONT_SCALE_MAP[5];
 
       if (badge) {
-        badge.innerText = val === 5 ? `ระดับ 5 (ค่าเริ่มต้น: ${config.title}/${config.desc})` : `ระดับ ${val} (${config.title}/${config.desc})`;
+        badge.innerText = val === 5 ? `ระดับ 5 (เริ่มต้น: ${config.title}/${config.desc})` : `ระดับ ${val} (${config.title}/${config.desc})`;
       }
-      if (preview) {
-        preview.style.fontSize = config.desc;
+      if (pTitle) {
+        pTitle.style.fontSize = config.title;
+        pTitle.innerText = `ตัวอย่างหัวข้อ (${config.title})`;
+      }
+      if (pDesc) {
+        pDesc.style.fontSize = config.desc;
+        pDesc.innerText = `ตัวอย่างรายละเอียด (${config.desc})`;
       }
     }
 
@@ -2189,7 +2179,7 @@
       if (type === 'success') icon.className = 'fa-solid fa-check text-emerald-400';
       else if (type === 'warning') icon.className = 'fa-solid fa-triangle-exclamation text-amber-400';
       else if (type === 'danger') icon.className = 'fa-solid fa-xmark text-rose-400';
-      else icon.className = 'fa-solid fa-circle-info text-red-400';
+      else icon.className = 'fa-solid fa-circle-info text-blue-400';
 
       toast.classList.remove('translate-x-full', 'opacity-0');
       clearTimeout(window._toastTimeout);
