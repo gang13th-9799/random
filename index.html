@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="th">
+<html lang="th" class="dark">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
@@ -209,7 +209,7 @@
           <i id="soundIcon" class="fa-solid fa-volume-high text-xs"></i>
         </button>
         <button id="themeToggleBtn" onclick="toggleTheme()" title="เปลี่ยนธีม สว่าง/มืด" class="w-8 h-8 rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:text-brand-green flex items-center justify-center transition shadow-sm">
-          <i id="themeIcon" class="fa-solid fa-moon text-xs"></i>
+          <i id="themeIcon" class="fa-solid fa-sun text-xs text-amber-400"></i>
         </button>
       </div>
 
@@ -274,7 +274,8 @@
 
         <div class="flex items-center gap-2">
           <label class="flex items-center gap-2 cursor-pointer select-none bg-white dark:bg-slate-800 px-3 py-1.5 rounded-xl border border-slate-200 dark:border-slate-700 shadow-sm">
-            <input type="checkbox" id="uniqueDrawToggle" checked onchange="toggleUniqueDrawMode()" class="sr-only peer">
+            <!-- ตั้งค่าเริ่มต้น: ไม่ checked เพื่อให้เป็นแบบสุ่มซ้ำได้ -->
+            <input type="checkbox" id="uniqueDrawToggle" onchange="toggleUniqueDrawMode()" class="sr-only peer">
             <div class="w-8 h-4 bg-slate-300 rounded-full peer dark:bg-slate-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border after:rounded-full after:h-3 after:w-3 after:transition-all peer-checked:bg-brand-green relative"></div>
             <span class="text-xs font-semibold text-slate-700 dark:text-slate-300">สุ่มไม่ซ้ำ</span>
           </label>
@@ -677,7 +678,7 @@
     </div>
   </div>
 
-  <!-- COLOR BAR PICKER MODAL (เลือกแบบแถบสี) -->
+  <!-- COLOR BAR PICKER MODAL -->
   <div id="colorPickerModal" class="hidden fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4">
     <div class="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-3xl max-w-md w-full p-5 shadow-2xl relative animate-pop-in space-y-4">
       <div class="flex items-center justify-between pb-2 border-b border-slate-100 dark:border-slate-700">
@@ -751,7 +752,6 @@
 
     // Palette แถบสี (รวมแม่สีและสีหลัก: ขาว ดำ แดง เหลือง เขียว ฟ้า น้ำเงิน ม่วง น้ำตาล)
     const COLOR_PALETTES = {
-      // 1. สีขาว
       white: {
         id: "white",
         name: "สีขาว (Pure White)",
@@ -763,7 +763,6 @@
         badge: "bg-white text-slate-800 border-slate-300 dark:bg-slate-700 dark:text-white dark:border-slate-600 shadow-sm",
         accent: "text-slate-900 dark:text-white"
       },
-      // 2. สีดำ
       black: {
         id: "black",
         name: "สีดำ (Pitch Black)",
@@ -775,7 +774,6 @@
         badge: "bg-slate-900 text-white border-slate-800 dark:bg-black dark:text-white dark:border-slate-700",
         accent: "text-slate-900 dark:text-slate-100"
       },
-      // 3. สีแดง (แม่สี)
       red: {
         id: "red",
         name: "สีแดง (Pure Red)",
@@ -787,7 +785,6 @@
         badge: "bg-red-100 text-red-800 border-red-200 dark:bg-red-950/80 dark:text-red-300 dark:border-red-800",
         accent: "text-red-600 dark:text-red-400"
       },
-      // 4. สีเหลือง (แม่สี)
       yellow: {
         id: "yellow",
         name: "สีเหลือง (Sunny Yellow)",
@@ -799,7 +796,6 @@
         badge: "bg-amber-100 text-amber-900 border-amber-300 dark:bg-amber-950/80 dark:text-amber-300 dark:border-amber-800",
         accent: "text-amber-700 dark:text-amber-400"
       },
-      // 5. สีเขียว (แม่สีแสง)
       green: {
         id: "green",
         name: "สีเขียว (Leaf Green)",
@@ -811,7 +807,6 @@
         badge: "bg-green-100 text-green-800 border-green-200 dark:bg-green-950/80 dark:text-green-300 dark:border-green-800",
         accent: "text-green-600 dark:text-green-400"
       },
-      // 6. สีฟ้า
       cyan: {
         id: "cyan",
         name: "สีฟ้า (Cyan Sky)",
@@ -823,7 +818,6 @@
         badge: "bg-cyan-100 text-cyan-800 border-cyan-200 dark:bg-cyan-950/80 dark:text-cyan-300 dark:border-cyan-800",
         accent: "text-cyan-600 dark:text-cyan-400"
       },
-      // 7. สีน้ำเงิน (แม่สี)
       blue: {
         id: "blue",
         name: "สีน้ำเงิน (Royal Blue)",
@@ -835,7 +829,6 @@
         badge: "bg-blue-100 text-blue-800 border-blue-200 dark:bg-blue-950/80 dark:text-blue-300 dark:border-blue-800",
         accent: "text-blue-600 dark:text-blue-400"
       },
-      // 8. สีม่วง
       purple: {
         id: "purple",
         name: "สีม่วง (Vibrant Purple)",
@@ -847,7 +840,6 @@
         badge: "bg-purple-100 text-purple-800 border-purple-200 dark:bg-purple-950/80 dark:text-purple-300 dark:border-purple-800",
         accent: "text-purple-600 dark:text-purple-400"
       },
-      // 9. สีน้ำตาล
       brown: {
         id: "brown",
         name: "สีน้ำตาล (Earth Brown)",
@@ -859,7 +851,6 @@
         badge: "bg-amber-200/80 text-amber-950 border-amber-300 dark:bg-amber-950 dark:text-amber-200 dark:border-amber-900",
         accent: "text-amber-900 dark:text-amber-300"
       },
-      // 10. สีเขียวมรกต (สีแบรนด์หลัก)
       emerald: {
         id: "emerald",
         name: "เขียวมรกต (Emerald Green)",
@@ -1778,7 +1769,7 @@
       showToast('จัดเรียงลำดับหมวดหมู่เรียบร้อย', 'info');
     }
 
-    // Color Bar Picker Logic (รวมแม่สีและสีหลัก 10 สี)
+    // Color Bar Picker Logic
     function renderColorPickerGrid() {
       const grid = document.getElementById('colorPickerGrid');
       grid.innerHTML = Object.values(COLOR_PALETTES).map(palette => `
@@ -1911,9 +1902,16 @@
     }
 
     function initTheme() {
-      if (localStorage.getItem('rnd_theme_dark') === 'true') {
+      // ค่าเริ่มต้นเป็นโหมดมืด (Night Mode) เว้นแต่ผู้ใช้เคยตั้งค่าเป็น 'false' ชัดเจน
+      const savedTheme = localStorage.getItem('rnd_theme_dark');
+      const isDark = (savedTheme === null || savedTheme === 'true');
+      
+      if (isDark) {
         document.documentElement.classList.add('dark');
         document.getElementById('themeIcon').className = 'fa-solid fa-sun text-xs text-amber-400';
+      } else {
+        document.documentElement.classList.remove('dark');
+        document.getElementById('themeIcon').className = 'fa-solid fa-moon text-xs';
       }
     }
 
