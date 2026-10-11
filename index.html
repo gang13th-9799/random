@@ -449,4 +449,1959 @@
                 <span class="text-[11px] bg-red-100 dark:bg-red-950 text-red-700 dark:text-red-300 px-2.5 py-0.5 rounded-full font-mono font-bold">COST</span>
               </div>
 
-              <div id="popup-cost-items-container" class="space-y-2.5
+              <div id="popup-cost-items-container" class="space-y-2.5">
+                <div id="cost-row-heart" class="flex items-center justify-between text-base py-0.5">
+                  <span class="flex items-center gap-2 font-medium text-slate-700 dark:text-slate-300">
+                    <i class="fa-solid fa-heart text-red-600 text-xl w-6 text-center"></i> หัวใจ
+                  </span>
+                  <div class="flex items-center gap-2">
+                    <div class="w-20 sm:w-28 bg-slate-200 dark:bg-slate-700 h-3 rounded-full overflow-hidden">
+                      <div id="popup-cost-heart-bar" class="bg-red-600 h-full rounded-full transition-all duration-300" style="width: 0%;"></div>
+                    </div>
+                    <span id="popup-cost-heart-val" class="font-mono font-black text-lg text-red-600 w-6 text-right">0</span>
+                    <span class="text-xs text-slate-400 font-mono">/10</span>
+                  </div>
+                </div>
+
+                <div id="cost-row-time" class="flex items-center justify-between text-base py-0.5">
+                  <span class="flex items-center gap-2 font-medium text-slate-700 dark:text-slate-300">
+                    <i class="fa-solid fa-clock text-slate-500 text-xl w-6 text-center"></i> เวลา
+                  </span>
+                  <div class="flex items-center gap-2">
+                    <div class="w-20 sm:w-28 bg-slate-200 dark:bg-slate-700 h-3 rounded-full overflow-hidden">
+                      <div id="popup-cost-time-bar" class="bg-slate-500 h-full rounded-full transition-all duration-300" style="width: 0%;"></div>
+                    </div>
+                    <span id="popup-cost-time-val" class="font-mono font-black text-lg text-slate-600 dark:text-slate-400 w-6 text-right">0</span>
+                    <span class="text-xs text-slate-400 font-mono">/10</span>
+                  </div>
+                </div>
+
+                <div id="cost-row-knowledge" class="flex items-center justify-between text-base py-0.5">
+                  <span class="flex items-center gap-2 font-medium text-slate-700 dark:text-slate-300">
+                    <i class="fa-solid fa-brain text-slate-500 dark:text-slate-400 text-xl w-6 text-center"></i> ความรู้
+                  </span>
+                  <div class="flex items-center gap-2">
+                    <div class="w-20 sm:w-28 bg-slate-200 dark:bg-slate-700 h-3 rounded-full overflow-hidden">
+                      <div id="popup-cost-knowledge-bar" class="bg-slate-600 dark:bg-slate-400 h-full rounded-full transition-all duration-300" style="width: 0%;"></div>
+                    </div>
+                    <span id="popup-cost-knowledge-val" class="font-mono font-black text-lg text-slate-700 dark:text-slate-200 w-6 text-right">0</span>
+                    <span class="text-xs text-slate-400 font-mono">/10</span>
+                  </div>
+                </div>
+
+                <div id="cost-empty-notice" class="hidden text-center py-2 text-sm text-slate-400 font-medium">
+                  ไม่มีทรัพยากรที่ต้องใช้
+                </div>
+              </div>
+            </div>
+
+            <!-- สิ่งที่ได้รับ: กรอบสีเขียวชัดเจน -->
+            <div class="bg-gradient-to-br from-emerald-50/80 via-slate-50 to-white dark:from-emerald-950/25 dark:via-slate-800 dark:to-slate-800/90 rounded-2xl p-4 border-2 border-emerald-500 shadow-lg shadow-emerald-500/10 space-y-3">
+              <div class="flex items-center justify-between border-b border-emerald-200 dark:border-emerald-900/60 pb-2">
+                <span class="text-sm font-extrabold text-emerald-600 dark:text-emerald-400 flex items-center gap-2">
+                  <i class="fa-solid fa-gift text-base"></i>
+                  <span>สิ่งที่ได้รับ</span>
+                </span>
+                <span class="text-[11px] bg-emerald-100 dark:bg-emerald-950 text-emerald-700 dark:text-emerald-300 px-2.5 py-0.5 rounded-full font-mono font-bold">REWARD</span>
+              </div>
+
+              <div id="popup-reward-items-container" class="space-y-2.5">
+                <div id="reward-row-heart" class="flex items-center justify-between text-base py-0.5">
+                  <span class="flex items-center gap-2 font-medium text-slate-700 dark:text-slate-300">
+                    <i class="fa-solid fa-heart text-red-600 text-xl w-6 text-center"></i> หัวใจ
+                  </span>
+                  <div class="flex items-center gap-2">
+                    <div class="w-20 sm:w-28 bg-slate-200 dark:bg-slate-700 h-3 rounded-full overflow-hidden">
+                      <div id="popup-reward-heart-bar" class="bg-red-600 h-full rounded-full transition-all duration-300"></div>
+                    </div>
+                    <span id="popup-reward-heart-val" class="font-mono font-black text-lg text-red-600 w-8 text-right">+0</span>
+                    <span class="text-xs text-slate-400 font-mono">/10</span>
+                  </div>
+                </div>
+
+                <div id="reward-row-time" class="flex items-center justify-between text-base py-0.5">
+                  <span class="flex items-center gap-2 font-medium text-slate-700 dark:text-slate-300">
+                    <i class="fa-solid fa-clock text-slate-500 text-xl w-6 text-center"></i> เวลา
+                  </span>
+                  <div class="flex items-center gap-2">
+                    <div class="w-20 sm:w-28 bg-slate-200 dark:bg-slate-700 h-3 rounded-full overflow-hidden">
+                      <div id="popup-reward-time-bar" class="bg-slate-600 dark:bg-slate-400 h-full rounded-full transition-all duration-300"></div>
+                    </div>
+                    <span id="popup-reward-time-val" class="font-mono font-black text-lg text-slate-700 dark:text-slate-300 w-8 text-right">+0</span>
+                    <span class="text-xs text-slate-400 font-mono">/10</span>
+                  </div>
+                </div>
+
+                <div id="reward-row-knowledge" class="flex items-center justify-between text-base py-0.5">
+                  <span class="flex items-center gap-2 font-medium text-slate-700 dark:text-slate-300">
+                    <i class="fa-solid fa-brain text-slate-500 dark:text-slate-400 text-xl w-6 text-center"></i> ความรู้
+                  </span>
+                  <div class="flex items-center gap-2">
+                    <div class="w-20 sm:w-28 bg-slate-200 dark:bg-slate-700 h-3 rounded-full overflow-hidden">
+                      <div id="popup-reward-knowledge-bar" class="bg-slate-600 dark:bg-slate-400 h-full rounded-full transition-all duration-300"></div>
+                    </div>
+                    <span id="popup-reward-knowledge-val" class="font-mono font-black text-lg text-slate-700 dark:text-slate-200 w-8 text-right">+0</span>
+                    <span class="text-xs text-slate-400 font-mono">/10</span>
+                  </div>
+                </div>
+
+                <div id="reward-empty-notice" class="hidden text-center py-2 text-sm text-slate-400 font-medium">
+                  ไม่มีทรัพยากรที่ได้รับ
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+        <div class="flex items-center justify-between pt-2 border-t border-slate-100 dark:border-slate-700 text-xs sm:text-sm">
+          <div id="popupLinkContainer">
+            <a id="popupActionLink" href="#" target="_blank" class="inline-flex items-center gap-1.5 font-semibold text-red-600 dark:text-red-400 hover:underline">
+              <span>อ่านรายละเอียดเพิ่มเติม</span>
+              <i class="fa-solid fa-external-link text-[10px]"></i>
+            </a>
+          </div>
+          <div class="flex items-center gap-1.5 font-mono">
+            <span class="text-slate-400">ความคุ้มค่าสุทธิ:</span>
+            <span id="popupNetGainValue" class="font-bold text-sm sm:text-base">+0</span>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Pop-up Footer: Active & Passive Income อยู่ด้านบนของ ราคา (ซ่อนรายการที่เป็น 0) -->
+      <div class="pt-3 border-t border-slate-100 dark:border-slate-700 space-y-3">
+        
+        <!-- แถบแสดง Active & Passive Income (ซ่อนทั้งแถบหากไม่มีรายได้เลย) -->
+        <div id="popupIncomeContainer" class="hidden grid-cols-1 sm:grid-cols-2 gap-2.5 p-3 rounded-2xl bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700">
+          
+          <!-- Active Income: สีเขียวอ่อน ขนาด 26px (ซ่อนเมื่อเป็น 0) -->
+          <div id="popupActiveIncomeBox" class="hidden items-center justify-between sm:justify-start gap-3 px-2">
+            <div class="flex items-center gap-1.5 text-xs font-bold text-slate-500 dark:text-slate-400">
+              <i class="fa-solid fa-hand-holding-dollar text-green-400 text-sm"></i>
+              <span>Active Income:</span>
+            </div>
+            <div class="font-mono font-black text-[26px] text-green-400 tracking-tight leading-none">
+              <span id="popupActiveIncomeVal">0</span><span class="text-xs ml-1 font-sans font-normal text-slate-400">฿/ด.</span>
+            </div>
+          </div>
+
+          <!-- Passive Income: สีเขียวเข้ม ขนาด 26px (ซ่อนเมื่อเป็น 0) -->
+          <div id="popupPassiveIncomeBox" class="hidden items-center justify-between sm:justify-start gap-3 px-2 border-t sm:border-t-0 sm:border-l border-slate-200 dark:border-slate-700 pt-2 sm:pt-0 sm:pl-3">
+            <div class="flex items-center gap-1.5 text-xs font-bold text-slate-500 dark:text-slate-400">
+              <i class="fa-solid fa-seedling text-emerald-600 text-sm"></i>
+              <span>Passive Income:</span>
+            </div>
+            <div class="font-mono font-black text-[26px] text-emerald-700 dark:text-emerald-500 tracking-tight leading-none">
+              <span id="popupPassiveIncomeVal">0</span><span class="text-xs ml-1 font-sans font-normal text-slate-400">฿/ด.</span>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- แถวล่าง: ปุ่มปิด, ราคา (ตัวสีแดง ขนาด 18px), และปุ่มสุ่มใหม่ -->
+        <div class="flex flex-wrap items-center justify-between gap-3 pt-1">
+          <button onclick="closeResultModal()" class="px-4 py-2.5 rounded-xl text-slate-600 dark:text-slate-300 bg-slate-100 dark:bg-slate-700 hover:bg-slate-200 text-sm font-semibold transition">
+            ปิด
+          </button>
+
+          <div class="flex items-center gap-3 ml-auto">
+            <!-- ราคา: ตัวหนังสือสีแดง ขนาด 18px -->
+            <div id="popupPriceBadge" class="px-4 py-2 rounded-xl bg-red-50 dark:bg-red-950/40 border border-red-200 dark:border-red-900/60 flex items-center gap-2 shadow-sm">
+              <span class="text-xs text-slate-500 dark:text-slate-400 font-sans font-medium">ราคา:</span>
+              <span id="popupPriceValue" class="text-red-600 font-mono font-black text-[18px]">฿0</span>
+            </div>
+
+            <button onclick="triggerRandomDraw()" class="px-5 sm:px-6 py-2.5 rounded-xl text-white text-sm font-bold transition shadow flex items-center gap-2 btn-theme-action">
+              <i class="fa-solid fa-dice-five"></i>
+              <span>สุ่มใหม่อีกครั้ง</span>
+            </button>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Add / Edit Modal -->
+  <div id="itemModal" class="hidden fixed inset-0 z-50 bg-slate-950/70 backdrop-blur-sm flex items-center justify-center p-3 sm:p-4 overflow-y-auto">
+    <div class="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-3xl max-w-xl w-full p-5 sm:p-6 shadow-2xl relative my-auto animate-pop-in">
+      <div class="flex items-center justify-between pb-3 border-b border-slate-100 dark:border-slate-700">
+        <h3 id="itemModalTitle" class="text-lg font-bold text-slate-900 dark:text-white flex items-center gap-2"><i class="fa-solid fa-pen-to-square text-red-600"></i><span>เพิ่มข้อมูลใหม่</span></h3>
+        <button onclick="closeAddEditModal()" class="w-8 h-8 rounded-lg text-slate-400 hover:text-slate-700"><i class="fa-solid fa-xmark text-lg"></i></button>
+      </div>
+      <form id="itemForm" onsubmit="handleItemFormSubmit(event)" class="space-y-4 pt-3">
+        <input type="hidden" id="formItemId">
+        <div>
+          <label class="block text-xs font-bold uppercase text-slate-600 dark:text-slate-300 mb-1">หัวข้อ / ชื่อเรื่อง <span class="text-rose-500">*</span></label>
+          <input type="text" id="formTitle" required placeholder="ระบุหัวข้อข้อมูล..." class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded-xl px-3.5 py-2.5 text-sm focus:ring-2 focus:ring-red-600">
+        </div>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+          <div>
+            <label class="block text-xs font-bold uppercase text-slate-600 dark:text-slate-300 mb-1">หมวดหมู่ <span class="text-rose-500">*</span></label>
+            <div class="flex gap-1.5">
+              <select id="formCategory" required class="flex-1 bg-slate-50 dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded-xl px-3 py-2 text-sm focus:ring-2 focus:ring-red-600"></select>
+              <button type="button" onclick="openCategoryModal()" class="px-2.5 bg-slate-100 dark:bg-slate-700 rounded-xl"><i class="fa-solid fa-plus text-xs"></i></button>
+            </div>
+          </div>
+          <div>
+            <label class="block text-xs font-bold uppercase text-slate-600 dark:text-slate-300 mb-1">ราคา (บาท / ฿)</label>
+            <div class="relative">
+              <input type="number" id="formPrice" min="0" step="any" placeholder="0 หรือ ปล่อยว่างถ้าฟรี" class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded-xl pl-8 pr-3 py-2 text-sm focus:ring-2 focus:ring-red-600">
+              <span class="absolute left-3 top-2 text-slate-400 font-bold text-xs">฿</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- ช่องกรอก Active Income & Passive Income -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 p-3 bg-slate-50 dark:bg-slate-900/80 rounded-2xl border border-slate-200 dark:border-slate-700">
+          <div>
+            <label class="block text-xs font-bold uppercase text-green-500 mb-1 flex items-center gap-1">
+              <i class="fa-solid fa-hand-holding-dollar text-xs"></i>
+              <span>Active Income (บาท/ด.)</span>
+            </label>
+            <input type="number" id="formActiveIncome" min="0" step="any" placeholder="0" class="w-full bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-700 rounded-xl px-3 py-2 text-sm focus:ring-2 focus:ring-green-500 font-mono">
+          </div>
+          <div>
+            <label class="block text-xs font-bold uppercase text-emerald-600 mb-1 flex items-center gap-1">
+              <i class="fa-solid fa-seedling text-xs"></i>
+              <span>Passive Income (บาท/ด.)</span>
+            </label>
+            <input type="number" id="formPassiveIncome" min="0" step="any" placeholder="0" class="w-full bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-700 rounded-xl px-3 py-2 text-sm focus:ring-2 focus:ring-emerald-600 font-mono">
+          </div>
+        </div>
+
+        <div>
+          <label class="block text-xs font-bold uppercase text-slate-600 dark:text-slate-300 mb-1">หัวข้อย่อย</label>
+          <input type="text" id="formSubtitle" placeholder="เช่น รายละเอียดสั้นๆ หรือ หมวดย่อย" class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded-xl px-3.5 py-2.5 text-sm focus:ring-2 focus:ring-red-600">
+        </div>
+        <div>
+          <label class="block text-xs font-bold uppercase text-slate-600 dark:text-slate-300 mb-1">รายละเอียดเนื้อหา</label>
+          <textarea id="formDescription" rows="3" placeholder="ระบุรายละเอียดเพิ่มเติม..." class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded-xl px-3.5 py-2.5 text-sm focus:ring-2 focus:ring-red-600"></textarea>
+        </div>
+
+        <!-- 0-10 Sliders -->
+        <div class="p-3.5 bg-slate-50 dark:bg-slate-900/80 rounded-2xl border border-slate-200 dark:border-slate-700 space-y-3">
+          <div class="flex items-center justify-between">
+            <span class="text-xs font-bold text-slate-700 dark:text-slate-200 uppercase">เงื่อนไขทรัพยากร (0 - 10)</span>
+            <button type="button" onclick="randomizeFormSliders()" class="text-[11px] text-red-600 font-semibold hover:underline flex items-center gap-1"><i class="fa-solid fa-dice"></i> สุ่มตัวเลข 0-10</button>
+          </div>
+          <div class="space-y-2 border-b border-slate-200 dark:border-slate-700/80 pb-3">
+            <span class="text-[11px] font-bold text-red-600 flex items-center gap-1"><i class="fa-solid fa-hand-holding-dollar"></i> สิ่งที่ต้องใช้ (Cost: 0-10)</span>
+            <div class="flex items-center gap-2 text-xs">
+              <span class="w-20 font-medium text-slate-600 dark:text-slate-300"><i class="fa-solid fa-heart text-red-600"></i> หัวใจ:</span>
+              <input type="range" min="0" max="10" value="0" id="sliderCostHeart" oninput="updateSliderBadge('CostHeart')" class="flex-1 text-red-600">
+              <span id="badgeCostHeart" class="w-7 text-center font-mono font-bold text-red-600 bg-red-100 dark:bg-red-950/80 py-0.5 rounded">0</span>
+            </div>
+            <div class="flex items-center gap-2 text-xs">
+              <span class="w-20 font-medium text-slate-600 dark:text-slate-300"><i class="fa-solid fa-clock text-slate-500"></i> เวลา:</span>
+              <input type="range" min="0" max="10" value="0" id="sliderCostTime" oninput="updateSliderBadge('CostTime')" class="flex-1 text-slate-500">
+              <span id="badgeCostTime" class="w-7 text-center font-mono font-bold text-slate-600 bg-slate-100 dark:bg-slate-800 py-0.5 rounded">0</span>
+            </div>
+            <div class="flex items-center gap-2 text-xs">
+              <span class="w-20 font-medium text-slate-600 dark:text-slate-300"><i class="fa-solid fa-brain text-slate-600 dark:text-slate-400"></i> ความรู้:</span>
+              <input type="range" min="0" max="10" value="0" id="sliderCostKnowledge" oninput="updateSliderBadge('CostKnowledge')" class="flex-1 text-slate-600">
+              <span id="badgeCostKnowledge" class="w-7 text-center font-mono font-bold text-slate-700 dark:text-slate-300 bg-slate-200 dark:bg-slate-800 py-0.5 rounded">0</span>
+            </div>
+          </div>
+          <div class="space-y-2 pt-1">
+            <span class="text-[11px] font-bold text-slate-700 dark:text-slate-200 flex items-center gap-1"><i class="fa-solid fa-gift text-red-500"></i> สิ่งที่ได้รับ (Reward: 0-10)</span>
+            <div class="flex items-center gap-2 text-xs">
+              <span class="w-20 font-medium text-slate-600 dark:text-slate-300"><i class="fa-solid fa-heart text-red-600"></i> หัวใจ:</span>
+              <input type="range" min="0" max="10" value="0" id="sliderRewardHeart" oninput="updateSliderBadge('RewardHeart')" class="flex-1 text-red-600">
+              <span id="badgeRewardHeart" class="w-7 text-center font-mono font-bold text-red-600 bg-red-100 dark:bg-red-950/80 py-0.5 rounded">+0</span>
+            </div>
+            <div class="flex items-center gap-2 text-xs">
+              <span class="w-20 font-medium text-slate-600 dark:text-slate-300"><i class="fa-solid fa-clock text-slate-500"></i> เวลา:</span>
+              <input type="range" min="0" max="10" value="0" id="sliderRewardTime" oninput="updateSliderBadge('RewardTime')" class="flex-1 text-slate-500">
+              <span id="badgeRewardTime" class="w-7 text-center font-mono font-bold text-slate-600 bg-slate-100 dark:bg-slate-800 py-0.5 rounded">+0</span>
+            </div>
+            <div class="flex items-center gap-2 text-xs">
+              <span class="w-20 font-medium text-slate-600 dark:text-slate-300"><i class="fa-solid fa-brain text-slate-600 dark:text-slate-400"></i> ความรู้:</span>
+              <input type="range" min="0" max="10" value="0" id="sliderRewardKnowledge" oninput="updateSliderBadge('RewardKnowledge')" class="flex-1 text-slate-600">
+              <span id="badgeRewardKnowledge" class="w-7 text-center font-mono font-bold text-slate-700 dark:text-slate-300 bg-slate-200 dark:bg-slate-800 py-0.5 rounded">+0</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+          <div>
+            <label class="block text-xs font-bold uppercase text-slate-600 dark:text-slate-300 mb-1">Image URL</label>
+            <input type="url" id="formImageUrl" placeholder="https://..." class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded-xl px-3 py-2 text-sm focus:ring-2 focus:ring-red-600">
+          </div>
+          <div>
+            <label class="block text-xs font-bold uppercase text-slate-600 dark:text-slate-300 mb-1">External Link</label>
+            <input type="url" id="formLinkUrl" placeholder="https://..." class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded-xl px-3 py-2 text-sm focus:ring-2 focus:ring-red-600">
+          </div>
+        </div>
+
+        <div class="pt-3 border-t border-slate-100 dark:border-slate-700 flex items-center justify-end gap-2">
+          <button type="button" onclick="closeAddEditModal()" class="px-4 py-2 rounded-xl text-slate-600 dark:text-slate-300 text-sm font-semibold">ยกเลิก</button>
+          <button type="submit" id="saveSubmitBtn" class="px-5 py-2 rounded-xl text-white text-sm font-semibold transition flex items-center gap-1.5 shadow btn-theme-action">
+            <i class="fa-solid fa-cloud-arrow-up"></i>
+            <span>บันทึกลงชีตออนไลน์</span>
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Category Manager Modal -->
+  <div id="categoryModal" class="hidden fixed inset-0 z-50 bg-slate-950/70 backdrop-blur-sm flex items-center justify-center p-3 sm:p-4 overflow-y-auto">
+    <div class="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-3xl max-w-lg w-full p-5 sm:p-6 shadow-2xl relative my-auto animate-pop-in">
+      <div class="flex items-center justify-between pb-3 border-b border-slate-100 dark:border-slate-700">
+        <div>
+          <h3 class="text-base font-bold text-slate-900 dark:text-white flex items-center gap-2">
+            <i class="fa-solid fa-folder-tree text-red-600"></i>
+            <span>จัดการหมวดหมู่ (แถบสี 30 สี & ไอคอน)</span>
+          </h3>
+          <p class="text-xs text-slate-500 mt-0.5">กดแถบสีเพื่อเปลี่ยนสี, กดไอคอนเพื่อเปลี่ยนรูป, หรือกดลูกศรจัดลำดับ</p>
+        </div>
+        <button onclick="closeCategoryModal()" class="w-8 h-8 rounded-lg text-slate-400 hover:text-slate-700"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+      
+      <div class="pt-3 space-y-4">
+        <div class="flex items-center gap-2">
+          <button type="button" id="newCatColorBtn" onclick="openColorPicker(-1)" title="เลือกแถบสีหมวดหมู่" class="h-10 px-3 rounded-xl border border-slate-200 dark:border-slate-600 bg-white dark:bg-slate-700 flex items-center gap-2 hover:bg-slate-100 transition shadow-sm">
+            <span id="newCatColorPill" class="w-5 h-5 rounded-full shadow-sm bg-red-600"></span>
+            <i class="fa-solid fa-chevron-down text-[10px] text-slate-400"></i>
+          </button>
+
+          <button type="button" id="newCatIconBtn" onclick="openIconPicker(-1)" title="เลือกไอคอน" class="w-10 h-10 rounded-xl bg-slate-100 dark:bg-slate-700 border border-slate-200 dark:border-slate-600 text-slate-700 dark:text-slate-200 flex items-center justify-center text-lg hover:bg-slate-200 transition shrink-0">
+            <i id="newCatIconPreview" class="fa-solid fa-folder"></i>
+          </button>
+
+          <input type="text" id="newCategoryInput" placeholder="ชื่อหมวดหมู่ใหม่..." class="flex-1 bg-slate-50 dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded-xl px-3 py-2 text-sm focus:ring-2 focus:ring-red-600">
+          <button onclick="handleAddCategory()" class="px-4 py-2 text-white rounded-xl text-sm font-semibold transition flex items-center gap-1 shrink-0 shadow btn-theme-action">
+            <i class="fa-solid fa-plus text-xs"></i>
+            <span>เพิ่ม</span>
+          </button>
+        </div>
+
+        <div class="max-h-72 overflow-y-auto divide-y divide-slate-100 dark:divide-slate-700/60 pr-1" id="categoryListContainer"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- COLOR BAR PICKER MODAL (30 เฉดสี) -->
+  <div id="colorPickerModal" class="hidden fixed inset-0 z-50 bg-slate-950/70 backdrop-blur-sm flex items-center justify-center p-4">
+    <div class="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-3xl max-w-lg w-full p-5 shadow-2xl relative animate-pop-in space-y-4">
+      <div class="flex items-center justify-between pb-2 border-b border-slate-100 dark:border-slate-700">
+        <div>
+          <h4 class="font-bold text-sm text-slate-800 dark:text-white flex items-center gap-2">
+            <i class="fa-solid fa-palette text-red-600"></i>
+            <span>เลือกแถบสีประจำหมวดหมู่ (30 เฉดสี)</span>
+          </h4>
+          <p class="text-xs text-slate-400 mt-0.5">คลิกเลือกสีที่ต้องการเพื่อใช้แยกหมวดหมู่อย่างอิสระ</p>
+        </div>
+        <button onclick="closeColorPicker()" class="w-7 h-7 rounded-lg text-slate-400 hover:text-slate-700 flex items-center justify-center">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </div>
+
+      <div class="space-y-2 max-h-80 overflow-y-auto pr-1" id="colorPickerGrid"></div>
+    </div>
+  </div>
+
+  <!-- Icon Picker Modal -->
+  <div id="iconPickerModal" class="hidden fixed inset-0 z-50 bg-slate-950/70 backdrop-blur-sm flex items-center justify-center p-4">
+    <div class="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-3xl max-w-md w-full p-5 shadow-2xl relative animate-pop-in space-y-3">
+      <div class="flex items-center justify-between pb-2 border-b border-slate-100 dark:border-slate-700">
+        <h4 class="font-bold text-sm text-slate-800 dark:text-white flex items-center gap-2">
+          <i class="fa-solid fa-icons text-red-600"></i>
+          <span>เลือกรูป Icon สำหรับหมวดหมู่</span>
+        </h4>
+        <button onclick="closeIconPicker()" class="w-7 h-7 rounded-lg text-slate-400 hover:text-slate-700 flex items-center justify-center">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </div>
+      <div class="grid grid-cols-6 sm:grid-cols-8 gap-2 max-h-64 overflow-y-auto p-1" id="iconPickerGrid"></div>
+    </div>
+  </div>
+
+  <!-- SETTING MODAL -->
+  <div id="settingModal" class="hidden fixed inset-0 z-50 bg-slate-950/70 backdrop-blur-sm flex items-center justify-center p-4">
+    <div class="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-3xl max-w-md w-full p-5 sm:p-6 shadow-2xl relative animate-pop-in space-y-5">
+      
+      <!-- Setting Header -->
+      <div class="flex items-center justify-between pb-3 border-b border-slate-100 dark:border-slate-700">
+        <div class="flex items-center gap-2.5">
+          <div class="w-9 h-9 rounded-xl bg-slate-100 dark:bg-slate-700 text-slate-700 dark:text-slate-200 flex items-center justify-center text-lg shadow-sm">
+            <i class="fa-solid fa-gear"></i>
+          </div>
+          <div>
+            <h3 class="font-bold text-base text-slate-900 dark:text-white">การตั้งค่าระบบ (Settings)</h3>
+            <p class="text-xs text-slate-400">ปรับแต่งโหมดการแสดงผลและขนาดตัวอักษร</p>
+          </div>
+        </div>
+        <button onclick="closeSettingModal()" class="w-8 h-8 rounded-lg text-slate-400 hover:text-slate-700 dark:hover:text-white flex items-center justify-center">
+          <i class="fa-solid fa-xmark text-lg"></i>
+        </button>
+      </div>
+
+      <!-- Setting Section 1: Mode Toggle -->
+      <div class="p-3 bg-slate-50 dark:bg-slate-900/60 rounded-2xl border border-slate-200 dark:border-slate-700/80 flex items-center justify-between">
+        <div class="flex items-center gap-3">
+          <div id="settingThemeIconBox" class="w-8 h-8 rounded-xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 flex items-center justify-center text-sm shadow-sm">
+            <i id="settingThemeIcon" class="fa-solid fa-moon text-red-500"></i>
+          </div>
+          <div>
+            <span class="text-xs font-bold text-slate-800 dark:text-white block">โหมดสว่าง / มืด</span>
+            <span id="settingThemeStatusText" class="text-[10px] text-slate-400">Night Mode (มืด)</span>
+          </div>
+        </div>
+
+        <button onclick="toggleTheme()" class="px-3 py-1.5 rounded-xl text-xs font-bold transition flex items-center gap-1.5 border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-800 hover:bg-slate-100 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 shadow-sm">
+          <i class="fa-solid fa-circle-half-stroke"></i>
+          <span>สลับโหมด</span>
+        </button>
+      </div>
+
+      <!-- Setting Section 2: Font Size Slider -->
+      <div class="p-3.5 bg-slate-50 dark:bg-slate-900/60 rounded-2xl border border-slate-200 dark:border-slate-700/80 space-y-3">
+        <div class="flex items-center justify-between">
+          <div class="flex items-center gap-2">
+            <i class="fa-solid fa-font text-slate-500 text-xs"></i>
+            <span class="text-xs font-bold text-slate-800 dark:text-white">ขนาดตัวอักษร</span>
+          </div>
+          <span id="fontSizeLevelBadge" class="font-mono font-bold text-xs px-2 py-0.5 rounded-lg bg-slate-200 dark:bg-slate-700">ระดับ 5</span>
+        </div>
+
+        <div class="space-y-1">
+          <input type="range" min="1" max="10" step="1" value="5" id="fontSizeSlider" oninput="handleFontSizeChange(this.value)" class="w-full text-red-600">
+          <div class="flex justify-between text-[10px] text-slate-400 font-mono px-1">
+            <span>ระดับ 1 (18px)</span>
+            <span class="font-bold text-red-500">ระดับ 5 (26px)</span>
+            <span>ระดับ 10 (41px)</span>
+          </div>
+        </div>
+
+        <!-- Preview Box Real-time -->
+        <div class="p-3 rounded-xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-center space-y-1">
+          <div id="fontSizePreviewTitle" class="app-title-text font-extrabold text-slate-800 dark:text-slate-100">
+            ตัวอย่างหัวข้อ (26px)
+          </div>
+          <div id="fontSizePreviewDesc" class="app-desc-text text-slate-500 dark:text-slate-400">
+            ตัวอย่างรายละเอียดเนื้อหา (22px)
+          </div>
+        </div>
+
+        <button onclick="resetFontSizeDefault()" class="text-[11px] text-slate-500 hover:underline flex items-center gap-1 mx-auto font-semibold">
+          <i class="fa-solid fa-rotate-left text-[10px]"></i> คืนค่าเริ่มต้น (ระดับ 5: 26px/22px)
+        </button>
+      </div>
+
+      <!-- Setting Footer -->
+      <div class="pt-2 flex justify-end">
+        <button onclick="closeSettingModal()" class="px-5 py-2 rounded-xl text-white text-xs font-bold transition shadow btn-theme-action">
+          เสร็จสิ้น
+        </button>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Confirm Dialog Modal -->
+  <div id="confirmDialogModal" class="hidden fixed inset-0 z-50 bg-slate-950/70 backdrop-blur-sm flex items-center justify-center p-4">
+    <div class="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-2xl max-w-sm w-full p-5 shadow-2xl text-center space-y-3 animate-pop-in">
+      <div class="w-12 h-12 rounded-full bg-rose-100 dark:bg-rose-950/80 text-brand-red flex items-center justify-center mx-auto text-xl"><i class="fa-solid fa-triangle-exclamation"></i></div>
+      <h4 id="confirmDialogTitle" class="font-bold text-base text-slate-800 dark:text-white">ยืนยันการดำเนินการ</h4>
+      <p id="confirmDialogMessage" class="text-xs text-slate-500">คุณแน่ใจหรือไม่ว่าต้องการดำเนินการนี้?</p>
+      <div class="flex items-center justify-center gap-2 pt-2">
+        <button id="confirmCancelBtn" class="px-4 py-2 rounded-xl text-xs font-semibold text-slate-600 bg-slate-100 hover:bg-slate-200">ยกเลิก</button>
+        <button id="confirmActionBtn" class="px-4 py-2 rounded-xl text-xs font-semibold text-white bg-red-600 hover:bg-rose-700">ยืนยัน</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast Notification -->
+  <div id="toastNotification" class="fixed top-20 right-4 z-50 transform translate-x-full opacity-0 transition-all duration-300 bg-slate-900 dark:bg-white text-white dark:text-slate-900 px-4 py-2.5 rounded-xl shadow-xl flex items-center gap-2 text-xs font-bold">
+    <i id="toastIcon" class="fa-solid fa-check text-emerald-400"></i>
+    <span id="toastMessage">แจ้งเตือน</span>
+  </div>
+
+  <!-- JAVASCRIPT LOGIC & GOOGLE SHEETS SYNC -->
+  <script>
+    const GOOGLE_SHEET_API_URL = "https://script.google.com/macros/s/AKfycbzq9oD33K3nf_r2JRq5RjCafAQIvt2o9ywvJ1EvXvVg4l9QyUalIuQvxxT7zQ890nR1/exec";
+
+    // ข้อมูลเริ่มต้นสำหรับสำรองการแสดงผล พร้อม Active/Passive Income
+    const DEFAULT_INITIAL_CATEGORIES = [
+      { name: "ทั่วไป", icon: "fa-folder", color: "red" },
+      { name: "การทำงาน", icon: "fa-briefcase", color: "slate" },
+      { name: "สุขภาพ", icon: "fa-heart", color: "crimson" },
+      { name: "ความรู้", icon: "fa-brain", color: "purple" },
+      { name: "การเงิน", icon: "fa-coins", color: "gold" }
+    ];
+
+    const DEFAULT_INITIAL_ITEMS = [
+      {
+        id: "c-1001",
+        title: "วางแผนเป้าหมายประจำสัปดาห์",
+        subtitle: "การบริหารเวลาและเพิ่ม Productivity",
+        category: "การทำงาน",
+        price: 350,
+        activeIncome: 15000,
+        passiveIncome: 0,
+        description: "สละเวลา 15 นาทีจัดลำดับความสำคัญของงานที่ต้องทำ 3 อันดับแรก เพื่อความชัดเจนในการลงมือทำ",
+        cost: { heart: 2, time: 3, knowledge: 0 },
+        reward: { heart: 4, time: 5, knowledge: 4 },
+        favorite: true
+      },
+      {
+        id: "c-1002",
+        title: "ดื่มน้ำเปล่า 1 แก้วทันทีหลังตื่นนอน",
+        subtitle: "รีเฟรชร่างกายยามเช้า",
+        category: "สุขภาพ",
+        price: 0,
+        activeIncome: 0,
+        passiveIncome: 500,
+        description: "ช่วยกระตุ้นระบบขับถ่ายและการไหลเวียนโลหิตหลังร่างกายพักผ่อนมาตลอดทั้งคืน",
+        cost: { heart: 0, time: 1, knowledge: 0 },
+        reward: { heart: 5, time: 0, knowledge: 2 },
+        favorite: false
+      },
+      {
+        id: "c-1003",
+        title: "ลงทุนในกองทุนปันผลดัชนี",
+        subtitle: "สร้างกระแสเงินสดต่อเนื่อง",
+        category: "การเงิน",
+        price: 5000,
+        activeIncome: 0,
+        passiveIncome: 3500,
+        description: "จัดพอร์ตลงทุนระยะยาว เพื่อรับเงินปันผลสม่ำเสมอในทุกไตรมาส",
+        cost: { heart: 1, time: 2, knowledge: 3 },
+        reward: { heart: 3, time: 2, knowledge: 6 },
+        favorite: false
+      }
+    ];
+
+    let items = [];
+    let categories = [];
+    let selectedCategory = "ALL";
+    let historyLog = [];
+    let drawPool = [];
+    let currentItem = null;
+    let isDrawing = false;
+    let soundEnabled = true;
+
+    // สเกลขนาดตัวอักษร
+    const FONT_SCALE_MAP = {
+      1: { title: "18px", desc: "16px" },
+      2: { title: "20px", desc: "17.5px" },
+      3: { title: "22px", desc: "19px" },
+      4: { title: "24px", desc: "20.5px" },
+      5: { title: "26px", desc: "22px" },
+      6: { title: "29px", desc: "23.5px" },
+      7: { title: "32px", desc: "25px" },
+      8: { title: "35px", desc: "26.5px" },
+      9: { title: "38px", desc: "28px" },
+      10: { title: "41px", desc: "30px" }
+    };
+
+    // Palette แถบสี 30 เฉดสี
+    const COLOR_PALETTES = {
+      blue: { id: "blue", name: "1. น้ำเงินรอยัล", hex: "#1D4ED8", gradient: "linear-gradient(90deg, #60A5FA 0%, #1D4ED8 50%, #1E40AF 100%)", badge: "bg-blue-100 text-blue-800 border-blue-200 dark:bg-blue-950/80 dark:text-blue-300 dark:border-blue-800" },
+      sky: { id: "sky", name: "2. ฟ้าท้องฟ้า", hex: "#0284C7", gradient: "linear-gradient(90deg, #38BDF8 0%, #0284C7 50%, #0369A1 100%)", badge: "bg-sky-100 text-sky-800 border-sky-200 dark:bg-sky-950/80 dark:text-sky-300 dark:border-sky-800" },
+      cyan: { id: "cyan", name: "3. ฟ้าไซแอน", hex: "#06B6D4", gradient: "linear-gradient(90deg, #67E8F9 0%, #06B6D4 50%, #0E7490 100%)", badge: "bg-cyan-100 text-cyan-800 border-cyan-200 dark:bg-cyan-950/80 dark:text-cyan-300 dark:border-cyan-800" },
+      navy: { id: "navy", name: "4. น้ำเงินเข้มเนวี", hex: "#1E3A8A", gradient: "linear-gradient(90deg, #3B82F6 0%, #1E3A8A 50%, #172554 100%)", badge: "bg-indigo-100 text-indigo-900 border-indigo-200 dark:bg-indigo-950/80 dark:text-indigo-300 dark:border-indigo-800" },
+      indigo: { id: "indigo", name: "5. น้ำเงินคราม", hex: "#4338CA", gradient: "linear-gradient(90deg, #818CF8 0%, #4338CA 50%, #312E81 100%)", badge: "bg-indigo-100 text-indigo-800 border-indigo-200 dark:bg-indigo-950/80 dark:text-indigo-300 dark:border-indigo-800" },
+
+      red: { id: "red", name: "6. แดงทับทิม", hex: "#EF4444", gradient: "linear-gradient(90deg, #F87171 0%, #EF4444 50%, #B91C1C 100%)", badge: "bg-red-100 text-red-800 border-red-200 dark:bg-red-950/80 dark:text-red-300 dark:border-red-800" },
+      crimson: { id: "crimson", name: "7. แดงเข้มคริมสัน", hex: "#BE123C", gradient: "linear-gradient(90deg, #FB7185 0%, #BE123C 50%, #881337 100%)", badge: "bg-rose-100 text-rose-900 border-rose-200 dark:bg-rose-950/80 dark:text-rose-300 dark:border-rose-800" },
+      rose: { id: "rose", name: "8. ชมพูกุหลาบ", hex: "#E11D48", gradient: "linear-gradient(90deg, #FDA4AF 0%, #E11D48 50%, #9F1239 100%)", badge: "bg-rose-100 text-rose-800 border-rose-200 dark:bg-rose-950/80 dark:text-rose-300 dark:border-rose-800" },
+      pink: { id: "pink", name: "9. ชมพูสดใส", hex: "#EC4899", gradient: "linear-gradient(90deg, #F472B6 0%, #EC4899 50%, #BE185D 100%)", badge: "bg-pink-100 text-pink-800 border-pink-200 dark:bg-pink-950/80 dark:text-pink-300 dark:border-pink-800" },
+      fuchsia: { id: "fuchsia", name: "10. ชมพูฟูเชีย", hex: "#D946EF", gradient: "linear-gradient(90deg, #E879F9 0%, #D946EF 50%, #A21CAF 100%)", badge: "bg-fuchsia-100 text-fuchsia-800 border-fuchsia-200 dark:bg-fuchsia-950/80 dark:text-fuchsia-300 dark:border-fuchsia-800" },
+
+      purple: { id: "purple", name: "11. ม่วงไวโอเล็ต", hex: "#A855F7", gradient: "linear-gradient(90deg, #C084FC 0%, #A855F7 50%, #7E22CE 100%)", badge: "bg-purple-100 text-purple-800 border-purple-200 dark:bg-purple-950/80 dark:text-purple-300 dark:border-purple-800" },
+      violet: { id: "violet", name: "12. ม่วงเข้ม", hex: "#7C3AED", gradient: "linear-gradient(90deg, #A78BFA 0%, #7C3AED 50%, #5B21B6 100%)", badge: "bg-violet-100 text-violet-800 border-violet-200 dark:bg-violet-950/80 dark:text-violet-300 dark:border-violet-800" },
+      lavender: { id: "lavender", name: "13. ม่วงลาเวนเดอร์", hex: "#8B5CF6", gradient: "linear-gradient(90deg, #DDD6FE 0%, #8B5CF6 50%, #6D28D9 100%)", badge: "bg-purple-100 text-purple-900 border-purple-200 dark:bg-purple-950/80 dark:text-purple-300 dark:border-purple-800" },
+      plum: { id: "plum", name: "14. ม่วงลูกพลัม", hex: "#581C87", gradient: "linear-gradient(90deg, #9333EA 0%, #581C87 50%, #3B0764 100%)", badge: "bg-purple-100 text-purple-950 border-purple-300 dark:bg-purple-950/80 dark:text-purple-200 dark:border-purple-800" },
+      magenta: { id: "magenta", name: "15. ม่วงมาเจนต้า", hex: "#C026D3", gradient: "linear-gradient(90deg, #F0ABFC 0%, #C026D3 50%, #86198F 100%)", badge: "bg-fuchsia-100 text-fuchsia-900 border-fuchsia-200 dark:bg-fuchsia-950/80 dark:text-fuchsia-300 dark:border-fuchsia-800" },
+
+      green: { id: "green", name: "16. เขียวใบไม้", hex: "#22C55E", gradient: "linear-gradient(90deg, #4ADE80 0%, #22C55E 50%, #15803D 100%)", badge: "bg-green-100 text-green-800 border-green-200 dark:bg-green-950/80 dark:text-green-300 dark:border-green-800" },
+      emerald: { id: "emerald", name: "17. เขียวมรกต", hex: "#10B981", gradient: "linear-gradient(90deg, #34D399 0%, #10B981 50%, #047857 100%)", badge: "bg-emerald-100 text-emerald-800 border-emerald-200 dark:bg-emerald-950/80 dark:text-emerald-300 dark:border-emerald-800" },
+      teal: { id: "teal", name: "18. เขียวอมฟ้าทีล", hex: "#0D9488", gradient: "linear-gradient(90deg, #2DD4BF 0%, #0D9488 50%, #115E59 100%)", badge: "bg-teal-100 text-teal-800 border-teal-200 dark:bg-teal-950/80 dark:text-teal-300 dark:border-teal-800" },
+      lime: { id: "lime", name: "19. เขียวมะนาว", hex: "#84CC16", gradient: "linear-gradient(90deg, #A3E635 0%, #84CC16 50%, #4D7C0F 100%)", badge: "bg-lime-100 text-lime-800 border-lime-200 dark:bg-lime-950/80 dark:text-lime-300 dark:border-lime-800" },
+      mint: { id: "mint", name: "20. เขียวมิ้นต์", hex: "#059669", gradient: "linear-gradient(90deg, #6EE7B7 0%, #059669 50%, #064E3B 100%)", badge: "bg-emerald-100 text-emerald-900 border-emerald-200 dark:bg-emerald-950/80 dark:text-emerald-300 dark:border-emerald-800" },
+
+      yellow: { id: "yellow", name: "21. เหลืองสดใส", hex: "#EAB308", gradient: "linear-gradient(90deg, #FDE047 0%, #EAB308 50%, #CA8A04 100%)", badge: "bg-amber-100 text-amber-900 border-amber-300 dark:bg-amber-950/80 dark:text-amber-300 dark:border-amber-800" },
+      amber: { id: "amber", name: "22. ส้มอำพัน", hex: "#D97706", gradient: "linear-gradient(90deg, #FBBF24 0%, #D97706 50%, #92400E 100%)", badge: "bg-amber-100 text-amber-800 border-amber-200 dark:bg-amber-950/80 dark:text-amber-300 dark:border-amber-800" },
+      orange: { id: "orange", name: "23. ส้มสด", hex: "#EA580C", gradient: "linear-gradient(90deg, #FB923C 0%, #EA580C 50%, #9A3412 100%)", badge: "bg-orange-100 text-orange-800 border-orange-200 dark:bg-orange-950/80 dark:text-orange-300 dark:border-orange-800" },
+      coral: { id: "coral", name: "24. ส้มคอรัล", hex: "#F97316", gradient: "linear-gradient(90deg, #FDBA74 0%, #F97316 50%, #C2410C 100%)", badge: "bg-orange-100 text-orange-900 border-orange-200 dark:bg-orange-950/80 dark:text-orange-300 dark:border-orange-800" },
+      brown: { id: "brown", name: "25. น้ำตาลเอิร์ธโทน", hex: "#78350F", gradient: "linear-gradient(90deg, #B45309 0%, #78350F 50%, #451A03 100%)", badge: "bg-amber-200/80 text-amber-950 border-amber-300 dark:bg-amber-950 dark:text-amber-200 dark:border-amber-900" },
+
+      gold: { id: "gold", name: "26. ทองประกาย", hex: "#B45309", gradient: "linear-gradient(90deg, #FDE68A 0%, #D97706 50%, #78350F 100%)", badge: "bg-yellow-100 text-yellow-900 border-yellow-300 dark:bg-yellow-950/80 dark:text-yellow-200 dark:border-yellow-800" },
+      slate: { id: "slate", name: "27. เทาสเลท", hex: "#64748B", gradient: "linear-gradient(90deg, #94A3B8 0%, #64748B 50%, #475569 100%)", badge: "bg-slate-200 text-slate-800 border-slate-300 dark:bg-slate-800 dark:text-slate-300 dark:border-slate-700" },
+      zinc: { id: "zinc", name: "28. เทาซิงก์เข้ม", hex: "#52525B", gradient: "linear-gradient(90deg, #A1A1AA 0%, #52525B 50%, #27272A 100%)", badge: "bg-zinc-200 text-zinc-800 border-zinc-300 dark:bg-zinc-800 dark:text-zinc-300 dark:border-zinc-700" },
+      white: { id: "white", name: "29. ขาวบริสุทธิ์", hex: "#F8FAFC", gradient: "linear-gradient(90deg, #FFFFFF 0%, #F1F5F9 50%, #CBD5E1 100%)", badge: "bg-white text-slate-800 border-slate-300 dark:bg-slate-700 dark:text-white dark:border-slate-600 shadow-sm" },
+      black: { id: "black", name: "30. ดำสนิท", hex: "#0F172A", gradient: "linear-gradient(90deg, #334155 0%, #1E293B 50%, #0F172A 100%)", badge: "bg-slate-900 text-white border-slate-800 dark:bg-black dark:text-white dark:border-slate-700" }
+    };
+
+    const ICON_PRESETS = [
+      "fa-folder", "fa-book", "fa-graduation-cap", "fa-brain", "fa-lightbulb", 
+      "fa-heart", "fa-dumbbell", "fa-person-running", "fa-apple-whole", "fa-utensils", 
+      "fa-burger", "fa-mug-hot", "fa-briefcase", "fa-chart-line", "fa-laptop-code", 
+      "fa-coins", "fa-wallet", "fa-piggy-bank", "fa-cart-shopping", "fa-gamepad", 
+      "fa-dice", "fa-chess", "fa-music", "fa-film", "fa-camera", "fa-palette", 
+      "fa-plane", "fa-car", "fa-map-location-dot", "fa-mountain-sun", "fa-tree", 
+      "fa-spa", "fa-bed", "fa-clock", "fa-bell", "fa-star", "fa-fire", 
+      "fa-gem", "fa-gift", "fa-shapes", "fa-compass", "fa-flag"
+    ];
+
+    let iconPickerTargetIdx = -1;
+    let newCategorySelectedIcon = "fa-folder";
+    let colorPickerTargetIdx = -1;
+    let newCategorySelectedColor = "red";
+
+    let audioCtx = null;
+    function getAudioContext() {
+      if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+      if (audioCtx.state === 'suspended') audioCtx.resume();
+      return audioCtx;
+    }
+
+    function playTickSound() {
+      if (!soundEnabled) return;
+      try {
+        const ctx = getAudioContext();
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+        osc.type = 'triangle';
+        osc.frequency.setValueAtTime(320 + Math.random() * 80, ctx.currentTime);
+        gain.gain.setValueAtTime(0.08, ctx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.04);
+        osc.connect(gain);
+        gain.connect(ctx.destination);
+        osc.start();
+        osc.stop(ctx.currentTime + 0.04);
+      } catch (e) {}
+    }
+
+    function playSuccessChime() {
+      if (!soundEnabled) return;
+      try {
+        const ctx = getAudioContext();
+        const notes = [523.25, 659.25, 783.99, 1046.50];
+        notes.forEach((freq, idx) => {
+          const osc = ctx.createOscillator();
+          const gain = ctx.createGain();
+          osc.type = 'sine';
+          osc.frequency.setValueAtTime(freq, ctx.currentTime + idx * 0.06);
+          gain.gain.setValueAtTime(0.12, ctx.currentTime + idx * 0.06);
+          gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + idx * 0.06 + 0.35);
+          osc.connect(gain);
+          gain.connect(ctx.destination);
+          osc.start(ctx.currentTime + idx * 0.06);
+          osc.stop(ctx.currentTime + idx * 0.06 + 0.35);
+        });
+      } catch (e) {}
+    }
+
+    window.addEventListener('DOMContentLoaded', () => {
+      initTheme();
+      initFontSize();
+      loadLocalCache();
+      renderIconPickerGrid();
+      renderColorPickerGrid();
+      switchTab('categories');
+
+      fetchFromGoogleSheets();
+
+      window.addEventListener('resize', () => {
+        const savedLevel = localStorage.getItem('rnd_font_scale_level') || "5";
+        handleFontSizeChange(savedLevel);
+      });
+
+      window.addEventListener('keydown', (e) => {
+        if (e.code === 'Space' && e.target === document.body && !document.getElementById('view-draw').classList.contains('hidden')) {
+          e.preventDefault();
+          triggerRandomDraw();
+        }
+      });
+    });
+
+    function normalizeCategories(rawCats) {
+      if (!Array.isArray(rawCats) || rawCats.length === 0) {
+        return DEFAULT_INITIAL_CATEGORIES;
+      }
+      return rawCats.map(c => {
+        if (typeof c === 'string') {
+          return { name: c, icon: "fa-folder", color: "red" };
+        }
+        return {
+          name: c.name || "ทั่วไป",
+          icon: c.icon || "fa-folder",
+          color: (c.color && COLOR_PALETTES[c.color]) ? c.color : "red"
+        };
+      });
+    }
+
+    function getCategoryNames() {
+      return categories.map(c => c.name);
+    }
+
+    function getCategoryMeta(catName) {
+      const found = categories.find(c => c.name === catName);
+      if (found) {
+        return {
+          icon: found.icon || "fa-tag",
+          colorId: found.color || "red",
+          theme: COLOR_PALETTES[found.color] || COLOR_PALETTES.red
+        };
+      }
+      return {
+        icon: "fa-tag",
+        colorId: "red",
+        theme: COLOR_PALETTES.red
+      };
+    }
+
+    function loadLocalCache() {
+      try {
+        const cItems = localStorage.getItem('rnd_cache_items');
+        items = cItems ? JSON.parse(cItems) : DEFAULT_INITIAL_ITEMS;
+
+        const cCats = localStorage.getItem('rnd_cache_categories');
+        categories = cCats ? normalizeCategories(JSON.parse(cCats)) : DEFAULT_INITIAL_CATEGORIES;
+
+        const cHist = localStorage.getItem('rnd_cache_history');
+        if (cHist) historyLog = JSON.parse(cHist);
+      } catch (e) {
+        items = DEFAULT_INITIAL_ITEMS;
+        categories = DEFAULT_INITIAL_CATEGORIES;
+      }
+
+      if (!categories || categories.length === 0) {
+        categories = DEFAULT_INITIAL_CATEGORIES;
+      }
+
+      updateTotalBadgeCount();
+      updateCategoryDropdowns();
+      renderCategoryHomeCards();
+      resetPool();
+      renderDataTable();
+      renderHistoryList();
+    }
+
+    function saveLocalCache() {
+      try {
+        localStorage.setItem('rnd_cache_items', JSON.stringify(items));
+        localStorage.setItem('rnd_cache_categories', JSON.stringify(categories));
+        localStorage.setItem('rnd_cache_history', JSON.stringify(historyLog));
+      } catch (e) {}
+      updateTotalBadgeCount();
+      renderCategoryHomeCards();
+    }
+
+    function updateTotalBadgeCount() {
+      const el = document.getElementById('total-badge-count');
+      if (el) el.innerText = items.length;
+    }
+
+    async function fetchFromGoogleSheets() {
+      if (!GOOGLE_SHEET_API_URL || GOOGLE_SHEET_API_URL.includes("PLACEHOLDER")) {
+        setCloudStatus('ใช้งานแบบออฟไลน์', 'text-slate-400');
+        return;
+      }
+
+      setCloudStatus('กำลังซิงก์ข้อมูล...', 'text-amber-500');
+      const syncIcon = document.getElementById('syncIcon');
+      if (syncIcon) syncIcon.classList.add('animate-spin');
+
+      try {
+        const response = await fetch(GOOGLE_SHEET_API_URL, {
+          method: 'GET',
+          headers: { 'Accept': 'application/json' }
+        });
+        const data = await response.json();
+
+        if (data) {
+          if (Array.isArray(data.items) && data.items.length > 0) items = data.items;
+          if (Array.isArray(data.categories) && data.categories.length > 0) {
+            categories = normalizeCategories(data.categories);
+          }
+          if (Array.isArray(data.historyLog)) historyLog = data.historyLog;
+
+          saveLocalCache();
+          setCloudStatus('ออนไลน์ (เชื่อมต่อแล้ว)', 'text-emerald-500');
+          showToast('ซิงก์ข้อมูลล่าสุดจาก Google Sheets สำเร็จ ☁️', 'success');
+        }
+      } catch (err) {
+        setCloudStatus('ใช้ออฟไลน์ / กำลังเชื่อมต่อใหม่', 'text-amber-500');
+      } finally {
+        updateCategoryDropdowns();
+        renderCategoryHomeCards();
+        resetPool();
+        renderDataTable();
+        renderHistoryList();
+        if (syncIcon) syncIcon.classList.remove('animate-spin');
+      }
+    }
+
+    async function pushToGoogleSheets() {
+      saveLocalCache();
+      if (!GOOGLE_SHEET_API_URL || GOOGLE_SHEET_API_URL.includes("PLACEHOLDER")) {
+        showToast('บันทึกในเครื่องแล้ว', 'info');
+        return;
+      }
+
+      setCloudStatus('กำลังบันทึกลงชีต...', 'text-amber-500');
+      const payload = {
+        categories: categories,
+        items: items,
+        historyLog: historyLog
+      };
+
+      try {
+        await fetch(GOOGLE_SHEET_API_URL, {
+          method: 'POST',
+          mode: 'no-cors',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        });
+        setCloudStatus('บันทึกออนไลน์สำเร็จ', 'text-emerald-500');
+        showToast('บันทึกลง Google Sheets สำเร็จเรียบร้อย ☁️', 'success');
+      } catch (err) {
+        setCloudStatus('บันทึกออนไลน์ล้มเหลว', 'text-rose-500');
+        showToast('ไม่สามารถส่งข้อมูลไปชีตได้', 'danger');
+      }
+    }
+
+    function setCloudStatus(msg, colorClass) {
+      const el = document.getElementById('cloudSyncStatus');
+      if (el) {
+        el.innerHTML = `<i class="fa-solid fa-circle text-[8px] ${colorClass}"></i> ${msg}`;
+      }
+    }
+
+    function renderCategoryHomeCards() {
+      const grid = document.getElementById('categoryCardsGrid');
+      const emptyState = document.getElementById('emptyCategoryState');
+      if (!grid) return;
+
+      if (!categories || categories.length === 0) {
+        categories = DEFAULT_INITIAL_CATEGORIES;
+      }
+
+      if (emptyState) emptyState.classList.add('hidden');
+
+      let html = `
+        <div onclick="selectCategoryAndDraw('ALL')" class="group cursor-pointer bg-white dark:bg-slate-800 rounded-3xl p-5 border-2 border-slate-300 dark:border-slate-700 hover:border-slate-400 shadow-md hover:shadow-xl hover:-translate-y-1 transition duration-300 flex flex-col justify-between">
+          <div>
+            <div class="flex items-center justify-between mb-3">
+              <div class="w-12 h-12 rounded-2xl flex items-center justify-center text-xl shadow-md text-white btn-theme-action">
+                <i class="fa-solid fa-dice"></i>
+              </div>
+              <span class="text-xs font-mono font-bold px-2.5 py-1 rounded-full bg-slate-100 text-slate-800 dark:bg-slate-700 dark:text-slate-300">
+                ${items.length} รายการ
+              </span>
+            </div>
+            <h3 class="font-extrabold text-lg text-slate-800 dark:text-white transition">สุ่มจากทุกหมวดหมู่</h3>
+            <p class="text-xs text-slate-500 mt-1">สุ่มการ์ดข้อมูลจากคลังทั้งหมดที่มีอยู่ในระบบ</p>
+          </div>
+          <div class="mt-4 pt-3 border-t border-slate-100 dark:border-slate-700/60 flex items-center justify-between text-xs font-bold text-slate-600 dark:text-slate-300">
+            <span>เข้าสู่หน้าสุ่มทันที</span>
+            <i class="fa-solid fa-arrow-right group-hover:translate-x-1 transition"></i>
+          </div>
+        </div>
+      `;
+
+      categories.forEach(cat => {
+        const count = items.filter(i => i.category === cat.name).length;
+        const meta = getCategoryMeta(cat.name);
+
+        html += `
+          <div onclick="selectCategoryAndDraw('${escapeHTML(cat.name)}')" class="group cursor-pointer bg-white dark:bg-slate-800 rounded-3xl p-5 border border-slate-200 dark:border-slate-700 shadow-sm hover:shadow-lg hover:-translate-y-1 transition duration-300 flex flex-col justify-between">
+            <div>
+              <div class="flex items-center justify-between mb-3">
+                <div class="w-12 h-12 rounded-2xl border flex items-center justify-center text-xl transition group-hover:scale-105" style="background: ${meta.theme.gradient}; color: #FFFFFF;">
+                  <i class="fa-solid ${escapeHTML(meta.icon)}"></i>
+                </div>
+                <span class="text-xs font-mono font-bold px-2.5 py-1 rounded-full bg-slate-100 dark:bg-slate-700 text-slate-700 dark:text-slate-300">
+                  ${count} รายการ
+                </span>
+              </div>
+              <h3 class="font-bold text-base text-slate-800 dark:text-white transition">${escapeHTML(cat.name)}</h3>
+              <p class="text-xs text-slate-400 mt-1">คลิกเพื่อสุ่มเฉพาะข้อมูลในหมวดนี้</p>
+            </div>
+            <div class="mt-4 pt-3 border-t border-slate-100 dark:border-slate-700/60 flex items-center justify-between text-xs font-semibold text-slate-500">
+              <span>เลือกหมวดนี้</span>
+              <i class="fa-solid fa-chevron-right group-hover:translate-x-1 transition text-xs"></i>
+            </div>
+          </div>
+        `;
+      });
+
+      grid.innerHTML = html;
+    }
+
+    function selectCategoryAndDraw(catName) {
+      selectedCategory = catName;
+      updateStageCategoryUI();
+      resetPool();
+      switchTab('draw');
+    }
+
+    function updateStageCategoryUI() {
+      const titleEl = document.getElementById('stageCategoryTitle');
+      const iconEl = document.getElementById('stageCategoryIcon');
+      const wrapperEl = document.getElementById('stageCategoryIconWrapper');
+
+      if (selectedCategory === 'ALL') {
+        titleEl.innerText = "🌟 ทุกหมวดหมู่";
+        iconEl.className = "fa-solid fa-dice text-white";
+        wrapperEl.className = "inline-flex items-center justify-center p-3.5 rounded-2xl shadow-sm text-white btn-theme-action";
+        wrapperEl.style.background = '';
+      } else {
+        const meta = getCategoryMeta(selectedCategory);
+        titleEl.innerText = selectedCategory;
+        iconEl.className = `fa-solid ${meta.icon} text-white`;
+        wrapperEl.className = `inline-flex items-center justify-center p-3.5 rounded-2xl shadow-sm border border-slate-200 dark:border-slate-600`;
+        wrapperEl.style.background = meta.theme.gradient;
+      }
+    }
+
+    function updateCategoryDropdowns() {
+      const catNames = getCategoryNames();
+
+      const randSel = document.getElementById('randomCategorySelect');
+      if (randSel) {
+        randSel.innerHTML = `<option value="ALL">🌟 ทุกหมวดหมู่ (${items.length})</option>` +
+          categories.map(c => {
+            const count = items.filter(it => it.category === c.name).length;
+            return `<option value="${escapeHTML(c.name)}">${escapeHTML(c.name)} (${count})</option>`;
+          }).join('');
+        randSel.value = selectedCategory;
+      }
+
+      const tableSel = document.getElementById('tableCategoryFilter');
+      if (tableSel) {
+        const curTbl = tableSel.value || 'ALL';
+        tableSel.innerHTML = `<option value="ALL">ทุกหมวดหมู่</option>` +
+          categories.map(c => `<option value="${escapeHTML(c.name)}">${escapeHTML(c.name)}</option>`).join('');
+        tableSel.value = catNames.includes(curTbl) ? curTbl : 'ALL';
+      }
+
+      const formSel = document.getElementById('formCategory');
+      if (formSel) {
+        formSel.innerHTML = categories.map(c => `<option value="${escapeHTML(c.name)}">${escapeHTML(c.name)}</option>`).join('');
+      }
+    }
+
+    function resetPool() {
+      let eligible = (selectedCategory === 'ALL') ? [...items] : items.filter(i => i.category === selectedCategory);
+      drawPool = [...eligible];
+      updatePoolUI();
+    }
+
+    function onCategoryFilterChange() {
+      const sel = document.getElementById('randomCategorySelect');
+      if (sel) {
+        selectedCategory = sel.value;
+        updateStageCategoryUI();
+        resetPool();
+      }
+    }
+
+    function toggleUniqueDrawMode() {
+      resetPool();
+    }
+
+    function updatePoolUI() {
+      const totalEligible = (selectedCategory === 'ALL') ? items.length : items.filter(i => i.category === selectedCategory).length;
+      const badge = document.getElementById('poolRemainingBadge');
+      if (badge) badge.innerText = `${drawPool.length}/${totalEligible}`;
+    }
+
+    function triggerRandomDraw() {
+      if (isDrawing) return;
+      if (items.length === 0) {
+        showToast('ยังไม่มีข้อมูลในระบบ กรุณาเพิ่มข้อมูลก่อน', 'warning');
+        switchTab('data');
+        return;
+      }
+
+      const isUnique = document.getElementById('uniqueDrawToggle').checked;
+      let eligible = (selectedCategory === 'ALL') ? items : items.filter(i => i.category === selectedCategory);
+
+      if (eligible.length === 0) {
+        showToast('ไม่มีข้อมูลในหมวดหมู่นี้ กรุณาเพิ่มข้อมูลก่อน', 'warning');
+        return;
+      }
+
+      if (isUnique && drawPool.length === 0) {
+        resetPool();
+        showToast('จั่วการ์ดครบทุกใบแล้ว! สับกองใหม่เรียบร้อย', 'info');
+      }
+
+      isDrawing = true;
+      const drawBtn = document.getElementById('drawActionBtn');
+      const drawIcon = document.getElementById('drawBtnIcon');
+      drawBtn.classList.add('opacity-80', 'cursor-not-allowed');
+      drawIcon.classList.add('animate-spin');
+
+      let counter = 0;
+      const maxFlips = 10;
+      const interval = setInterval(() => {
+        playTickSound();
+        counter++;
+
+        if (counter >= maxFlips) {
+          clearInterval(interval);
+          let selectedItem = isUnique ? drawPool.splice(Math.floor(Math.random() * drawPool.length), 1)[0] : eligible[Math.floor(Math.random() * eligible.length)];
+          updatePoolUI();
+          logHistory(selectedItem);
+          playSuccessChime();
+          launchConfetti();
+
+          displayResultPopup(selectedItem);
+
+          isDrawing = false;
+          drawBtn.classList.remove('opacity-80', 'cursor-not-allowed');
+          drawIcon.classList.remove('animate-spin');
+        }
+      }, 70);
+    }
+
+    function displayResultPopup(item) {
+      if (!item) return;
+      currentItem = item;
+
+      const meta = getCategoryMeta(item.category);
+
+      document.getElementById('popupTitle').innerText = item.title;
+      document.getElementById('popupSubtitle').innerText = item.subtitle || 'ข้อมูลทั่วไป';
+      document.getElementById('popupDescription').innerText = item.description || 'ไม่มีรายละเอียดเพิ่มเติม';
+      document.getElementById('popupCategoryName').innerText = item.category;
+      document.getElementById('popupCategoryIcon').className = `fa-solid ${meta.icon} text-[10px]`;
+      document.getElementById('popupCategoryBadge').className = `px-3.5 py-1.5 rounded-full text-xs font-bold tracking-wide uppercase border flex items-center gap-1.5 shadow-sm transition-colors ${meta.theme.badge}`;
+      document.getElementById('popupIndexBadge').innerText = `#${item.id}`;
+
+      // ราคา: สีแดง ตัวอักษรขนาด 18px (ขยายขึ้น 1 ระดับ)
+      const priceVal = parseFloat(item.price);
+      const priceValueEl = document.getElementById('popupPriceValue');
+      priceValueEl.innerText = (!isNaN(priceVal) && priceVal > 0) ? `฿${priceVal.toLocaleString()}` : 'FREE';
+
+      // จัดการ Active Income & Passive Income (ซ่อนเมื่อเป็น 0)
+      const activeInc = parseFloat(item.activeIncome) || 0;
+      const passiveInc = parseFloat(item.passiveIncome) || 0;
+
+      const incomeContainer = document.getElementById('popupIncomeContainer');
+      const activeBox = document.getElementById('popupActiveIncomeBox');
+      const passiveBox = document.getElementById('popupPassiveIncomeBox');
+
+      if (activeInc > 0) {
+        activeBox.classList.remove('hidden');
+        activeBox.classList.add('flex');
+        document.getElementById('popupActiveIncomeVal').innerText = activeInc.toLocaleString();
+      } else {
+        activeBox.classList.add('hidden');
+        activeBox.classList.remove('flex');
+      }
+
+      if (passiveInc > 0) {
+        passiveBox.classList.remove('hidden');
+        passiveBox.classList.add('flex');
+        document.getElementById('popupPassiveIncomeVal').innerText = passiveInc.toLocaleString();
+      } else {
+        passiveBox.classList.add('hidden');
+        passiveBox.classList.remove('flex');
+      }
+
+      // หากทั้งคู่เป็น 0 ซ่อนกล่องคอนเทนเนอร์รายได้ทั้งหมด
+      if (activeInc === 0 && passiveInc === 0) {
+        incomeContainer.classList.add('hidden');
+        incomeContainer.classList.remove('grid');
+      } else {
+        incomeContainer.classList.remove('hidden');
+        incomeContainer.classList.add('grid');
+      }
+
+      const costH = Number(item.cost?.heart) || 0;
+      const costT = Number(item.cost?.time) || 0;
+      const costK = Number(item.cost?.knowledge) || 0;
+
+      const rewardH = Number(item.reward?.heart) || 0;
+      const rewardT = Number(item.reward?.time) || 0;
+      const rewardK = Number(item.reward?.knowledge) || 0;
+
+      // จัดการซ่อน/แสดง รายการสิ่งที่ต้องใช้ (ซ่อนถ้าเป็น 0)
+      const rowCostH = document.getElementById('cost-row-heart');
+      const rowCostT = document.getElementById('cost-row-time');
+      const rowCostK = document.getElementById('cost-row-knowledge');
+      const emptyCostNotice = document.getElementById('cost-empty-notice');
+
+      if (costH > 0) {
+        rowCostH.classList.remove('hidden');
+        document.getElementById('popup-cost-heart-val').innerText = costH;
+        document.getElementById('popup-cost-heart-bar').style.width = `${costH * 10}%`;
+      } else {
+        rowCostH.classList.add('hidden');
+      }
+
+      if (costT > 0) {
+        rowCostT.classList.remove('hidden');
+        document.getElementById('popup-cost-time-val').innerText = costT;
+        document.getElementById('popup-cost-time-bar').style.width = `${costT * 10}%`;
+      } else {
+        rowCostT.classList.add('hidden');
+      }
+
+      if (costK > 0) {
+        rowCostK.classList.remove('hidden');
+        document.getElementById('popup-cost-knowledge-val').innerText = costK;
+        document.getElementById('popup-cost-knowledge-bar').style.width = `${costK * 10}%`;
+      } else {
+        rowCostK.classList.add('hidden');
+      }
+
+      if (costH === 0 && costT === 0 && costK === 0) {
+        emptyCostNotice.classList.remove('hidden');
+      } else {
+        emptyCostNotice.classList.add('hidden');
+      }
+
+      // จัดการซ่อน/แสดง รายการสิ่งที่ได้รับ (ซ่อนถ้าเป็น 0)
+      const rowRewH = document.getElementById('reward-row-heart');
+      const rowRewT = document.getElementById('reward-row-time');
+      const rowRewK = document.getElementById('reward-row-knowledge');
+      const emptyRewNotice = document.getElementById('reward-empty-notice');
+
+      if (rewardH > 0) {
+        rowRewH.classList.remove('hidden');
+        document.getElementById('popup-reward-heart-val').innerText = `+${rewardH}`;
+        document.getElementById('popup-reward-heart-bar').style.width = `${rewardH * 10}%`;
+      } else {
+        rowRewH.classList.add('hidden');
+      }
+
+      if (rewardT > 0) {
+        rowRewT.classList.remove('hidden');
+        document.getElementById('popup-reward-time-val').innerText = `+${rewardT}`;
+        document.getElementById('popup-reward-time-bar').style.width = `${rewardT * 10}%`;
+      } else {
+        rowRewT.classList.add('hidden');
+      }
+
+      if (rewardK > 0) {
+        rowRewK.classList.remove('hidden');
+        document.getElementById('popup-reward-knowledge-val').innerText = `+${rewardK}`;
+        document.getElementById('popup-reward-knowledge-bar').style.width = `${rewardK * 10}%`;
+      } else {
+        rowRewK.classList.add('hidden');
+      }
+
+      if (rewardH === 0 && rewardT === 0 && rewardK === 0) {
+        emptyRewNotice.classList.remove('hidden');
+      } else {
+        emptyRewNotice.classList.add('hidden');
+      }
+
+      const netGain = (rewardH + rewardT + rewardK) - (costH + costT + costK);
+      const netGainEl = document.getElementById('popupNetGainValue');
+      netGainEl.innerText = (netGain >= 0 ? `+${netGain}` : `${netGain}`);
+
+      const imgContainer = document.getElementById('popupImageContainer');
+      const imgEl = document.getElementById('popupImage');
+      if (item.imageUrl && item.imageUrl.trim() !== '') {
+        imgEl.src = item.imageUrl;
+        imgContainer.classList.remove('hidden');
+      } else {
+        imgContainer.classList.add('hidden');
+      }
+
+      const linkContainer = document.getElementById('popupLinkContainer');
+      const linkEl = document.getElementById('popupActionLink');
+      if (item.linkUrl && item.linkUrl.trim() !== '') {
+        linkEl.href = item.linkUrl;
+        linkContainer.classList.remove('hidden');
+      } else {
+        linkContainer.classList.add('hidden');
+      }
+
+      updatePopupFavoriteUI(item.favorite);
+      document.getElementById('resultModal').classList.remove('hidden');
+    }
+
+    function closeResultModal() {
+      document.getElementById('resultModal').classList.add('hidden');
+    }
+
+    function updatePopupFavoriteUI(isFav) {
+      const favBtn = document.getElementById('popupFavoriteBtn');
+      if (!favBtn) return;
+      favBtn.innerHTML = isFav ? '<i class="fa-solid fa-heart text-red-600 text-base"></i>' : '<i class="fa-regular fa-heart text-slate-400 text-base"></i>';
+    }
+
+    function toggleCurrentFavorite() {
+      if (!currentItem) return;
+      currentItem.favorite = !currentItem.favorite;
+      const realItem = items.find(i => i.id === currentItem.id);
+      if (realItem) realItem.favorite = currentItem.favorite;
+      pushToGoogleSheets();
+      updatePopupFavoriteUI(currentItem.favorite);
+      renderDataTable();
+      showToast(currentItem.favorite ? 'บันทึกรายการโปรดแล้ว ❤️' : 'นำออกจากรายการโปรดแล้ว', 'info');
+    }
+
+    function shareCurrentCard() {
+      if (!currentItem) return;
+      const costH = Number(currentItem.cost?.heart) || 0;
+      const costT = Number(currentItem.cost?.time) || 0;
+      const costK = Number(currentItem.cost?.knowledge) || 0;
+      const rewardH = Number(currentItem.reward?.heart) || 0;
+      const rewardT = Number(currentItem.reward?.time) || 0;
+      const rewardK = Number(currentItem.reward?.knowledge) || 0;
+      const priceText = currentItem.price > 0 ? `฿${parseFloat(currentItem.price).toLocaleString()}` : 'ฟรี';
+
+      let costParts = [];
+      if (costH > 0) costParts.push(`หัวใจ ${costH}/10`);
+      if (costT > 0) costParts.push(`เวลา ${costT}/10`);
+      if (costK > 0) costParts.push(`ความรู้ ${costK}/10`);
+      const costStr = costParts.length > 0 ? costParts.join(' | ') : 'ไม่มี';
+
+      let rewParts = [];
+      if (rewardH > 0) rewParts.push(`หัวใจ +${rewardH}`);
+      if (rewardT > 0) rewParts.push(`เวลา +${rewardT}`);
+      if (rewardK > 0) rewParts.push(`ความรู้ +${rewardK}`);
+      const rewStr = rewParts.length > 0 ? rewParts.join(' | ') : 'ไม่มี';
+
+      const activeText = currentItem.activeIncome ? ` | Active: ฿${parseFloat(currentItem.activeIncome).toLocaleString()}` : '';
+      const passiveText = currentItem.passiveIncome ? ` | Passive: ฿${parseFloat(currentItem.passiveIncome).toLocaleString()}` : '';
+
+      const shareText = `🎲 สุ่มได้: "${currentItem.title}"\n📂 หมวดหมู่: ${currentItem.category} | ราคา: ${priceText}${activeText}${passiveText}\n\n🔻 สิ่งที่ต้องใช้: ${costStr}\n🔺 สิ่งที่ได้รับ: ${rewStr}\n\n${currentItem.description || ''}`;
+      if (navigator.clipboard) {
+        navigator.clipboard.writeText(shareText).then(() => showToast('คัดลอกข้อความแชร์เรียบร้อยแล้ว!', 'success'));
+      }
+    }
+
+    function clearCurrentCard() {
+      resetPool();
+      showToast('เติมกองสุ่มเต็ม 100% เรียบร้อยแล้ว', 'info');
+    }
+
+    function logHistory(item) {
+      historyLog.unshift({
+        id: item.id,
+        title: item.title,
+        category: item.category,
+        price: item.price,
+        activeIncome: item.activeIncome,
+        passiveIncome: item.passiveIncome,
+        cost: item.cost,
+        reward: item.reward,
+        timestamp: Date.now()
+      });
+      if (historyLog.length > 50) historyLog.pop();
+      pushToGoogleSheets();
+      renderHistoryList();
+    }
+
+    function renderHistoryList() {
+      const container = document.getElementById('historyListContainer');
+      const emptyState = document.getElementById('emptyHistoryState');
+      if (!container) return;
+      if (historyLog.length === 0) {
+        container.innerHTML = '';
+        emptyState.classList.remove('hidden');
+        return;
+      }
+      emptyState.classList.add('hidden');
+      container.innerHTML = historyLog.map(h => {
+        const timeStr = new Date(h.timestamp).toLocaleTimeString('th-TH', { hour: '2-digit', minute: '2-digit' });
+        const priceStr = h.price > 0 ? `฿${parseFloat(h.price).toLocaleString()}` : 'ฟรี';
+        const meta = getCategoryMeta(h.category);
+        const costH = Number(h.cost?.heart) || 0;
+        const rewardH = Number(h.reward?.heart) || 0;
+        return `
+          <li class="p-3.5 sm:p-4 hover:bg-slate-50 dark:hover:bg-slate-700/40 transition flex items-center justify-between gap-3">
+            <div class="space-y-1 min-w-0">
+              <div class="flex items-center gap-2">
+                <span class="text-xs font-bold text-slate-800 dark:text-white truncate">${escapeHTML(h.title)}</span>
+                <span class="text-[10px] px-2 py-0.5 rounded-full ${meta.theme.badge} font-medium">${escapeHTML(h.category)}</span>
+                <span class="text-[10px] font-mono font-bold text-red-500">${priceStr}</span>
+              </div>
+              <div class="flex items-center gap-3 text-[11px] text-slate-400">
+                <span><i class="fa-solid fa-clock text-[10px]"></i> ${timeStr}</span>
+                <span class="text-red-600"><i class="fa-solid fa-heart text-[10px]"></i> ${costH} ➔ +${rewardH}</span>
+              </div>
+            </div>
+            <button onclick="previewHistoryItem('${h.id}')" class="text-xs font-semibold hover:underline whitespace-nowrap">
+              เปิดดู
+            </button>
+          </li>
+        `;
+      }).join('');
+    }
+
+    function previewHistoryItem(itemId) {
+      const target = items.find(i => i.id === itemId);
+      if (target) {
+        displayResultPopup(target);
+      }
+    }
+
+    function clearHistoryLog() {
+      openCustomConfirm('ล้างประวัติการสุ่มทั้งหมด', 'คุณแน่ใจหรือไม่ว่าต้องการล้างประวัติการสุ่มทั้งหมดบนคลาวด์?', () => {
+        historyLog = [];
+        pushToGoogleSheets();
+        renderHistoryList();
+        showToast('ล้างประวัติการสุ่มเรียบร้อยแล้ว', 'info');
+      });
+    }
+
+    function renderDataTable() {
+      const query = (document.getElementById('searchInput')?.value || '').toLowerCase().trim();
+      const filterCat = document.getElementById('tableCategoryFilter')?.value || 'ALL';
+
+      let filtered = items.filter(item => {
+        const matchesQuery = !query || 
+          item.title.toLowerCase().includes(query) || 
+          (item.price && item.price.toString().includes(query)) ||
+          (item.activeIncome && item.activeIncome.toString().includes(query)) ||
+          (item.passiveIncome && item.passiveIncome.toString().includes(query));
+        const matchesCat = (filterCat === 'ALL') || (item.category === filterCat);
+        return matchesQuery && matchesCat;
+      });
+
+      const desktopTbody = document.getElementById('tableBodyDesktop');
+      const mobileList = document.getElementById('tableBodyMobile');
+      const emptyState = document.getElementById('emptyDataState');
+
+      if (filtered.length === 0) {
+        if (desktopTbody) desktopTbody.innerHTML = '';
+        if (mobileList) mobileList.innerHTML = '';
+        emptyState.classList.remove('hidden');
+        return;
+      }
+      emptyState.classList.add('hidden');
+
+      if (desktopTbody) {
+        desktopTbody.innerHTML = filtered.map((item, idx) => {
+          const costH = Number(item.cost?.heart) || 0;
+          const costT = Number(item.cost?.time) || 0;
+          const costK = Number(item.cost?.knowledge) || 0;
+
+          const rewardH = Number(item.reward?.heart) || 0;
+          const rewardT = Number(item.reward?.time) || 0;
+          const rewardK = Number(item.reward?.knowledge) || 0;
+
+          const priceNum = parseFloat(item.price);
+          const priceFormatted = (!isNaN(priceNum) && priceNum > 0) ? `฿${priceNum.toLocaleString()}` : '<span class="text-slate-400">ฟรี</span>';
+
+          const activeNum = parseFloat(item.activeIncome);
+          const activeFormatted = (!isNaN(activeNum) && activeNum > 0) ? `+฿${activeNum.toLocaleString()}` : '<span class="text-slate-400">-</span>';
+
+          const passiveNum = parseFloat(item.passiveIncome);
+          const passiveFormatted = (!isNaN(passiveNum) && passiveNum > 0) ? `+฿${passiveNum.toLocaleString()}` : '<span class="text-slate-400">-</span>';
+
+          const meta = getCategoryMeta(item.category);
+
+          return `
+            <tr class="hover:bg-slate-50 dark:hover:bg-slate-700/40 transition">
+              <td class="py-3 px-4 text-center font-mono text-xs text-slate-400">${idx + 1}</td>
+              <td class="py-3 px-4 font-bold text-slate-800 dark:text-white">${escapeHTML(item.title)}</td>
+              <td class="py-3 px-4 font-mono font-black text-xs text-red-600">${priceFormatted}</td>
+              <td class="py-3 px-4 font-mono font-bold text-xs text-green-500">${activeFormatted}</td>
+              <td class="py-3 px-4 font-mono font-black text-xs text-emerald-600 dark:text-emerald-400">${passiveFormatted}</td>
+              <td class="py-3 px-4">
+                <span class="text-xs px-2.5 py-1 rounded-full font-semibold border ${meta.theme.badge}">${escapeHTML(item.category)}</span>
+              </td>
+              <td class="py-3 px-4 text-xs font-mono">
+                <div class="flex items-center gap-1.5">
+                  <span class="text-red-600"><i class="fa-solid fa-heart"></i> ${costH}</span>
+                  <span class="text-slate-500"><i class="fa-solid fa-clock"></i> ${costT}</span>
+                  <span class="text-slate-500 dark:text-slate-400"><i class="fa-solid fa-brain"></i> ${costK}</span>
+                </div>
+              </td>
+              <td class="py-3 px-4 text-xs font-mono">
+                <div class="flex items-center gap-1.5">
+                  <span class="text-red-600 font-bold"><i class="fa-solid fa-heart"></i> +${rewardH}</span>
+                  <span class="text-slate-700 dark:text-slate-300 font-bold"><i class="fa-solid fa-clock"></i> +${rewardT}</span>
+                  <span class="text-slate-700 dark:text-slate-200 font-bold"><i class="fa-solid fa-brain"></i> +${rewardK}</span>
+                </div>
+              </td>
+              <td class="py-3 px-4 text-right">
+                <button onclick="openAddEditModal('${item.id}')" class="p-1.5 text-slate-400 hover:text-red-600"><i class="fa-solid fa-pen text-xs"></i></button>
+                <button onclick="confirmDeleteItem('${item.id}')" class="p-1.5 text-slate-400 hover:text-red-600"><i class="fa-solid fa-trash-can text-xs"></i></button>
+              </td>
+            </tr>
+          `;
+        }).join('');
+      }
+
+      if (mobileList) {
+        mobileList.innerHTML = filtered.map(item => {
+          const meta = getCategoryMeta(item.category);
+          const costH = Number(item.cost?.heart) || 0;
+          const costT = Number(item.cost?.time) || 0;
+          const costK = Number(item.cost?.knowledge) || 0;
+
+          const rewardH = Number(item.reward?.heart) || 0;
+          const rewardT = Number(item.reward?.time) || 0;
+          const rewardK = Number(item.reward?.knowledge) || 0;
+
+          const activeNum = parseFloat(item.activeIncome) || 0;
+          const passiveNum = parseFloat(item.passiveIncome) || 0;
+
+          return `
+            <div class="p-3 bg-white dark:bg-slate-800 rounded-xl space-y-2 border border-slate-100 dark:border-slate-700">
+              <div class="flex justify-between items-start">
+                <div>
+                  <span class="text-[10px] px-2 py-0.5 rounded-full font-semibold border ${meta.theme.badge}">${escapeHTML(item.category)}</span>
+                  <h4 class="font-bold text-sm text-slate-800 dark:text-white mt-1">${escapeHTML(item.title)}</h4>
+                </div>
+                <div class="flex gap-1">
+                  <button onclick="openAddEditModal('${item.id}')" class="p-1 text-slate-400"><i class="fa-solid fa-pen text-xs"></i></button>
+                  <button onclick="confirmDeleteItem('${item.id}')" class="p-1 text-slate-400"><i class="fa-solid fa-trash-can text-xs"></i></button>
+                </div>
+              </div>
+              <div class="flex items-center gap-3 text-xs font-mono font-bold">
+                <span class="text-red-600">ราคา: ฿${item.price || 0}</span>
+                <span class="text-green-500">Active: ฿${activeNum.toLocaleString()}</span>
+                <span class="text-emerald-500">Passive: ฿${passiveNum.toLocaleString()}</span>
+              </div>
+              <div class="grid grid-cols-2 gap-2 text-[11px] bg-slate-50 dark:bg-slate-900/60 p-2 rounded-lg font-mono">
+                <div>
+                  <span class="text-slate-400 block text-[9px] uppercase font-bold">ใช้:</span>
+                  <span class="text-red-600"><i class="fa-solid fa-heart"></i> ${costH}</span> |
+                  <span class="text-slate-500"><i class="fa-solid fa-clock"></i> ${costT}</span> |
+                  <span><i class="fa-solid fa-brain"></i> ${costK}</span>
+                </div>
+                <div>
+                  <span class="text-slate-400 block text-[9px] uppercase font-bold">ได้:</span>
+                  <span class="text-red-600 font-bold">+${rewardH}</span> |
+                  <span class="text-slate-700 dark:text-slate-300 font-bold">+${rewardT}</span> |
+                  <span class="text-slate-700 dark:text-slate-200 font-bold">+${rewardK}</span>
+                </div>
+              </div>
+            </div>
+          `;
+        }).join('');
+      }
+    }
+
+    function openAddEditModal(itemId = null) {
+      updateCategoryDropdowns();
+      const modal = document.getElementById('itemModal');
+      const form = document.getElementById('itemForm');
+      form.reset();
+
+      if (itemId) {
+        const item = items.find(i => i.id === itemId);
+        if (!item) return;
+        document.getElementById('formItemId').value = item.id;
+        document.getElementById('formTitle').value = item.title;
+        document.getElementById('formSubtitle').value = item.subtitle || '';
+        document.getElementById('formCategory').value = item.category;
+        document.getElementById('formPrice').value = item.price || '';
+        document.getElementById('formActiveIncome').value = item.activeIncome || '';
+        document.getElementById('formPassiveIncome').value = item.passiveIncome || '';
+        document.getElementById('formDescription').value = item.description || '';
+        document.getElementById('formImageUrl').value = item.imageUrl || '';
+        document.getElementById('formLinkUrl').value = item.linkUrl || '';
+
+        const costH = Number(item.cost?.heart) || 0;
+        const costT = Number(item.cost?.time) || 0;
+        const costK = Number(item.cost?.knowledge) || 0;
+
+        const rewardH = Number(item.reward?.heart) || 0;
+        const rewardT = Number(item.reward?.time) || 0;
+        const rewardK = Number(item.reward?.knowledge) || 0;
+
+        document.getElementById('sliderCostHeart').value = costH;
+        document.getElementById('sliderCostTime').value = costT;
+        document.getElementById('sliderCostKnowledge').value = costK;
+        document.getElementById('sliderRewardHeart').value = rewardH;
+        document.getElementById('sliderRewardTime').value = rewardT;
+        document.getElementById('sliderRewardKnowledge').value = rewardK;
+      } else {
+        document.getElementById('formItemId').value = '';
+        randomizeFormSliders();
+      }
+
+      ['CostHeart', 'CostTime', 'CostKnowledge', 'RewardHeart', 'RewardTime', 'RewardKnowledge'].forEach(updateSliderBadge);
+      modal.classList.remove('hidden');
+    }
+
+    function closeAddEditModal() {
+      document.getElementById('itemModal').classList.add('hidden');
+    }
+
+    function updateSliderBadge(type) {
+      const slider = document.getElementById(`slider${type}`);
+      const badge = document.getElementById(`badge${type}`);
+      if (slider && badge) badge.innerText = type.startsWith('Reward') ? `+${slider.value}` : slider.value;
+    }
+
+    function randomizeFormSliders() {
+      const rnd = () => Math.floor(Math.random() * 11);
+      document.getElementById('sliderCostHeart').value = rnd();
+      document.getElementById('sliderCostTime').value = rnd();
+      document.getElementById('sliderCostKnowledge').value = rnd();
+      document.getElementById('sliderRewardHeart').value = rnd();
+      document.getElementById('sliderRewardTime').value = rnd();
+      document.getElementById('sliderRewardKnowledge').value = rnd();
+      ['CostHeart', 'CostTime', 'CostKnowledge', 'RewardHeart', 'RewardTime', 'RewardKnowledge'].forEach(updateSliderBadge);
+    }
+
+    function handleItemFormSubmit(e) {
+      e.preventDefault();
+      const id = document.getElementById('formItemId').value;
+      const title = document.getElementById('formTitle').value.trim();
+      const subtitle = document.getElementById('formSubtitle').value.trim();
+      const category = document.getElementById('formCategory').value;
+      const price = parseFloat(document.getElementById('formPrice').value) || 0;
+      const activeIncome = parseFloat(document.getElementById('formActiveIncome').value) || 0;
+      const passiveIncome = parseFloat(document.getElementById('formPassiveIncome').value) || 0;
+      const description = document.getElementById('formDescription').value.trim();
+      const imageUrl = document.getElementById('formImageUrl').value.trim();
+      const linkUrl = document.getElementById('formLinkUrl').value.trim();
+
+      const cost = {
+        heart: Number(document.getElementById('sliderCostHeart').value) || 0,
+        time: Number(document.getElementById('sliderCostTime').value) || 0,
+        knowledge: Number(document.getElementById('sliderCostKnowledge').value) || 0
+      };
+      const reward = {
+        heart: Number(document.getElementById('sliderRewardHeart').value) || 0,
+        time: Number(document.getElementById('sliderRewardTime').value) || 0,
+        knowledge: Number(document.getElementById('sliderRewardKnowledge').value) || 0
+      };
+
+      if (id) {
+        const index = items.findIndex(i => i.id === id);
+        if (index !== -1) {
+          items[index] = { ...items[index], title, subtitle, category, price, activeIncome, passiveIncome, description, imageUrl, linkUrl, cost, reward };
+        }
+      } else {
+        items.unshift({
+          id: `c-${Date.now().toString().slice(-4)}`,
+          title, subtitle, category, price, activeIncome, passiveIncome, description, imageUrl, linkUrl, cost, reward,
+          favorite: false,
+          createdAt: Date.now()
+        });
+      }
+
+      pushToGoogleSheets();
+      resetPool();
+      renderDataTable();
+      closeAddEditModal();
+    }
+
+    function confirmDeleteItem(itemId) {
+      openCustomConfirm('ลบข้อมูลนี้?', 'คุณต้องการลบการ์ดข้อมูลนี้ออกจากระบบและคลาวด์หรือไม่?', () => {
+        items = items.filter(i => i.id !== itemId);
+        pushToGoogleSheets();
+        resetPool();
+        renderDataTable();
+        showToast('ลบรายการข้อมูลเรียบร้อยแล้ว', 'info');
+      });
+    }
+
+    function openCategoryModal() {
+      newCategorySelectedIcon = "fa-folder";
+      newCategorySelectedColor = "red";
+      document.getElementById('newCatIconPreview').className = "fa-solid fa-folder";
+      updateNewCatColorBtnUI();
+      renderCategoryModalList();
+      document.getElementById('categoryModal').classList.remove('hidden');
+    }
+    
+    function closeCategoryModal() {
+      document.getElementById('categoryModal').classList.add('hidden');
+    }
+
+    function updateNewCatColorBtnUI() {
+      const pill = document.getElementById('newCatColorPill');
+      const palette = COLOR_PALETTES[newCategorySelectedColor] || COLOR_PALETTES.red;
+      pill.style.backgroundColor = palette.hex;
+    }
+
+    function renderCategoryModalList() {
+      const container = document.getElementById('categoryListContainer');
+      container.innerHTML = categories.map((cat, idx) => {
+        const count = items.filter(i => i.category === cat.name).length;
+        const isFirst = idx === 0;
+        const isLast = idx === categories.length - 1;
+        const meta = getCategoryMeta(cat.name);
+        
+        return `
+          <div class="py-2.5 flex items-center justify-between gap-2 group hover:bg-slate-50 dark:hover:bg-slate-700/30 px-2 rounded-xl transition">
+            <div class="flex items-center gap-2 flex-1 min-w-0">
+              <span class="w-5 h-5 rounded-lg bg-slate-100 dark:bg-slate-700 text-slate-500 flex items-center justify-center text-[10px] font-mono font-bold">
+                ${idx + 1}
+              </span>
+
+              <button onclick="openColorPicker(${idx})" title="คลิกเพื่อเปลี่ยนแถบสีหมวดหมู่" class="w-7 h-5 rounded-md shadow-sm border border-slate-200 dark:border-slate-600 hover:scale-105 transition shrink-0" style="background: ${meta.theme.gradient};"></button>
+
+              <button onclick="openIconPicker(${idx})" title="คลิกเพื่อเปลี่ยนไอคอน" class="w-8 h-8 rounded-lg bg-slate-100 dark:bg-slate-700 border border-slate-200 dark:border-slate-600 flex items-center justify-center text-sm hover:scale-105 transition shrink-0">
+                <i class="fa-solid ${escapeHTML(meta.icon)}"></i>
+              </button>
+
+              <span class="text-sm font-semibold text-slate-800 dark:text-white truncate" title="${escapeHTML(cat.name)}">
+                ${escapeHTML(cat.name)}
+              </span>
+              <span class="text-xs text-slate-400 font-mono">(${count})</span>
+            </div>
+
+            <div class="flex items-center gap-1">
+              <button onclick="moveCategoryOrder(${idx}, -1)" ${isFirst ? 'disabled class="p-1.5 text-slate-300 dark:text-slate-600 cursor-not-allowed"' : 'class="p-1.5 text-slate-400 hover:text-red-600 hover:bg-rose-50 rounded-lg transition"'} title="เลื่อนขึ้น">
+                <i class="fa-solid fa-arrow-up text-xs"></i>
+              </button>
+              
+              <button onclick="moveCategoryOrder(${idx}, 1)" ${isLast ? 'disabled class="p-1.5 text-slate-300 dark:text-slate-600 cursor-not-allowed"' : 'class="p-1.5 text-slate-400 hover:text-red-600 hover:bg-rose-50 rounded-lg transition"'} title="เลื่อนลง">
+                <i class="fa-solid fa-arrow-down text-xs"></i>
+              </button>
+
+              <button onclick="promptRenameCategory(${idx})" class="p-1.5 text-slate-400 hover:text-red-600 hover:bg-sky-50 rounded-lg transition" title="แก้ไขชื่อหมวดหมู่">
+                <i class="fa-solid fa-pen text-xs"></i>
+              </button>
+
+              <button onclick="promptDeleteCategory('${escapeHTML(cat.name)}', ${count})" class="p-1.5 text-slate-400 hover:text-brand-red hover:bg-rose-50 rounded-lg transition" title="ลบหมวดหมู่">
+                <i class="fa-solid fa-trash-can text-xs"></i>
+              </button>
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    function handleAddCategory() {
+      const input = document.getElementById('newCategoryInput');
+      const name = input.value.trim();
+      if (!name) return;
+
+      const catNames = getCategoryNames();
+      if (catNames.includes(name)) {
+        showToast('มีหมวดหมู่นี้ในระบบแล้ว', 'warning');
+        return;
+      }
+
+      categories.push({
+        name: name,
+        icon: newCategorySelectedIcon || "fa-folder",
+        color: newCategorySelectedColor || "red"
+      });
+
+      input.value = '';
+      newCategorySelectedIcon = "fa-folder";
+      newCategorySelectedColor = "red";
+      document.getElementById('newCatIconPreview').className = "fa-solid fa-folder";
+      updateNewCatColorBtnUI();
+
+      pushToGoogleSheets();
+      updateCategoryDropdowns();
+      renderCategoryModalList();
+      renderCategoryHomeCards();
+      showToast(`เพิ่มหมวดหมู่ "${name}" สำเร็จ`, 'success');
+    }
+
+    function promptRenameCategory(index) {
+      const oldName = categories[index].name;
+      const newName = prompt('ระบุชื่อหมวดหมู่ใหม่:', oldName);
+      
+      if (!newName || newName.trim() === '' || newName.trim() === oldName) return;
+      const cleanNewName = newName.trim();
+
+      const catNames = getCategoryNames();
+      if (catNames.includes(cleanNewName)) {
+        showToast('มีชื่อหมวดหมู่นี้อยู่แล้ว', 'warning');
+        return;
+      }
+
+      categories[index].name = cleanNewName;
+
+      let updatedCount = 0;
+      items.forEach(item => {
+        if (item.category === oldName) {
+          item.category = cleanNewName;
+          updatedCount++;
+        }
+      });
+
+      if (selectedCategory === oldName) {
+        selectedCategory = cleanNewName;
+        updateStageCategoryUI();
+      }
+
+      pushToGoogleSheets();
+      updateCategoryDropdowns();
+      renderCategoryModalList();
+      renderCategoryHomeCards();
+      renderDataTable();
+      showToast(`เปลี่ยนชื่อเป็น "${cleanNewName}" แล้ว`, 'success');
+    }
+
+    function moveCategoryOrder(index, direction) {
+      const targetIndex = index + direction;
+      if (targetIndex < 0 || targetIndex >= categories.length) return;
+
+      const temp = categories[index];
+      categories[index] = categories[targetIndex];
+      categories[targetIndex] = temp;
+
+      pushToGoogleSheets();
+      renderCategoryModalList();
+      renderCategoryHomeCards();
+      updateCategoryDropdowns();
+      showToast('จัดเรียงลำดับหมวดหมู่เรียบร้อย', 'info');
+    }
+
+    // Color Bar Picker Render (30 เฉดสี)
+    function renderColorPickerGrid() {
+      const grid = document.getElementById('colorPickerGrid');
+      grid.innerHTML = Object.values(COLOR_PALETTES).map(palette => `
+        <button type="button" onclick="selectColor('${palette.id}')" class="w-full p-2.5 rounded-2xl flex items-center justify-between border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 hover:border-slate-400 dark:hover:border-slate-500 hover:shadow-md transition text-left group">
+          <div class="flex items-center gap-3">
+            <span class="w-7 h-7 rounded-full shadow-inner border border-slate-200 shrink-0" style="background-color: ${palette.hex};"></span>
+            <div>
+              <span class="text-xs font-bold text-slate-800 dark:text-white block">${palette.name}</span>
+              <div class="w-32 sm:w-44 h-2 rounded-full mt-1 opacity-90 group-hover:opacity-100 transition border border-slate-200/50" style="background: ${palette.gradient};"></div>
+            </div>
+          </div>
+          <span class="text-xs font-semibold px-2 py-0.5 rounded-lg border ${palette.badge}">ตัวอย่าง</span>
+        </button>
+      `).join('');
+    }
+
+    function openColorPicker(categoryIndex) {
+      colorPickerTargetIdx = categoryIndex;
+      document.getElementById('colorPickerModal').classList.remove('hidden');
+    }
+
+    function closeColorPicker() {
+      document.getElementById('colorPickerModal').classList.add('hidden');
+    }
+
+    function selectColor(colorId) {
+      if (colorPickerTargetIdx === -1) {
+        newCategorySelectedColor = colorId;
+        updateNewCatColorBtnUI();
+      } else if (colorPickerTargetIdx >= 0 && colorPickerTargetIdx < categories.length) {
+        categories[colorPickerTargetIdx].color = colorId;
+        updateStageCategoryUI();
+        pushToGoogleSheets();
+        renderCategoryModalList();
+        renderCategoryHomeCards();
+        renderDataTable();
+        showToast('เปลี่ยนแถบสีหมวดหมู่เรียบร้อยแล้ว 🎨', 'success');
+      }
+      closeColorPicker();
+    }
+
+    function renderIconPickerGrid() {
+      const grid = document.getElementById('iconPickerGrid');
+      grid.innerHTML = ICON_PRESETS.map(icon => `
+        <button type="button" onclick="selectIcon('${icon}')" class="w-10 h-10 rounded-xl bg-slate-50 dark:bg-slate-700 hover:bg-slate-200 border border-slate-200 dark:border-slate-600 text-slate-700 dark:text-slate-200 flex items-center justify-center text-base transition">
+          <i class="fa-solid ${icon}"></i>
+        </button>
+      `).join('');
+    }
+
+    function openIconPicker(categoryIndex) {
+      iconPickerTargetIdx = categoryIndex;
+      document.getElementById('iconPickerModal').classList.remove('hidden');
+    }
+
+    function closeIconPicker() {
+      document.getElementById('iconPickerModal').classList.add('hidden');
+    }
+
+    function selectIcon(iconClass) {
+      if (iconPickerTargetIdx === -1) {
+        newCategorySelectedIcon = iconClass;
+        document.getElementById('newCatIconPreview').className = `fa-solid ${iconClass}`;
+      } else if (iconPickerTargetIdx >= 0 && iconPickerTargetIdx < categories.length) {
+        categories[iconPickerTargetIdx].icon = iconClass;
+        updateStageCategoryUI();
+        pushToGoogleSheets();
+        renderCategoryModalList();
+        renderCategoryHomeCards();
+        showToast('เปลี่ยนไอคอนเรียบร้อยแล้ว', 'success');
+      }
+      closeIconPicker();
+    }
+
+    function promptDeleteCategory(catName, count) {
+      if (categories.length <= 1) {
+        showToast('ต้องมีหมวดหมู่อย่างน้อย 1 หมวดหมู่ในระบบ', 'warning');
+        return;
+      }
+
+      const confirmMsg = count > 0 
+        ? `มีข้อมูลในการ์ด ${count} รายการ ข้อมูลทั้งหมดจะถูกย้ายไปยังหมวดอื่น คุณต้องการลบหมวดหมู่นี้หรือไม่?`
+        : `คุณต้องการลบหมวดหมู่ "${catName}" หรือไม่?`;
+
+      openCustomConfirm(`ลบหมวดหมู่ "${catName}"`, confirmMsg, () => {
+        categories = categories.filter(c => c.name !== catName);
+        const fallback = categories[0].name;
+        items.forEach(i => { if (i.category === catName) i.category = fallback; });
+        
+        if (selectedCategory === catName) {
+          selectedCategory = "ALL";
+          updateStageCategoryUI();
+        }
+
+        pushToGoogleSheets();
+        updateCategoryDropdowns();
+        renderCategoryModalList();
+        renderCategoryHomeCards();
+        renderDataTable();
+        resetPool();
+        showToast(`ลบหมวดหมู่ "${catName}" เรียบร้อยแล้ว`, 'info');
+      });
+    }
+
+    // Setting Modal Logic
+    function openSettingModal() {
+      updateSettingUI();
+      document.getElementById('settingModal').classList.remove('hidden');
+    }
+
+    function closeSettingModal() {
+      document.getElementById('settingModal').classList.add('hidden');
+    }
+
+    function updateSettingUI() {
+      const isDark = document.documentElement.classList.contains('dark');
+      const themeIcon = document.getElementById('settingThemeIcon');
+      const themeStatus = document.getElementById('settingThemeStatusText');
+
+      if (isDark) {
+        themeIcon.className = "fa-solid fa-moon text-red-500";
+        themeStatus.innerText = "Night Mode (โหมดมืด)";
+      } else {
+        themeIcon.className = "fa-solid fa-sun text-amber-500";
+        themeStatus.innerText = "Light Mode (โหมดสว่าง)";
+      }
+
+      const savedLevel = localStorage.getItem('rnd_font_scale_level') || "5";
+      const slider = document.getElementById('fontSizeSlider');
+      if (slider) slider.value = savedLevel;
+      updateFontSizeBadge(savedLevel);
+    }
+
+    function handleFontSizeChange(level) {
+      const val = parseInt(level, 10);
+      const config = FONT_SCALE_MAP[val] || FONT_SCALE_MAP[5];
+
+      document.documentElement.style.setProperty('--app-content-font-size', config.title);
+      document.documentElement.style.setProperty('--app-desc-font-size', config.desc);
+
+      localStorage.setItem('rnd_font_scale_level', val);
+      updateFontSizeBadge(val);
+    }
+
+    function updateFontSizeBadge(level) {
+      const badge = document.getElementById('fontSizeLevelBadge');
+      const pTitle = document.getElementById('fontSizePreviewTitle');
+      const pDesc = document.getElementById('fontSizePreviewDesc');
+      const val = parseInt(level, 10);
+      const config = FONT_SCALE_MAP[val] || FONT_SCALE_MAP[5];
+
+      if (badge) {
+        badge.innerText = val === 5 ? `ระดับ 5 (เริ่มต้น: ${config.title}/${config.desc})` : `ระดับ ${val} (${config.title}/${config.desc})`;
+      }
+      if (pTitle) {
+        pTitle.style.fontSize = config.title;
+        pTitle.innerText = `ตัวอย่างหัวข้อ (${config.title})`;
+      }
+      if (pDesc) {
+        pDesc.style.fontSize = config.desc;
+        pDesc.innerText = `ตัวอย่างรายละเอียด (${config.desc})`;
+      }
+    }
+
+    function resetFontSizeDefault() {
+      handleFontSizeChange(5);
+      const slider = document.getElementById('fontSizeSlider');
+      if (slider) slider.value = 5;
+      showToast('คืนค่าขนาดตัวอักษรเริ่มต้น (ระดับ 5: 26px/22px) แล้ว', 'info');
+    }
+
+    function initFontSize() {
+      const savedLevel = localStorage.getItem('rnd_font_scale_level') || "5";
+      handleFontSizeChange(savedLevel);
+    }
+
+    function switchTab(tabId) {
+      ['categories', 'draw', 'data', 'history'].forEach(v => {
+        const viewEl = document.getElementById(`view-${v}`);
+        if (viewEl) viewEl.classList.toggle('hidden', v !== tabId);
+
+        const dBtn = document.getElementById(`nav-btn-${v}`);
+        if (dBtn) dBtn.className = v === tabId ? 'px-3.5 py-1.5 rounded-lg text-sm font-semibold transition-all flex items-center space-x-2 bg-white dark:bg-slate-700 shadow-sm text-red-600 dark:text-white' : 'px-3.5 py-1.5 rounded-lg text-sm font-semibold transition-all flex items-center space-x-2 text-slate-600 dark:text-slate-300 hover:text-red-600 dark:hover:text-white';
+
+        const mBtn = document.getElementById(`m-nav-${v}`);
+        if (mBtn) mBtn.className = v === tabId ? 'flex flex-col items-center gap-1 font-bold text-red-600' : 'flex flex-col items-center gap-1 text-slate-400 font-medium';
+      });
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function toggleSound() {
+      soundEnabled = !soundEnabled;
+      document.getElementById('soundIcon').className = soundEnabled ? 'fa-solid fa-volume-high text-xs' : 'fa-solid fa-volume-xmark text-xs text-slate-400';
+      showToast(soundEnabled ? 'เปิดเสียงเอฟเฟกต์' : 'ปิดเสียงเอฟเฟกต์', 'info');
+    }
+
+    function toggleTheme() {
+      const isDark = document.documentElement.classList.toggle('dark');
+      localStorage.setItem('rnd_theme_dark', isDark ? 'true' : 'false');
+      updateSettingUI();
+      showToast(isDark ? 'เปลี่ยนเป็น Night Mode' : 'เปลี่ยนเป็น Light Mode', 'info');
+    }
+
+    function initTheme() {
+      const savedTheme = localStorage.getItem('rnd_theme_dark');
+      const isDark = (savedTheme === null || savedTheme === 'true');
+      
+      if (isDark) {
+        document.documentElement.classList.add('dark');
+      } else {
+        document.documentElement.classList.remove('dark');
+      }
+    }
+
+    function launchConfetti() {
+      if (typeof confetti === 'function') {
+        confetti({ particleCount: 50, spread: 60, origin: { y: 0.75 } });
+      }
+    }
+
+    function showToast(msg, type = 'info') {
+      const toast = document.getElementById('toastNotification');
+      const msgEl = document.getElementById('toastMessage');
+      const icon = document.getElementById('toastIcon');
+
+      msgEl.innerText = msg;
+      if (type === 'success') icon.className = 'fa-solid fa-check text-emerald-400';
+      else if (type === 'warning') icon.className = 'fa-solid fa-triangle-exclamation text-amber-400';
+      else if (type === 'danger') icon.className = 'fa-solid fa-xmark text-rose-400';
+      else icon.className = 'fa-solid fa-circle-info text-blue-400';
+
+      toast.classList.remove('translate-x-full', 'opacity-0');
+      clearTimeout(window._toastTimeout);
+      window._toastTimeout = setTimeout(() => toast.classList.add('translate-x-full', 'opacity-0'), 2600);
+    }
+
+    function openCustomConfirm(title, message, onConfirm) {
+      const modal = document.getElementById('confirmDialogModal');
+      document.getElementById('confirmDialogTitle').innerText = title;
+      document.getElementById('confirmDialogMessage').innerText = message;
+      const confirmBtn = document.getElementById('confirmActionBtn');
+      const cancelBtn = document.getElementById('confirmCancelBtn');
+      const cleanup = () => { modal.classList.add('hidden'); confirmBtn.onclick = null; };
+      confirmBtn.onclick = () => { cleanup(); if (onConfirm) onConfirm(); };
+      cancelBtn.onclick = cleanup;
+      modal.classList.remove('hidden');
+    }
+
+    function escapeHTML(str) {
+      if (!str) return '';
+      return String(str).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#039;');
+    }
+  </script>
+</body>
+</html>
