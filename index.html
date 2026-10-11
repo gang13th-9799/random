@@ -3,9 +3,9 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-  <title>Random Data Card Hub (30 Custom Category Colors)</title>
+  <title>Random Data Card Hub</title>
   
-  <!-- Google Fonts: Prompt & Inter -->
+  <!-- Google Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Prompt:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
@@ -27,15 +27,6 @@
           fontFamily: {
             sans: ['Prompt', 'Inter', 'sans-serif'],
             mono: ['Inter', 'monospace'],
-          },
-          colors: {
-            brand: {
-              primary: 'var(--theme-primary)',
-              primaryHover: 'var(--theme-primary-hover)',
-              secondary: 'var(--theme-secondary)',
-              surface: 'var(--theme-surface)',
-              accent: 'var(--theme-accent)'
-            }
           },
           animation: {
             'shimmer': 'shimmer 2.2s infinite linear',
@@ -63,6 +54,7 @@
 
   <style>
     :root {
+      /* ขนาดตัวอักษรระดับ 5 เริ่มต้น */
       --app-content-font-size: 30px;
       --app-desc-font-size: 22px;
       
@@ -132,6 +124,7 @@
       overflow-wrap: break-word;
     }
 
+    /* คลาสบังคับใช้ขนาดตัวอักษรตาม Slider */
     .dynamic-title-scale {
       font-size: var(--app-content-font-size) !important;
       line-height: 1.35 !important;
@@ -172,7 +165,7 @@
       width: 20px;
       border-radius: 50%;
       background: #FFFFFF;
-      border: 3.5px solid currentColor;
+      border: 3.5px solid #2563EB;
       box-shadow: 0 2px 5px rgba(0,0,0,0.25);
       cursor: pointer;
       margin-top: -7px;
@@ -331,7 +324,7 @@
             
             <div>
               <span class="text-xs font-bold uppercase tracking-wider text-slate-400 block mb-1">หมวดหมู่ที่เลือก</span>
-              <h2 id="stageCategoryTitle" class="text-2xl sm:text-3xl font-extrabold text-slate-900 dark:text-white tracking-normal leading-normal">
+              <h2 id="stageCategoryTitle" class="dynamic-title-scale font-extrabold text-slate-900 dark:text-white tracking-normal leading-normal">
                 ทุกหมวดหมู่
               </h2>
             </div>
@@ -965,42 +958,36 @@
 
     // Palette แถบสี 30 เฉดสี สำหรับหมวดหมู่
     const COLOR_PALETTES = {
-      // 1-5: โทนน้ำเงิน & ฟ้า
       blue: { id: "blue", name: "1. น้ำเงินรอยัล", hex: "#1D4ED8", gradient: "linear-gradient(90deg, #60A5FA 0%, #1D4ED8 50%, #1E40AF 100%)", badge: "bg-blue-100 text-blue-800 border-blue-200 dark:bg-blue-950/80 dark:text-blue-300 dark:border-blue-800" },
       sky: { id: "sky", name: "2. ฟ้าท้องฟ้า", hex: "#0284C7", gradient: "linear-gradient(90deg, #38BDF8 0%, #0284C7 50%, #0369A1 100%)", badge: "bg-sky-100 text-sky-800 border-sky-200 dark:bg-sky-950/80 dark:text-sky-300 dark:border-sky-800" },
       cyan: { id: "cyan", name: "3. ฟ้าไซแอน", hex: "#06B6D4", gradient: "linear-gradient(90deg, #67E8F9 0%, #06B6D4 50%, #0E7490 100%)", badge: "bg-cyan-100 text-cyan-800 border-cyan-200 dark:bg-cyan-950/80 dark:text-cyan-300 dark:border-cyan-800" },
       navy: { id: "navy", name: "4. น้ำเงินเข้มเนวี", hex: "#1E3A8A", gradient: "linear-gradient(90deg, #3B82F6 0%, #1E3A8A 50%, #172554 100%)", badge: "bg-indigo-100 text-indigo-900 border-indigo-200 dark:bg-indigo-950/80 dark:text-indigo-300 dark:border-indigo-800" },
       indigo: { id: "indigo", name: "5. น้ำเงินคราม", hex: "#4338CA", gradient: "linear-gradient(90deg, #818CF8 0%, #4338CA 50%, #312E81 100%)", badge: "bg-indigo-100 text-indigo-800 border-indigo-200 dark:bg-indigo-950/80 dark:text-indigo-300 dark:border-indigo-800" },
 
-      // 6-10: โทนแดง ส้ม ชมพู
       red: { id: "red", name: "6. แดงทับทิม", hex: "#EF4444", gradient: "linear-gradient(90deg, #F87171 0%, #EF4444 50%, #B91C1C 100%)", badge: "bg-red-100 text-red-800 border-red-200 dark:bg-red-950/80 dark:text-red-300 dark:border-red-800" },
       crimson: { id: "crimson", name: "7. แดงเข้มคริมสัน", hex: "#BE123C", gradient: "linear-gradient(90deg, #FB7185 0%, #BE123C 50%, #881337 100%)", badge: "bg-rose-100 text-rose-900 border-rose-200 dark:bg-rose-950/80 dark:text-rose-300 dark:border-rose-800" },
       rose: { id: "rose", name: "8. ชมพูกุหลาบ", hex: "#E11D48", gradient: "linear-gradient(90deg, #FDA4AF 0%, #E11D48 50%, #9F1239 100%)", badge: "bg-rose-100 text-rose-800 border-rose-200 dark:bg-rose-950/80 dark:text-rose-300 dark:border-rose-800" },
       pink: { id: "pink", name: "9. ชมพูสดใส", hex: "#EC4899", gradient: "linear-gradient(90deg, #F472B6 0%, #EC4899 50%, #BE185D 100%)", badge: "bg-pink-100 text-pink-800 border-pink-200 dark:bg-pink-950/80 dark:text-pink-300 dark:border-pink-800" },
       fuchsia: { id: "fuchsia", name: "10. ชมพูฟูเชีย", hex: "#D946EF", gradient: "linear-gradient(90deg, #E879F9 0%, #D946EF 50%, #A21CAF 100%)", badge: "bg-fuchsia-100 text-fuchsia-800 border-fuchsia-200 dark:bg-fuchsia-950/80 dark:text-fuchsia-300 dark:border-fuchsia-800" },
 
-      // 11-15: โทนม่วง
       purple: { id: "purple", name: "11. ม่วงไวโอเล็ต", hex: "#A855F7", gradient: "linear-gradient(90deg, #C084FC 0%, #A855F7 50%, #7E22CE 100%)", badge: "bg-purple-100 text-purple-800 border-purple-200 dark:bg-purple-950/80 dark:text-purple-300 dark:border-purple-800" },
       violet: { id: "violet", name: "12. ม่วงเข้ม", hex: "#7C3AED", gradient: "linear-gradient(90deg, #A78BFA 0%, #7C3AED 50%, #5B21B6 100%)", badge: "bg-violet-100 text-violet-800 border-violet-200 dark:bg-violet-950/80 dark:text-violet-300 dark:border-violet-800" },
       lavender: { id: "lavender", name: "13. ม่วงลาเวนเดอร์", hex: "#8B5CF6", gradient: "linear-gradient(90deg, #DDD6FE 0%, #8B5CF6 50%, #6D28D9 100%)", badge: "bg-purple-100 text-purple-900 border-purple-200 dark:bg-purple-950/80 dark:text-purple-300 dark:border-purple-800" },
       plum: { id: "plum", name: "14. ม่วงลูกพลัม", hex: "#581C87", gradient: "linear-gradient(90deg, #9333EA 0%, #581C87 50%, #3B0764 100%)", badge: "bg-purple-100 text-purple-950 border-purple-300 dark:bg-purple-950/80 dark:text-purple-200 dark:border-purple-800" },
       magenta: { id: "magenta", name: "15. ม่วงมาเจนต้า", hex: "#C026D3", gradient: "linear-gradient(90deg, #F0ABFC 0%, #C026D3 50%, #86198F 100%)", badge: "bg-fuchsia-100 text-fuchsia-900 border-fuchsia-200 dark:bg-fuchsia-950/80 dark:text-fuchsia-300 dark:border-fuchsia-800" },
 
-      // 16-20: โทนเขียว
       green: { id: "green", name: "16. เขียวใบไม้", hex: "#22C55E", gradient: "linear-gradient(90deg, #4ADE80 0%, #22C55E 50%, #15803D 100%)", badge: "bg-green-100 text-green-800 border-green-200 dark:bg-green-950/80 dark:text-green-300 dark:border-green-800" },
       emerald: { id: "emerald", name: "17. เขียวมรกต", hex: "#10B981", gradient: "linear-gradient(90deg, #34D399 0%, #10B981 50%, #047857 100%)", badge: "bg-emerald-100 text-emerald-800 border-emerald-200 dark:bg-emerald-950/80 dark:text-emerald-300 dark:border-emerald-800" },
       teal: { id: "teal", name: "18. เขียวอมฟ้าทีล", hex: "#0D9488", gradient: "linear-gradient(90deg, #2DD4BF 0%, #0D9488 50%, #115E59 100%)", badge: "bg-teal-100 text-teal-800 border-teal-200 dark:bg-teal-950/80 dark:text-teal-300 dark:border-teal-800" },
       lime: { id: "lime", name: "19. เขียวมะนาว", hex: "#84CC16", gradient: "linear-gradient(90deg, #A3E635 0%, #84CC16 50%, #4D7C0F 100%)", badge: "bg-lime-100 text-lime-800 border-lime-200 dark:bg-lime-950/80 dark:text-lime-300 dark:border-lime-800" },
       mint: { id: "mint", name: "20. เขียวมิ้นต์", hex: "#059669", gradient: "linear-gradient(90deg, #6EE7B7 0%, #059669 50%, #064E3B 100%)", badge: "bg-emerald-100 text-emerald-900 border-emerald-200 dark:bg-emerald-950/80 dark:text-emerald-300 dark:border-emerald-800" },
 
-      // 21-25: โทนเหลือง ส้ม น้ำตาล
       yellow: { id: "yellow", name: "21. เหลืองสดใส", hex: "#EAB308", gradient: "linear-gradient(90deg, #FDE047 0%, #EAB308 50%, #CA8A04 100%)", badge: "bg-amber-100 text-amber-900 border-amber-300 dark:bg-amber-950/80 dark:text-amber-300 dark:border-amber-800" },
       amber: { id: "amber", name: "22. ส้มอำพัน", hex: "#D97706", gradient: "linear-gradient(90deg, #FBBF24 0%, #D97706 50%, #92400E 100%)", badge: "bg-amber-100 text-amber-800 border-amber-200 dark:bg-amber-950/80 dark:text-amber-300 dark:border-amber-800" },
       orange: { id: "orange", name: "23. ส้มสด", hex: "#EA580C", gradient: "linear-gradient(90deg, #FB923C 0%, #EA580C 50%, #9A3412 100%)", badge: "bg-orange-100 text-orange-800 border-orange-200 dark:bg-orange-950/80 dark:text-orange-300 dark:border-orange-800" },
       coral: { id: "coral", name: "24. ส้มคอรัล", hex: "#F97316", gradient: "linear-gradient(90deg, #FDBA74 0%, #F97316 50%, #C2410C 100%)", badge: "bg-orange-100 text-orange-900 border-orange-200 dark:bg-orange-950/80 dark:text-orange-300 dark:border-orange-800" },
       brown: { id: "brown", name: "25. น้ำตาลเอิร์ธโทน", hex: "#78350F", gradient: "linear-gradient(90deg, #B45309 0%, #78350F 50%, #451A03 100%)", badge: "bg-amber-200/80 text-amber-950 border-amber-300 dark:bg-amber-950 dark:text-amber-200 dark:border-amber-900" },
 
-      // 26-30: โทนทอง เมทัลลิก เทา ขาว ดำ
       gold: { id: "gold", name: "26. ทองประกาย", hex: "#B45309", gradient: "linear-gradient(90deg, #FDE68A 0%, #D97706 50%, #78350F 100%)", badge: "bg-yellow-100 text-yellow-900 border-yellow-300 dark:bg-yellow-950/80 dark:text-yellow-200 dark:border-yellow-800" },
       slate: { id: "slate", name: "27. เทาสเลท", hex: "#64748B", gradient: "linear-gradient(90deg, #94A3B8 0%, #64748B 50%, #475569 100%)", badge: "bg-slate-200 text-slate-800 border-slate-300 dark:bg-slate-800 dark:text-slate-300 dark:border-slate-700" },
       zinc: { id: "zinc", name: "28. เทาซิงก์เข้ม", hex: "#52525B", gradient: "linear-gradient(90deg, #A1A1AA 0%, #52525B 50%, #27272A 100%)", badge: "bg-zinc-200 text-zinc-800 border-zinc-300 dark:bg-zinc-800 dark:text-zinc-300 dark:border-zinc-700" },
@@ -1068,195 +1055,80 @@
       } catch (e) {}
     }
 
-    window.addEventListener('DOMContentLoaded', () => {
-      initTheme();
-      initAppColorTheme();
-      initFontSize();
-      loadLocalCache();
-      renderIconPickerGrid();
-      renderColorPickerGrid();
-      switchTab('categories');
+    // Modal & Settings Handling
+    function openSettingModal() {
+      updateSettingUI();
+      document.getElementById('settingModal').classList.remove('hidden');
+    }
 
-      fetchFromGoogleSheets();
+    function closeSettingModal() {
+      document.getElementById('settingModal').classList.add('hidden');
+    }
 
-      window.addEventListener('resize', () => {
-        const savedLevel = localStorage.getItem('rnd_font_scale_level') || "5";
-        handleFontSizeChange(savedLevel);
-      });
+    function updateSettingUI() {
+      const isDark = document.documentElement.classList.contains('dark');
+      const themeIcon = document.getElementById('settingThemeIcon');
+      const themeStatus = document.getElementById('settingThemeStatusText');
 
-      window.addEventListener('keydown', (e) => {
-        if (e.code === 'Space' && e.target === document.body && !document.getElementById('view-draw').classList.contains('hidden')) {
-          e.preventDefault();
-          triggerRandomDraw();
-        }
-      });
-    });
+      if (isDark) {
+        themeIcon.className = "fa-solid fa-moon text-indigo-400";
+        themeStatus.innerText = "Night Mode (โหมดมืด)";
+      } else {
+        themeIcon.className = "fa-solid fa-sun text-amber-500";
+        themeStatus.innerText = "Light Mode (โหมดสว่าง)";
+      }
 
-    function setAppTheme(themeClass) {
-      document.body.classList.remove('theme-white', 'theme-red', 'theme-blue', 'theme-gray');
-      document.body.classList.add(themeClass);
-      localStorage.setItem('rnd_app_color_theme', themeClass);
-      
+      const savedLevel = localStorage.getItem('rnd_font_scale_level') || "5";
+      const slider = document.getElementById('fontSizeSlider');
+      if (slider) slider.value = savedLevel;
+      updateFontSizeBadge(savedLevel);
+
+      const savedTheme = localStorage.getItem('rnd_app_color_theme') || 'theme-blue';
       const dropdown = document.getElementById('themeDropdownSelect');
-      if (dropdown) dropdown.value = themeClass;
+      if (dropdown) dropdown.value = savedTheme;
     }
 
-    function initAppColorTheme() {
-      const saved = localStorage.getItem('rnd_app_color_theme') || 'theme-blue';
-      document.body.classList.remove('theme-white', 'theme-red', 'theme-blue', 'theme-gray');
-      document.body.classList.add(saved);
-      
-      const dropdown = document.getElementById('themeDropdownSelect');
-      if (dropdown) dropdown.value = saved;
+    function handleFontSizeChange(level) {
+      const val = parseInt(level, 10);
+      const isMobile = window.innerWidth < 640;
+      const config = isMobile 
+        ? (MOBILE_FONT_SCALE_MAP[val] || MOBILE_FONT_SCALE_MAP[5])
+        : (FONT_SCALE_MAP[val] || FONT_SCALE_MAP[5]);
+
+      document.documentElement.style.setProperty('--app-content-font-size', config.title);
+      document.documentElement.style.setProperty('--app-desc-font-size', config.desc);
+
+      localStorage.setItem('rnd_font_scale_level', val);
+      updateFontSizeBadge(val);
     }
 
-    function normalizeCategories(rawCats) {
-      if (!Array.isArray(rawCats) || rawCats.length === 0) {
-        return [{ name: "ทั่วไป", icon: "fa-folder", color: "blue" }];
+    function updateFontSizeBadge(level) {
+      const badge = document.getElementById('fontSizeLevelBadge');
+      const preview = document.getElementById('fontSizePreviewText');
+      const val = parseInt(level, 10);
+      const isMobile = window.innerWidth < 640;
+      const config = isMobile 
+        ? (MOBILE_FONT_SCALE_MAP[val] || MOBILE_FONT_SCALE_MAP[5])
+        : (FONT_SCALE_MAP[val] || FONT_SCALE_MAP[5]);
+
+      if (badge) {
+        badge.innerText = val === 5 ? `ระดับ 5 (ค่าเริ่มต้น: ${config.title}/${config.desc})` : `ระดับ ${val} (${config.title}/${config.desc})`;
       }
-      return rawCats.map(c => {
-        if (typeof c === 'string') {
-          return { name: c, icon: "fa-folder", color: "blue" };
-        }
-        return {
-          name: c.name || "ทั่วไป",
-          icon: c.icon || "fa-folder",
-          color: (c.color && COLOR_PALETTES[c.color]) ? c.color : "blue"
-        };
-      });
-    }
-
-    function getCategoryNames() {
-      return categories.map(c => c.name);
-    }
-
-    function getCategoryMeta(catName) {
-      const found = categories.find(c => c.name === catName);
-      if (found) {
-        return {
-          icon: found.icon || "fa-tag",
-          colorId: found.color || "blue",
-          theme: COLOR_PALETTES[found.color] || COLOR_PALETTES.blue
-        };
-      }
-      return {
-        icon: "fa-tag",
-        colorId: "blue",
-        theme: COLOR_PALETTES.blue
-      };
-    }
-
-    function loadLocalCache() {
-      try {
-        const cItems = localStorage.getItem('rnd_cache_items');
-        if (cItems) items = JSON.parse(cItems);
-        const cCats = localStorage.getItem('rnd_cache_categories');
-        if (cCats) categories = normalizeCategories(JSON.parse(cCats));
-        const cHist = localStorage.getItem('rnd_cache_history');
-        if (cHist) historyLog = JSON.parse(cHist);
-      } catch (e) {}
-
-      if (!categories || categories.length === 0) {
-        categories = [{ name: "ทั่วไป", icon: "fa-folder", color: "blue" }];
-      }
-
-      updateTotalBadgeCount();
-      updateCategoryDropdowns();
-      renderCategoryHomeCards();
-      resetPool();
-      renderDataTable();
-      renderHistoryList();
-    }
-
-    function saveLocalCache() {
-      try {
-        localStorage.setItem('rnd_cache_items', JSON.stringify(items));
-        localStorage.setItem('rnd_cache_categories', JSON.stringify(categories));
-        localStorage.setItem('rnd_cache_history', JSON.stringify(historyLog));
-      } catch (e) {}
-      updateTotalBadgeCount();
-      renderCategoryHomeCards();
-    }
-
-    function updateTotalBadgeCount() {
-      const el = document.getElementById('total-badge-count');
-      if (el) el.innerText = items.length;
-    }
-
-    async function fetchFromGoogleSheets() {
-      if (!GOOGLE_SHEET_API_URL || GOOGLE_SHEET_API_URL.includes("PLACEHOLDER")) {
-        setCloudStatus('ยังไม่ได้ตั้งค่า Web App URL', 'text-amber-500');
-        return;
-      }
-
-      setCloudStatus('กำลังซิงก์ข้อมูลชีต...', 'text-amber-500');
-      const syncIcon = document.getElementById('syncIcon');
-      if (syncIcon) syncIcon.classList.add('animate-spin');
-
-      try {
-        const response = await fetch(GOOGLE_SHEET_API_URL, {
-          method: 'GET',
-          headers: { 'Accept': 'application/json' }
-        });
-        const data = await response.json();
-
-        if (data) {
-          if (Array.isArray(data.items)) items = data.items;
-          if (Array.isArray(data.categories) && data.categories.length > 0) {
-            categories = normalizeCategories(data.categories);
-          }
-          if (Array.isArray(data.historyLog)) historyLog = data.historyLog;
-          
-          saveLocalCache();
-          setCloudStatus('ออนไลน์ (เชื่อมต่อชีตแล้ว)', 'text-emerald-500');
-          showToast('ซิงก์ข้อมูลล่าสุดจาก Google Sheets สำเร็จ ☁️', 'success');
-        }
-      } catch (err) {
-        setCloudStatus('ใช้ออฟไลน์ / ติดต่อชีตไม่ได้', 'text-amber-500');
-      } finally {
-        updateCategoryDropdowns();
-        renderCategoryHomeCards();
-        resetPool();
-        renderDataTable();
-        renderHistoryList();
-        if (syncIcon) syncIcon.classList.remove('animate-spin');
+      if (preview) {
+        preview.style.fontSize = config.desc;
       }
     }
 
-    async function pushToGoogleSheets() {
-      saveLocalCache();
-      if (!GOOGLE_SHEET_API_URL || GOOGLE_SHEET_API_URL.includes("PLACEHOLDER")) {
-        showToast('บันทึกในเครื่องแล้ว', 'info');
-        return;
-      }
-
-      setCloudStatus('กำลังบันทึกลงชีต...', 'text-amber-500');
-      const payload = {
-        categories: categories,
-        items: items,
-        historyLog: historyLog
-      };
-
-      try {
-        await fetch(GOOGLE_SHEET_API_URL, {
-          method: 'POST',
-          mode: 'no-cors',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(payload)
-        });
-        setCloudStatus('บันทึกออนไลน์สำเร็จ', 'text-blue-500');
-        showToast('บันทึกลง Google Sheets สำเร็จเรียบร้อย ☁️', 'success');
-      } catch (err) {
-        setCloudStatus('บันทึกออนไลน์ล้มเหลว', 'text-rose-500');
-        showToast('ไม่สามารถส่งข้อมูลไปชีตได้', 'danger');
-      }
+    function resetFontSizeDefault() {
+      handleFontSizeChange(5);
+      const slider = document.getElementById('fontSizeSlider');
+      if (slider) slider.value = 5;
+      showToast('คืนค่าขนาดตัวอักษรเริ่มต้น (ระดับ 5: 30px/22px) แล้ว', 'info');
     }
 
-    function setCloudStatus(msg, colorClass) {
-      const el = document.getElementById('cloudSyncStatus');
-      if (el) {
-        el.innerHTML = `<i class="fa-solid fa-circle text-[8px] ${colorClass}"></i> ${msg}`;
-      }
+    function initFontSize() {
+      const savedLevel = localStorage.getItem('rnd_font_scale_level') || "5";
+      handleFontSizeChange(savedLevel);
     }
 
     function renderCategoryHomeCards() {
@@ -1299,7 +1171,7 @@
           <div onclick="selectCategoryAndDraw('${escapeHTML(cat.name)}')" class="group cursor-pointer bg-white dark:bg-slate-800 rounded-3xl p-5 border border-slate-200 dark:border-slate-700 shadow-sm hover:shadow-lg hover:-translate-y-1 transition duration-300 flex flex-col justify-between">
             <div>
               <div class="flex items-center justify-between mb-3">
-                <div class="w-12 h-12 rounded-2xl bg-slate-100 dark:bg-slate-700 text-slate-700 dark:text-slate-200 border border-slate-200 dark:border-slate-600 flex items-center justify-center text-xl transition group-hover:scale-105">
+                <div class="w-12 h-12 rounded-2xl border flex items-center justify-center text-xl transition group-hover:scale-105" style="background: ${meta.theme.gradient}; color: #FFFFFF;">
                   <i class="fa-solid ${escapeHTML(meta.icon)}"></i>
                 </div>
                 <span class="text-xs font-mono font-bold px-2.5 py-1 rounded-full bg-slate-100 dark:bg-slate-700 text-slate-700 dark:text-slate-300">
@@ -1336,11 +1208,13 @@
         titleEl.innerText = "🌟 ทุกหมวดหมู่";
         iconEl.className = "fa-solid fa-dice text-white";
         wrapperEl.className = "inline-flex items-center justify-center p-3.5 rounded-2xl shadow-sm text-white btn-theme-action";
+        wrapperEl.style.background = '';
       } else {
         const meta = getCategoryMeta(selectedCategory);
         titleEl.innerText = selectedCategory;
-        iconEl.className = `fa-solid ${meta.icon} text-slate-700 dark:text-slate-200`;
-        wrapperEl.className = `inline-flex items-center justify-center p-3.5 rounded-2xl shadow-sm bg-slate-100 dark:bg-slate-700 border border-slate-200 dark:border-slate-600`;
+        iconEl.className = `fa-solid ${meta.icon} text-white`;
+        wrapperEl.className = `inline-flex items-center justify-center p-3.5 rounded-2xl shadow-sm border border-slate-200 dark:border-slate-600`;
+        wrapperEl.style.background = meta.theme.gradient;
       }
     }
 
@@ -2098,82 +1972,6 @@
         resetPool();
         showToast(`ลบหมวดหมู่ "${catName}" เรียบร้อยแล้ว`, 'info');
       });
-    }
-
-    // Setting Modal Logic
-    function openSettingModal() {
-      updateSettingUI();
-      document.getElementById('settingModal').classList.remove('hidden');
-    }
-
-    function closeSettingModal() {
-      document.getElementById('settingModal').classList.add('hidden');
-    }
-
-    function updateSettingUI() {
-      const isDark = document.documentElement.classList.contains('dark');
-      const themeIcon = document.getElementById('settingThemeIcon');
-      const themeStatus = document.getElementById('settingThemeStatusText');
-
-      if (isDark) {
-        themeIcon.className = "fa-solid fa-moon text-indigo-400";
-        themeStatus.innerText = "Night Mode (โหมดมืด)";
-      } else {
-        themeIcon.className = "fa-solid fa-sun text-amber-500";
-        themeStatus.innerText = "Light Mode (โหมดสว่าง)";
-      }
-
-      const savedLevel = localStorage.getItem('rnd_font_scale_level') || "5";
-      const slider = document.getElementById('fontSizeSlider');
-      if (slider) slider.value = savedLevel;
-      updateFontSizeBadge(savedLevel);
-
-      const savedTheme = localStorage.getItem('rnd_app_color_theme') || 'theme-blue';
-      const dropdown = document.getElementById('themeDropdownSelect');
-      if (dropdown) dropdown.value = savedTheme;
-    }
-
-    function handleFontSizeChange(level) {
-      const val = parseInt(level, 10);
-      const isMobile = window.innerWidth < 640;
-      const config = isMobile 
-        ? (MOBILE_FONT_SCALE_MAP[val] || MOBILE_FONT_SCALE_MAP[5])
-        : (FONT_SCALE_MAP[val] || FONT_SCALE_MAP[5]);
-
-      document.documentElement.style.setProperty('--app-content-font-size', config.title);
-      document.documentElement.style.setProperty('--app-desc-font-size', config.desc);
-
-      localStorage.setItem('rnd_font_scale_level', val);
-      updateFontSizeBadge(val);
-    }
-
-    function updateFontSizeBadge(level) {
-      const badge = document.getElementById('fontSizeLevelBadge');
-      const preview = document.getElementById('fontSizePreviewText');
-      const val = parseInt(level, 10);
-      const isMobile = window.innerWidth < 640;
-      const config = isMobile 
-        ? (MOBILE_FONT_SCALE_MAP[val] || MOBILE_FONT_SCALE_MAP[5])
-        : (FONT_SCALE_MAP[val] || FONT_SCALE_MAP[5]);
-
-      if (badge) {
-        badge.innerText = val === 5 ? `ระดับ 5 (ค่าเริ่มต้น: ${config.title}/${config.desc})` : `ระดับ ${val} (${config.title}/${config.desc})`;
-      }
-      if (preview) {
-        preview.style.fontSize = config.desc;
-      }
-    }
-
-    function resetFontSizeDefault() {
-      handleFontSizeChange(5);
-      const slider = document.getElementById('fontSizeSlider');
-      if (slider) slider.value = 5;
-      showToast('คืนค่าขนาดตัวอักษรเริ่มต้น (ระดับ 5: 30px/22px) แล้ว', 'info');
-    }
-
-    function initFontSize() {
-      const savedLevel = localStorage.getItem('rnd_font_scale_level') || "5";
-      handleFontSizeChange(savedLevel);
     }
 
     function switchTab(tabId) {
