@@ -45,7 +45,6 @@
   </script>
 
   <style>
-    /* สไตล์โหมดสว่างสดใส & โหมดมืดแบบ Deep Vibrant Blue */
     body {
       touch-action: manipulation;
       -webkit-tap-highlight-color: transparent;
@@ -76,7 +75,6 @@
       background: linear-gradient(135deg, #F87171 0%, #EF4444 50%, #DC2626 100%);
     }
 
-    /* สไตล์ Input เมื่อล็อคโหมด */
     input:disabled, select:disabled, textarea:disabled {
       cursor: not-allowed;
       opacity: 0.8;
@@ -88,7 +86,6 @@
       border-color: rgba(255, 255, 255, 0.05) !important;
     }
 
-    /* Custom Slider */
     input[type=range] {
       -webkit-appearance: none;
       background: transparent;
@@ -134,12 +131,20 @@
             <span class="font-extrabold text-base sm:text-lg text-slate-900 dark:text-white tracking-tight">ข้อมูลโปรไฟล์เกม</span>
             <span class="text-[10px] font-black px-2 py-0.5 rounded-full bg-red-500 text-white shadow-sm uppercase tracking-wider">LIVE</span>
           </div>
-          <p class="text-[11px] text-slate-400 font-medium">บันทึกสถานะตัวละคร & องค์กรธุรกิจ</p>
+          <p id="cloudCareersStatus" class="text-[11px] text-slate-400 font-medium flex items-center gap-1">
+            <i class="fa-solid fa-circle text-[7px] text-emerald-500"></i> ชีตออนไลน์พร้อมใช้งาน
+          </p>
         </div>
       </div>
 
       <!-- Action Controls -->
       <div class="flex items-center space-x-2">
+        <!-- ปุ่มดึงข้อมูลล่าสุดจาก Google Sheets -->
+        <button onclick="fetchCareersFromCloud()" title="ดึงข้อมูลอาชีพจาก Google Sheets" class="px-3 py-2 rounded-xl text-xs font-bold transition-all flex items-center gap-1.5 border border-slate-200 dark:border-white/10 bg-white dark:bg-slate-800 shadow-sm hover:border-slate-300 dark:hover:border-white/20">
+          <i id="syncCareersIcon" class="fa-solid fa-rotate text-xs text-amber-500"></i>
+          <span class="hidden sm:inline">Sync อาชีพ</span>
+        </button>
+
         <button id="toggleEditBtn" onclick="toggleEditMode()" class="px-3.5 py-2 rounded-xl text-xs font-bold transition-all flex items-center gap-1.5 border border-slate-200 dark:border-white/10 bg-white dark:bg-slate-800 shadow-sm hover:border-slate-300 dark:hover:border-white/20">
           <i id="editIcon" class="fa-solid fa-lock text-slate-400"></i>
           <span id="editText">ปลดล็อคแก้ไข</span>
@@ -156,9 +161,8 @@
   <!-- Main Container -->
   <main class="flex-1 max-w-6xl w-full mx-auto px-3 sm:px-6 py-5 sm:py-7 space-y-5 sm:space-y-6">
 
-    <!-- KPI DASHBOARD SUMMARY (การ์ดสรุปยอดรวมสดใส) -->
+    <!-- KPI DASHBOARD SUMMARY -->
     <section class="grid grid-cols-1 sm:grid-cols-3 gap-3.5">
-      <!-- Total PV -->
       <div class="glass-card rounded-2xl p-4 sm:p-5 relative overflow-hidden flex items-center gap-3.5 border-l-4 border-l-blue-500 shadow-sm">
         <div class="w-12 h-12 rounded-xl bg-blue-500/10 text-blue-500 flex items-center justify-center text-xl shrink-0">
           <i class="fa-solid fa-coins"></i>
@@ -169,7 +173,6 @@
         </div>
       </div>
 
-      <!-- Total Active Income -->
       <div class="glass-card rounded-2xl p-4 sm:p-5 relative overflow-hidden flex items-center gap-3.5 border-l-4 border-l-green-500 shadow-sm">
         <div class="w-12 h-12 rounded-xl bg-green-500/10 text-green-500 flex items-center justify-center text-xl shrink-0">
           <i class="fa-solid fa-hand-holding-dollar"></i>
@@ -180,7 +183,6 @@
         </div>
       </div>
 
-      <!-- Total Passive Income -->
       <div class="glass-card rounded-2xl p-4 sm:p-5 relative overflow-hidden flex items-center gap-3.5 border-l-4 border-l-emerald-500 shadow-sm">
         <div class="w-12 h-12 rounded-xl bg-emerald-500/10 text-emerald-500 flex items-center justify-center text-xl shrink-0">
           <i class="fa-solid fa-seedling"></i>
@@ -232,19 +234,24 @@
         </div>
       </div>
 
-      <!-- SECTION 2: อาชีพในเกม & พลังทรัพยากร -->
+      <!-- SECTION 2: อาชีพในเกม (เชื่อมต่อ Google Sheets) -->
       <div class="glass-card rounded-3xl p-5 sm:p-7 shadow-sm space-y-4">
-        <div class="flex items-center justify-between pb-3 border-b border-slate-100 dark:border-white/5">
+        <div class="flex flex-wrap items-center justify-between pb-3 border-b border-slate-100 dark:border-white/5 gap-2">
           <div class="flex items-center gap-3">
             <div class="w-9 h-9 rounded-xl bg-gradient-to-br from-amber-500 to-orange-600 text-white flex items-center justify-center text-sm shadow-sm">
               <i class="fa-solid fa-briefcase"></i>
             </div>
             <div>
-              <h2 class="text-base font-bold text-slate-900 dark:text-white">2. อาชีพในเกม & พลังทรัพยากร (Game Status)</h2>
-              <p class="text-[11px] text-slate-400">ฐานข้อมูล 7 อาชีพ และทรัพยากรอ้างอิงตามเกม</p>
+              <h2 class="text-base font-bold text-slate-900 dark:text-white">2. อาชีพในเกม & พลังทรัพยากร (Game Careers)</h2>
+              <p class="text-[11px] text-slate-400">ฐานข้อมูลอาชีพออนไลน์ ซิงก์กับ Google Sheets อัตโนมัติ</p>
             </div>
           </div>
-          <span class="text-xs font-mono font-bold px-2.5 py-1 rounded-xl bg-amber-500/10 text-amber-500 border border-amber-500/20">7 Careers</span>
+          
+          <!-- ปุ่มเครื่องมือจัดการอาชีพ -->
+          <button type="button" onclick="openCareerManagerModal()" class="px-3.5 py-1.5 rounded-xl bg-amber-500/10 hover:bg-amber-500/20 text-amber-600 dark:text-amber-400 border border-amber-500/30 text-xs font-bold transition flex items-center gap-1.5 shadow-sm">
+            <i class="fa-solid fa-sliders"></i>
+            <span>จัดการอาชีพ (เพิ่ม/ลบ/แก้ไข)</span>
+          </button>
         </div>
 
         <div class="grid grid-cols-1 sm:grid-cols-3 gap-3.5 sm:gap-4">
@@ -271,7 +278,7 @@
           </div>
         </div>
 
-        <!-- ทรัพยากร 3 ด้าน (หัวใจ, เวลา, ความรู้) -->
+        <!-- ทรัพยากร 3 ด้าน (สุขภาพ, เวลา, ความรู้) -->
         <div class="p-4 sm:p-5 rounded-2xl bg-slate-50/80 dark:bg-slate-900/40 border border-slate-200/80 dark:border-white/5 space-y-3.5">
           <div class="flex items-center justify-between">
             <span class="text-xs font-bold uppercase tracking-wider text-slate-500">ค่าพลังทรัพยากร (สเกล 0 - 10)</span>
@@ -309,7 +316,7 @@
         </div>
       </div>
 
-      <!-- SECTION 3: เช็คลิสต์ คุณสมบัติ (FL, 12%, 21%) -->
+      <!-- SECTION 3: เช็คลิสต์ คุณสมบัติ (FL 3 ข้อ, 12% 5 ข้อ, 21% 5 ข้อ) -->
       <div class="glass-card rounded-3xl p-5 sm:p-7 shadow-sm space-y-4">
         <div class="flex items-center gap-3 pb-3 border-b border-slate-100 dark:border-white/5">
           <div class="w-9 h-9 rounded-xl bg-gradient-to-br from-emerald-500 to-teal-600 text-white flex items-center justify-center text-sm shadow-sm">
@@ -322,7 +329,6 @@
         </div>
 
         <div class="grid grid-cols-1 lg:grid-cols-3 gap-3.5 sm:gap-4">
-          
           <!-- FL (3 ข้อ) -->
           <div class="p-4 rounded-2xl border border-red-200 dark:border-red-500/20 bg-red-50/30 dark:bg-red-950/20 flex flex-col justify-between space-y-3">
             <div class="space-y-3">
@@ -437,11 +443,10 @@
               <input type="date" id="date21" class="w-full bg-white dark:bg-slate-900 border border-slate-200 dark:border-white/10 rounded-xl px-2.5 py-1.5 text-xs text-slate-700 dark:text-slate-200">
             </div>
           </div>
-
         </div>
       </div>
 
-      <!-- SECTION 4: สายงานธุรกิจ Amway (ยอดส่วนตัว) -->
+      <!-- SECTION 4: ยอดส่วนตัว Amway -->
       <div class="glass-card rounded-3xl p-5 sm:p-7 shadow-sm space-y-4">
         <div class="flex items-center gap-3 pb-3 border-b border-slate-100 dark:border-white/5">
           <div class="w-9 h-9 rounded-xl bg-gradient-to-br from-blue-500 to-indigo-600 text-white flex items-center justify-center text-sm shadow-sm">
@@ -449,7 +454,7 @@
           </div>
           <div>
             <h2 class="text-base font-bold text-slate-900 dark:text-white">4. สายงานธุรกิจ Amway — ยอดส่วนตัว (Personal)</h2>
-            <p class="text-[11px] text-slate-400">บันทึกยอด PV และรายได้จากการดำเนินงานส่วนบุคคล</p>
+            <p class="text-[11px] text-slate-400">บันทึกยอด PV และรายได้ส่วนบุคคล</p>
           </div>
         </div>
 
@@ -492,11 +497,10 @@
           </div>
         </div>
 
-        <!-- 6 สายงาน (Responsive: 1 col on mobile, 2 on tablet, 3 on desktop) -->
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3.5 sm:gap-4" id="legsContainer"></div>
       </div>
 
-      <!-- FLOATING ACTION DOCK (บาร์ปุ่มลอยติดด้านล่างจอ สดใสใช้งานง่าย) -->
+      <!-- FLOATING ACTION DOCK -->
       <div class="sticky bottom-3 z-30 p-3 sm:p-4 rounded-2xl bg-white/95 dark:bg-[#0B132B]/95 backdrop-blur-lg border border-slate-200 dark:border-white/10 shadow-2xl flex items-center justify-between gap-3">
         <button type="button" onclick="confirmResetProfile()" class="px-3.5 py-2.5 rounded-xl border border-red-200 dark:border-red-500/20 text-red-500 hover:bg-red-50 dark:hover:bg-red-950/30 text-xs font-bold transition flex items-center gap-1.5">
           <i class="fa-solid fa-trash-can"></i>
@@ -516,6 +520,70 @@
 
     </form>
   </main>
+
+  <!-- MODAL: จัดการฐานข้อมูลอาชีพ (เชื่อมต่อ Google Sheets) -->
+  <div id="careerManagerModal" class="hidden fixed inset-0 z-50 bg-slate-950/70 backdrop-blur-sm flex items-center justify-center p-3 sm:p-4 overflow-y-auto">
+    <div class="bg-white dark:bg-[#111C44] rounded-3xl max-w-lg w-full p-5 sm:p-6 shadow-2xl border border-slate-200 dark:border-white/10 space-y-4 max-h-[90vh] flex flex-col my-auto">
+      
+      <!-- Modal Header -->
+      <div class="flex items-center justify-between pb-3 border-b border-slate-100 dark:border-white/10">
+        <div class="flex items-center gap-2.5">
+          <div class="w-8 h-8 rounded-xl bg-amber-500/10 text-amber-500 flex items-center justify-center text-sm">
+            <i class="fa-solid fa-briefcase"></i>
+          </div>
+          <div>
+            <h3 class="font-bold text-base text-slate-900 dark:text-white">จัดการฐานข้อมูลอาชีพ (Cloud Sync)</h3>
+            <p class="text-[11px] text-slate-400">เพิ่ม, แก้ไข หรือลบข้อมูลอาชีพ ซิงก์ลง Google Sheets ทันที</p>
+          </div>
+        </div>
+        <button type="button" onclick="closeCareerManagerModal()" class="w-8 h-8 rounded-lg text-slate-400 hover:text-slate-600 dark:hover:text-white flex items-center justify-center">
+          <i class="fa-solid fa-xmark text-lg"></i>
+        </button>
+      </div>
+
+      <!-- ฟอร์ม เพิ่ม / แก้ไข อาชีพ -->
+      <form id="careerCrudForm" onsubmit="handleCareerFormSubmit(event)" class="p-3.5 rounded-2xl bg-slate-50 dark:bg-slate-900/60 border border-slate-200 dark:border-white/5 space-y-3">
+        <input type="hidden" id="crudCareerId">
+        
+        <div class="flex items-center justify-between">
+          <span id="crudFormTitle" class="text-xs font-black uppercase text-amber-600 dark:text-amber-400 flex items-center gap-1">
+            <i class="fa-solid fa-plus-circle"></i> เพิ่มอาชีพใหม่
+          </span>
+          <button type="button" id="cancelEditCareerBtn" onclick="resetCareerCrudForm()" class="hidden text-[10px] text-slate-400 hover:text-red-500 underline font-semibold">
+            ยกเลิกแก้ไข
+          </button>
+        </div>
+
+        <div>
+          <label class="block text-[11px] font-bold text-slate-500 mb-1">1. ชื่ออาชีพ <span class="text-red-500">*</span></label>
+          <input type="text" id="crudCareerName" required placeholder="เช่น นักธุรกิจอิสระ, นักบิน..." class="w-full bg-white dark:bg-slate-800 border border-slate-200 dark:border-white/10 rounded-xl px-3 py-2 text-xs font-bold text-slate-800 dark:text-white focus:ring-2 focus:ring-amber-500">
+        </div>
+
+        <div class="grid grid-cols-2 gap-2.5">
+          <div>
+            <label class="block text-[11px] font-bold text-slate-500 mb-1">2. เงินเดือน (฿/ด.)</label>
+            <input type="number" id="crudCareerSalary" min="0" placeholder="0" class="w-full bg-white dark:bg-slate-800 border border-slate-200 dark:border-white/10 rounded-xl px-3 py-2 text-xs font-mono font-bold text-green-500 focus:ring-2 focus:ring-green-500">
+          </div>
+          <div>
+            <label class="block text-[11px] font-bold text-slate-500 mb-1">3. รายจ่ายประจำ (฿/ด.)</label>
+            <input type="number" id="crudCareerExpense" min="0" placeholder="0" class="w-full bg-white dark:bg-slate-800 border border-slate-200 dark:border-white/10 rounded-xl px-3 py-2 text-xs font-mono font-bold text-red-500 focus:ring-2 focus:ring-red-500">
+          </div>
+        </div>
+
+        <button type="submit" id="crudSubmitBtn" class="w-full py-2 rounded-xl text-xs font-black text-white bg-amber-500 hover:bg-amber-600 transition shadow-sm flex items-center justify-center gap-1.5">
+          <i class="fa-solid fa-cloud-arrow-up"></i>
+          <span>บันทึกลงชีตออนไลน์</span>
+        </button>
+      </form>
+
+      <!-- รายการอาชีพทั้งหมด -->
+      <div class="space-y-2 flex-1 overflow-hidden flex flex-col">
+        <span class="text-[11px] font-bold uppercase tracking-wider text-slate-400">รายการอาชีพในฐานข้อมูล (<span id="careerCountBadge">0</span>)</span>
+        <div id="careerListContainer" class="flex-1 overflow-y-auto space-y-2 pr-1 divide-y divide-slate-100 dark:divide-white/5"></div>
+      </div>
+
+    </div>
+  </div>
 
   <!-- Modal Confirm Reset -->
   <div id="resetConfirmModal" class="hidden fixed inset-0 z-50 bg-slate-950/70 backdrop-blur-sm flex items-center justify-center p-4">
@@ -542,48 +610,240 @@
 
   <!-- JAVASCRIPT LOGIC -->
   <script>
-    // ฐานข้อมูลอาชีพในเกม 7 อาชีพ
-    const GAME_CAREERS_DB = [
-      { id: "business_owner", name: "เจ้าของธุรกิจส่วนตัว", salary: 75000, expense: 45000, heart: 6, time: 4, knowledge: 8 },
-      { id: "software_engineer", name: "วิศวกรซอฟต์แวร์ / โปรแกรมเมอร์", salary: 65000, expense: 32000, heart: 5, time: 3, knowledge: 9 },
-      { id: "medical_doctor", name: "แพทย์ / บุคลากรการแพทย์", salary: 90000, expense: 48000, heart: 4, time: 2, knowledge: 10 },
-      { id: "marketing_manager", name: "ผู้จัดการฝ่ายการตลาด", salary: 55000, expense: 30000, heart: 7, time: 5, knowledge: 7 },
-      { id: "teacher", name: "อาจารย์ / ผู้เชี่ยวชาญด้านการสอน", salary: 38000, expense: 22000, heart: 7, time: 6, knowledge: 8 },
-      { id: "freelancer", name: "ฟรีแลนซ์ / คอนเทนต์ครีเอเตอร์", salary: 45000, expense: 25000, heart: 5, time: 7, knowledge: 6 },
-      { id: "office_worker", name: "พนักงานบริษัททั่วไป", salary: 30000, expense: 18000, heart: 6, time: 5, knowledge: 5 }
+    // Web App URL จาก Google Apps Script (ไฟล์เดียวกับ index.html)
+    const GOOGLE_SHEET_API_URL = "https://script.google.com/macros/s/AKfycbzq9oD33K3nf_r2JRq5RjCafAQIvt2o9ywvJ1EvXvVg4l9QyUalIuQvxxT7zQ890nR1/exec";
+
+    // ฐานข้อมูลอาชีพเริ่มต้น (Default Careers)
+    const DEFAULT_CAREERS = [
+      { id: "business_owner", name: "เจ้าของธุรกิจส่วนตัว", salary: 75000, expense: 45000 },
+      { id: "software_engineer", name: "วิศวกรซอฟต์แวร์ / โปรแกรมเมอร์", salary: 65000, expense: 32000 },
+      { id: "medical_doctor", name: "แพทย์ / บุคลากรการแพทย์", salary: 90000, expense: 48000 },
+      { id: "marketing_manager", name: "ผู้จัดการฝ่ายการตลาด", salary: 55000, expense: 30000 },
+      { id: "teacher", name: "อาจารย์ / ผู้เชี่ยวชาญด้านการสอน", salary: 38000, expense: 22000 },
+      { id: "freelancer", name: "ฟรีแลนซ์ / คอนเทนต์ครีเอเตอร์", salary: 45000, expense: 25000 },
+      { id: "office_worker", name: "พนักงานบริษัททั่วไป", salary: 30000, expense: 18000 }
     ];
 
+    let careersDB = [];
     const LEGS = ['A', 'B', 'C', 'D', 'E', 'F'];
     let isEditMode = true;
 
     window.addEventListener('DOMContentLoaded', () => {
       initTheme();
-      renderCareersDropdown();
+      loadCareersDB();
       renderLegsUI();
       loadProfileData();
       checkDrawResultParams();
     });
 
-    // 1. เรนเดอร์ Dropdown อาชีพ
+    // 1. โหลดฐานข้อมูลอาชีพ (ดึงจาก Cache เครื่องก่อน แล้วซิงก์กับ Cloud ชีต)
+    async function loadCareersDB() {
+      try {
+        const savedCareers = localStorage.getItem('game_careers_database');
+        careersDB = savedCareers ? JSON.parse(savedCareers) : [...DEFAULT_CAREERS];
+      } catch (e) {
+        careersDB = [...DEFAULT_CAREERS];
+      }
+      renderCareersDropdown();
+      renderCareerListTable();
+
+      // ดึงข้อมูลอัปเดตล่าสุดจาก Google Sheets
+      await fetchCareersFromCloud();
+    }
+
+    // ดึงข้อมูลอาชีพออนไลน์จาก Google Sheets (doGet?action=getCareers)
+    async function fetchCareersFromCloud() {
+      if (!GOOGLE_SHEET_API_URL || GOOGLE_SHEET_API_URL.includes("PLACEHOLDER")) {
+        setCloudStatus('ใช้งานแบบออฟไลน์', 'text-slate-400');
+        return;
+      }
+
+      setCloudStatus('กำลังซิงก์ชีต...', 'text-amber-500');
+      const syncIcon = document.getElementById('syncCareersIcon');
+      if (syncIcon) syncIcon.classList.add('animate-spin');
+
+      try {
+        const res = await fetch(`${GOOGLE_SHEET_API_URL}?action=getCareers`);
+        const cloudCareers = await res.json();
+        if (Array.isArray(cloudCareers) && cloudCareers.length > 0) {
+          careersDB = cloudCareers;
+          localStorage.setItem('game_careers_database', JSON.stringify(careersDB));
+          renderCareersDropdown();
+          renderCareerListTable();
+          setCloudStatus('ชีตออนไลน์พร้อมใช้งาน', 'text-emerald-500');
+          showToast('ซิงก์ฐานข้อมูลอาชีพจาก Google Sheets สำเร็จ ☁️', 'success');
+        } else {
+          setCloudStatus('ชีตออนไลน์พร้อมใช้งาน', 'text-emerald-500');
+        }
+      } catch (err) {
+        setCloudStatus('ใช้ออฟไลน์ / ติดต่อชีตไม่ได้', 'text-amber-500');
+      } finally {
+        if (syncIcon) syncIcon.classList.remove('animate-spin');
+      }
+    }
+
+    // ส่งข้อมูลอาชีพไปบันทึกลง Google Sheets (doPost: action="saveCareers")
+    async function saveCareersDB() {
+      // 1. บันทึกลงเครื่องก่อนเสมอ
+      localStorage.setItem('game_careers_database', JSON.stringify(careersDB));
+      renderCareersDropdown();
+      renderCareerListTable();
+
+      // 2. ส่งขึ้น Google Sheets
+      if (!GOOGLE_SHEET_API_URL || GOOGLE_SHEET_API_URL.includes("PLACEHOLDER")) {
+        showToast('บันทึกในเครื่องแล้ว', 'info');
+        return;
+      }
+
+      setCloudStatus('กำลังบันทึกลงชีต...', 'text-amber-500');
+      try {
+        await fetch(GOOGLE_SHEET_API_URL, {
+          method: 'POST',
+          mode: 'no-cors',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            action: 'saveCareers',
+            careers: careersDB
+          })
+        });
+        setCloudStatus('ชีตออนไลน์พร้อมใช้งาน', 'text-emerald-500');
+        showToast('บันทึกฐานข้อมูลอาชีพล้ำค่าลง Google Sheets แล้ว ☁️', 'success');
+      } catch (err) {
+        setCloudStatus('บันทึกออนไลน์ล้มเหลว', 'text-rose-500');
+        showToast('บันทึกลงชีตไม่สำเร็จ (บันทึกในเครื่องแล้ว)', 'warning');
+      }
+    }
+
+    function setCloudStatus(msg, colorClass) {
+      const el = document.getElementById('cloudCareersStatus');
+      if (el) {
+        el.innerHTML = `<i class="fa-solid fa-circle text-[7px] ${colorClass}"></i> ${msg}`;
+      }
+    }
+
+    // เรนเดอร์ Dropdown เลือกอาชีพในหน้าหลัก
     function renderCareersDropdown() {
       const select = document.getElementById('gameCareerSelect');
+      const currentSelected = select.value;
       select.innerHTML = `<option value="">-- เลือกอาชีพในเกม --</option>` +
-        GAME_CAREERS_DB.map(c => `<option value="${c.id}">${c.name}</option>`).join('');
+        careersDB.map(c => `<option value="${c.id}">${escapeHTML(c.name)}</option>`).join('');
+      if (currentSelected && careersDB.some(c => c.id === currentSelected)) {
+        select.value = currentSelected;
+      }
     }
 
     function onCareerSelected(careerId) {
-      const career = GAME_CAREERS_DB.find(c => c.id === careerId);
+      const career = careersDB.find(c => c.id === careerId);
       if (career) {
-        document.getElementById('careerSalary').value = career.salary;
-        document.getElementById('careerExpense').value = career.expense;
-        updateStatBadge('Heart', career.heart);
-        updateStatBadge('Time', career.time);
-        updateStatBadge('Knowledge', career.knowledge);
+        document.getElementById('careerSalary').value = career.salary || 0;
+        document.getElementById('careerExpense').value = career.expense || 0;
         showToast(`เลือกอาชีพ "${career.name}" เรียบร้อย`);
       }
     }
 
-    // 2. เรนเดอร์ช่อง 6 สายงาน (A - F)
+    // 2. ระบบ CRUD อาชีพ (เพิ่ม / ลบ / แก้ไข)
+    function openCareerManagerModal() {
+      resetCareerCrudForm();
+      renderCareerListTable();
+      document.getElementById('careerManagerModal').classList.remove('hidden');
+    }
+
+    function closeCareerManagerModal() {
+      document.getElementById('careerManagerModal').classList.add('hidden');
+    }
+
+    function resetCareerCrudForm() {
+      document.getElementById('crudCareerId').value = '';
+      document.getElementById('crudCareerName').value = '';
+      document.getElementById('crudCareerSalary').value = '';
+      document.getElementById('crudCareerExpense').value = '';
+      document.getElementById('crudFormTitle').innerHTML = '<i class="fa-solid fa-plus-circle"></i> เพิ่มอาชีพใหม่';
+      document.getElementById('crudSubmitBtn').innerHTML = '<i class="fa-solid fa-cloud-arrow-up"></i> บันทึกลงชีตออนไลน์';
+      document.getElementById('cancelEditCareerBtn').classList.add('hidden');
+    }
+
+    async function handleCareerFormSubmit(e) {
+      e.preventDefault();
+      const id = document.getElementById('crudCareerId').value;
+      const name = document.getElementById('crudCareerName').value.trim();
+      const salary = parseFloat(document.getElementById('crudCareerSalary').value) || 0;
+      const expense = parseFloat(document.getElementById('crudCareerExpense').value) || 0;
+
+      if (!name) return;
+
+      if (id) {
+        const idx = careersDB.findIndex(c => c.id === id);
+        if (idx !== -1) {
+          careersDB[idx] = { ...careersDB[idx], name, salary, expense };
+          showToast(`แก้ไขอาชีพ "${name}" สำเร็จ`, 'success');
+        }
+      } else {
+        const newId = `career_${Date.now()}`;
+        careersDB.push({ id: newId, name, salary, expense });
+        showToast(`เพิ่มอาชีพ "${name}" สำเร็จ`, 'success');
+      }
+
+      await saveCareersDB();
+      resetCareerCrudForm();
+    }
+
+    function startEditCareer(id) {
+      const career = careersDB.find(c => c.id === id);
+      if (!career) return;
+      document.getElementById('crudCareerId').value = career.id;
+      document.getElementById('crudCareerName').value = career.name;
+      document.getElementById('crudCareerSalary').value = career.salary || 0;
+      document.getElementById('crudCareerExpense').value = career.expense || 0;
+      document.getElementById('crudFormTitle').innerHTML = '<i class="fa-solid fa-pen"></i> กำลังแก้ไขอาชีพ';
+      document.getElementById('crudSubmitBtn').innerHTML = '<i class="fa-solid fa-check"></i> บันทึกการแก้ไขลงชีต';
+      document.getElementById('cancelEditCareerBtn').classList.remove('hidden');
+    }
+
+    async function deleteCareer(id, name) {
+      if (careersDB.length <= 1) {
+        showToast('ต้องมีอาชีพในฐานข้อมูลอย่างน้อย 1 รายการ', 'warning');
+        return;
+      }
+      if (confirm(`คุณต้องการลบอาชีพ "${name}" ออกจากระบบและ Google Sheets หรือไม่?`)) {
+        careersDB = careersDB.filter(c => c.id !== id);
+        await saveCareersDB();
+        if (document.getElementById('gameCareerSelect').value === id) {
+          document.getElementById('gameCareerSelect').value = '';
+          document.getElementById('careerSalary').value = '';
+          document.getElementById('careerExpense').value = '';
+        }
+        showToast(`ลบอาชีพ "${name}" เรียบร้อยแล้ว`, 'info');
+      }
+    }
+
+    function renderCareerListTable() {
+      const container = document.getElementById('careerListContainer');
+      const countBadge = document.getElementById('careerCountBadge');
+      if (countBadge) countBadge.innerText = careersDB.length;
+
+      container.innerHTML = careersDB.map((c, idx) => `
+        <div class="pt-2 flex items-center justify-between gap-2 text-xs">
+          <div class="min-w-0 flex-1">
+            <div class="font-bold text-slate-800 dark:text-white truncate">${idx + 1}. ${escapeHTML(c.name)}</div>
+            <div class="flex items-center gap-2 text-[10px] font-mono text-slate-400 mt-0.5">
+              <span class="text-green-500">เงินเดือน: ฿${(c.salary || 0).toLocaleString()}</span>
+              <span>|</span>
+              <span class="text-red-500">รายจ่าย: ฿${(c.expense || 0).toLocaleString()}</span>
+            </div>
+          </div>
+          <div class="flex items-center gap-1 shrink-0">
+            <button type="button" onclick="startEditCareer('${c.id}')" class="p-1.5 rounded-lg text-slate-400 hover:text-amber-500 hover:bg-slate-100 dark:hover:bg-slate-800 transition" title="แก้ไข">
+              <i class="fa-solid fa-pen"></i>
+            </button>
+            <button type="button" onclick="deleteCareer('${c.id}', '${escapeHTML(c.name)}')" class="p-1.5 rounded-lg text-slate-400 hover:text-red-500 hover:bg-slate-100 dark:hover:bg-slate-800 transition" title="ลบ">
+              <i class="fa-solid fa-trash-can"></i>
+            </button>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    // 3. เรนเดอร์ช่อง 6 สายงาน (A - F)
     function renderLegsUI() {
       const container = document.getElementById('legsContainer');
       container.innerHTML = LEGS.map(leg => `
@@ -603,12 +863,12 @@
           <div class="grid grid-cols-2 gap-2">
             <div>
               <label class="block text-[10px] font-bold text-green-500 mb-1">Active (฿)</label>
-              <input type="number" id="leg_${leg}_active" oninput="calculateTotalSummary()" placeholder="0" class="w-full bg-white dark:bg-slate-800 border border-slate-200 dark:border-white/10 rounded-xl px-2 py-1.5 text-xs font-mono font-bold text-green-500 focus:ring-2 focus:ring-green-500 transition">
+              <input type="number" id="leg_${leg}_active" oninput="calculateTotalSummary()" placeholder="0" class="w-full bg-white dark:bg-slate-800 border border-slate-200 dark:border-white/10 rounded-xl px-2.5 py-1.5 text-xs font-mono font-bold text-green-500 focus:ring-2 focus:ring-green-500 transition">
             </div>
 
             <div>
               <label class="block text-[10px] font-bold text-emerald-500 mb-1">Passive (฿)</label>
-              <input type="number" id="leg_${leg}_passive" oninput="calculateTotalSummary()" placeholder="0" class="w-full bg-white dark:bg-slate-800 border border-slate-200 dark:border-white/10 rounded-xl px-2 py-1.5 text-xs font-mono font-bold text-emerald-500 focus:ring-2 focus:ring-emerald-500 transition">
+              <input type="number" id="leg_${leg}_passive" oninput="calculateTotalSummary()" placeholder="0" class="w-full bg-white dark:bg-slate-800 border border-slate-200 dark:border-white/10 rounded-xl px-2.5 py-1.5 text-xs font-mono font-bold text-emerald-500 focus:ring-2 focus:ring-emerald-500 transition">
             </div>
           </div>
         </div>
@@ -620,7 +880,7 @@
       document.getElementById(`stat${type}Val`).innerText = `${value}/10`;
     }
 
-    // 3. คำนวณสรุปรวม Dashboard KPI
+    // 4. คำนวณสรุปรวม Dashboard KPI
     function calculateTotalSummary() {
       let totalPV = parseFloat(document.getElementById('personalPV').value) || 0;
       let totalActive = parseFloat(document.getElementById('personalActive').value) || 0;
@@ -637,7 +897,7 @@
       document.getElementById('kpiTotalPassive').innerText = `฿${totalPassive.toLocaleString()}`;
     }
 
-    // 4. บันทึกข้อมูล
+    // 5. บันทึกข้อมูลโปรไฟล์หลัก
     function handleProfileSubmit(e) {
       e.preventDefault();
 
@@ -703,7 +963,7 @@
       showToast('บันทึกข้อมูลโปรไฟล์และสถานะเรียบร้อยแล้ว ✅', 'success');
     }
 
-    // 5. โหลดข้อมูล
+    // 6. โหลดข้อมูลโปรไฟล์
     function loadProfileData() {
       try {
         const saved = localStorage.getItem('game_user_profile');
@@ -773,7 +1033,7 @@
       } catch (err) {}
     }
 
-    // 6. สลับโหมดแก้ไข
+    // 7. สลับโหมดแก้ไข
     function toggleEditMode() {
       isEditMode = !isEditMode;
       const inputs = document.querySelectorAll('#profileForm input, #profileForm select, #profileForm textarea');
@@ -793,7 +1053,7 @@
       }
     }
 
-    // 7. รับผลลัพธ์จากการสุ่มหน้า index.html
+    // 8. ซิงก์ผลลัพธ์จากการสุ่มหน้า index.html
     function checkDrawResultParams() {
       try {
         const rawLastDraw = localStorage.getItem('last_drawn_card_result');
@@ -814,7 +1074,6 @@
       } catch (e) {}
     }
 
-    // Modal เคลียร์ข้อมูล
     function confirmResetProfile() {
       document.getElementById('resetConfirmModal').classList.remove('hidden');
     }
@@ -832,7 +1091,6 @@
       showToast('ล้างข้อมูลเรียบร้อยแล้ว', 'info');
     }
 
-    // Toggle Theme
     function toggleTheme() {
       const isDark = document.documentElement.classList.toggle('dark');
       localStorage.setItem('rnd_theme_dark', isDark ? 'true' : 'false');
@@ -850,6 +1108,11 @@
       document.getElementById('toastMessage').innerText = msg;
       toast.classList.remove('translate-x-full', 'opacity-0');
       setTimeout(() => toast.classList.add('translate-x-full', 'opacity-0'), 2500);
+    }
+
+    function escapeHTML(str) {
+      if (!str) return '';
+      return String(str).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#039;');
     }
   </script>
 </body>
