@@ -40,7 +40,7 @@
   </script>
 
   <style>
-    /* ขยายขนาดตัวอักษรทั้งหน้าเพจขึ้น 2 ระดับ (16px -> 18px) */
+    /* ขยายขนาดตัวอักษรทั้งหน้าเพจ 2 ระดับ */
     html {
       font-size: 18px;
       line-height: 1.55;
@@ -77,7 +77,7 @@
       background: linear-gradient(135deg, #F87171 0%, #EF4444 50%, #DC2626 100%);
     }
 
-    /* สถานะเมื่อล็อคฟอร์ม */
+    /* สไตล์เมื่อฟอร์มถูกล็อค */
     fieldset:disabled {
       opacity: 0.88;
     }
@@ -150,7 +150,7 @@
   <header class="sticky top-0 z-40 bg-white/95 dark:bg-[#0B132B]/95 backdrop-blur-md border-b border-slate-200/80 dark:border-white/10 shadow-sm transition-colors">
     <div class="max-w-6xl mx-auto px-3 sm:px-4 h-16 sm:h-20 flex items-center justify-between gap-2">
       
-      <!-- Brand & ปุ่มย้อนกลับไปหน้าสุ่ม (index.html) ด้านบน -->
+      <!-- Brand & ปุ่มย้อนกลับไปหน้าสุ่ม (index.html) -->
       <div class="flex items-center space-x-2.5 sm:space-x-3.5 min-w-0">
         <a href="index.html" class="w-10 h-10 sm:w-12 sm:h-12 rounded-2xl flex items-center justify-center text-white shadow-md btn-gradient-red hover:scale-105 active:scale-95 transition-all shrink-0" title="กลับหน้าสุ่มการ์ด (index.html)">
           <i class="fa-solid fa-arrow-left text-base sm:text-lg"></i>
@@ -173,6 +173,7 @@
           <span class="hidden md:inline">Sync อาชีพ</span>
         </button>
 
+        <!-- ปุ่มล็อค / ปลดล็อค แก้ไข ด้านบน -->
         <button type="button" id="toggleEditBtn" onclick="toggleEditMode()" class="px-3 sm:px-4 py-2 sm:py-2.5 rounded-xl text-xs sm:text-sm font-bold transition-all flex items-center gap-1.5 border border-slate-200 dark:border-white/10 bg-white dark:bg-slate-800 shadow-sm">
           <i id="editIcon" class="fa-solid fa-lock text-slate-400"></i>
           <span id="editText">ปลดล็อคแก้ไข</span>
@@ -225,10 +226,10 @@
     <!-- FORM WRAPPER -->
     <form id="profileForm" onsubmit="handleProfileSubmit(event)">
 
-      <!-- FIELDSET ควบคุมการล็อคฟอร์ม (เริ่มต้นล็อค) -->
+      <!-- FIELDSET ควบคุมการล็อคฟอร์ม -->
       <fieldset id="profileFieldset" disabled class="space-y-6">
 
-        <!-- SECTION 1: ข้อมูลส่วนบุคคล -->
+        <!-- SECTION 1: ข้อมูลส่วนบุคคล (จำเป็นเฉพาะชื่อ) -->
         <div class="glass-card rounded-3xl p-5 sm:p-7 shadow-sm space-y-4">
           <div class="flex items-center gap-3 pb-3 border-b border-slate-100 dark:border-white/5">
             <div class="w-10 h-10 rounded-2xl bg-gradient-to-br from-red-500 to-rose-600 text-white flex items-center justify-center text-base shadow-sm">
@@ -299,8 +300,8 @@
             <div>
               <label class="block text-xs sm:text-sm font-bold text-slate-600 dark:text-slate-300 mb-1.5">รายจ่ายประจำ (Expenses / เดือน)</label>
               <div class="relative">
-                <input type="number" id="careerExpense" placeholder="0" class="w-full bg-slate-50 dark:bg-slate-900/60 border border-slate-200 dark:border-white/10 rounded-xl pl-9 pr-3.5 py-3 text-sm sm:text-base font-mono font-bold text-red-500 focus:ring-2 focus:ring-red-500 transition">
-                <span class="absolute left-3.5 top-3 text-slate-400 font-bold text-sm">฿</span>
+                <input type="number" id="careerExpense" placeholder="0" class="w-full bg-slate-50 dark:bg-slate-900/60 border border-slate-200 dark:border-white/10 rounded-xl pl-8 pr-3.5 py-3 text-sm font-mono font-bold text-red-500 focus:ring-2 focus:ring-red-500 transition">
+                <span class="absolute left-3.5 top-3 text-slate-400 font-bold text-xs">฿</span>
               </div>
             </div>
           </div>
@@ -373,7 +374,7 @@
           </div>
         </div>
 
-        <!-- SECTION 3: เช็คลิสต์ คุณสมบัติ (ไม่มีวันที่ & แถบสีเขียวเมื่อเลือก) -->
+        <!-- SECTION 3: เช็คลิสต์ คุณสมบัติ (แถบสีเขียวเมื่อเลือก) -->
         <div class="glass-card rounded-3xl p-5 sm:p-7 shadow-sm space-y-4">
           <div class="flex items-center gap-3 pb-3 border-b border-slate-100 dark:border-white/5">
             <div class="w-10 h-10 rounded-2xl bg-gradient-to-br from-emerald-500 to-teal-600 text-white flex items-center justify-center text-base shadow-sm">
@@ -519,7 +520,7 @@
           </div>
         </div>
 
-        <!-- SECTION 5: 6 สายงาน (A, B, C, D, E, F) ฝังใน HTML แสดงทันที 100% -->
+        <!-- SECTION 5: 6 สายงาน (A, B, C, D, E, F) -->
         <div class="glass-card rounded-3xl p-5 sm:p-7 shadow-sm space-y-4">
           <div class="flex items-center justify-between pb-3 border-b border-slate-100 dark:border-white/5">
             <div class="flex items-center gap-3">
@@ -583,7 +584,7 @@
             </div>
 
             <!-- สายงาน C -->
-            <div class="p-4 rounded-2xl border border-slate-200 dark:border-slate-700 bg-slate-50/70 dark:bg-slate-900/40 space-y-3">
+            <div class="p-4 rounded-2xl border border-slate-200 dark:border-white/10 bg-slate-50/70 dark:bg-slate-900/40 space-y-3">
               <div class="flex items-center justify-between border-b border-slate-200/80 dark:border-white/5 pb-2">
                 <span class="text-sm font-black text-slate-800 dark:text-white flex items-center gap-2">
                   <span class="w-7 h-7 rounded-lg bg-gradient-to-br from-red-500 to-rose-600 text-white flex items-center justify-center text-sm font-mono font-bold shadow-sm">C</span>
@@ -682,7 +683,7 @@
 
       </fieldset>
 
-      <!-- FLOATING ACTION DOCK (มีปุ่มกลับหน้าสุ่ม index.html ชัดเจน) -->
+      <!-- FLOATING ACTION DOCK -->
       <div class="sticky bottom-3 z-30 p-3 sm:p-4 rounded-2xl bg-white/95 dark:bg-[#0B132B]/95 backdrop-blur-lg border border-slate-200 dark:border-white/10 shadow-2xl flex items-center justify-between gap-2.5">
         
         <div class="flex items-center gap-2">
@@ -832,7 +833,7 @@
       if (dockBtn) dockBtn.onclick = toggleEditMode;
     });
 
-    // ฟังก์ชันเปลี่ยนสีเขียวทั้งแถบเมื่อกด Checkbox
+    // ฟังก์ชันเปลี่ยนสีเขียวทั้งแถวเมื่อกด Checkbox
     function syncCheckboxHighlight(checkbox) {
       if (!checkbox) return;
       const row = document.getElementById(`wrap_${checkbox.id}`);
@@ -847,14 +848,21 @@
       }
     }
 
-    // ระบบปลดล็อค / ล็อค แก้ไข Native Fieldset
+    // ระบบปลดล็อค / ล็อค แก้ไข (เมื่อกดล็อค ให้บันทึกข้อมูลอัตโนมัติ)
     function toggleEditMode() {
-      isEditMode = !isEditMode;
-      applyLockState();
       if (isEditMode) {
-        showToast('ปลดล็อคแล้ว สามารถแก้ไขข้อมูลได้ ✍️', 'success');
+        // เมื่อกำลังแก้ไขอยู่ แล้วกดปุ่ม -> เปลี่ยนเป็นล็อค พร้อมบันทึกข้อมูลอัตโนมัติ
+        const isSaved = saveProfileData(true);
+        if (isSaved) {
+          isEditMode = false;
+          applyLockState();
+          showToast('บันทึกข้อมูลและล็อคเรียบร้อยแล้ว 🔒💾', 'success');
+        }
       } else {
-        showToast('ล็อคข้อมูลเรียบร้อยแล้ว 🔒', 'info');
+        // ปลดล็อคฟอร์ม
+        isEditMode = true;
+        applyLockState();
+        showToast('ปลดล็อคแล้ว สามารถแก้ไขข้อมูลได้ ✍️', 'info');
       }
     }
 
@@ -870,7 +878,7 @@
         if (!btn) return;
         if (isEditMode) {
           btn.className = "px-3.5 sm:px-4 py-2 sm:py-2.5 rounded-xl text-xs sm:text-sm font-black transition-all flex items-center gap-1.5 shadow-md bg-emerald-500 hover:bg-emerald-600 text-white";
-          btn.innerHTML = `<i class="fa-solid fa-lock-open"></i><span>กำลังแก้ไข (${isDock ? 'กดล็อค' : 'กดล็อค'})</span>`;
+          btn.innerHTML = `<i class="fa-solid fa-lock-open"></i><span>กำลังแก้ไข (${isDock ? 'กดล็อค & บันทึก' : 'กดล็อค & บันทึก'})</span>`;
         } else {
           btn.className = "px-3.5 sm:px-4 py-2 sm:py-2.5 rounded-xl text-xs sm:text-sm font-bold transition-all flex items-center gap-1.5 border border-slate-200 dark:border-white/10 bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-200 shadow-sm hover:border-slate-300";
           btn.innerHTML = `<i class="fa-solid fa-lock text-slate-400"></i><span>ปลดล็อคแก้ไข</span>`;
@@ -1133,15 +1141,32 @@
       if (kpiPas) kpiPas.innerText = `฿${totalPassive.toLocaleString()}`;
     }
 
-    // บันทึกข้อมูลโปรไฟล์หลัก
-    function handleProfileSubmit(e) {
-      e.preventDefault();
+    // ฟังก์ชันรวบรวมข้อมูลและบันทึกลง LocalStorage
+    function saveProfileData(isAutoSave = false) {
+      const fullNameInput = document.getElementById('userFullName');
+      const careerSelect = document.getElementById('gameCareerSelect');
+
+      // ตรวจสอบฟิลด์จำเป็น
+      if (!fullNameInput.value.trim()) {
+        if (!isAutoSave) {
+          fullNameInput.focus();
+          showToast('กรุณากรอกชื่อ - นามสกุล', 'warning');
+        }
+        return false;
+      }
+      if (!careerSelect.value) {
+        if (!isAutoSave) {
+          careerSelect.focus();
+          showToast('กรุณาเลือกอาชีพในเกม', 'warning');
+        }
+        return false;
+      }
 
       const profileData = {
-        fullName: document.getElementById('userFullName').value.trim(),
+        fullName: fullNameInput.value.trim(),
         phone: document.getElementById('userPhone').value.trim(),
         email: document.getElementById('userEmail').value.trim(),
-        careerId: document.getElementById('gameCareerSelect').value,
+        careerId: careerSelect.value,
         salary: parseFloat(document.getElementById('careerSalary').value) || 0,
         expense: parseFloat(document.getElementById('careerExpense').value) || 0,
         stats: {
@@ -1187,11 +1212,18 @@
       });
 
       localStorage.setItem('game_user_profile', JSON.stringify(profileData));
-      showToast('บันทึกข้อมูลโปรไฟล์เรียบร้อยแล้ว ✅', 'success');
+      return true;
+    }
 
-      // ล็อคฟอร์มหลังบันทึก
-      isEditMode = false;
-      applyLockState();
+    // บันทึกผ่านการ Submit ฟอร์ม
+    function handleProfileSubmit(e) {
+      e.preventDefault();
+      const isSaved = saveProfileData(false);
+      if (isSaved) {
+        showToast('บันทึกข้อมูลโปรไฟล์เรียบร้อยแล้ว ✅', 'success');
+        isEditMode = false;
+        applyLockState();
+      }
     }
 
     // โหลดข้อมูลโปรไฟล์
