@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-  <title>Random Data Card Hub (Weighted Random & Profile Sync)</title>
+  <title>Random Data Card Hub (Target Selection Edition)</title>
 
   <!-- Google Fonts: Prompt & Inter -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -187,7 +187,6 @@
           <i class="fa-solid fa-clock-rotate-left text-sm"></i>
           <span>ประวัติ</span>
         </button>
-        <!-- ปุ่มไปหน้าข้อมูลส่วนตัว (Profile) -->
         <a href="profile.html" class="px-3.5 py-1.5 rounded-lg text-sm font-semibold transition-all flex items-center space-x-2 text-slate-600 dark:text-slate-300 hover:text-red-600 dark:hover:text-white border-l border-slate-200 dark:border-slate-700 pl-2.5 ml-1">
           <i class="fa-solid fa-id-card text-sm text-red-500"></i>
           <span>ข้อมูลส่วนตัว</span>
@@ -312,12 +311,12 @@
       </div>
     </section>
 
-    <!-- VIEW 3: DATA REPOSITORY -->
+    <!-- VIEW 3: DATA REPOSITORY (คลังข้อมูล) -->
     <section id="view-data" class="hidden space-y-4 animate-pop-in">
       <div class="bg-white/80 dark:bg-slate-800/80 backdrop-blur border border-slate-200 dark:border-slate-700 rounded-2xl p-4 shadow-sm flex flex-col md:flex-row items-stretch md:items-center justify-between gap-3">
         <div class="flex flex-wrap items-center gap-2 flex-1">
           <div class="relative flex-1 min-w-[200px]">
-            <input type="text" id="searchInput" oninput="renderDataTable()" placeholder="ค้นหาข้อมูล, หัวข้อ, ราคา, รายได้..." class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-300 dark:border-slate-700 text-sm rounded-xl pl-9 pr-3 py-2 focus:ring-2 focus:ring-red-600">
+            <input type="text" id="searchInput" oninput="renderDataTable()" placeholder="ค้นหาข้อมูล, หัวข้อ, การ์ดใบนี้ใช้กับ, ราคา..." class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-300 dark:border-slate-700 text-sm rounded-xl pl-9 pr-3 py-2 focus:ring-2 focus:ring-red-600">
             <i class="fa-solid fa-magnifying-glass absolute left-3 top-2.5 text-slate-400 text-xs"></i>
           </div>
           <div class="relative w-44">
@@ -342,10 +341,11 @@
               <tr>
                 <th class="py-3 px-4 w-12 text-center">#</th>
                 <th class="py-3 px-4">หัวข้อ</th>
+                <th class="py-3 px-4 w-36 text-indigo-500">การ์ดใบนี้ใช้กับ</th>
                 <th class="py-3 px-4 w-28 text-amber-500">โอกาสสุ่ม</th>
                 <th class="py-3 px-4 w-24 text-red-600">ราคา</th>
-                <th class="py-3 px-4 w-28 text-green-500">Active</th>
-                <th class="py-3 px-4 w-28 text-emerald-600">Passive</th>
+                <th class="py-3 px-4 w-24 text-green-500">Active</th>
+                <th class="py-3 px-4 w-24 text-emerald-600">Passive</th>
                 <th class="py-3 px-4 w-24">หมวดหมู่</th>
                 <th class="py-3 px-4 w-28">สิ่งที่ต้องใช้</th>
                 <th class="py-3 px-4 w-28">สิ่งที่ได้รับ</th>
@@ -384,7 +384,7 @@
     </section>
   </main>
 
-  <!-- Mobile Bottom Nav (รวมปุ่มไปหน้า Profile) -->
+  <!-- Mobile Bottom Nav -->
   <nav class="md:hidden fixed bottom-0 inset-x-0 bg-white/95 dark:bg-slate-900/95 backdrop-blur-lg border-t border-slate-200 dark:border-slate-800 z-50 px-2 py-2 flex items-center justify-around shadow-lg">
     <button onclick="switchTab('categories')" id="m-nav-categories" class="flex flex-col items-center gap-1 font-bold text-red-600"><i class="fa-solid fa-folder-tree text-lg"></i><span class="text-[10px]">หมวดหมู่</span></button>
     <button onclick="switchTab('draw')" id="m-nav-draw" class="flex flex-col items-center gap-1 text-slate-400 font-medium"><i class="fa-solid fa-shuffle text-lg"></i><span class="text-[10px]">สุ่มข้อมูล</span></button>
@@ -433,9 +433,12 @@
           <h2 id="popupTitle" class="app-title-text font-extrabold text-slate-900 dark:text-white tracking-normal">
             หัวข้อข้อมูล
           </h2>
-          <p id="popupSubtitle" class="text-sm sm:text-base font-semibold leading-normal text-slate-500 dark:text-slate-400">
-            หัวข้อย่อย
-          </p>
+          <!-- แสดงเป้าหมาย: การ์ดใบนี้ใช้กับ -->
+          <div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-xl bg-indigo-50 dark:bg-indigo-950/40 border border-indigo-200 dark:border-indigo-800 text-indigo-600 dark:text-indigo-300 text-xs font-bold">
+            <i class="fa-solid fa-bullseye text-[11px]"></i>
+            <span class="text-slate-400 font-medium">การ์ดใบนี้ใช้กับ:</span>
+            <span id="popupSubtitle">ข้อมูลส่วนตัว</span>
+          </div>
         </div>
 
         <p id="popupDescription" class="app-desc-text text-slate-600 dark:text-slate-300 whitespace-pre-line font-normal">
@@ -624,7 +627,7 @@
     </div>
   </div>
 
-  <!-- Add / Edit Modal -->
+  <!-- Add / Edit Modal (ปรับเปลี่ยน หัวข้อย่อย -> การ์ดใบนี้ใช้กับ) -->
   <div id="itemModal" class="hidden fixed inset-0 z-50 bg-slate-950/70 backdrop-blur-sm flex items-center justify-center p-3 sm:p-4 overflow-y-auto">
     <div class="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-3xl max-w-xl w-full p-5 sm:p-6 shadow-2xl relative my-auto animate-pop-in">
       <div class="flex items-center justify-between pb-3 border-b border-slate-100 dark:border-slate-700">
@@ -636,6 +639,35 @@
         <div>
           <label class="block text-xs font-bold uppercase text-slate-600 dark:text-slate-300 mb-1">หัวข้อ / ชื่อเรื่อง <span class="text-rose-500">*</span></label>
           <input type="text" id="formTitle" required placeholder="ระบุหัวข้อข้อมูล..." class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded-xl px-3.5 py-2.5 text-sm focus:ring-2 focus:ring-red-600">
+        </div>
+
+        <!-- การ์ดใบนี้ใช้กับ: ข้อมูลส่วนตัว / สายงาน A-F -->
+        <div class="p-3 bg-indigo-50/60 dark:bg-indigo-950/30 rounded-2xl border border-indigo-200 dark:border-indigo-800/60 space-y-2">
+          <label class="block text-xs font-black uppercase text-indigo-700 dark:text-indigo-300 flex items-center gap-1.5">
+            <i class="fa-solid fa-bullseye text-sm"></i>
+            <span>การ์ดใบนี้ใช้กับ <span class="text-rose-500">*</span></span>
+          </label>
+          
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+            <div>
+              <select id="formTargetType" onchange="onTargetTypeChange()" class="w-full bg-white dark:bg-slate-900 border border-indigo-300 dark:border-indigo-700 rounded-xl px-3 py-2 text-sm font-bold text-slate-800 dark:text-white focus:ring-2 focus:ring-indigo-500">
+                <option value="personal">👤 1. ข้อมูลส่วนตัว</option>
+                <option value="leg">🌿 2. สายงาน (เลือก A - F)</option>
+              </select>
+            </div>
+
+            <!-- เลือกสายงาน A - F (จะแสดงเมื่อเลือกสายงาน) -->
+            <div id="legSelectWrapper" class="hidden">
+              <select id="formTargetLeg" class="w-full bg-white dark:bg-slate-900 border border-indigo-300 dark:border-indigo-700 rounded-xl px-3 py-2 text-sm font-bold text-indigo-600 dark:text-indigo-400 focus:ring-2 focus:ring-indigo-500">
+                <option value="A">สายงาน A</option>
+                <option value="B">สายงาน B</option>
+                <option value="C">สายงาน C</option>
+                <option value="D">สายงาน D</option>
+                <option value="E">สายงาน E</option>
+                <option value="F">สายงาน F</option>
+              </select>
+            </div>
+          </div>
         </div>
         
         <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
@@ -653,7 +685,6 @@
               <span class="absolute left-3 top-2 text-slate-400 font-bold text-xs">฿</span>
             </div>
           </div>
-          <!-- ช่องตั้งค่าน้ำหนักโอกาสสุ่ม (Weight) -->
           <div>
             <label class="block text-xs font-bold uppercase text-amber-500 mb-1 flex items-center gap-1">
               <i class="fa-solid fa-scale-balanced text-xs"></i>
@@ -663,7 +694,7 @@
           </div>
         </div>
 
-        <!-- ช่องกรอก Active Income & Passive Income -->
+        <!-- Active Income & Passive Income -->
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 p-3 bg-slate-50 dark:bg-slate-900/80 rounded-2xl border border-slate-200 dark:border-slate-700">
           <div>
             <label class="block text-xs font-bold uppercase text-green-500 mb-1 flex items-center gap-1">
@@ -681,10 +712,6 @@
           </div>
         </div>
 
-        <div>
-          <label class="block text-xs font-bold uppercase text-slate-600 dark:text-slate-300 mb-1">หัวข้อย่อย</label>
-          <input type="text" id="formSubtitle" placeholder="เช่น รายละเอียดสั้นๆ หรือ หมวดย่อย" class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded-xl px-3.5 py-2.5 text-sm focus:ring-2 focus:ring-red-600">
-        </div>
         <div>
           <label class="block text-xs font-bold uppercase text-slate-600 dark:text-slate-300 mb-1">รายละเอียดเนื้อหา</label>
           <textarea id="formDescription" rows="3" placeholder="ระบุรายละเอียดเพิ่มเติม..." class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded-xl px-3.5 py-2.5 text-sm focus:ring-2 focus:ring-red-600"></textarea>
@@ -833,7 +860,6 @@
   <div id="settingModal" class="hidden fixed inset-0 z-50 bg-slate-950/70 backdrop-blur-sm flex items-center justify-center p-4">
     <div class="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-3xl max-w-md w-full p-5 sm:p-6 shadow-2xl relative animate-pop-in space-y-5">
       
-      <!-- Setting Header -->
       <div class="flex items-center justify-between pb-3 border-b border-slate-100 dark:border-slate-700">
         <div class="flex items-center gap-2.5">
           <div class="w-9 h-9 rounded-xl bg-slate-100 dark:bg-slate-700 text-slate-700 dark:text-slate-200 flex items-center justify-center text-lg shadow-sm">
@@ -849,7 +875,6 @@
         </button>
       </div>
 
-      <!-- Setting Section 1: Mode Toggle -->
       <div class="p-3 bg-slate-50 dark:bg-slate-900/60 rounded-2xl border border-slate-200 dark:border-slate-700/80 flex items-center justify-between">
         <div class="flex items-center gap-3">
           <div id="settingThemeIconBox" class="w-8 h-8 rounded-xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 flex items-center justify-center text-sm shadow-sm">
@@ -867,7 +892,6 @@
         </button>
       </div>
 
-      <!-- Setting Section 2: Font Size Slider (ระดับ 5: 26px / 22px) -->
       <div class="p-3.5 bg-slate-50 dark:bg-slate-900/60 rounded-2xl border border-slate-200 dark:border-slate-700/80 space-y-3">
         <div class="flex items-center justify-between">
           <div class="flex items-center gap-2">
@@ -886,7 +910,6 @@
           </div>
         </div>
 
-        <!-- Preview Box Real-time -->
         <div class="p-3 rounded-xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-center space-y-1">
           <div id="fontSizePreviewTitle" class="app-title-text font-extrabold text-slate-800 dark:text-slate-100">
             ตัวอย่างหัวข้อ (26px)
@@ -901,7 +924,6 @@
         </button>
       </div>
 
-      <!-- Setting Footer -->
       <div class="pt-2 flex justify-end">
         <button onclick="closeSettingModal()" class="px-5 py-2 rounded-xl text-white text-xs font-bold transition shadow btn-theme-action">
           เสร็จสิ้น
@@ -934,7 +956,6 @@
   <script>
     const GOOGLE_SHEET_API_URL = "https://script.google.com/macros/s/AKfycbzq9oD33K3nf_r2JRq5RjCafAQIvt2o9ywvJ1EvXvVg4l9QyUalIuQvxxT7zQ890nR1/exec";
 
-    // ข้อมูลเริ่มต้นสำหรับสำรองการแสดงผล พร้อมค่าน้ำหนักโอกาส (Weight) และ Active/Passive Income
     const DEFAULT_INITIAL_CATEGORIES = [
       { name: "ทั่วไป", icon: "fa-folder", color: "red" },
       { name: "การทำงาน", icon: "fa-briefcase", color: "slate" },
@@ -943,14 +964,17 @@
       { name: "การเงิน", icon: "fa-coins", color: "gold" }
     ];
 
+    // ข้อมูลตัวอย่างเริ่มต้น พร้อมกำหนดเป้าหมาย (target: personal หรือ leg: A-F)
     const DEFAULT_INITIAL_ITEMS = [
       {
         id: "c-1001",
         title: "วางแผนเป้าหมายประจำสัปดาห์",
-        subtitle: "การบริหารเวลาและเพิ่ม Productivity",
+        targetType: "personal", // ข้อมูลส่วนตัว
+        targetLeg: "",
+        subtitle: "ข้อมูลส่วนตัว",
         category: "การทำงาน",
         price: 350,
-        weight: 70, // โอกาสออกบ่อย
+        weight: 70,
         activeIncome: 15000,
         passiveIncome: 0,
         description: "สละเวลา 15 นาทีจัดลำดับความสำคัญของงานที่ต้องทำ 3 อันดับแรก เพื่อความชัดเจนในการลงมือทำ",
@@ -961,10 +985,12 @@
       {
         id: "c-1002",
         title: "ดื่มน้ำเปล่า 1 แก้วทันทีหลังตื่นนอน",
-        subtitle: "รีเฟรชร่างกายยามเช้า",
+        targetType: "personal",
+        targetLeg: "",
+        subtitle: "ข้อมูลส่วนตัว",
         category: "สุขภาพ",
         price: 0,
-        weight: 20, // โอกาสออกปานกลาง
+        weight: 20,
         activeIncome: 0,
         passiveIncome: 500,
         description: "ช่วยกระตุ้นระบบขับถ่ายและการไหลเวียนโลหิตหลังร่างกายพักผ่อนมาตลอดทั้งคืน",
@@ -974,14 +1000,16 @@
       },
       {
         id: "c-1003",
-        title: "ลงทุนในกองทุนปันผลดัชนี",
-        subtitle: "สร้างกระแสเงินสดต่อเนื่อง",
+        title: "ขยายเครือข่ายและเปิดตัวสินค้าใหม่",
+        targetType: "leg", // สายงาน
+        targetLeg: "A",   // สายงาน A
+        subtitle: "สายงาน A",
         category: "การเงิน",
         price: 5000,
-        weight: 10, // โอกาสออกยาก
+        weight: 10,
         activeIncome: 0,
         passiveIncome: 3500,
-        description: "จัดพอร์ตลงทุนระยะยาว เพื่อรับเงินปันผลสม่ำเสมอในทุกไตรมาส",
+        description: "สนับสนุนและผลักดันยอดสายงาน A ให้เติบโตอย่างมั่นคงต่อเนื่อง",
         cost: { heart: 1, time: 2, knowledge: 3 },
         reward: { heart: 3, time: 2, knowledge: 6 },
         favorite: false
@@ -997,7 +1025,6 @@
     let isDrawing = false;
     let soundEnabled = true;
 
-    // สเกลขนาดตัวอักษร
     const FONT_SCALE_MAP = {
       1: { title: "18px", desc: "16px" },
       2: { title: "20px", desc: "17.5px" },
@@ -1011,7 +1038,6 @@
       10: { title: "41px", desc: "30px" }
     };
 
-    // Palette แถบสี 30 เฉดสี
     const COLOR_PALETTES = {
       blue: { id: "blue", name: "1. น้ำเงินรอยัล", hex: "#1D4ED8", gradient: "linear-gradient(90deg, #60A5FA 0%, #1D4ED8 50%, #1E40AF 100%)", badge: "bg-blue-100 text-blue-800 border-blue-200 dark:bg-blue-950/80 dark:text-blue-300 dark:border-blue-800" },
       sky: { id: "sky", name: "2. ฟ้าท้องฟ้า", hex: "#0284C7", gradient: "linear-gradient(90deg, #38BDF8 0%, #0284C7 50%, #0369A1 100%)", badge: "bg-sky-100 text-sky-800 border-sky-200 dark:bg-sky-950/80 dark:text-sky-300 dark:border-sky-800" },
@@ -1028,7 +1054,7 @@
       purple: { id: "purple", name: "11. ม่วงไวโอเล็ต", hex: "#A855F7", gradient: "linear-gradient(90deg, #C084FC 0%, #A855F7 50%, #7E22CE 100%)", badge: "bg-purple-100 text-purple-800 border-purple-200 dark:bg-purple-950/80 dark:text-purple-300 dark:border-purple-800" },
       violet: { id: "violet", name: "12. ม่วงเข้ม", hex: "#7C3AED", gradient: "linear-gradient(90deg, #A78BFA 0%, #7C3AED 50%, #5B21B6 100%)", badge: "bg-violet-100 text-violet-800 border-violet-200 dark:bg-violet-950/80 dark:text-violet-300 dark:border-violet-800" },
       lavender: { id: "lavender", name: "13. ม่วงลาเวนเดอร์", hex: "#8B5CF6", gradient: "linear-gradient(90deg, #DDD6FE 0%, #8B5CF6 50%, #6D28D9 100%)", badge: "bg-purple-100 text-purple-900 border-purple-200 dark:bg-purple-950/80 dark:text-purple-300 dark:border-purple-800" },
-      plum: { id: "plum", name: "14. ม่วงลูกพลัม", hex: "#581C87", gradient: "linear-gradient(90deg, #9333EA 0%, #581C87 50%, #3B0764 100%)", badge: "bg-purple-100 text-purple-900 border-purple-300 dark:bg-purple-950/80 dark:text-purple-200 dark:border-purple-800" },
+      plum: { id: "plum", name: "14. ม่วงลูกพลัม", hex: "#581C87", gradient: "linear-gradient(90deg, #9333EA 0%, #581C87 50%, #3B0764 100%)", badge: "bg-purple-100 text-purple-950 border-purple-300 dark:bg-purple-950/80 dark:text-purple-200 dark:border-purple-800" },
       magenta: { id: "magenta", name: "15. ม่วงมาเจนต้า", hex: "#C026D3", gradient: "linear-gradient(90deg, #F0ABFC 0%, #C026D3 50%, #86198F 100%)", badge: "bg-fuchsia-100 text-fuchsia-900 border-fuchsia-200 dark:bg-fuchsia-950/80 dark:text-fuchsia-300 dark:border-fuchsia-800" },
 
       green: { id: "green", name: "16. เขียวใบไม้", hex: "#22C55E", gradient: "linear-gradient(90deg, #4ADE80 0%, #22C55E 50%, #15803D 100%)", badge: "bg-green-100 text-green-800 border-green-200 dark:bg-green-950/80 dark:text-green-300 dark:border-green-800" },
@@ -1110,7 +1136,6 @@
       } catch (e) {}
     }
 
-    // ฟังก์ชันคำนวณสุ่มแบบถ่วงน้ำหนัก (Weighted Random Algorithm)
     function pickWeightedItem(itemList) {
       if (!itemList || itemList.length === 0) return null;
       const totalWeight = itemList.reduce((sum, item) => sum + (Number(item.weight) > 0 ? Number(item.weight) : 1), 0);
@@ -1148,6 +1173,26 @@
         }
       });
     });
+
+    // สลับช่องเลือกสายงาน A - F ในฟอร์ม
+    function onTargetTypeChange() {
+      const type = document.getElementById('formTargetType').value;
+      const legWrap = document.getElementById('legSelectWrapper');
+      if (type === 'leg') {
+        legWrap.classList.remove('hidden');
+      } else {
+        legWrap.classList.add('hidden');
+      }
+    }
+
+    // แปลงเป้าหมายให้เป็นข้อความเข้าใจง่าย
+    function formatTargetBadge(item) {
+      if (item.targetType === 'leg' || (item.targetLeg && item.targetLeg.trim() !== '')) {
+        const legName = item.targetLeg || 'A';
+        return `<span class="px-2 py-0.5 rounded-lg bg-indigo-50 dark:bg-indigo-950/50 border border-indigo-200 dark:border-indigo-800 text-indigo-600 dark:text-indigo-400 font-bold text-xs"><i class="fa-solid fa-sitemap mr-1"></i>สายงาน ${escapeHTML(legName)}</span>`;
+      }
+      return `<span class="px-2 py-0.5 rounded-lg bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-300 font-bold text-xs"><i class="fa-solid fa-user mr-1"></i>ส่วนตัว</span>`;
+    }
 
     function normalizeCategories(rawCats) {
       if (!Array.isArray(rawCats) || rawCats.length === 0) {
@@ -1497,7 +1542,7 @@
           playSuccessChime();
           launchConfetti();
 
-          // ส่งผลลัพธ์การสุ่มไปยังโปรไฟล์ (profile.html) อัตโนมัติ
+          // ซิงก์ผลลัพธ์ไปยัง Profile พร้อมระบุว่าใช้กับส่วนตัวหรือสายงานใด
           syncDrawnResultToProfile(selectedItem);
 
           displayResultPopup(selectedItem);
@@ -1509,12 +1554,13 @@
       }, 70);
     }
 
-    // ฟังก์ชันเชื่อมต่อไปยังโปรไฟล์
     function syncDrawnResultToProfile(card) {
       if (!card) return;
       try {
         localStorage.setItem('last_drawn_card_result', JSON.stringify({
           title: card.title,
+          targetType: card.targetType || 'personal',
+          targetLeg: card.targetLeg || '',
           activeIncome: card.activeIncome || 0,
           passiveIncome: card.passiveIncome || 0,
           cost: card.cost || {},
@@ -1530,19 +1576,23 @@
       const meta = getCategoryMeta(item.category);
 
       document.getElementById('popupTitle').innerText = item.title;
-      document.getElementById('popupSubtitle').innerText = item.subtitle || 'ข้อมูลทั่วไป';
+
+      // แสดงเป้าหมายของการ์ดใน Pop-up
+      const targetLabel = (item.targetType === 'leg' || item.targetLeg) 
+        ? `🌿 สายงาน ${item.targetLeg || 'A'}` 
+        : '👤 ข้อมูลส่วนตัว';
+      document.getElementById('popupSubtitle').innerText = targetLabel;
+
       document.getElementById('popupDescription').innerText = item.description || 'ไม่มีรายละเอียดเพิ่มเติม';
       document.getElementById('popupCategoryName').innerText = item.category;
       document.getElementById('popupCategoryIcon').className = `fa-solid ${meta.icon} text-[10px]`;
       document.getElementById('popupCategoryBadge').className = `px-3.5 py-1.5 rounded-full text-xs font-bold tracking-wide uppercase border flex items-center gap-1.5 shadow-sm transition-colors ${meta.theme.badge}`;
       document.getElementById('popupIndexBadge').innerText = `#${item.id}`;
 
-      // ราคา: สีแดง ตัวอักษรขนาด 18px
       const priceVal = parseFloat(item.price);
       const priceValueEl = document.getElementById('popupPriceValue');
       priceValueEl.innerText = (!isNaN(priceVal) && priceVal > 0) ? `฿${priceVal.toLocaleString()}` : 'FREE';
 
-      // จัดการ Active Income & Passive Income (ซ่อนเมื่อเป็น 0)
       const activeInc = parseFloat(item.activeIncome) || 0;
       const passiveInc = parseFloat(item.passiveIncome) || 0;
 
@@ -1584,7 +1634,6 @@
       const rewardT = Number(item.reward?.time) || 0;
       const rewardK = Number(item.reward?.knowledge) || 0;
 
-      // ซ่อน/แสดง รายการสิ่งที่ต้องใช้ (ซ่อนถ้าเป็น 0)
       const rowCostH = document.getElementById('cost-row-heart');
       const rowCostT = document.getElementById('cost-row-time');
       const rowCostK = document.getElementById('cost-row-knowledge');
@@ -1620,7 +1669,6 @@
         emptyCostNotice.classList.add('hidden');
       }
 
-      // ซ่อน/แสดง รายการสิ่งที่ได้รับ (ซ่อนถ้าเป็น 0)
       const rowRewH = document.getElementById('reward-row-heart');
       const rowRewT = document.getElementById('reward-row-time');
       const rowRewK = document.getElementById('reward-row-knowledge');
@@ -1639,7 +1687,7 @@
         document.getElementById('popup-reward-time-val').innerText = `+${rewardT}`;
         document.getElementById('popup-reward-time-bar').style.width = `${rewardT * 10}%`;
       } else {
-        rowRewH.classList.add('hidden');
+        rowRewT.classList.add('hidden');
       }
 
       if (rewardK > 0) {
@@ -1725,10 +1773,11 @@
       if (rewardK > 0) rewParts.push(`ความรู้ +${rewardK}`);
       const rewStr = rewParts.length > 0 ? rewParts.join(' | ') : 'ไม่มี';
 
+      const targetLabel = currentItem.targetType === 'leg' ? `สายงาน ${currentItem.targetLeg || 'A'}` : 'ข้อมูลส่วนตัว';
       const activeText = currentItem.activeIncome ? ` | Active: ฿${parseFloat(currentItem.activeIncome).toLocaleString()}` : '';
       const passiveText = currentItem.passiveIncome ? ` | Passive: ฿${parseFloat(currentItem.passiveIncome).toLocaleString()}` : '';
 
-      const shareText = `🎲 สุ่มได้: "${currentItem.title}"\n📂 หมวดหมู่: ${currentItem.category} | ราคา: ${priceText}${activeText}${passiveText}\n\n🔻 สิ่งที่ต้องใช้: ${costStr}\n🔺 สิ่งที่ได้รับ: ${rewStr}\n\n${currentItem.description || ''}`;
+      const shareText = `🎲 สุ่มได้: "${currentItem.title}"\n🎯 ใช้กับ: ${targetLabel}\n📂 หมวดหมู่: ${currentItem.category} | ราคา: ${priceText}${activeText}${passiveText}\n\n🔻 สิ่งที่ต้องใช้: ${costStr}\n🔺 สิ่งที่ได้รับ: ${rewStr}\n\n${currentItem.description || ''}`;
       if (navigator.clipboard) {
         navigator.clipboard.writeText(shareText).then(() => showToast('คัดลอกข้อความแชร์เรียบร้อยแล้ว!', 'success'));
       }
@@ -1743,6 +1792,8 @@
       historyLog.unshift({
         id: item.id,
         title: item.title,
+        targetType: item.targetType || 'personal',
+        targetLeg: item.targetLeg || '',
         category: item.category,
         price: item.price,
         weight: item.weight,
@@ -1773,12 +1824,15 @@
         const meta = getCategoryMeta(h.category);
         const costH = Number(h.cost?.heart) || 0;
         const rewardH = Number(h.reward?.heart) || 0;
+        const targetStr = (h.targetType === 'leg' || h.targetLeg) ? `สายงาน ${h.targetLeg || 'A'}` : 'ส่วนตัว';
+
         return `
           <li class="p-3.5 sm:p-4 hover:bg-slate-50 dark:hover:bg-slate-700/40 transition flex items-center justify-between gap-3">
             <div class="space-y-1 min-w-0">
-              <div class="flex items-center gap-2">
+              <div class="flex items-center gap-2 flex-wrap">
                 <span class="text-xs font-bold text-slate-800 dark:text-white truncate">${escapeHTML(h.title)}</span>
                 <span class="text-[10px] px-2 py-0.5 rounded-full ${meta.theme.badge} font-medium">${escapeHTML(h.category)}</span>
+                <span class="text-[10px] px-2 py-0.5 rounded-full bg-indigo-50 dark:bg-indigo-950/60 text-indigo-600 dark:text-indigo-400 font-bold border border-indigo-200 dark:border-indigo-800">${targetStr}</span>
                 <span class="text-[10px] font-mono font-bold text-red-500">${priceStr}</span>
               </div>
               <div class="flex items-center gap-3 text-[11px] text-slate-400">
@@ -1815,8 +1869,10 @@
       const filterCat = document.getElementById('tableCategoryFilter')?.value || 'ALL';
 
       let filtered = items.filter(item => {
+        const targetStr = (item.targetType === 'leg' || item.targetLeg) ? `สายงาน ${item.targetLeg}` : 'ข้อมูลส่วนตัว';
         const matchesQuery = !query || 
           item.title.toLowerCase().includes(query) || 
+          targetStr.toLowerCase().includes(query) ||
           (item.price && item.price.toString().includes(query)) ||
           (item.activeIncome && item.activeIncome.toString().includes(query)) ||
           (item.passiveIncome && item.passiveIncome.toString().includes(query));
@@ -1824,7 +1880,6 @@
         return matchesQuery && matchesCat;
       });
 
-      // รวมผลรวมน้ำหนักเพื่อคำนวณ % โอกาส
       const totalFilteredWeight = filtered.reduce((sum, it) => sum + (Number(it.weight) > 0 ? Number(it.weight) : 1), 0);
 
       const desktopTbody = document.getElementById('tableBodyDesktop');
@@ -1860,7 +1915,6 @@
 
           const meta = getCategoryMeta(item.category);
           
-          // คำนวณเปอร์เซ็นต์โอกาส
           const w = Number(item.weight) > 0 ? Number(item.weight) : 1;
           const chancePercent = totalFilteredWeight > 0 ? ((w / totalFilteredWeight) * 100).toFixed(1) : 0;
 
@@ -1868,6 +1922,7 @@
             <tr class="hover:bg-slate-50 dark:hover:bg-slate-700/40 transition">
               <td class="py-3 px-4 text-center font-mono text-xs text-slate-400">${idx + 1}</td>
               <td class="py-3 px-4 font-bold text-slate-800 dark:text-white">${escapeHTML(item.title)}</td>
+              <td class="py-3 px-4">${formatTargetBadge(item)}</td>
               <td class="py-3 px-4 font-mono font-bold text-xs text-amber-500">
                 <span>${chancePercent}%</span>
                 <span class="text-[10px] text-slate-400 ml-1">(${w})</span>
@@ -1922,8 +1977,9 @@
             <div class="p-3 bg-white dark:bg-slate-800 rounded-xl space-y-2 border border-slate-100 dark:border-slate-700">
               <div class="flex justify-between items-start">
                 <div>
-                  <div class="flex items-center gap-2">
+                  <div class="flex items-center gap-1.5 flex-wrap">
                     <span class="text-[10px] px-2 py-0.5 rounded-full font-semibold border ${meta.theme.badge}">${escapeHTML(item.category)}</span>
+                    ${formatTargetBadge(item)}
                     <span class="text-[10px] font-mono font-bold text-amber-500 bg-amber-50 dark:bg-amber-950/40 px-2 py-0.5 rounded-md border border-amber-200 dark:border-amber-800">โอกาส: ${chancePercent}%</span>
                   </div>
                   <h4 class="font-bold text-sm text-slate-800 dark:text-white mt-1">${escapeHTML(item.title)}</h4>
@@ -1969,7 +2025,6 @@
         if (!item) return;
         document.getElementById('formItemId').value = item.id;
         document.getElementById('formTitle').value = item.title;
-        document.getElementById('formSubtitle').value = item.subtitle || '';
         document.getElementById('formCategory').value = item.category;
         document.getElementById('formPrice').value = item.price || '';
         document.getElementById('formWeight').value = item.weight || 10;
@@ -1978,6 +2033,12 @@
         document.getElementById('formDescription').value = item.description || '';
         document.getElementById('formImageUrl').value = item.imageUrl || '';
         document.getElementById('formLinkUrl').value = item.linkUrl || '';
+
+        // ตั้งค่าเป้าหมายการใช้งาน (ข้อมูลส่วนตัว / สายงาน A-F)
+        const targetType = item.targetType || (item.targetLeg ? 'leg' : 'personal');
+        document.getElementById('formTargetType').value = targetType;
+        document.getElementById('formTargetLeg').value = item.targetLeg || 'A';
+        onTargetTypeChange();
 
         const costH = Number(item.cost?.heart) || 0;
         const costT = Number(item.cost?.time) || 0;
@@ -1996,6 +2057,9 @@
       } else {
         document.getElementById('formItemId').value = '';
         document.getElementById('formWeight').value = 10;
+        document.getElementById('formTargetType').value = 'personal';
+        document.getElementById('formTargetLeg').value = 'A';
+        onTargetTypeChange();
         randomizeFormSliders();
       }
 
@@ -2028,7 +2092,10 @@
       e.preventDefault();
       const id = document.getElementById('formItemId').value;
       const title = document.getElementById('formTitle').value.trim();
-      const subtitle = document.getElementById('formSubtitle').value.trim();
+      const targetType = document.getElementById('formTargetType').value;
+      const targetLeg = targetType === 'leg' ? document.getElementById('formTargetLeg').value : '';
+      const subtitle = targetType === 'leg' ? `สายงาน ${targetLeg}` : 'ข้อมูลส่วนตัว';
+
       const category = document.getElementById('formCategory').value;
       const price = parseFloat(document.getElementById('formPrice').value) || 0;
       const weight = Math.max(1, parseInt(document.getElementById('formWeight').value, 10) || 10);
@@ -2052,12 +2119,17 @@
       if (id) {
         const index = items.findIndex(i => i.id === id);
         if (index !== -1) {
-          items[index] = { ...items[index], title, subtitle, category, price, weight, activeIncome, passiveIncome, description, imageUrl, linkUrl, cost, reward };
+          items[index] = { 
+            ...items[index], 
+            title, targetType, targetLeg, subtitle, category, price, weight, 
+            activeIncome, passiveIncome, description, imageUrl, linkUrl, cost, reward 
+          };
         }
       } else {
         items.unshift({
           id: `c-${Date.now().toString().slice(-4)}`,
-          title, subtitle, category, price, weight, activeIncome, passiveIncome, description, imageUrl, linkUrl, cost, reward,
+          title, targetType, targetLeg, subtitle, category, price, weight, 
+          activeIncome, passiveIncome, description, imageUrl, linkUrl, cost, reward,
           favorite: false,
           createdAt: Date.now()
         });
@@ -2228,7 +2300,6 @@
       showToast('จัดเรียงลำดับหมวดหมู่เรียบร้อย', 'info');
     }
 
-    // Color Bar Picker Render (30 เฉดสี)
     function renderColorPickerGrid() {
       const grid = document.getElementById('colorPickerGrid');
       grid.innerHTML = Object.values(COLOR_PALETTES).map(palette => `
@@ -2333,7 +2404,6 @@
       });
     }
 
-    // Setting Modal Logic
     function openSettingModal() {
       updateSettingUI();
       document.getElementById('settingModal').classList.remove('hidden');
@@ -2458,7 +2528,7 @@
       if (type === 'success') icon.className = 'fa-solid fa-check text-emerald-400';
       else if (type === 'warning') icon.className = 'fa-solid fa-triangle-exclamation text-amber-400';
       else if (type === 'danger') icon.className = 'fa-solid fa-xmark text-rose-400';
-      else icon.className = 'fa-solid fa-circle-info text-red-400';
+      else icon.className = 'fa-solid fa-circle-info text-blue-400';
 
       toast.classList.remove('translate-x-full', 'opacity-0');
       clearTimeout(window._toastTimeout);
