@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-  <title>Random Data Card Hub (Target Selection Edition)</title>
+  <title>Random Data Card Hub (Book Icon Edition)</title>
 
   <!-- Google Fonts: Prompt & Inter -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -445,7 +445,7 @@
           รายละเอียดเนื้อหา
         </p>
 
-        <!-- CONDITION STATS: สิ่งที่ต้องใช้ (กรอบสีแดง) & สิ่งที่ได้รับ (กรอบสีเขียว) -->
+        <!-- CONDITION STATS: สิ่งที่ต้องใช้ (กรอบสีแดง) & สิ่งที่ได้รับ (กรอบสีเขียว) - เปลี่ยนไอคอนความรู้เป็น fa-book -->
         <div class="pt-2">
           <div class="grid grid-cols-1 sm:grid-cols-2 gap-3.5 sm:gap-4">
             
@@ -486,9 +486,10 @@
                   </div>
                 </div>
 
+                <!-- ความรู้ (ไอคอน fa-book) -->
                 <div id="cost-row-knowledge" class="flex items-center justify-between text-base py-0.5">
                   <span class="flex items-center gap-2 font-medium text-slate-700 dark:text-slate-300">
-                    <i class="fa-solid fa-brain text-slate-500 dark:text-slate-400 text-xl w-6 text-center"></i> ความรู้
+                    <i class="fa-solid fa-book text-slate-500 dark:text-slate-400 text-xl w-6 text-center"></i> ความรู้
                   </span>
                   <div class="flex items-center gap-2">
                     <div class="w-20 sm:w-28 bg-slate-200 dark:bg-slate-700 h-3 rounded-full overflow-hidden">
@@ -542,9 +543,10 @@
                   </div>
                 </div>
 
+                <!-- ความรู้ (ไอคอน fa-book) -->
                 <div id="reward-row-knowledge" class="flex items-center justify-between text-base py-0.5">
                   <span class="flex items-center gap-2 font-medium text-slate-700 dark:text-slate-300">
-                    <i class="fa-solid fa-brain text-slate-500 dark:text-slate-400 text-xl w-6 text-center"></i> ความรู้
+                    <i class="fa-solid fa-book text-slate-500 dark:text-slate-400 text-xl w-6 text-center"></i> ความรู้
                   </span>
                   <div class="flex items-center gap-2">
                     <div class="w-20 sm:w-28 bg-slate-200 dark:bg-slate-700 h-3 rounded-full overflow-hidden">
@@ -579,7 +581,7 @@
 
       </div>
 
-      <!-- Pop-up Footer: Active & Passive Income อยู่ด้านบนของ ราคา (ซ่อนรายการที่เป็น 0) -->
+      <!-- Pop-up Footer: Active & Passive Income อยู่ด้านบนของ ราคา -->
       <div class="pt-3 border-t border-slate-100 dark:border-slate-700 space-y-3">
         
         <div id="popupIncomeContainer" class="hidden grid-cols-1 sm:grid-cols-2 gap-2.5 p-3 rounded-2xl bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700">
@@ -627,7 +629,7 @@
     </div>
   </div>
 
-  <!-- Add / Edit Modal (ปรับเปลี่ยน หัวข้อย่อย -> การ์ดใบนี้ใช้กับ) -->
+  <!-- Add / Edit Modal -->
   <div id="itemModal" class="hidden fixed inset-0 z-50 bg-slate-950/70 backdrop-blur-sm flex items-center justify-center p-3 sm:p-4 overflow-y-auto">
     <div class="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-3xl max-w-xl w-full p-5 sm:p-6 shadow-2xl relative my-auto animate-pop-in">
       <div class="flex items-center justify-between pb-3 border-b border-slate-100 dark:border-slate-700">
@@ -656,7 +658,6 @@
               </select>
             </div>
 
-            <!-- เลือกสายงาน A - F (จะแสดงเมื่อเลือกสายงาน) -->
             <div id="legSelectWrapper" class="hidden">
               <select id="formTargetLeg" class="w-full bg-white dark:bg-slate-900 border border-indigo-300 dark:border-indigo-700 rounded-xl px-3 py-2 text-sm font-bold text-indigo-600 dark:text-indigo-400 focus:ring-2 focus:ring-indigo-500">
                 <option value="A">สายงาน A</option>
@@ -717,7 +718,7 @@
           <textarea id="formDescription" rows="3" placeholder="ระบุรายละเอียดเพิ่มเติม..." class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded-xl px-3.5 py-2.5 text-sm focus:ring-2 focus:ring-red-600"></textarea>
         </div>
 
-        <!-- 0-10 Sliders -->
+        <!-- 0-10 Sliders (เปลี่ยนไอคอนความรู้เป็น fa-book) -->
         <div class="p-3.5 bg-slate-50 dark:bg-slate-900/80 rounded-2xl border border-slate-200 dark:border-slate-700 space-y-3">
           <div class="flex items-center justify-between">
             <span class="text-xs font-bold text-slate-700 dark:text-slate-200 uppercase">เงื่อนไขทรัพยากร (0 - 10)</span>
@@ -735,8 +736,9 @@
               <input type="range" min="0" max="10" value="0" id="sliderCostTime" oninput="updateSliderBadge('CostTime')" class="flex-1 text-slate-500">
               <span id="badgeCostTime" class="w-7 text-center font-mono font-bold text-slate-600 bg-slate-100 dark:bg-slate-800 py-0.5 rounded">0</span>
             </div>
+            <!-- ความรู้ (ไอคอน fa-book) -->
             <div class="flex items-center gap-2 text-xs">
-              <span class="w-20 font-medium text-slate-600 dark:text-slate-300"><i class="fa-solid fa-brain text-slate-600 dark:text-slate-400"></i> ความรู้:</span>
+              <span class="w-20 font-medium text-slate-600 dark:text-slate-300"><i class="fa-solid fa-book text-slate-600 dark:text-slate-400"></i> ความรู้:</span>
               <input type="range" min="0" max="10" value="0" id="sliderCostKnowledge" oninput="updateSliderBadge('CostKnowledge')" class="flex-1 text-slate-600">
               <span id="badgeCostKnowledge" class="w-7 text-center font-mono font-bold text-slate-700 dark:text-slate-300 bg-slate-200 dark:bg-slate-800 py-0.5 rounded">0</span>
             </div>
@@ -753,8 +755,9 @@
               <input type="range" min="0" max="10" value="0" id="sliderRewardTime" oninput="updateSliderBadge('RewardTime')" class="flex-1 text-slate-500">
               <span id="badgeRewardTime" class="w-7 text-center font-mono font-bold text-slate-600 bg-slate-100 dark:bg-slate-800 py-0.5 rounded">+0</span>
             </div>
+            <!-- ความรู้ (ไอคอน fa-book) -->
             <div class="flex items-center gap-2 text-xs">
-              <span class="w-20 font-medium text-slate-600 dark:text-slate-300"><i class="fa-solid fa-brain text-slate-600 dark:text-slate-400"></i> ความรู้:</span>
+              <span class="w-20 font-medium text-slate-600 dark:text-slate-300"><i class="fa-solid fa-book text-slate-600 dark:text-slate-400"></i> ความรู้:</span>
               <input type="range" min="0" max="10" value="0" id="sliderRewardKnowledge" oninput="updateSliderBadge('RewardKnowledge')" class="flex-1 text-slate-600">
               <span id="badgeRewardKnowledge" class="w-7 text-center font-mono font-bold text-slate-700 dark:text-slate-300 bg-slate-200 dark:bg-slate-800 py-0.5 rounded">+0</span>
             </div>
@@ -960,16 +963,15 @@
       { name: "ทั่วไป", icon: "fa-folder", color: "red" },
       { name: "การทำงาน", icon: "fa-briefcase", color: "slate" },
       { name: "สุขภาพ", icon: "fa-heart", color: "crimson" },
-      { name: "ความรู้", icon: "fa-brain", color: "purple" },
+      { name: "ความรู้", icon: "fa-book", color: "purple" },
       { name: "การเงิน", icon: "fa-coins", color: "gold" }
     ];
 
-    // ข้อมูลตัวอย่างเริ่มต้น พร้อมกำหนดเป้าหมาย (target: personal หรือ leg: A-F)
     const DEFAULT_INITIAL_ITEMS = [
       {
         id: "c-1001",
         title: "วางแผนเป้าหมายประจำสัปดาห์",
-        targetType: "personal", // ข้อมูลส่วนตัว
+        targetType: "personal",
         targetLeg: "",
         subtitle: "ข้อมูลส่วนตัว",
         category: "การทำงาน",
@@ -1001,8 +1003,8 @@
       {
         id: "c-1003",
         title: "ขยายเครือข่ายและเปิดตัวสินค้าใหม่",
-        targetType: "leg", // สายงาน
-        targetLeg: "A",   // สายงาน A
+        targetType: "leg",
+        targetLeg: "A",
         subtitle: "สายงาน A",
         category: "การเงิน",
         price: 5000,
@@ -1077,7 +1079,7 @@
     };
 
     const ICON_PRESETS = [
-      "fa-folder", "fa-book", "fa-graduation-cap", "fa-brain", "fa-lightbulb", 
+      "fa-folder", "fa-book", "fa-graduation-cap", "fa-lightbulb", 
       "fa-heart", "fa-dumbbell", "fa-person-running", "fa-apple-whole", "fa-utensils", 
       "fa-burger", "fa-mug-hot", "fa-briefcase", "fa-chart-line", "fa-laptop-code", 
       "fa-coins", "fa-wallet", "fa-piggy-bank", "fa-cart-shopping", "fa-gamepad", 
@@ -1174,7 +1176,6 @@
       });
     });
 
-    // สลับช่องเลือกสายงาน A - F ในฟอร์ม
     function onTargetTypeChange() {
       const type = document.getElementById('formTargetType').value;
       const legWrap = document.getElementById('legSelectWrapper');
@@ -1185,7 +1186,6 @@
       }
     }
 
-    // แปลงเป้าหมายให้เป็นข้อความเข้าใจง่าย
     function formatTargetBadge(item) {
       if (item.targetType === 'leg' || (item.targetLeg && item.targetLeg.trim() !== '')) {
         const legName = item.targetLeg || 'A';
@@ -1542,7 +1542,6 @@
           playSuccessChime();
           launchConfetti();
 
-          // ซิงก์ผลลัพธ์ไปยัง Profile พร้อมระบุว่าใช้กับส่วนตัวหรือสายงานใด
           syncDrawnResultToProfile(selectedItem);
 
           displayResultPopup(selectedItem);
@@ -1577,7 +1576,6 @@
 
       document.getElementById('popupTitle').innerText = item.title;
 
-      // แสดงเป้าหมายของการ์ดใน Pop-up
       const targetLabel = (item.targetType === 'leg' || item.targetLeg) 
         ? `🌿 สายงาน ${item.targetLeg || 'A'}` 
         : '👤 ข้อมูลส่วนตัว';
@@ -1687,7 +1685,7 @@
         document.getElementById('popup-reward-time-val').innerText = `+${rewardT}`;
         document.getElementById('popup-reward-time-bar').style.width = `${rewardT * 10}%`;
       } else {
-        rowRewT.classList.add('hidden');
+        rowRewH.classList.add('hidden');
       }
 
       if (rewardK > 0) {
@@ -1937,14 +1935,14 @@
                 <div class="flex items-center gap-1.5">
                   <span class="text-red-600"><i class="fa-solid fa-heart"></i> ${costH}</span>
                   <span class="text-slate-500"><i class="fa-solid fa-clock"></i> ${costT}</span>
-                  <span class="text-slate-500 dark:text-slate-400"><i class="fa-solid fa-brain"></i> ${costK}</span>
+                  <span class="text-slate-500 dark:text-slate-400"><i class="fa-solid fa-book"></i> ${costK}</span>
                 </div>
               </td>
               <td class="py-3 px-4 text-xs font-mono">
                 <div class="flex items-center gap-1.5">
                   <span class="text-red-600 font-bold"><i class="fa-solid fa-heart"></i> +${rewardH}</span>
                   <span class="text-slate-700 dark:text-slate-300 font-bold"><i class="fa-solid fa-clock"></i> +${rewardT}</span>
-                  <span class="text-slate-700 dark:text-slate-200 font-bold"><i class="fa-solid fa-brain"></i> +${rewardK}</span>
+                  <span class="text-slate-700 dark:text-slate-200 font-bold"><i class="fa-solid fa-book"></i> +${rewardK}</span>
                 </div>
               </td>
               <td class="py-3 px-4 text-right">
@@ -1999,7 +1997,7 @@
                   <span class="text-slate-400 block text-[9px] uppercase font-bold">ใช้:</span>
                   <span class="text-red-600"><i class="fa-solid fa-heart"></i> ${costH}</span> |
                   <span class="text-slate-500"><i class="fa-solid fa-clock"></i> ${costT}</span> |
-                  <span><i class="fa-solid fa-brain"></i> ${costK}</span>
+                  <span><i class="fa-solid fa-book"></i> ${costK}</span>
                 </div>
                 <div>
                   <span class="text-slate-400 block text-[9px] uppercase font-bold">ได้:</span>
@@ -2034,7 +2032,6 @@
         document.getElementById('formImageUrl').value = item.imageUrl || '';
         document.getElementById('formLinkUrl').value = item.linkUrl || '';
 
-        // ตั้งค่าเป้าหมายการใช้งาน (ข้อมูลส่วนตัว / สายงาน A-F)
         const targetType = item.targetType || (item.targetLeg ? 'leg' : 'personal');
         document.getElementById('formTargetType').value = targetType;
         document.getElementById('formTargetLeg').value = item.targetLeg || 'A';
@@ -2503,10 +2500,10 @@
     }
 
     function initTheme() {
-      const savedTheme = localStorage.getItem('rnd_theme_dark');
-      const isDark = (savedTheme === null || savedTheme === 'true');
+      const isDark = localStorage.getItem('rnd_theme_dark');
+      const isDarkVal = (isDark === null || isDark === 'true');
       
-      if (isDark) {
+      if (isDarkVal) {
         document.documentElement.classList.add('dark');
       } else {
         document.documentElement.classList.remove('dark');
