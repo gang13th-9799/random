@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-  <title>โปรไฟล์ & สถานะในเกม (Profile Hub - Admin Protected)</title>
+  <title>โปรไฟล์ & สถานะในเกม (Profile Hub - Book Icon Edition)</title>
 
   <!-- Google Fonts: Prompt & Inter -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -147,7 +147,7 @@
   <header class="sticky top-0 z-40 bg-white/95 dark:bg-[#0B132B]/95 backdrop-blur-md border-b border-slate-200/80 dark:border-white/10 shadow-sm transition-colors">
     <div class="max-w-6xl mx-auto px-3 sm:px-4 h-16 sm:h-20 flex items-center justify-between gap-2">
       
-      <!-- Brand & Back Button -->
+      <!-- Brand & ปุ่มย้อนกลับ -->
       <div class="flex items-center space-x-2.5 sm:space-x-3.5 min-w-0">
         <a href="index.html" class="w-10 h-10 sm:w-12 sm:h-12 rounded-2xl flex items-center justify-center text-white shadow-md btn-gradient-red hover:scale-105 active:scale-95 transition-all shrink-0" title="กลับหน้าสุ่มการ์ด">
           <i class="fa-solid fa-arrow-left text-base sm:text-lg"></i>
@@ -163,7 +163,7 @@
         </div>
       </div>
 
-      <!-- Action Controls & Auth Button -->
+      <!-- Action Controls -->
       <div class="flex items-center space-x-1.5 sm:space-x-2 shrink-0">
         <div id="authHeaderBox">
           <button type="button" onclick="openLoginModal()" class="px-3 py-2 rounded-xl text-xs sm:text-sm font-black transition-all flex items-center gap-1.5 bg-blue-600 hover:bg-blue-700 text-white shadow-md">
@@ -190,7 +190,7 @@
     </div>
   </header>
 
-  <!-- NAVIGATION TABS (แถบแท็บด้านบน: แท็บ Admin จะถูกซ่อนเป็นค่าเริ่มต้น และแสดงเมื่อ Admin Login เท่านั้น) -->
+  <!-- NAVIGATION TABS -->
   <div class="max-w-6xl mx-auto px-3 sm:px-6 pt-4">
     <div class="flex items-center gap-2 border-b border-slate-200 dark:border-white/10 pb-2">
       <button type="button" id="tabMainProfileBtn" onclick="switchMainTab('profile')" class="px-4 py-2 rounded-2xl font-black text-sm transition-all bg-red-600 text-white shadow-md flex items-center gap-2">
@@ -198,7 +198,7 @@
         <span>ข้อมูลโปรไฟล์ของฉัน</span>
       </button>
 
-      <!-- แท็บ Admin (ซ่อนโดยเด็ดขาดจนกว่า Admin จะ Login สำเร็จ) -->
+      <!-- แท็บ Admin (จะแสดงเมื่อล็อกอินเป็น Admin) -->
       <button type="button" id="tabAdminPanelBtn" onclick="switchMainTab('admin')" class="hidden px-4 py-2 rounded-2xl font-black text-sm transition-all bg-slate-200 dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:text-amber-500 flex items-center gap-2">
         <i class="fa-solid fa-shield-halved text-amber-500"></i>
         <span>👑 แผงควบคุม Admin (<span id="userTotalCountBadge">0</span>)</span>
@@ -206,12 +206,10 @@
     </div>
   </div>
 
-  <!-- Main Content Container -->
+  <!-- Main Container -->
   <main class="flex-1 max-w-6xl w-full mx-auto px-3 sm:px-6 py-4 space-y-6">
 
-    <!-- ======================================================== -->
-    <!-- VIEW 1: หน้าโปรไฟล์หลัก (PROFILE VIEW) -->
-    <!-- ======================================================== -->
+    <!-- VIEW 1: หน้าโปรไฟล์หลัก -->
     <div id="viewMainProfile" class="space-y-6">
       
       <!-- KPI DASHBOARD SUMMARY -->
@@ -328,7 +326,7 @@
               </div>
             </div>
 
-            <!-- ทรัพยากร 3 ด้าน -->
+            <!-- ทรัพยากร 3 ด้าน (เปลี่ยนไอคอนความรู้เป็นรูปสมุด fa-book) -->
             <div class="p-4 sm:p-6 rounded-3xl bg-slate-50/90 dark:bg-slate-900/50 border border-slate-200/80 dark:border-white/5 space-y-4">
               <div class="flex items-center justify-between border-b border-slate-200/60 dark:border-white/5 pb-2.5">
                 <span class="text-sm sm:text-base font-black uppercase tracking-wider text-slate-700 dark:text-slate-200 flex items-center gap-2">
@@ -375,11 +373,11 @@
                   <input type="range" min="0" max="10" value="5" id="sliderTime" oninput="updateStatBadge('Time', this.value)" class="w-full text-blue-500">
                 </div>
 
-                <!-- 3. ทักษะ (ความรู้) -->
+                <!-- 3. ทักษะ (ความรู้ - เปลี่ยนไอคอนเป็นรูปสมุด fa-book) -->
                 <div class="p-4 sm:p-5 rounded-2xl bg-white dark:bg-slate-800/90 border-2 border-purple-500/30 dark:border-purple-500/40 shadow-sm space-y-3.5">
                   <div class="flex justify-between items-center">
                     <span class="text-sm sm:text-base font-extrabold text-purple-500 flex items-center gap-2">
-                      <i class="fa-solid fa-brain text-2xl"></i>
+                      <i class="fa-solid fa-book text-2xl"></i>
                       <span>ทักษะ (ความรู้)</span>
                     </span>
                     <div class="flex items-baseline gap-1 font-mono">
@@ -729,9 +727,7 @@
       </form>
     </div>
 
-    <!-- ======================================================== -->
-    <!-- VIEW 2: แผงควบคุม ADMIN (PROTECTED VIEW) -->
-    <!-- ======================================================== -->
+    <!-- VIEW 2: แผงควบคุม ADMIN (PROTECTED) -->
     <div id="viewAdminPanel" class="hidden space-y-5 animate-pop-in">
       <div class="glass-card rounded-3xl p-5 sm:p-7 shadow-sm space-y-4">
         <div class="flex flex-wrap items-center justify-between pb-3 border-b border-slate-100 dark:border-white/5 gap-3">
@@ -875,7 +871,7 @@
     </div>
   </div>
 
-  <!-- MODAL: จัดการฐานข้อมูลอาชีพ & ค่าพลัง -->
+  <!-- MODAL: จัดการฐานข้อมูลอาชีพ & ค่าพลัง (เปลี่ยนไอคอนเป็นรูปสมุด fa-book) -->
   <div id="careerManagerModal" class="hidden fixed inset-0 z-50 bg-slate-950/70 backdrop-blur-sm flex items-center justify-center p-3 sm:p-4 overflow-y-auto">
     <div class="bg-white dark:bg-[#111C44] rounded-3xl max-w-lg w-full p-5 sm:p-6 shadow-2xl border border-slate-200 dark:border-white/10 space-y-4 max-h-[92vh] flex flex-col my-auto">
       <div class="flex items-center justify-between pb-3 border-b border-slate-100 dark:border-white/10">
@@ -920,6 +916,7 @@
           </div>
         </div>
 
+        <!-- กำหนดค่าพลังประจำอาชีพ 3 ด้าน -->
         <div class="p-3 bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-white/10 space-y-2.5">
           <span class="text-[11px] font-bold uppercase text-slate-500 block">4. ค่าพลังทรัพยากรประจำอาชีพ (สเกล 0 - 10)</span>
           
@@ -936,7 +933,7 @@
           </div>
 
           <div class="flex items-center gap-2 text-xs">
-            <span class="w-24 font-bold text-purple-500 flex items-center gap-1.5"><i class="fa-solid fa-brain"></i> ความรู้:</span>
+            <span class="w-24 font-bold text-purple-500 flex items-center gap-1.5"><i class="fa-solid fa-book"></i> ความรู้:</span>
             <input type="range" min="0" max="10" value="5" id="crudCareerKnowledge" oninput="document.getElementById('crudKnowledgeBadge').innerText = this.value" class="flex-1 text-purple-500">
             <span id="crudKnowledgeBadge" class="w-7 text-center font-mono font-black text-purple-500 bg-purple-50 dark:bg-purple-950/50 py-0.5 rounded">5</span>
           </div>
@@ -1031,7 +1028,6 @@
       } catch (e) {}
     }
 
-    // จัดการ Session และแท็บ Admin ให้แสดงเฉพาะเมื่อเป็น Admin
     function initAccountSession() {
       try {
         const savedSession = localStorage.getItem('game_auth_session');
@@ -1059,7 +1055,6 @@
       const badge = document.getElementById('userAccountBadge');
       const adminTabBtn = document.getElementById('tabAdminPanelBtn');
 
-      // ตรวจสอบความถูกต้องว่าเป็น Admin ตัวจริงหรือไม่
       const isAdminLoggedIn = (currentAccount && currentAccount.type === 'admin' && currentAccount.id === 'admin_master_account');
 
       if (!currentAccount || currentAccount.id === 'guest_default') {
@@ -1088,7 +1083,6 @@
           </button>
         `;
 
-        // แสดงแท็บแผงควบคุม Admin ก็ต่อเมื่อ Admin ได้ทำการ login สำเร็จแล้วเท่านั้น
         if (isAdminLoggedIn) {
           if (adminTabBtn) adminTabBtn.classList.remove('hidden');
         } else {
@@ -1098,7 +1092,6 @@
       }
     }
 
-    // สลับแท็บหน้าโปรไฟล์ / แผงแอดมิน (ป้องกันการเข้าถึงหากไม่ได้เป็น Admin)
     function switchMainTab(tab) {
       const vProfile = document.getElementById('viewMainProfile');
       const vAdmin = document.getElementById('viewAdminPanel');
@@ -1219,7 +1212,6 @@
       showToast(`เข้าสู่ระบบด้วย Google (${cleanEmail}) สำเร็จ 🌐`, 'success');
     }
 
-    // เมื่อล็อกอินด้วย Admin สำเร็จ จึงจะเปิดแท็บแผงควบคุม Admin
     function handleAdminLogin(e) {
       e.preventDefault();
       const u = document.getElementById('adminUserInput').value.trim();
@@ -1236,7 +1228,6 @@
         closeLoginModal();
         loadProfileData();
         showToast("เข้าสู่ระบบ Admin สำเร็จเรียบร้อย ปลดล็อคแผงควบคุมแล้ว 🛡️", "success");
-        // สลับไปยังแท็บแผงควบคุม Admin ทันทีหลังล็อกอินสำเร็จ
         switchMainTab('admin');
       } else {
         showToast("ชื่อผู้ใช้หรือรหัสผ่านไม่ถูกต้อง", "warning");
@@ -1666,7 +1657,7 @@
               <span>|</span>
               <span class="text-red-500"><i class="fa-solid fa-heart"></i> ${c.heart ?? 5}</span>
               <span class="text-blue-500"><i class="fa-solid fa-clock"></i> ${c.time ?? 5}</span>
-              <span class="text-purple-500"><i class="fa-solid fa-brain"></i> ${c.knowledge ?? 5}</span>
+              <span class="text-purple-500"><i class="fa-solid fa-book"></i> ${c.knowledge ?? 5}</span>
             </div>
           </div>
           <div class="flex items-center gap-1 shrink-0">
