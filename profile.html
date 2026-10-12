@@ -70,21 +70,29 @@
       background: linear-gradient(135deg, #F87171 0%, #EF4444 50%, #DC2626 100%);
     }
 
-    /* สถานะเมื่อล็อคฟอร์ม */
-    .form-locked input, .form-locked select, .form-locked textarea {
+    /* สไตล์เมื่อฟอร์มถูกล็อค */
+    fieldset:disabled {
+      opacity: 0.85;
+    }
+    fieldset:disabled input,
+    fieldset:disabled select,
+    fieldset:disabled textarea {
       cursor: not-allowed !important;
-      opacity: 0.75 !important;
-      background-color: rgba(241, 245, 249, 0.85) !important;
-      border-color: rgba(203, 213, 225, 0.7) !important;
-      pointer-events: none !important;
+      background-color: rgba(241, 245, 249, 0.8) !important;
+      border-color: rgba(203, 213, 225, 0.6) !important;
     }
-    .dark .form-locked input, .dark .form-locked select, .dark .form-locked textarea {
-      background-color: rgba(15, 23, 42, 0.6) !important;
-      border-color: rgba(255, 255, 255, 0.06) !important;
+    .dark fieldset:disabled input,
+    .dark fieldset:disabled select,
+    .dark fieldset:disabled textarea {
+      background-color: rgba(15, 23, 42, 0.5) !important;
+      border-color: rgba(255, 255, 255, 0.05) !important;
     }
-    .form-locked input[type="range"] {
+    fieldset:disabled input[type=range] {
       pointer-events: none !important;
-      opacity: 0.6 !important;
+      opacity: 0.6;
+    }
+    fieldset:disabled label {
+      cursor: not-allowed !important;
     }
 
     /* Range Slider */
@@ -115,56 +123,44 @@
     .dark input[type=range]::-webkit-slider-runnable-track {
       background: #1E293B;
     }
-
-    /* แถบสีเขียวทั้งแถวเมื่อกด Checkbox */
-    .checkbox-row.active-checked {
-      background-color: #ECFDF5 !important;
-      border-color: #10B981 !important;
-      color: #065F46 !important;
-    }
-    .dark .checkbox-row.active-checked {
-      background-color: rgba(6, 78, 59, 0.45) !important;
-      border-color: #059669 !important;
-      color: #A7F3D0 !important;
-    }
   </style>
 </head>
 <body class="text-slate-800 dark:text-slate-100 min-h-screen flex flex-col font-sans pb-28 md:pb-16 transition-colors duration-200">
 
-  <!-- Top Navigation Bar -->
-  <header class="sticky top-0 z-40 bg-white/90 dark:bg-[#0B132B]/90 backdrop-blur-md border-b border-slate-200/80 dark:border-white/10 shadow-sm transition-colors">
-    <div class="max-w-6xl mx-auto px-4 h-16 flex items-center justify-between">
+  <!-- Top Navigation Bar (ปรับให้พอดี ไม่ล้นจอในมือถือ) -->
+  <header class="sticky top-0 z-40 bg-white/95 dark:bg-[#0B132B]/95 backdrop-blur-md border-b border-slate-200/80 dark:border-white/10 shadow-sm transition-colors">
+    <div class="max-w-6xl mx-auto px-3 sm:px-4 h-16 flex items-center justify-between gap-2">
       
       <!-- Brand & Link Back -->
-      <div class="flex items-center space-x-3">
-        <a href="index.html" class="w-10 h-10 rounded-2xl flex items-center justify-center text-white shadow-md btn-gradient-red hover:scale-105 active:scale-95 transition-all" title="กลับหน้าสุ่มการ์ด">
+      <div class="flex items-center space-x-2.5 sm:space-x-3 min-w-0">
+        <a href="index.html" class="w-9 h-9 sm:w-10 sm:h-10 rounded-2xl flex items-center justify-center text-white shadow-md btn-gradient-red hover:scale-105 active:scale-95 transition-all shrink-0" title="กลับหน้าสุ่มการ์ด">
           <i class="fa-solid fa-arrow-left text-sm"></i>
         </a>
-        <div>
-          <div class="flex items-center gap-2">
-            <span class="font-extrabold text-base sm:text-lg text-slate-900 dark:text-white tracking-tight">ข้อมูลโปรไฟล์เกม</span>
-            <span class="text-[10px] font-black px-2 py-0.5 rounded-full bg-red-500 text-white shadow-sm uppercase tracking-wider">LIVE</span>
+        <div class="min-w-0">
+          <div class="flex items-center gap-1.5 truncate">
+            <span class="font-extrabold text-sm sm:text-lg text-slate-900 dark:text-white tracking-tight truncate">ข้อมูลโปรไฟล์เกม</span>
+            <span class="text-[9px] font-black px-1.5 py-0.5 rounded-full bg-red-500 text-white shadow-sm uppercase shrink-0">LIVE</span>
           </div>
-          <p id="cloudCareersStatus" class="text-[11px] text-slate-400 font-medium flex items-center gap-1">
-            <i class="fa-solid fa-circle text-[7px] text-emerald-500"></i> ชีตออนไลน์พร้อมใช้งาน
+          <p id="cloudCareersStatus" class="text-[10px] sm:text-[11px] text-slate-400 font-medium flex items-center gap-1 truncate">
+            <i class="fa-solid fa-circle text-[6px] text-emerald-500"></i> พร้อมใช้งาน
           </p>
         </div>
       </div>
 
       <!-- Action Controls -->
-      <div class="flex items-center space-x-2">
-        <button type="button" onclick="fetchCareersFromCloud()" title="ดึงข้อมูลอาชีพจาก Google Sheets" class="px-3 py-2 rounded-xl text-xs font-bold transition-all flex items-center gap-1.5 border border-slate-200 dark:border-white/10 bg-white dark:bg-slate-800 shadow-sm hover:border-slate-300 dark:hover:border-white/20">
+      <div class="flex items-center space-x-1.5 sm:space-x-2 shrink-0">
+        <button type="button" onclick="fetchCareersFromCloud()" title="ดึงข้อมูลอาชีพจาก Google Sheets" class="px-2.5 sm:px-3 py-2 rounded-xl text-xs font-bold transition-all flex items-center gap-1.5 border border-slate-200 dark:border-white/10 bg-white dark:bg-slate-800 shadow-sm hover:border-slate-300">
           <i id="syncCareersIcon" class="fa-solid fa-rotate text-xs text-amber-500"></i>
-          <span class="hidden sm:inline">Sync อาชีพ</span>
+          <span class="hidden md:inline">Sync อาชีพ</span>
         </button>
 
-        <!-- ปุ่มล็อค / ปลดล็อค แก้ไข -->
-        <button type="button" id="toggleEditBtn" onclick="toggleEditMode()" class="px-3.5 py-2 rounded-xl text-xs font-bold transition-all flex items-center gap-1.5 border border-slate-200 dark:border-white/10 bg-white dark:bg-slate-800 shadow-sm hover:border-slate-300 dark:hover:border-white/20">
+        <!-- ปุ่มล็อค / ปลดล็อค แก้ไข ด้านบน -->
+        <button type="button" id="toggleEditBtn" onclick="toggleEditMode()" class="px-2.5 sm:px-3.5 py-2 rounded-xl text-xs font-bold transition-all flex items-center gap-1.5 border border-slate-200 dark:border-white/10 bg-white dark:bg-slate-800 shadow-sm">
           <i id="editIcon" class="fa-solid fa-lock text-slate-400"></i>
           <span id="editText">ปลดล็อคแก้ไข</span>
         </button>
 
-        <button type="button" onclick="toggleTheme()" class="w-9 h-9 rounded-xl border border-slate-200 dark:border-white/10 bg-white dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:text-amber-500 flex items-center justify-center shadow-sm transition">
+        <button type="button" onclick="toggleTheme()" class="w-8 h-8 sm:w-9 sm:h-9 rounded-xl border border-slate-200 dark:border-white/10 bg-white dark:bg-slate-800 text-slate-600 dark:text-slate-300 flex items-center justify-center shadow-sm">
           <i id="themeIcon" class="fa-solid fa-moon text-xs"></i>
         </button>
       </div>
@@ -208,331 +204,482 @@
       </div>
     </section>
 
-    <!-- FORM WRAPPER (ใส่คลาส form-locked เป็นค่าเริ่มต้น) -->
-    <form id="profileForm" onsubmit="handleProfileSubmit(event)" class="space-y-5 sm:space-y-6 form-locked">
+    <!-- FORM WRAPPER -->
+    <form id="profileForm" onsubmit="handleProfileSubmit(event)">
 
-      <!-- SECTION 1: ข้อมูลส่วนบุคคล -->
-      <div class="glass-card rounded-3xl p-5 sm:p-7 shadow-sm space-y-4">
-        <div class="flex items-center gap-3 pb-3 border-b border-slate-100 dark:border-white/5">
-          <div class="w-9 h-9 rounded-xl bg-gradient-to-br from-red-500 to-rose-600 text-white flex items-center justify-center text-sm shadow-sm">
-            <i class="fa-solid fa-id-badge"></i>
-          </div>
-          <div>
-            <h2 class="text-base font-bold text-slate-900 dark:text-white">1. ข้อมูลส่วนบุคคล (General Profile)</h2>
-            <p class="text-[11px] text-slate-400">กรอกชื่อ-นามสกุล (จำเป็น) ส่วนเบอร์โทรและอีเมลไม่จำเป็นต้องกรอกก็ได้</p>
-          </div>
-        </div>
+      <!-- FIELDSET ควบคุมการล็อคฟอร์ม Native 100% (เริ่มต้นถูก disabled) -->
+      <fieldset id="profileFieldset" disabled class="space-y-5 sm:space-y-6">
 
-        <div class="grid grid-cols-1 sm:grid-cols-3 gap-3.5 sm:gap-4">
-          <div>
-            <label class="block text-xs font-bold text-slate-600 dark:text-slate-300 mb-1.5">ชื่อ - นามสกุล <span class="text-red-500">*</span></label>
-            <div class="relative">
-              <input type="text" id="userFullName" required placeholder="เช่น สมชาย สิริลาภอนันต์" class="w-full bg-slate-50 dark:bg-slate-900/60 border border-slate-200 dark:border-white/10 rounded-xl pl-9 pr-3 py-2.5 text-sm font-medium focus:ring-2 focus:ring-red-500 transition">
-              <i class="fa-solid fa-user absolute left-3 top-3 text-slate-400 text-xs"></i>
-            </div>
-          </div>
-          <div>
-            <label class="block text-xs font-bold text-slate-600 dark:text-slate-300 mb-1.5">เบอร์โทรศัพท์ <span class="text-slate-400 font-normal text-[11px]">(ไม่บังคับ)</span></label>
-            <div class="relative">
-              <input type="tel" id="userPhone" placeholder="08x-xxx-xxxx" class="w-full bg-slate-50 dark:bg-slate-900/60 border border-slate-200 dark:border-white/10 rounded-xl pl-9 pr-3 py-2.5 text-sm font-mono font-medium focus:ring-2 focus:ring-red-500 transition">
-              <i class="fa-solid fa-phone absolute left-3 top-3 text-slate-400 text-xs"></i>
-            </div>
-          </div>
-          <div>
-            <label class="block text-xs font-bold text-slate-600 dark:text-slate-300 mb-1.5">อีเมล (Email) <span class="text-slate-400 font-normal text-[11px]">(ไม่บังคับ)</span></label>
-            <div class="relative">
-              <input type="email" id="userEmail" placeholder="example@email.com" class="w-full bg-slate-50 dark:bg-slate-900/60 border border-slate-200 dark:border-white/10 rounded-xl pl-9 pr-3 py-2.5 text-sm font-medium focus:ring-2 focus:ring-red-500 transition">
-              <i class="fa-solid fa-envelope absolute left-3 top-3 text-slate-400 text-xs"></i>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- SECTION 2: อาชีพในเกม & พลังทรัพยากร -->
-      <div class="glass-card rounded-3xl p-5 sm:p-7 shadow-sm space-y-4">
-        <div class="flex flex-wrap items-center justify-between pb-3 border-b border-slate-100 dark:border-white/5 gap-2">
-          <div class="flex items-center gap-3">
-            <div class="w-9 h-9 rounded-xl bg-gradient-to-br from-amber-500 to-orange-600 text-white flex items-center justify-center text-sm shadow-sm">
-              <i class="fa-solid fa-briefcase"></i>
+        <!-- SECTION 1: ข้อมูลส่วนบุคคล (จำเป็นเฉพาะชื่อ) -->
+        <div class="glass-card rounded-3xl p-5 sm:p-7 shadow-sm space-y-4">
+          <div class="flex items-center gap-3 pb-3 border-b border-slate-100 dark:border-white/5">
+            <div class="w-9 h-9 rounded-xl bg-gradient-to-br from-red-500 to-rose-600 text-white flex items-center justify-center text-sm shadow-sm">
+              <i class="fa-solid fa-id-badge"></i>
             </div>
             <div>
-              <h2 class="text-base font-bold text-slate-900 dark:text-white">2. อาชีพในเกม & พลังทรัพยากร (Game Careers)</h2>
-              <p class="text-[11px] text-slate-400">เลือกอาชีพ (จำเป็น) หรือจัดการฐานข้อมูลอาชีพออนไลน์</p>
+              <h2 class="text-base font-bold text-slate-900 dark:text-white">1. ข้อมูลส่วนบุคคล (General Profile)</h2>
+              <p class="text-[11px] text-slate-400">ชื่อ-นามสกุล (จำเป็น) ส่วนเบอร์โทรและอีเมลไม่จำเป็นต้องกรอกก็ได้</p>
             </div>
           </div>
-          
-          <button type="button" id="openCareerManagerBtn" onclick="openCareerManagerModal()" class="px-3.5 py-1.5 rounded-xl bg-amber-500/10 hover:bg-amber-500/20 text-amber-600 dark:text-amber-400 border border-amber-500/30 text-xs font-bold transition flex items-center gap-1.5 shadow-sm">
-            <i class="fa-solid fa-sliders"></i>
-            <span>จัดการอาชีพ (เพิ่ม/ลบ/แก้ไข)</span>
-          </button>
-        </div>
 
-        <div class="grid grid-cols-1 sm:grid-cols-3 gap-3.5 sm:gap-4">
-          <div>
-            <label class="block text-xs font-bold text-slate-600 dark:text-slate-300 mb-1.5">อาชีพในเกม <span class="text-red-500">*</span></label>
-            <select id="gameCareerSelect" required onchange="onCareerSelected(this.value)" class="w-full bg-slate-50 dark:bg-slate-900/60 border border-slate-200 dark:border-white/10 rounded-xl px-3 py-2.5 text-sm font-bold text-slate-800 dark:text-white focus:ring-2 focus:ring-red-500 transition"></select>
-          </div>
-          <div>
-            <label class="block text-xs font-bold text-slate-600 dark:text-slate-300 mb-1.5">เงินเดือน (Salary / เดือน)</label>
-            <div class="relative">
-              <input type="number" id="careerSalary" placeholder="0" class="w-full bg-slate-50 dark:bg-slate-900/60 border border-slate-200 dark:border-white/10 rounded-xl pl-8 pr-3 py-2.5 text-sm font-mono font-bold text-green-500 focus:ring-2 focus:ring-green-500 transition">
-              <span class="absolute left-3 top-2.5 text-slate-400 font-bold text-xs">฿</span>
-            </div>
-          </div>
-          <div>
-            <label class="block text-xs font-bold text-slate-600 dark:text-slate-300 mb-1.5">รายจ่ายประจำ (Expenses / เดือน)</label>
-            <div class="relative">
-              <input type="number" id="careerExpense" placeholder="0" class="w-full bg-slate-50 dark:bg-slate-900/60 border border-slate-200 dark:border-white/10 rounded-xl pl-8 pr-3 py-2.5 text-sm font-mono font-bold text-red-500 focus:ring-2 focus:ring-red-500 transition">
-              <span class="absolute left-3 top-2.5 text-slate-400 font-bold text-xs">฿</span>
-            </div>
-          </div>
-        </div>
-
-        <!-- ทรัพยากร 3 ด้าน -->
-        <div class="p-4 sm:p-6 rounded-3xl bg-slate-50/90 dark:bg-slate-900/50 border border-slate-200/80 dark:border-white/5 space-y-4">
-          <div class="flex items-center justify-between border-b border-slate-200/60 dark:border-white/5 pb-2.5">
-            <span class="text-xs sm:text-sm font-black uppercase tracking-wider text-slate-700 dark:text-slate-200 flex items-center gap-2">
-              <i class="fa-solid fa-gauge-high text-amber-500"></i>
-              <span>ค่าพลังทรัพยากรปัจจุบัน (สเกล 0 - 10)</span>
-            </span>
-            <span class="text-[11px] font-semibold text-slate-400">อ้างอิงสเตตัสในเกม</span>
-          </div>
-
-          <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-5">
-            <!-- 1. สุขภาพ (หัวใจ) -->
-            <div class="p-4 sm:p-5 rounded-2xl bg-white dark:bg-slate-800/90 border-2 border-red-500/30 dark:border-red-500/40 shadow-sm space-y-3.5">
-              <div class="flex justify-between items-center">
-                <span class="text-sm font-extrabold text-red-500 flex items-center gap-2">
-                  <i class="fa-solid fa-heart text-xl animate-pulse"></i>
-                  <span>สุขภาพ (หัวใจ)</span>
-                </span>
-                <div class="flex items-baseline gap-1 font-mono">
-                  <span id="statHeartVal" class="text-2xl sm:text-3xl font-black text-red-600 dark:text-red-400 leading-none">5</span>
-                  <span class="text-xs text-slate-400 font-bold">/10</span>
-                </div>
+          <div class="grid grid-cols-1 sm:grid-cols-3 gap-3.5 sm:gap-4">
+            <div>
+              <label class="block text-xs font-bold text-slate-600 dark:text-slate-300 mb-1.5">ชื่อ - นามสกุล <span class="text-red-500">*</span></label>
+              <div class="relative">
+                <input type="text" id="userFullName" required placeholder="เช่น สมชาย สิริลาภอนันต์" class="w-full bg-slate-50 dark:bg-slate-900/60 border border-slate-200 dark:border-white/10 rounded-xl pl-9 pr-3 py-2.5 text-sm font-medium focus:ring-2 focus:ring-red-500 transition">
+                <i class="fa-solid fa-user absolute left-3 top-3 text-slate-400 text-xs"></i>
               </div>
-              <div class="w-full bg-slate-100 dark:bg-slate-700/80 h-3.5 rounded-full overflow-hidden p-0.5 border border-slate-200 dark:border-slate-600/50">
-                <div id="barHeart" class="h-full rounded-full bg-gradient-to-r from-red-500 to-rose-600 shadow-sm transition-all duration-300" style="width: 50%;"></div>
-              </div>
-              <input type="range" min="0" max="10" value="5" id="sliderHeart" oninput="updateStatBadge('Heart', this.value)" class="w-full text-red-500">
-            </div>
-
-            <!-- 2. เวลาว่าง (เวลา) -->
-            <div class="p-4 sm:p-5 rounded-2xl bg-white dark:bg-slate-800/90 border-2 border-blue-500/30 dark:border-blue-500/40 shadow-sm space-y-3.5">
-              <div class="flex justify-between items-center">
-                <span class="text-sm font-extrabold text-blue-500 flex items-center gap-2">
-                  <i class="fa-solid fa-clock text-xl"></i>
-                  <span>เวลาว่าง (เวลา)</span>
-                </span>
-                <div class="flex items-baseline gap-1 font-mono">
-                  <span id="statTimeVal" class="text-2xl sm:text-3xl font-black text-blue-600 dark:text-blue-400 leading-none">5</span>
-                  <span class="text-xs text-slate-400 font-bold">/10</span>
-                </div>
-              </div>
-              <div class="w-full bg-slate-100 dark:bg-slate-700/80 h-3.5 rounded-full overflow-hidden p-0.5 border border-slate-200 dark:border-slate-600/50">
-                <div id="barTime" class="h-full rounded-full bg-gradient-to-r from-sky-400 to-blue-600 shadow-sm transition-all duration-300" style="width: 50%;"></div>
-              </div>
-              <input type="range" min="0" max="10" value="5" id="sliderTime" oninput="updateStatBadge('Time', this.value)" class="w-full text-blue-500">
-            </div>
-
-            <!-- 3. ทักษะ (ความรู้) -->
-            <div class="p-4 sm:p-5 rounded-2xl bg-white dark:bg-slate-800/90 border-2 border-purple-500/30 dark:border-purple-500/40 shadow-sm space-y-3.5">
-              <div class="flex justify-between items-center">
-                <span class="text-sm font-extrabold text-purple-500 flex items-center gap-2">
-                  <i class="fa-solid fa-brain text-xl"></i>
-                  <span>ทักษะ (ความรู้)</span>
-                </span>
-                <div class="flex items-baseline gap-1 font-mono">
-                  <span id="statKnowledgeVal" class="text-2xl sm:text-3xl font-black text-purple-600 dark:text-purple-400 leading-none">5</span>
-                  <span class="text-xs text-slate-400 font-bold">/10</span>
-                </div>
-              </div>
-              <div class="w-full bg-slate-100 dark:bg-slate-700/80 h-3.5 rounded-full overflow-hidden p-0.5 border border-slate-200 dark:border-slate-600/50">
-                <div id="barKnowledge" class="h-full rounded-full bg-gradient-to-r from-purple-500 to-indigo-600 shadow-sm transition-all duration-300" style="width: 50%;"></div>
-              </div>
-              <input type="range" min="0" max="10" value="5" id="sliderKnowledge" oninput="updateStatBadge('Knowledge', this.value)" class="w-full text-purple-500">
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- SECTION 3: เช็คลิสต์ คุณสมบัติ (ไม่มีวันที่ & แถบสีเขียวทั้งแถว) -->
-      <div class="glass-card rounded-3xl p-5 sm:p-7 shadow-sm space-y-4">
-        <div class="flex items-center gap-3 pb-3 border-b border-slate-100 dark:border-white/5">
-          <div class="w-9 h-9 rounded-xl bg-gradient-to-br from-emerald-500 to-teal-600 text-white flex items-center justify-center text-sm shadow-sm">
-            <i class="fa-solid fa-list-check"></i>
-          </div>
-          <div>
-            <h2 class="text-base font-bold text-slate-900 dark:text-white">3. เช็คลิสต์คุณสมบัติความก้าวหน้า (Qualifications)</h2>
-            <p class="text-[11px] text-slate-400">เมื่อติ๊กเลือกข้อใด แถบพื้นหลังทั้งข้อความจะเปลี่ยนเป็นสีเขียว</p>
-          </div>
-        </div>
-
-        <div class="grid grid-cols-1 lg:grid-cols-3 gap-3.5 sm:gap-4">
-          <!-- FL (3 ข้อ) -->
-          <div class="p-4 rounded-2xl border border-red-200 dark:border-red-500/20 bg-red-50/20 dark:bg-red-950/10 space-y-3">
-            <div class="flex items-center justify-between border-b border-red-200 dark:border-red-500/20 pb-2">
-              <span class="text-sm font-black text-slate-900 dark:text-white flex items-center gap-2">
-                <span class="px-2 py-0.5 rounded-lg bg-red-500 text-white text-[11px] font-mono">FL</span>
-                <span>คุณสมบัติ FL</span>
-              </span>
-              <span class="text-[10px] font-bold text-red-500 bg-red-100 dark:bg-red-950 px-2 py-0.5 rounded-full">3 ข้อ</span>
-            </div>
-
-            <div class="space-y-2 text-xs">
-              <label id="wrap_qualify_fl_1" class="checkbox-row flex items-center gap-2.5 cursor-pointer p-2.5 rounded-xl border border-slate-200/80 dark:border-white/5 bg-white/70 dark:bg-slate-800/60 transition-all duration-200">
-                <input type="checkbox" id="qualify_fl_1" onchange="syncCheckboxHighlight(this)" class="w-4 h-4 rounded text-emerald-600 focus:ring-emerald-500 accent-emerald-500">
-                <span class="font-medium flex-1">1. เงื่อนไข FL ข้อที่ 1</span>
-              </label>
-              <label id="wrap_qualify_fl_2" class="checkbox-row flex items-center gap-2.5 cursor-pointer p-2.5 rounded-xl border border-slate-200/80 dark:border-white/5 bg-white/70 dark:bg-slate-800/60 transition-all duration-200">
-                <input type="checkbox" id="qualify_fl_2" onchange="syncCheckboxHighlight(this)" class="w-4 h-4 rounded text-emerald-600 focus:ring-emerald-500 accent-emerald-500">
-                <span class="font-medium flex-1">2. เงื่อนไข FL ข้อที่ 2</span>
-              </label>
-              <label id="wrap_qualify_fl_3" class="checkbox-row flex items-center gap-2.5 cursor-pointer p-2.5 rounded-xl border border-slate-200/80 dark:border-white/5 bg-white/70 dark:bg-slate-800/60 transition-all duration-200">
-                <input type="checkbox" id="qualify_fl_3" onchange="syncCheckboxHighlight(this)" class="w-4 h-4 rounded text-emerald-600 focus:ring-emerald-500 accent-emerald-500">
-                <span class="font-medium flex-1">3. เงื่อนไข FL ข้อที่ 3</span>
-              </label>
-            </div>
-          </div>
-
-          <!-- 12% (5 ข้อ) -->
-          <div class="p-4 rounded-2xl border border-blue-200 dark:border-blue-500/20 bg-blue-50/20 dark:bg-blue-950/10 space-y-3">
-            <div class="flex items-center justify-between border-b border-blue-200 dark:border-blue-500/20 pb-2">
-              <span class="text-sm font-black text-slate-900 dark:text-white flex items-center gap-2">
-                <span class="px-2 py-0.5 rounded-lg bg-blue-500 text-white text-[11px] font-mono">12%</span>
-                <span>คุณสมบัติ 12%</span>
-              </span>
-              <span class="text-[10px] font-bold text-blue-500 bg-blue-100 dark:bg-blue-950 px-2 py-0.5 rounded-full">5 ข้อ</span>
-            </div>
-
-            <div class="space-y-1.5 text-xs">
-              <label id="wrap_qualify_12_1" class="checkbox-row flex items-center gap-2.5 cursor-pointer p-2.5 rounded-xl border border-slate-200/80 dark:border-white/5 bg-white/70 dark:bg-slate-800/60 transition-all duration-200">
-                <input type="checkbox" id="qualify_12_1" onchange="syncCheckboxHighlight(this)" class="w-4 h-4 rounded text-emerald-600 focus:ring-emerald-500 accent-emerald-500">
-                <span class="font-medium flex-1">1. เงื่อนไข 12% ข้อที่ 1</span>
-              </label>
-              <label id="wrap_qualify_12_2" class="checkbox-row flex items-center gap-2.5 cursor-pointer p-2.5 rounded-xl border border-slate-200/80 dark:border-white/5 bg-white/70 dark:bg-slate-800/60 transition-all duration-200">
-                <input type="checkbox" id="qualify_12_2" onchange="syncCheckboxHighlight(this)" class="w-4 h-4 rounded text-emerald-600 focus:ring-emerald-500 accent-emerald-500">
-                <span class="font-medium flex-1">2. เงื่อนไข 12% ข้อที่ 2</span>
-              </label>
-              <label id="wrap_qualify_12_3" class="checkbox-row flex items-center gap-2.5 cursor-pointer p-2.5 rounded-xl border border-slate-200/80 dark:border-white/5 bg-white/70 dark:bg-slate-800/60 transition-all duration-200">
-                <input type="checkbox" id="qualify_12_3" onchange="syncCheckboxHighlight(this)" class="w-4 h-4 rounded text-emerald-600 focus:ring-emerald-500 accent-emerald-500">
-                <span class="font-medium flex-1">3. เงื่อนไข 12% ข้อที่ 3</span>
-              </label>
-              <label id="wrap_qualify_12_4" class="checkbox-row flex items-center gap-2.5 cursor-pointer p-2.5 rounded-xl border border-slate-200/80 dark:border-white/5 bg-white/70 dark:bg-slate-800/60 transition-all duration-200">
-                <input type="checkbox" id="qualify_12_4" onchange="syncCheckboxHighlight(this)" class="w-4 h-4 rounded text-emerald-600 focus:ring-emerald-500 accent-emerald-500">
-                <span class="font-medium flex-1">4. เงื่อนไข 12% ข้อที่ 4</span>
-              </label>
-              <label id="wrap_qualify_12_5" class="checkbox-row flex items-center gap-2.5 cursor-pointer p-2.5 rounded-xl border border-slate-200/80 dark:border-white/5 bg-white/70 dark:bg-slate-800/60 transition-all duration-200">
-                <input type="checkbox" id="qualify_12_5" onchange="syncCheckboxHighlight(this)" class="w-4 h-4 rounded text-emerald-600 focus:ring-emerald-500 accent-emerald-500">
-                <span class="font-medium flex-1">5. เงื่อนไข 12% ข้อที่ 5</span>
-              </label>
-            </div>
-          </div>
-
-          <!-- 21% (5 ข้อ) -->
-          <div class="p-4 rounded-2xl border border-emerald-200 dark:border-emerald-500/20 bg-emerald-50/20 dark:bg-emerald-950/10 space-y-3">
-            <div class="flex items-center justify-between border-b border-emerald-200 dark:border-emerald-500/20 pb-2">
-              <span class="text-sm font-black text-slate-900 dark:text-white flex items-center gap-2">
-                <span class="px-2 py-0.5 rounded-lg bg-emerald-500 text-white text-[11px] font-mono">21%</span>
-                <span>คุณสมบัติ 21% (Silver)</span>
-              </span>
-              <span class="text-[10px] font-bold text-emerald-500 bg-emerald-100 dark:bg-emerald-950 px-2 py-0.5 rounded-full">5 ข้อ</span>
-            </div>
-
-            <div class="space-y-1.5 text-xs">
-              <label id="wrap_qualify_21_1" class="checkbox-row flex items-center gap-2.5 cursor-pointer p-2.5 rounded-xl border border-slate-200/80 dark:border-white/5 bg-white/70 dark:bg-slate-800/60 transition-all duration-200">
-                <input type="checkbox" id="qualify_21_1" onchange="syncCheckboxHighlight(this)" class="w-4 h-4 rounded text-emerald-600 focus:ring-emerald-500 accent-emerald-500">
-                <span class="font-medium flex-1">1. เงื่อนไข 21% ข้อที่ 1</span>
-              </label>
-              <label id="wrap_qualify_21_2" class="checkbox-row flex items-center gap-2.5 cursor-pointer p-2.5 rounded-xl border border-slate-200/80 dark:border-white/5 bg-white/70 dark:bg-slate-800/60 transition-all duration-200">
-                <input type="checkbox" id="qualify_21_2" onchange="syncCheckboxHighlight(this)" class="w-4 h-4 rounded text-emerald-600 focus:ring-emerald-500 accent-emerald-500">
-                <span class="font-medium flex-1">2. เงื่อนไข 21% ข้อที่ 2</span>
-              </label>
-              <label id="wrap_qualify_21_3" class="checkbox-row flex items-center gap-2.5 cursor-pointer p-2.5 rounded-xl border border-slate-200/80 dark:border-white/5 bg-white/70 dark:bg-slate-800/60 transition-all duration-200">
-                <input type="checkbox" id="qualify_21_3" onchange="syncCheckboxHighlight(this)" class="w-4 h-4 rounded text-emerald-600 focus:ring-emerald-500 accent-emerald-500">
-                <span class="font-medium flex-1">3. เงื่อนไข 21% ข้อที่ 3</span>
-              </label>
-              <label id="wrap_qualify_21_4" class="checkbox-row flex items-center gap-2.5 cursor-pointer p-2.5 rounded-xl border border-slate-200/80 dark:border-white/5 bg-white/70 dark:bg-slate-800/60 transition-all duration-200">
-                <input type="checkbox" id="qualify_21_4" onchange="syncCheckboxHighlight(this)" class="w-4 h-4 rounded text-emerald-600 focus:ring-emerald-500 accent-emerald-500">
-                <span class="font-medium flex-1">4. เงื่อนไข 21% ข้อที่ 4</span>
-              </label>
-              <label id="wrap_qualify_21_5" class="checkbox-row flex items-center gap-2.5 cursor-pointer p-2.5 rounded-xl border border-slate-200/80 dark:border-white/5 bg-white/70 dark:bg-slate-800/60 transition-all duration-200">
-                <input type="checkbox" id="qualify_21_5" onchange="syncCheckboxHighlight(this)" class="w-4 h-4 rounded text-emerald-600 focus:ring-emerald-500 accent-emerald-500">
-                <span class="font-medium flex-1">5. เงื่อนไข 21% ข้อที่ 5</span>
-              </label>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- SECTION 4: ยอดส่วนตัว Amway -->
-      <div class="glass-card rounded-3xl p-5 sm:p-7 shadow-sm space-y-4">
-        <div class="flex items-center gap-3 pb-3 border-b border-slate-100 dark:border-white/5">
-          <div class="w-9 h-9 rounded-xl bg-gradient-to-br from-blue-500 to-indigo-600 text-white flex items-center justify-center text-sm shadow-sm">
-            <i class="fa-solid fa-user-tag"></i>
-          </div>
-          <div>
-            <h2 class="text-base font-bold text-slate-900 dark:text-white">4. สายงานธุรกิจ Amway — ยอดส่วนตัว (Personal)</h2>
-            <p class="text-[11px] text-slate-400">บันทึกยอด PV และรายได้ส่วนบุคคล</p>
-          </div>
-        </div>
-
-        <div class="grid grid-cols-1 sm:grid-cols-3 gap-3.5 sm:gap-4">
-          <div>
-            <label class="block text-xs font-bold text-slate-600 dark:text-slate-300 mb-1.5">PV รวมส่วนตัว</label>
-            <div class="relative">
-              <input type="number" id="personalPV" oninput="calculateTotalSummary()" placeholder="0" class="w-full bg-slate-50 dark:bg-slate-900/60 border border-slate-200 dark:border-white/10 rounded-xl px-3.5 py-2.5 text-sm font-mono font-bold text-blue-600 dark:text-blue-400 focus:ring-2 focus:ring-blue-500 transition">
-              <span class="absolute right-3.5 top-2.5 text-xs text-slate-400 font-bold">PV</span>
-            </div>
-          </div>
-
-          <div>
-            <label class="block text-xs font-bold text-green-500 mb-1.5 flex items-center gap-1">
-              <i class="fa-solid fa-hand-holding-dollar text-xs"></i> Active Income (฿)
-            </label>
-            <input type="number" id="personalActive" oninput="calculateTotalSummary()" placeholder="0" class="w-full bg-slate-50 dark:bg-slate-900/60 border border-slate-200 dark:border-white/10 rounded-xl px-3.5 py-2.5 text-sm font-mono font-bold text-green-500 focus:ring-2 focus:ring-green-500 transition">
-          </div>
-
-          <div>
-            <label class="block text-xs font-bold text-emerald-500 mb-1.5 flex items-center gap-1">
-              <i class="fa-solid fa-seedling text-xs"></i> Passive Income (฿)
-            </label>
-            <input type="number" id="personalPassive" oninput="calculateTotalSummary()" placeholder="0" class="w-full bg-slate-50 dark:bg-slate-900/60 border border-slate-200 dark:border-white/10 rounded-xl px-3.5 py-2.5 text-sm font-mono font-bold text-emerald-500 focus:ring-2 focus:ring-emerald-500 transition">
-          </div>
-        </div>
-      </div>
-
-      <!-- SECTION 5: 6 สายงาน (A, B, C, D, E, F) แสดงผลชัดเจน -->
-      <div class="glass-card rounded-3xl p-5 sm:p-7 shadow-sm space-y-4">
-        <div class="flex items-center justify-between pb-3 border-b border-slate-100 dark:border-white/5">
-          <div class="flex items-center gap-3">
-            <div class="w-9 h-9 rounded-xl bg-gradient-to-br from-indigo-500 to-purple-600 text-white flex items-center justify-center text-sm shadow-sm">
-              <i class="fa-solid fa-sitemap"></i>
             </div>
             <div>
-              <h2 class="text-base font-bold text-slate-900 dark:text-white">5. ข้อมูล 6 สายงาน (A, B, C, D, E, F)</h2>
-              <p class="text-[11px] text-slate-400">กรอกแยกตามสายงาน ระบบจะนำไปคำนวณรวมอัตโนมัติ</p>
+              <label class="block text-xs font-bold text-slate-600 dark:text-slate-300 mb-1.5">เบอร์โทรศัพท์ <span class="text-slate-400 font-normal text-[11px]">(ไม่บังคับ)</span></label>
+              <div class="relative">
+                <input type="tel" id="userPhone" placeholder="08x-xxx-xxxx" class="w-full bg-slate-50 dark:bg-slate-900/60 border border-slate-200 dark:border-white/10 rounded-xl pl-9 pr-3 py-2.5 text-sm font-mono font-medium focus:ring-2 focus:ring-red-500 transition">
+                <i class="fa-solid fa-phone absolute left-3 top-3 text-slate-400 text-xs"></i>
+              </div>
+            </div>
+            <div>
+              <label class="block text-xs font-bold text-slate-600 dark:text-slate-300 mb-1.5">อีเมล (Email) <span class="text-slate-400 font-normal text-[11px]">(ไม่บังคับ)</span></label>
+              <div class="relative">
+                <input type="email" id="userEmail" placeholder="example@email.com" class="w-full bg-slate-50 dark:bg-slate-900/60 border border-slate-200 dark:border-white/10 rounded-xl pl-9 pr-3 py-2.5 text-sm font-medium focus:ring-2 focus:ring-red-500 transition">
+                <i class="fa-solid fa-envelope absolute left-3 top-3 text-slate-400 text-xs"></i>
+              </div>
             </div>
           </div>
         </div>
 
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3.5 sm:gap-4" id="legsContainer">
-          <!-- กล่องสายงาน A-F จะถูกเรนเดอร์โดย JavaScript -->
-        </div>
-      </div>
+        <!-- SECTION 2: อาชีพในเกม & พลังทรัพยากร -->
+        <div class="glass-card rounded-3xl p-5 sm:p-7 shadow-sm space-y-4">
+          <div class="flex flex-wrap items-center justify-between pb-3 border-b border-slate-100 dark:border-white/5 gap-2">
+            <div class="flex items-center gap-3">
+              <div class="w-9 h-9 rounded-xl bg-gradient-to-br from-amber-500 to-orange-600 text-white flex items-center justify-center text-sm shadow-sm">
+                <i class="fa-solid fa-briefcase"></i>
+              </div>
+              <div>
+                <h2 class="text-base font-bold text-slate-900 dark:text-white">2. อาชีพในเกม & พลังทรัพยากร (Game Careers)</h2>
+                <p class="text-[11px] text-slate-400">เลือกอาชีพ (จำเป็น) หรือจัดการฐานข้อมูลอาชีพออนไลน์</p>
+              </div>
+            </div>
+            
+            <button type="button" id="openCareerManagerBtn" onclick="openCareerManagerModal()" class="px-3.5 py-1.5 rounded-xl bg-amber-500/10 hover:bg-amber-500/20 text-amber-600 dark:text-amber-400 border border-amber-500/30 text-xs font-bold transition flex items-center gap-1.5 shadow-sm">
+              <i class="fa-solid fa-sliders"></i>
+              <span>จัดการอาชีพ (เพิ่ม/ลบ/แก้ไข)</span>
+            </button>
+          </div>
 
-      <!-- FLOATING ACTION DOCK -->
-      <div class="sticky bottom-3 z-30 p-3 sm:p-4 rounded-2xl bg-white/95 dark:bg-[#0B132B]/95 backdrop-blur-lg border border-slate-200 dark:border-white/10 shadow-2xl flex items-center justify-between gap-3">
+          <div class="grid grid-cols-1 sm:grid-cols-3 gap-3.5 sm:gap-4">
+            <div>
+              <label class="block text-xs font-bold text-slate-600 dark:text-slate-300 mb-1.5">อาชีพในเกม <span class="text-red-500">*</span></label>
+              <select id="gameCareerSelect" required onchange="onCareerSelected(this.value)" class="w-full bg-slate-50 dark:bg-slate-900/60 border border-slate-200 dark:border-white/10 rounded-xl px-3 py-2.5 text-sm font-bold text-slate-800 dark:text-white focus:ring-2 focus:ring-red-500 transition"></select>
+            </div>
+            <div>
+              <label class="block text-xs font-bold text-slate-600 dark:text-slate-300 mb-1.5">เงินเดือน (Salary / เดือน)</label>
+              <div class="relative">
+                <input type="number" id="careerSalary" placeholder="0" class="w-full bg-slate-50 dark:bg-slate-900/60 border border-slate-200 dark:border-white/10 rounded-xl pl-8 pr-3 py-2.5 text-sm font-mono font-bold text-green-500 focus:ring-2 focus:ring-green-500 transition">
+                <span class="absolute left-3 top-2.5 text-slate-400 font-bold text-xs">฿</span>
+              </div>
+            </div>
+            <div>
+              <label class="block text-xs font-bold text-slate-600 dark:text-slate-300 mb-1.5">รายจ่ายประจำ (Expenses / เดือน)</label>
+              <div class="relative">
+                <input type="number" id="careerExpense" placeholder="0" class="w-full bg-slate-50 dark:bg-slate-900/60 border border-slate-200 dark:border-white/10 rounded-xl pl-8 pr-3 py-2.5 text-sm font-mono font-bold text-red-500 focus:ring-2 focus:ring-red-500 transition">
+                <span class="absolute left-3 top-2.5 text-slate-400 font-bold text-xs">฿</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- ทรัพยากร 3 ด้าน (แถบสีชัดเจน ตัวเลขใหญ่ 0-10) -->
+          <div class="p-4 sm:p-6 rounded-3xl bg-slate-50/90 dark:bg-slate-900/50 border border-slate-200/80 dark:border-white/5 space-y-4">
+            <div class="flex items-center justify-between border-b border-slate-200/60 dark:border-white/5 pb-2.5">
+              <span class="text-xs sm:text-sm font-black uppercase tracking-wider text-slate-700 dark:text-slate-200 flex items-center gap-2">
+                <i class="fa-solid fa-gauge-high text-amber-500"></i>
+                <span>ค่าพลังทรัพยากรปัจจุบัน (สเกล 0 - 10)</span>
+              </span>
+              <span class="text-[11px] font-semibold text-slate-400">อ้างอิงสเตตัสในเกม</span>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-5">
+              <!-- 1. สุขภาพ (หัวใจ) -->
+              <div class="p-4 sm:p-5 rounded-2xl bg-white dark:bg-slate-800/90 border-2 border-red-500/30 dark:border-red-500/40 shadow-sm space-y-3.5">
+                <div class="flex justify-between items-center">
+                  <span class="text-sm font-extrabold text-red-500 flex items-center gap-2">
+                    <i class="fa-solid fa-heart text-xl animate-pulse"></i>
+                    <span>สุขภาพ (หัวใจ)</span>
+                  </span>
+                  <div class="flex items-baseline gap-1 font-mono">
+                    <span id="statHeartVal" class="text-2xl sm:text-3xl font-black text-red-600 dark:text-red-400 leading-none">5</span>
+                    <span class="text-xs text-slate-400 font-bold">/10</span>
+                  </div>
+                </div>
+                <div class="w-full bg-slate-100 dark:bg-slate-700/80 h-3.5 rounded-full overflow-hidden p-0.5 border border-slate-200 dark:border-slate-600/50">
+                  <div id="barHeart" class="h-full rounded-full bg-gradient-to-r from-red-500 to-rose-600 shadow-sm transition-all duration-300" style="width: 50%;"></div>
+                </div>
+                <input type="range" min="0" max="10" value="5" id="sliderHeart" oninput="updateStatBadge('Heart', this.value)" class="w-full text-red-500">
+              </div>
+
+              <!-- 2. เวลาว่าง (เวลา) -->
+              <div class="p-4 sm:p-5 rounded-2xl bg-white dark:bg-slate-800/90 border-2 border-blue-500/30 dark:border-blue-500/40 shadow-sm space-y-3.5">
+                <div class="flex justify-between items-center">
+                  <span class="text-sm font-extrabold text-blue-500 flex items-center gap-2">
+                    <i class="fa-solid fa-clock text-xl"></i>
+                    <span>เวลาว่าง (เวลา)</span>
+                  </span>
+                  <div class="flex items-baseline gap-1 font-mono">
+                    <span id="statTimeVal" class="text-2xl sm:text-3xl font-black text-blue-600 dark:text-blue-400 leading-none">5</span>
+                    <span class="text-xs text-slate-400 font-bold">/10</span>
+                  </div>
+                </div>
+                <div class="w-full bg-slate-100 dark:bg-slate-700/80 h-3.5 rounded-full overflow-hidden p-0.5 border border-slate-200 dark:border-slate-600/50">
+                  <div id="barTime" class="h-full rounded-full bg-gradient-to-r from-sky-400 to-blue-600 shadow-sm transition-all duration-300" style="width: 50%;"></div>
+                </div>
+                <input type="range" min="0" max="10" value="5" id="sliderTime" oninput="updateStatBadge('Time', this.value)" class="w-full text-blue-500">
+              </div>
+
+              <!-- 3. ทักษะ (ความรู้) -->
+              <div class="p-4 sm:p-5 rounded-2xl bg-white dark:bg-slate-800/90 border-2 border-purple-500/30 dark:border-purple-500/40 shadow-sm space-y-3.5">
+                <div class="flex justify-between items-center">
+                  <span class="text-sm font-extrabold text-purple-500 flex items-center gap-2">
+                    <i class="fa-solid fa-brain text-xl"></i>
+                    <span>ทักษะ (ความรู้)</span>
+                  </span>
+                  <div class="flex items-baseline gap-1 font-mono">
+                    <span id="statKnowledgeVal" class="text-2xl sm:text-3xl font-black text-purple-600 dark:text-purple-400 leading-none">5</span>
+                    <span class="text-xs text-slate-400 font-bold">/10</span>
+                  </div>
+                </div>
+                <div class="w-full bg-slate-100 dark:bg-slate-700/80 h-3.5 rounded-full overflow-hidden p-0.5 border border-slate-200 dark:border-slate-600/50">
+                  <div id="barKnowledge" class="h-full rounded-full bg-gradient-to-r from-purple-500 to-indigo-600 shadow-sm transition-all duration-300" style="width: 50%;"></div>
+                </div>
+                <input type="range" min="0" max="10" value="5" id="sliderKnowledge" oninput="updateStatBadge('Knowledge', this.value)" class="w-full text-purple-500">
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- SECTION 3: เช็คลิสต์ คุณสมบัติ (ไม่มีวันที่ & เมื่อเลือกจะเปลี่ยนทั้งแถวเป็นสีเขียว) -->
+        <div class="glass-card rounded-3xl p-5 sm:p-7 shadow-sm space-y-4">
+          <div class="flex items-center gap-3 pb-3 border-b border-slate-100 dark:border-white/5">
+            <div class="w-9 h-9 rounded-xl bg-gradient-to-br from-emerald-500 to-teal-600 text-white flex items-center justify-center text-sm shadow-sm">
+              <i class="fa-solid fa-list-check"></i>
+            </div>
+            <div>
+              <h2 class="text-base font-bold text-slate-900 dark:text-white">3. เช็คลิสต์คุณสมบัติความก้าวหน้า (Qualifications)</h2>
+              <p class="text-[11px] text-slate-400">เมื่อติ๊กเลือกข้อใด แถบพื้นหลังทั้งข้อความจะเปลี่ยนเป็นสีเขียวทันที</p>
+            </div>
+          </div>
+
+          <div class="grid grid-cols-1 lg:grid-cols-3 gap-3.5 sm:gap-4">
+            <!-- FL (3 ข้อ) -->
+            <div class="p-4 rounded-2xl border border-red-200 dark:border-red-500/20 bg-red-50/20 dark:bg-red-950/10 space-y-3">
+              <div class="flex items-center justify-between border-b border-red-200 dark:border-red-500/20 pb-2">
+                <span class="text-sm font-black text-slate-900 dark:text-white flex items-center gap-2">
+                  <span class="px-2 py-0.5 rounded-lg bg-red-500 text-white text-[11px] font-mono">FL</span>
+                  <span>คุณสมบัติ FL</span>
+                </span>
+                <span class="text-[10px] font-bold text-red-500 bg-red-100 dark:bg-red-950 px-2 py-0.5 rounded-full">3 ข้อ</span>
+              </div>
+
+              <div class="space-y-2 text-xs">
+                <label id="wrap_qualify_fl_1" class="checkbox-row flex items-center gap-2.5 cursor-pointer p-2.5 rounded-xl border border-slate-200/80 dark:border-white/5 bg-white/70 dark:bg-slate-800/60 transition-all duration-200">
+                  <input type="checkbox" id="qualify_fl_1" onchange="syncCheckboxHighlight(this)" class="w-4 h-4 rounded text-emerald-600 focus:ring-emerald-500 accent-emerald-500">
+                  <span class="font-medium flex-1">1. เงื่อนไข FL ข้อที่ 1</span>
+                </label>
+                <label id="wrap_qualify_fl_2" class="checkbox-row flex items-center gap-2.5 cursor-pointer p-2.5 rounded-xl border border-slate-200/80 dark:border-white/5 bg-white/70 dark:bg-slate-800/60 transition-all duration-200">
+                  <input type="checkbox" id="qualify_fl_2" onchange="syncCheckboxHighlight(this)" class="w-4 h-4 rounded text-emerald-600 focus:ring-emerald-500 accent-emerald-500">
+                  <span class="font-medium flex-1">2. เงื่อนไข FL ข้อที่ 2</span>
+                </label>
+                <label id="wrap_qualify_fl_3" class="checkbox-row flex items-center gap-2.5 cursor-pointer p-2.5 rounded-xl border border-slate-200/80 dark:border-white/5 bg-white/70 dark:bg-slate-800/60 transition-all duration-200">
+                  <input type="checkbox" id="qualify_fl_3" onchange="syncCheckboxHighlight(this)" class="w-4 h-4 rounded text-emerald-600 focus:ring-emerald-500 accent-emerald-500">
+                  <span class="font-medium flex-1">3. เงื่อนไข FL ข้อที่ 3</span>
+                </label>
+              </div>
+            </div>
+
+            <!-- 12% (5 ข้อ) -->
+            <div class="p-4 rounded-2xl border border-blue-200 dark:border-blue-500/20 bg-blue-50/20 dark:bg-blue-950/10 space-y-3">
+              <div class="flex items-center justify-between border-b border-blue-200 dark:border-blue-500/20 pb-2">
+                <span class="text-sm font-black text-slate-900 dark:text-white flex items-center gap-2">
+                  <span class="px-2 py-0.5 rounded-lg bg-blue-500 text-white text-[11px] font-mono">12%</span>
+                  <span>คุณสมบัติ 12%</span>
+                </span>
+                <span class="text-[10px] font-bold text-blue-500 bg-blue-100 dark:bg-blue-950 px-2 py-0.5 rounded-full">5 ข้อ</span>
+              </div>
+
+              <div class="space-y-1.5 text-xs">
+                <label id="wrap_qualify_12_1" class="checkbox-row flex items-center gap-2.5 cursor-pointer p-2.5 rounded-xl border border-slate-200/80 dark:border-white/5 bg-white/70 dark:bg-slate-800/60 transition-all duration-200">
+                  <input type="checkbox" id="qualify_12_1" onchange="syncCheckboxHighlight(this)" class="w-4 h-4 rounded text-emerald-600 focus:ring-emerald-500 accent-emerald-500">
+                  <span class="font-medium flex-1">1. เงื่อนไข 12% ข้อที่ 1</span>
+                </label>
+                <label id="wrap_qualify_12_2" class="checkbox-row flex items-center gap-2.5 cursor-pointer p-2.5 rounded-xl border border-slate-200/80 dark:border-white/5 bg-white/70 dark:bg-slate-800/60 transition-all duration-200">
+                  <input type="checkbox" id="qualify_12_2" onchange="syncCheckboxHighlight(this)" class="w-4 h-4 rounded text-emerald-600 focus:ring-emerald-500 accent-emerald-500">
+                  <span class="font-medium flex-1">2. เงื่อนไข 12% ข้อที่ 2</span>
+                </label>
+                <label id="wrap_qualify_12_3" class="checkbox-row flex items-center gap-2.5 cursor-pointer p-2.5 rounded-xl border border-slate-200/80 dark:border-white/5 bg-white/70 dark:bg-slate-800/60 transition-all duration-200">
+                  <input type="checkbox" id="qualify_12_3" onchange="syncCheckboxHighlight(this)" class="w-4 h-4 rounded text-emerald-600 focus:ring-emerald-500 accent-emerald-500">
+                  <span class="font-medium flex-1">3. เงื่อนไข 12% ข้อที่ 3</span>
+                </label>
+                <label id="wrap_qualify_12_4" class="checkbox-row flex items-center gap-2.5 cursor-pointer p-2.5 rounded-xl border border-slate-200/80 dark:border-white/5 bg-white/70 dark:bg-slate-800/60 transition-all duration-200">
+                  <input type="checkbox" id="qualify_12_4" onchange="syncCheckboxHighlight(this)" class="w-4 h-4 rounded text-emerald-600 focus:ring-emerald-500 accent-emerald-500">
+                  <span class="font-medium flex-1">4. เงื่อนไข 12% ข้อที่ 4</span>
+                </label>
+                <label id="wrap_qualify_12_5" class="checkbox-row flex items-center gap-2.5 cursor-pointer p-2.5 rounded-xl border border-slate-200/80 dark:border-white/5 bg-white/70 dark:bg-slate-800/60 transition-all duration-200">
+                  <input type="checkbox" id="qualify_12_5" onchange="syncCheckboxHighlight(this)" class="w-4 h-4 rounded text-emerald-600 focus:ring-emerald-500 accent-emerald-500">
+                  <span class="font-medium flex-1">5. เงื่อนไข 12% ข้อที่ 5</span>
+                </label>
+              </div>
+            </div>
+
+            <!-- 21% (5 ข้อ) -->
+            <div class="p-4 rounded-2xl border border-emerald-200 dark:border-emerald-500/20 bg-emerald-50/20 dark:bg-emerald-950/10 space-y-3">
+              <div class="flex items-center justify-between border-b border-emerald-200 dark:border-emerald-500/20 pb-2">
+                <span class="text-sm font-black text-slate-900 dark:text-white flex items-center gap-2">
+                  <span class="px-2 py-0.5 rounded-lg bg-emerald-500 text-white text-[11px] font-mono">21%</span>
+                  <span>คุณสมบัติ 21% (Silver)</span>
+                </span>
+                <span class="text-[10px] font-bold text-emerald-500 bg-emerald-100 dark:bg-emerald-950 px-2 py-0.5 rounded-full">5 ข้อ</span>
+              </div>
+
+              <div class="space-y-1.5 text-xs">
+                <label id="wrap_qualify_21_1" class="checkbox-row flex items-center gap-2.5 cursor-pointer p-2.5 rounded-xl border border-slate-200/80 dark:border-white/5 bg-white/70 dark:bg-slate-800/60 transition-all duration-200">
+                  <input type="checkbox" id="qualify_21_1" onchange="syncCheckboxHighlight(this)" class="w-4 h-4 rounded text-emerald-600 focus:ring-emerald-500 accent-emerald-500">
+                  <span class="font-medium flex-1">1. เงื่อนไข 21% ข้อที่ 1</span>
+                </label>
+                <label id="wrap_qualify_21_2" class="checkbox-row flex items-center gap-2.5 cursor-pointer p-2.5 rounded-xl border border-slate-200/80 dark:border-white/5 bg-white/70 dark:bg-slate-800/60 transition-all duration-200">
+                  <input type="checkbox" id="qualify_21_2" onchange="syncCheckboxHighlight(this)" class="w-4 h-4 rounded text-emerald-600 focus:ring-emerald-500 accent-emerald-500">
+                  <span class="font-medium flex-1">2. เงื่อนไข 21% ข้อที่ 2</span>
+                </label>
+                <label id="wrap_qualify_21_3" class="checkbox-row flex items-center gap-2.5 cursor-pointer p-2.5 rounded-xl border border-slate-200/80 dark:border-white/5 bg-white/70 dark:bg-slate-800/60 transition-all duration-200">
+                  <input type="checkbox" id="qualify_21_3" onchange="syncCheckboxHighlight(this)" class="w-4 h-4 rounded text-emerald-600 focus:ring-emerald-500 accent-emerald-500">
+                  <span class="font-medium flex-1">3. เงื่อนไข 21% ข้อที่ 3</span>
+                </label>
+                <label id="wrap_qualify_21_4" class="checkbox-row flex items-center gap-2.5 cursor-pointer p-2.5 rounded-xl border border-slate-200/80 dark:border-white/5 bg-white/70 dark:bg-slate-800/60 transition-all duration-200">
+                  <input type="checkbox" id="qualify_21_4" onchange="syncCheckboxHighlight(this)" class="w-4 h-4 rounded text-emerald-600 focus:ring-emerald-500 accent-emerald-500">
+                  <span class="font-medium flex-1">4. เงื่อนไข 21% ข้อที่ 4</span>
+                </label>
+                <label id="wrap_qualify_21_5" class="checkbox-row flex items-center gap-2.5 cursor-pointer p-2.5 rounded-xl border border-slate-200/80 dark:border-white/5 bg-white/70 dark:bg-slate-800/60 transition-all duration-200">
+                  <input type="checkbox" id="qualify_21_5" onchange="syncCheckboxHighlight(this)" class="w-4 h-4 rounded text-emerald-600 focus:ring-emerald-500 accent-emerald-500">
+                  <span class="font-medium flex-1">5. เงื่อนไข 21% ข้อที่ 5</span>
+                </label>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- SECTION 4: ยอดส่วนตัว Amway -->
+        <div class="glass-card rounded-3xl p-5 sm:p-7 shadow-sm space-y-4">
+          <div class="flex items-center gap-3 pb-3 border-b border-slate-100 dark:border-white/5">
+            <div class="w-9 h-9 rounded-xl bg-gradient-to-br from-blue-500 to-indigo-600 text-white flex items-center justify-center text-sm shadow-sm">
+              <i class="fa-solid fa-user-tag"></i>
+            </div>
+            <div>
+              <h2 class="text-base font-bold text-slate-900 dark:text-white">4. สายงานธุรกิจ Amway — ยอดส่วนตัว (Personal)</h2>
+              <p class="text-[11px] text-slate-400">บันทึกยอด PV และรายได้ส่วนบุคคล</p>
+            </div>
+          </div>
+
+          <div class="grid grid-cols-1 sm:grid-cols-3 gap-3.5 sm:gap-4">
+            <div>
+              <label class="block text-xs font-bold text-slate-600 dark:text-slate-300 mb-1.5">PV รวมส่วนตัว</label>
+              <div class="relative">
+                <input type="number" id="personalPV" oninput="calculateTotalSummary()" placeholder="0" class="w-full bg-slate-50 dark:bg-slate-900/60 border border-slate-200 dark:border-white/10 rounded-xl px-3.5 py-2.5 text-sm font-mono font-bold text-blue-600 dark:text-blue-400 focus:ring-2 focus:ring-blue-500 transition">
+                <span class="absolute right-3.5 top-2.5 text-xs text-slate-400 font-bold">PV</span>
+              </div>
+            </div>
+
+            <div>
+              <label class="block text-xs font-bold text-green-500 mb-1.5 flex items-center gap-1">
+                <i class="fa-solid fa-hand-holding-dollar text-xs"></i> Active Income (฿)
+              </label>
+              <input type="number" id="personalActive" oninput="calculateTotalSummary()" placeholder="0" class="w-full bg-slate-50 dark:bg-slate-900/60 border border-slate-200 dark:border-white/10 rounded-xl px-3.5 py-2.5 text-sm font-mono font-bold text-green-500 focus:ring-2 focus:ring-green-500 transition">
+            </div>
+
+            <div>
+              <label class="block text-xs font-bold text-emerald-500 mb-1.5 flex items-center gap-1">
+                <i class="fa-solid fa-seedling text-xs"></i> Passive Income (฿)
+              </label>
+              <input type="number" id="personalPassive" oninput="calculateTotalSummary()" placeholder="0" class="w-full bg-slate-50 dark:bg-slate-900/60 border border-slate-200 dark:border-white/10 rounded-xl px-3.5 py-2.5 text-sm font-mono font-bold text-emerald-500 focus:ring-2 focus:ring-emerald-500 transition">
+            </div>
+          </div>
+        </div>
+
+        <!-- SECTION 5: 6 สายงาน (A, B, C, D, E, F) ฝังใน HTML แสดงทันที 100% -->
+        <div class="glass-card rounded-3xl p-5 sm:p-7 shadow-sm space-y-4">
+          <div class="flex items-center justify-between pb-3 border-b border-slate-100 dark:border-white/5">
+            <div class="flex items-center gap-3">
+              <div class="w-9 h-9 rounded-xl bg-gradient-to-br from-indigo-500 to-purple-600 text-white flex items-center justify-center text-sm shadow-sm">
+                <i class="fa-solid fa-sitemap"></i>
+              </div>
+              <div>
+                <h2 class="text-base font-bold text-slate-900 dark:text-white">5. ข้อมูล 6 สายงาน (A, B, C, D, E, F)</h2>
+                <p class="text-[11px] text-slate-400">กรอกแยกตามสายงาน ระบบจะนำไปคำนวณรวมอัตโนมัติ</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- ฝังโครงสร้าง 6 สายงานลง HTML โดยตรง ไม่ต้องพึ่ง JS innerHTML -->
+          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3.5 sm:gap-4" id="legsContainer">
+            <!-- สายงาน A -->
+            <div class="p-3.5 sm:p-4 rounded-2xl border border-slate-200 dark:border-white/10 bg-slate-50/70 dark:bg-slate-900/40 space-y-2.5">
+              <div class="flex items-center justify-between border-b border-slate-200/80 dark:border-white/5 pb-2">
+                <span class="text-xs font-black text-slate-800 dark:text-white flex items-center gap-2">
+                  <span class="w-6 h-6 rounded-lg bg-gradient-to-br from-red-500 to-rose-600 text-white flex items-center justify-center text-xs font-mono font-bold shadow-sm">A</span>
+                  <span>สายงาน A</span>
+                </span>
+              </div>
+              <div>
+                <label class="block text-[11px] font-bold text-slate-400 mb-1">PV รวม</label>
+                <input type="number" id="leg_A_pv" oninput="calculateTotalSummary()" placeholder="0" class="w-full bg-white dark:bg-slate-800 border border-slate-200 dark:border-white/10 rounded-xl px-2.5 py-1.5 text-xs font-mono font-bold text-blue-500 focus:ring-2 focus:ring-blue-500 transition">
+              </div>
+              <div class="grid grid-cols-2 gap-2">
+                <div>
+                  <label class="block text-[10px] font-bold text-green-500 mb-1">Active (฿)</label>
+                  <input type="number" id="leg_A_active" oninput="calculateTotalSummary()" placeholder="0" class="w-full bg-white dark:bg-slate-800 border border-slate-200 dark:border-white/10 rounded-xl px-2.5 py-1.5 text-xs font-mono font-bold text-green-500 focus:ring-2 focus:ring-green-500 transition">
+                </div>
+                <div>
+                  <label class="block text-[10px] font-bold text-emerald-500 mb-1">Passive (฿)</label>
+                  <input type="number" id="leg_A_passive" oninput="calculateTotalSummary()" placeholder="0" class="w-full bg-white dark:bg-slate-800 border border-slate-200 dark:border-white/10 rounded-xl px-2.5 py-1.5 text-xs font-mono font-bold text-emerald-500 focus:ring-2 focus:ring-emerald-500 transition">
+                </div>
+              </div>
+            </div>
+
+            <!-- สายงาน B -->
+            <div class="p-3.5 sm:p-4 rounded-2xl border border-slate-200 dark:border-white/10 bg-slate-50/70 dark:bg-slate-900/40 space-y-2.5">
+              <div class="flex items-center justify-between border-b border-slate-200/80 dark:border-white/5 pb-2">
+                <span class="text-xs font-black text-slate-800 dark:text-white flex items-center gap-2">
+                  <span class="w-6 h-6 rounded-lg bg-gradient-to-br from-red-500 to-rose-600 text-white flex items-center justify-center text-xs font-mono font-bold shadow-sm">B</span>
+                  <span>สายงาน B</span>
+                </span>
+              </div>
+              <div>
+                <label class="block text-[11px] font-bold text-slate-400 mb-1">PV รวม</label>
+                <input type="number" id="leg_B_pv" oninput="calculateTotalSummary()" placeholder="0" class="w-full bg-white dark:bg-slate-800 border border-slate-200 dark:border-white/10 rounded-xl px-2.5 py-1.5 text-xs font-mono font-bold text-blue-500 focus:ring-2 focus:ring-blue-500 transition">
+              </div>
+              <div class="grid grid-cols-2 gap-2">
+                <div>
+                  <label class="block text-[10px] font-bold text-green-500 mb-1">Active (฿)</label>
+                  <input type="number" id="leg_B_active" oninput="calculateTotalSummary()" placeholder="0" class="w-full bg-white dark:bg-slate-800 border border-slate-200 dark:border-white/10 rounded-xl px-2.5 py-1.5 text-xs font-mono font-bold text-green-500 focus:ring-2 focus:ring-green-500 transition">
+                </div>
+                <div>
+                  <label class="block text-[10px] font-bold text-emerald-500 mb-1">Passive (฿)</label>
+                  <input type="number" id="leg_B_passive" oninput="calculateTotalSummary()" placeholder="0" class="w-full bg-white dark:bg-slate-800 border border-slate-200 dark:border-white/10 rounded-xl px-2.5 py-1.5 text-xs font-mono font-bold text-emerald-500 focus:ring-2 focus:ring-emerald-500 transition">
+                </div>
+              </div>
+            </div>
+
+            <!-- สายงาน C -->
+            <div class="p-3.5 sm:p-4 rounded-2xl border border-slate-200 dark:border-white/10 bg-slate-50/70 dark:bg-slate-900/40 space-y-2.5">
+              <div class="flex items-center justify-between border-b border-slate-200/80 dark:border-white/5 pb-2">
+                <span class="text-xs font-black text-slate-800 dark:text-white flex items-center gap-2">
+                  <span class="w-6 h-6 rounded-lg bg-gradient-to-br from-red-500 to-rose-600 text-white flex items-center justify-center text-xs font-mono font-bold shadow-sm">C</span>
+                  <span>สายงาน C</span>
+                </span>
+              </div>
+              <div>
+                <label class="block text-[11px] font-bold text-slate-400 mb-1">PV รวม</label>
+                <input type="number" id="leg_C_pv" oninput="calculateTotalSummary()" placeholder="0" class="w-full bg-white dark:bg-slate-800 border border-slate-200 dark:border-white/10 rounded-xl px-2.5 py-1.5 text-xs font-mono font-bold text-blue-500 focus:ring-2 focus:ring-blue-500 transition">
+              </div>
+              <div class="grid grid-cols-2 gap-2">
+                <div>
+                  <label class="block text-[10px] font-bold text-green-500 mb-1">Active (฿)</label>
+                  <input type="number" id="leg_C_active" oninput="calculateTotalSummary()" placeholder="0" class="w-full bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl px-2.5 py-1.5 text-xs font-mono font-bold text-green-500 focus:ring-2 focus:ring-green-500 transition">
+                </div>
+                <div>
+                  <label class="block text-[10px] font-bold text-emerald-500 mb-1">Passive (฿)</label>
+                  <input type="number" id="leg_C_passive" oninput="calculateTotalSummary()" placeholder="0" class="w-full bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl px-2.5 py-1.5 text-xs font-mono font-bold text-emerald-500 focus:ring-2 focus:ring-emerald-500 transition">
+                </div>
+              </div>
+            </div>
+
+            <!-- สายงาน D -->
+            <div class="p-3.5 sm:p-4 rounded-2xl border border-slate-200 dark:border-white/10 bg-slate-50/70 dark:bg-slate-900/40 space-y-2.5">
+              <div class="flex items-center justify-between border-b border-slate-200/80 dark:border-white/5 pb-2">
+                <span class="text-xs font-black text-slate-800 dark:text-white flex items-center gap-2">
+                  <span class="w-6 h-6 rounded-lg bg-gradient-to-br from-red-500 to-rose-600 text-white flex items-center justify-center text-xs font-mono font-bold shadow-sm">D</span>
+                  <span>สายงาน D</span>
+                </span>
+              </div>
+              <div>
+                <label class="block text-[11px] font-bold text-slate-400 mb-1">PV รวม</label>
+                <input type="number" id="leg_D_pv" oninput="calculateTotalSummary()" placeholder="0" class="w-full bg-white dark:bg-slate-800 border border-slate-200 dark:border-white/10 rounded-xl px-2.5 py-1.5 text-xs font-mono font-bold text-blue-500 focus:ring-2 focus:ring-blue-500 transition">
+              </div>
+              <div class="grid grid-cols-2 gap-2">
+                <div>
+                  <label class="block text-[10px] font-bold text-green-500 mb-1">Active (฿)</label>
+                  <input type="number" id="leg_D_active" oninput="calculateTotalSummary()" placeholder="0" class="w-full bg-white dark:bg-slate-800 border border-slate-200 dark:border-white/10 rounded-xl px-2.5 py-1.5 text-xs font-mono font-bold text-green-500 focus:ring-2 focus:ring-green-500 transition">
+                </div>
+                <div>
+                  <label class="block text-[10px] font-bold text-emerald-500 mb-1">Passive (฿)</label>
+                  <input type="number" id="leg_D_passive" oninput="calculateTotalSummary()" placeholder="0" class="w-full bg-white dark:bg-slate-800 border border-slate-200 dark:border-white/10 rounded-xl px-2.5 py-1.5 text-xs font-mono font-bold text-emerald-500 focus:ring-2 focus:ring-emerald-500 transition">
+                </div>
+              </div>
+            </div>
+
+            <!-- สายงาน E -->
+            <div class="p-3.5 sm:p-4 rounded-2xl border border-slate-200 dark:border-white/10 bg-slate-50/70 dark:bg-slate-900/40 space-y-2.5">
+              <div class="flex items-center justify-between border-b border-slate-200/80 dark:border-white/5 pb-2">
+                <span class="text-xs font-black text-slate-800 dark:text-white flex items-center gap-2">
+                  <span class="w-6 h-6 rounded-lg bg-gradient-to-br from-red-500 to-rose-600 text-white flex items-center justify-center text-xs font-mono font-bold shadow-sm">E</span>
+                  <span>สายงาน E</span>
+                </span>
+              </div>
+              <div>
+                <label class="block text-[11px] font-bold text-slate-400 mb-1">PV รวม</label>
+                <input type="number" id="leg_E_pv" oninput="calculateTotalSummary()" placeholder="0" class="w-full bg-white dark:bg-slate-800 border border-slate-200 dark:border-white/10 rounded-xl px-2.5 py-1.5 text-xs font-mono font-bold text-blue-500 focus:ring-2 focus:ring-blue-500 transition">
+              </div>
+              <div class="grid grid-cols-2 gap-2">
+                <div>
+                  <label class="block text-[10px] font-bold text-green-500 mb-1">Active (฿)</label>
+                  <input type="number" id="leg_E_active" oninput="calculateTotalSummary()" placeholder="0" class="w-full bg-white dark:bg-slate-800 border border-slate-200 dark:border-white/10 rounded-xl px-2.5 py-1.5 text-xs font-mono font-bold text-green-500 focus:ring-2 focus:ring-green-500 transition">
+                </div>
+                <div>
+                  <label class="block text-[10px] font-bold text-emerald-500 mb-1">Passive (฿)</label>
+                  <input type="number" id="leg_E_passive" oninput="calculateTotalSummary()" placeholder="0" class="w-full bg-white dark:bg-slate-800 border border-slate-200 dark:border-white/10 rounded-xl px-2.5 py-1.5 text-xs font-mono font-bold text-emerald-500 focus:ring-2 focus:ring-emerald-500 transition">
+                </div>
+              </div>
+            </div>
+
+            <!-- สายงาน F -->
+            <div class="p-3.5 sm:p-4 rounded-2xl border border-slate-200 dark:border-white/10 bg-slate-50/70 dark:bg-slate-900/40 space-y-2.5">
+              <div class="flex items-center justify-between border-b border-slate-200/80 dark:border-white/5 pb-2">
+                <span class="text-xs font-black text-slate-800 dark:text-white flex items-center gap-2">
+                  <span class="w-6 h-6 rounded-lg bg-gradient-to-br from-red-500 to-rose-600 text-white flex items-center justify-center text-xs font-mono font-bold shadow-sm">F</span>
+                  <span>สายงาน F</span>
+                </span>
+              </div>
+              <div>
+                <label class="block text-[11px] font-bold text-slate-400 mb-1">PV รวม</label>
+                <input type="number" id="leg_F_pv" oninput="calculateTotalSummary()" placeholder="0" class="w-full bg-white dark:bg-slate-800 border border-slate-200 dark:border-white/10 rounded-xl px-2.5 py-1.5 text-xs font-mono font-bold text-blue-500 focus:ring-2 focus:ring-blue-500 transition">
+              </div>
+              <div class="grid grid-cols-2 gap-2">
+                <div>
+                  <label class="block text-[10px] font-bold text-green-500 mb-1">Active (฿)</label>
+                  <input type="number" id="leg_F_active" oninput="calculateTotalSummary()" placeholder="0" class="w-full bg-white dark:bg-slate-800 border border-slate-200 dark:border-white/10 rounded-xl px-2.5 py-1.5 text-xs font-mono font-bold text-green-500 focus:ring-2 focus:ring-green-500 transition">
+                </div>
+                <div>
+                  <label class="block text-[10px] font-bold text-emerald-500 mb-1">Passive (฿)</label>
+                  <input type="number" id="leg_F_passive" oninput="calculateTotalSummary()" placeholder="0" class="w-full bg-white dark:bg-slate-800 border border-slate-200 dark:border-white/10 rounded-xl px-2.5 py-1.5 text-xs font-mono font-bold text-emerald-500 focus:ring-2 focus:ring-emerald-500 transition">
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </fieldset>
+
+      <!-- FLOATING ACTION DOCK (เพิ่มปุ่มปลดล็อคด้านล่างด้วย ให้กดง่าย) -->
+      <div class="sticky bottom-3 z-30 p-3 sm:p-4 rounded-2xl bg-white/95 dark:bg-[#0B132B]/95 backdrop-blur-lg border border-slate-200 dark:border-white/10 shadow-2xl flex items-center justify-between gap-2.5">
         <button type="button" id="resetBtn" onclick="confirmResetProfile()" class="px-3.5 py-2.5 rounded-xl border border-red-200 dark:border-red-500/20 text-red-500 hover:bg-red-50 dark:hover:bg-red-950/30 text-xs font-bold transition flex items-center gap-1.5">
           <i class="fa-solid fa-trash-can"></i>
           <span class="hidden sm:inline">ล้างข้อมูล</span>
         </button>
 
         <div class="flex items-center gap-2">
-          <a href="index.html" class="px-4 py-2.5 rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-200 hover:bg-slate-200 text-xs font-bold transition">
-            หน้าสุ่มการ์ด
-          </a>
-          <button type="submit" id="saveProfileBtn" class="px-6 py-2.5 rounded-xl text-white text-xs font-black shadow-lg btn-gradient-red hover:shadow-glow-red hover:scale-102 active:scale-98 transition flex items-center gap-2">
+          <!-- ปุ่มปลดล็อคด่วนที่แถบล่าง -->
+          <button type="button" id="dockToggleEditBtn" onclick="toggleEditMode()" class="px-3.5 py-2.5 rounded-xl text-xs font-bold transition-all flex items-center gap-1.5 border border-slate-300 dark:border-white/10 bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-200">
+            <i class="fa-solid fa-lock text-slate-400"></i>
+            <span>ปลดล็อคแก้ไข</span>
+          </button>
+
+          <button type="submit" id="saveProfileBtn" class="px-5 sm:px-6 py-2.5 rounded-xl text-white text-xs font-black shadow-lg btn-gradient-red hover:shadow-glow-red hover:scale-102 active:scale-98 transition flex items-center gap-1.5">
             <i class="fa-solid fa-floppy-disk"></i>
             <span>บันทึกข้อมูล</span>
           </button>
@@ -556,3 +703,617 @@
             <p class="text-[11px] text-slate-400">เพิ่ม, แก้ไข หรือลบข้อมูลอาชีพ ซิงก์ลง Google Sheets ทันที</p>
           </div>
         </div>
+        <button type="button" onclick="closeCareerManagerModal()" class="w-8 h-8 rounded-lg text-slate-400 hover:text-slate-600 dark:hover:text-white flex items-center justify-center">
+          <i class="fa-solid fa-xmark text-lg"></i>
+        </button>
+      </div>
+
+      <form id="careerCrudForm" onsubmit="handleCareerFormSubmit(event)" class="p-3.5 rounded-2xl bg-slate-50 dark:bg-slate-900/60 border border-slate-200 dark:border-white/5 space-y-3">
+        <input type="hidden" id="crudCareerId">
+        
+        <div class="flex items-center justify-between">
+          <span id="crudFormTitle" class="text-xs font-black uppercase text-amber-600 dark:text-amber-400 flex items-center gap-1">
+            <i class="fa-solid fa-plus-circle"></i> เพิ่มอาชีพใหม่
+          </span>
+          <button type="button" id="cancelEditCareerBtn" onclick="resetCareerCrudForm()" class="hidden text-[10px] text-slate-400 hover:text-red-500 underline font-semibold">
+            ยกเลิกแก้ไข
+          </button>
+        </div>
+
+        <div>
+          <label class="block text-[11px] font-bold text-slate-500 mb-1">1. ชื่ออาชีพ <span class="text-red-500">*</span></label>
+          <input type="text" id="crudCareerName" required placeholder="เช่น นักธุรกิจอิสระ, นักบิน..." class="w-full bg-white dark:bg-slate-800 border border-slate-200 dark:border-white/10 rounded-xl px-3 py-2 text-xs font-bold text-slate-800 dark:text-white focus:ring-2 focus:ring-amber-500">
+        </div>
+
+        <div class="grid grid-cols-2 gap-2.5">
+          <div>
+            <label class="block text-[11px] font-bold text-slate-500 mb-1">2. เงินเดือน (฿/ด.)</label>
+            <input type="number" id="crudCareerSalary" min="0" placeholder="0" class="w-full bg-white dark:bg-slate-800 border border-slate-200 dark:border-white/10 rounded-xl px-3 py-2 text-xs font-mono font-bold text-green-500 focus:ring-2 focus:ring-green-500">
+          </div>
+          <div>
+            <label class="block text-[11px] font-bold text-slate-500 mb-1">3. รายจ่ายประจำ (฿/ด.)</label>
+            <input type="number" id="crudCareerExpense" min="0" placeholder="0" class="w-full bg-white dark:bg-slate-800 border border-slate-200 dark:border-white/10 rounded-xl px-3 py-2 text-xs font-mono font-bold text-red-500 focus:ring-2 focus:ring-red-500">
+          </div>
+        </div>
+
+        <button type="submit" id="crudSubmitBtn" class="w-full py-2 rounded-xl text-xs font-black text-white bg-amber-500 hover:bg-amber-600 transition shadow-sm flex items-center justify-center gap-1.5">
+          <i class="fa-solid fa-cloud-arrow-up"></i>
+          <span>บันทึกลงชีตออนไลน์</span>
+        </button>
+      </form>
+
+      <div class="space-y-2 flex-1 overflow-hidden flex flex-col">
+        <span class="text-[11px] font-bold uppercase tracking-wider text-slate-400">รายการอาชีพในฐานข้อมูล (<span id="careerCountBadge">0</span>)</span>
+        <div id="careerListContainer" class="flex-1 overflow-y-auto space-y-2 pr-1 divide-y divide-slate-100 dark:divide-white/5"></div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Modal Confirm Reset -->
+  <div id="resetConfirmModal" class="hidden fixed inset-0 z-50 bg-slate-950/70 backdrop-blur-sm flex items-center justify-center p-4">
+    <div class="bg-white dark:bg-slate-800 rounded-3xl max-w-sm w-full p-6 text-center space-y-4 shadow-2xl border border-slate-200 dark:border-white/10 animate-pop-in">
+      <div class="w-14 h-14 rounded-2xl bg-red-500/10 text-red-500 flex items-center justify-center mx-auto text-2xl">
+        <i class="fa-solid fa-triangle-exclamation"></i>
+      </div>
+      <div>
+        <h3 class="font-bold text-base text-slate-900 dark:text-white">ยืนยันการล้างข้อมูล?</h3>
+        <p class="text-xs text-slate-400 mt-1">ข้อมูลโปรไฟล์ เช็กลิสต์ และ 6 สายงานทั้งหมดจะถูกล้างค่า</p>
+      </div>
+      <div class="flex justify-center gap-2.5 pt-1">
+        <button type="button" onclick="closeResetModal()" class="px-4 py-2.5 rounded-xl text-xs font-bold bg-slate-100 dark:bg-slate-700">ยกเลิก</button>
+        <button type="button" onclick="executeResetProfile()" class="px-5 py-2.5 rounded-xl text-xs font-bold text-white btn-gradient-red">ยืนยันล้างข้อมูล</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast Notification -->
+  <div id="toastNotification" class="fixed top-20 right-4 z-50 translate-x-full opacity-0 pointer-events-none transition-all duration-300 bg-slate-900 text-white px-4 py-2.5 rounded-xl text-xs font-bold shadow-xl flex items-center gap-2">
+    <i id="toastIcon" class="fa-solid fa-check text-emerald-400"></i>
+    <span id="toastMessage">แจ้งเตือน</span>
+  </div>
+
+  <!-- JAVASCRIPT LOGIC -->
+  <script>
+    const GOOGLE_SHEET_API_URL = "https://script.google.com/macros/s/AKfycbzq9oD33K3nf_r2JRq5RjCafAQIvt2o9ywvJ1EvXvVg4l9QyUalIuQvxxT7zQ890nR1/exec";
+
+    const DEFAULT_CAREERS = [
+      { id: "business_owner", name: "เจ้าของธุรกิจส่วนตัว", salary: 75000, expense: 45000 },
+      { id: "software_engineer", name: "วิศวกรซอฟต์แวร์ / โปรแกรมเมอร์", salary: 65000, expense: 32000 },
+      { id: "medical_doctor", name: "แพทย์ / บุคลากรการแพทย์", salary: 90000, expense: 48000 },
+      { id: "marketing_manager", name: "ผู้จัดการฝ่ายการตลาด", salary: 55000, expense: 30000 },
+      { id: "teacher", name: "อาจารย์ / ผู้เชี่ยวชาญด้านการสอน", salary: 38000, expense: 22000 },
+      { id: "freelancer", name: "ฟรีแลนซ์ / คอนเทนต์ครีเอเตอร์", salary: 45000, expense: 25000 },
+      { id: "office_worker", name: "พนักงานบริษัททั่วไป", salary: 30000, expense: 18000 }
+    ];
+
+    let careersDB = [];
+    const LEGS = ['A', 'B', 'C', 'D', 'E', 'F'];
+    
+    // ตั้งค่าเริ่มต้น: ล็อคการแก้ไขเป็นค่าตั้งต้น
+    let isEditMode = false;
+
+    window.addEventListener('DOMContentLoaded', () => {
+      initTheme();
+      loadCareersDB();
+      loadProfileData();
+      checkDrawResultParams();
+      applyLockState(); // บังคับล็อคฟอร์มเริ่มต้น
+
+      // ผูก Event Listener เสริมป้องกัน inline onclick ขัดข้อง
+      const topBtn = document.getElementById('toggleEditBtn');
+      const dockBtn = document.getElementById('dockToggleEditBtn');
+      if (topBtn) topBtn.onclick = toggleEditMode;
+      if (dockBtn) dockBtn.onclick = toggleEditMode;
+    });
+
+    // ฟังก์ชันเปลี่ยนสีเขียวทั้งแถวเมื่อกด Checkbox
+    function syncCheckboxHighlight(checkbox) {
+      if (!checkbox) return;
+      const row = document.getElementById(`wrap_${checkbox.id}`);
+      if (!row) return;
+
+      if (checkbox.checked) {
+        row.classList.add('bg-emerald-100', 'border-emerald-500', 'text-emerald-900', 'dark:bg-emerald-950/70', 'dark:border-emerald-500', 'dark:text-emerald-200');
+        row.classList.remove('bg-white/70', 'dark:bg-slate-800/60', 'border-slate-200/80', 'dark:border-white/5');
+      } else {
+        row.classList.remove('bg-emerald-100', 'border-emerald-500', 'text-emerald-900', 'dark:bg-emerald-950/70', 'dark:border-emerald-500', 'dark:text-emerald-200');
+        row.classList.add('bg-white/70', 'dark:bg-slate-800/60', 'border-slate-200/80', 'dark:border-white/5');
+      }
+    }
+
+    // ระบบปลดล็อค / ล็อค แก้ไข Native Fieldset
+    function toggleEditMode() {
+      isEditMode = !isEditMode;
+      applyLockState();
+      if (isEditMode) {
+        showToast('ปลดล็อคแล้ว สามารถแก้ไขข้อมูลได้ ✍️', 'success');
+      } else {
+        showToast('ล็อคข้อมูลเรียบร้อยแล้ว 🔒', 'info');
+      }
+    }
+
+    function applyLockState() {
+      // ปลดล็อค / ล็อค Native Fieldset ทั้งฟอร์ม
+      const fieldset = document.getElementById('profileFieldset');
+      if (fieldset) {
+        fieldset.disabled = !isEditMode;
+      }
+
+      // อัปเดตปุ่มปลดล็อคทั้ง 2 จุด (Header & Bottom Dock)
+      const topBtn = document.getElementById('toggleEditBtn');
+      const dockBtn = document.getElementById('dockToggleEditBtn');
+      const updateButtonUI = (btn, isDock = false) => {
+        if (!btn) return;
+        if (isEditMode) {
+          btn.className = "px-3.5 py-2 sm:py-2.5 rounded-xl text-xs font-black transition-all flex items-center gap-1.5 shadow-md bg-emerald-500 hover:bg-emerald-600 text-white";
+          btn.innerHTML = `<i class="fa-solid fa-lock-open"></i><span>กำลังแก้ไข (${isDock ? 'กดล็อค' : 'กดเพื่อล็อค'})</span>`;
+        } else {
+          btn.className = "px-3.5 py-2 sm:py-2.5 rounded-xl text-xs font-bold transition-all flex items-center gap-1.5 border border-slate-200 dark:border-white/10 bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-200 shadow-sm hover:border-slate-300";
+          btn.innerHTML = `<i class="fa-solid fa-lock text-slate-400"></i><span>ปลดล็อคแก้ไข</span>`;
+        }
+      };
+
+      updateButtonUI(topBtn, false);
+      updateButtonUI(dockBtn, true);
+
+      // ควบคุมปุ่มบันทึกและปุ่มจัดการอาชีพ
+      const saveBtn = document.getElementById('saveProfileBtn');
+      const resetBtn = document.getElementById('resetBtn');
+      const openCareerBtn = document.getElementById('openCareerManagerBtn');
+
+      if (saveBtn) {
+        saveBtn.disabled = !isEditMode;
+        saveBtn.classList.toggle('opacity-50', !isEditMode);
+        saveBtn.classList.toggle('cursor-not-allowed', !isEditMode);
+      }
+      if (resetBtn) {
+        resetBtn.disabled = !isEditMode;
+        resetBtn.classList.toggle('opacity-50', !isEditMode);
+      }
+      if (openCareerBtn) {
+        openCareerBtn.disabled = !isEditMode;
+        openCareerBtn.classList.toggle('opacity-50', !isEditMode);
+      }
+    }
+
+    // ฐานข้อมูลอาชีพ
+    async function loadCareersDB() {
+      try {
+        const savedCareers = localStorage.getItem('game_careers_database');
+        careersDB = savedCareers ? JSON.parse(savedCareers) : [...DEFAULT_CAREERS];
+      } catch (e) {
+        careersDB = [...DEFAULT_CAREERS];
+      }
+      renderCareersDropdown();
+      renderCareerListTable();
+
+      await fetchCareersFromCloud();
+    }
+
+    async function fetchCareersFromCloud() {
+      if (!GOOGLE_SHEET_API_URL || GOOGLE_SHEET_API_URL.includes("PLACEHOLDER")) {
+        setCloudStatus('ใช้งานแบบออฟไลน์', 'text-slate-400');
+        return;
+      }
+
+      setCloudStatus('กำลังซิงก์ชีต...', 'text-amber-500');
+      const syncIcon = document.getElementById('syncCareersIcon');
+      if (syncIcon) syncIcon.classList.add('animate-spin');
+
+      try {
+        const res = await fetch(`${GOOGLE_SHEET_API_URL}?action=getCareers`);
+        const cloudCareers = await res.json();
+        if (Array.isArray(cloudCareers) && cloudCareers.length > 0) {
+          careersDB = cloudCareers;
+          localStorage.setItem('game_careers_database', JSON.stringify(careersDB));
+          renderCareersDropdown();
+          renderCareerListTable();
+          setCloudStatus('ชีตออนไลน์พร้อมใช้งาน', 'text-emerald-500');
+        } else {
+          setCloudStatus('ชีตออนไลน์พร้อมใช้งาน', 'text-emerald-500');
+        }
+      } catch (err) {
+        setCloudStatus('ใช้ออฟไลน์ / ติดต่อชีตไม่ได้', 'text-amber-500');
+      } finally {
+        if (syncIcon) syncIcon.classList.remove('animate-spin');
+      }
+    }
+
+    async function saveCareersDB() {
+      localStorage.setItem('game_careers_database', JSON.stringify(careersDB));
+      renderCareersDropdown();
+      renderCareerListTable();
+
+      if (!GOOGLE_SHEET_API_URL || GOOGLE_SHEET_API_URL.includes("PLACEHOLDER")) {
+        showToast('บันทึกในเครื่องแล้ว', 'info');
+        return;
+      }
+
+      setCloudStatus('กำลังบันทึกลงชีต...', 'text-amber-500');
+      try {
+        await fetch(GOOGLE_SHEET_API_URL, {
+          method: 'POST',
+          mode: 'no-cors',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            action: 'saveCareers',
+            careers: careersDB
+          })
+        });
+        setCloudStatus('ชีตออนไลน์พร้อมใช้งาน', 'text-emerald-500');
+        showToast('บันทึกฐานข้อมูลอาชีพลง Google Sheets แล้ว ☁️', 'success');
+      } catch (err) {
+        setCloudStatus('บันทึกออนไลน์ล้มเหลว', 'text-rose-500');
+        showToast('บันทึกลงชีตไม่สำเร็จ (บันทึกในเครื่องแล้ว)', 'warning');
+      }
+    }
+
+    function setCloudStatus(msg, colorClass) {
+      const el = document.getElementById('cloudCareersStatus');
+      if (el) {
+        el.innerHTML = `<i class="fa-solid fa-circle text-[7px] ${colorClass}"></i> ${msg}`;
+      }
+    }
+
+    function renderCareersDropdown() {
+      const select = document.getElementById('gameCareerSelect');
+      if (!select) return;
+      const currentSelected = select.value;
+      select.innerHTML = `<option value="">-- เลือกอาชีพในเกม --</option>` +
+        careersDB.map(c => `<option value="${c.id}">${escapeHTML(c.name)}</option>`).join('');
+      if (currentSelected && careersDB.some(c => c.id === currentSelected)) {
+        select.value = currentSelected;
+      }
+    }
+
+    function onCareerSelected(careerId) {
+      const career = careersDB.find(c => c.id === careerId);
+      if (career) {
+        document.getElementById('careerSalary').value = career.salary || 0;
+        document.getElementById('careerExpense').value = career.expense || 0;
+        showToast(`เลือกอาชีพ "${career.name}" เรียบร้อย`);
+      }
+    }
+
+    function openCareerManagerModal() {
+      resetCareerCrudForm();
+      renderCareerListTable();
+      document.getElementById('careerManagerModal').classList.remove('hidden');
+    }
+
+    function closeCareerManagerModal() {
+      document.getElementById('careerManagerModal').classList.add('hidden');
+    }
+
+    function resetCareerCrudForm() {
+      document.getElementById('crudCareerId').value = '';
+      document.getElementById('crudCareerName').value = '';
+      document.getElementById('crudCareerSalary').value = '';
+      document.getElementById('crudCareerExpense').value = '';
+      document.getElementById('crudFormTitle').innerHTML = '<i class="fa-solid fa-plus-circle"></i> เพิ่มอาชีพใหม่';
+      document.getElementById('crudSubmitBtn').innerHTML = '<i class="fa-solid fa-cloud-arrow-up"></i> บันทึกลงชีตออนไลน์';
+      document.getElementById('cancelEditCareerBtn').classList.add('hidden');
+    }
+
+    async function handleCareerFormSubmit(e) {
+      e.preventDefault();
+      const id = document.getElementById('crudCareerId').value;
+      const name = document.getElementById('crudCareerName').value.trim();
+      const salary = parseFloat(document.getElementById('crudCareerSalary').value) || 0;
+      const expense = parseFloat(document.getElementById('crudCareerExpense').value) || 0;
+
+      if (!name) return;
+
+      if (id) {
+        const idx = careersDB.findIndex(c => c.id === id);
+        if (idx !== -1) {
+          careersDB[idx] = { ...careersDB[idx], name, salary, expense };
+          showToast(`แก้ไขอาชีพ "${name}" สำเร็จ`, 'success');
+        }
+      } else {
+        const newId = `career_${Date.now()}`;
+        careersDB.push({ id: newId, name, salary, expense });
+        showToast(`เพิ่มอาชีพ "${name}" สำเร็จ`, 'success');
+      }
+
+      await saveCareersDB();
+      resetCareerCrudForm();
+    }
+
+    function startEditCareer(id) {
+      const career = careersDB.find(c => c.id === id);
+      if (!career) return;
+      document.getElementById('crudCareerId').value = career.id;
+      document.getElementById('crudCareerName').value = career.name;
+      document.getElementById('crudCareerSalary').value = career.salary || 0;
+      document.getElementById('crudCareerExpense').value = career.expense || 0;
+      document.getElementById('crudFormTitle').innerHTML = '<i class="fa-solid fa-pen"></i> กำลังแก้ไขอาชีพ';
+      document.getElementById('crudSubmitBtn').innerHTML = '<i class="fa-solid fa-check"></i> บันทึกการแก้ไขลงชีต';
+      document.getElementById('cancelEditCareerBtn').classList.remove('hidden');
+    }
+
+    async function deleteCareer(id, name) {
+      if (careersDB.length <= 1) {
+        showToast('ต้องมีอาชีพในฐานข้อมูลอย่างน้อย 1 รายการ', 'warning');
+        return;
+      }
+      if (confirm(`คุณต้องการลบอาชีพ "${name}" ออกจากระบบและ Google Sheets หรือไม่?`)) {
+        careersDB = careersDB.filter(c => c.id !== id);
+        await saveCareersDB();
+        if (document.getElementById('gameCareerSelect').value === id) {
+          document.getElementById('gameCareerSelect').value = '';
+          document.getElementById('careerSalary').value = '';
+          document.getElementById('careerExpense').value = '';
+        }
+        showToast(`ลบอาชีพ "${name}" เรียบร้อยแล้ว`, 'info');
+      }
+    }
+
+    function renderCareerListTable() {
+      const container = document.getElementById('careerListContainer');
+      const countBadge = document.getElementById('careerCountBadge');
+      if (countBadge) countBadge.innerText = careersDB.length;
+      if (!container) return;
+
+      container.innerHTML = careersDB.map((c, idx) => `
+        <div class="pt-2 flex items-center justify-between gap-2 text-xs">
+          <div class="min-w-0 flex-1">
+            <div class="font-bold text-slate-800 dark:text-white truncate">${idx + 1}. ${escapeHTML(c.name)}</div>
+            <div class="flex items-center gap-2 text-[10px] font-mono text-slate-400 mt-0.5">
+              <span class="text-green-500">เงินเดือน: ฿${(c.salary || 0).toLocaleString()}</span>
+              <span>|</span>
+              <span class="text-red-500">รายจ่าย: ฿${(c.expense || 0).toLocaleString()}</span>
+            </div>
+          </div>
+          <div class="flex items-center gap-1 shrink-0">
+            <button type="button" onclick="startEditCareer('${c.id}')" class="p-1.5 rounded-lg text-slate-400 hover:text-amber-500 hover:bg-slate-100 dark:hover:bg-slate-800 transition" title="แก้ไข">
+              <i class="fa-solid fa-pen"></i>
+            </button>
+            <button type="button" onclick="deleteCareer('${c.id}', '${escapeHTML(c.name)}')" class="p-1.5 rounded-lg text-slate-400 hover:text-red-500 hover:bg-slate-100 dark:hover:bg-slate-800 transition" title="ลบ">
+              <i class="fa-solid fa-trash-can"></i>
+            </button>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    // ฟังก์ชันอัปเดตสเตตัสหลอดพลังและตัวเลข
+    function updateStatBadge(type, value) {
+      const val = parseInt(value, 10) || 0;
+      const slider = document.getElementById(`slider${type}`);
+      const textVal = document.getElementById(`stat${type}Val`);
+      const bar = document.getElementById(`bar${type}`);
+
+      if (slider) slider.value = val;
+      if (textVal) textVal.innerText = val;
+      if (bar) bar.style.width = `${val * 10}%`;
+    }
+
+    // คำนวณสรุปรวม Dashboard KPI
+    function calculateTotalSummary() {
+      let totalPV = parseFloat(document.getElementById('personalPV')?.value) || 0;
+      let totalActive = parseFloat(document.getElementById('personalActive')?.value) || 0;
+      let totalPassive = parseFloat(document.getElementById('personalPassive')?.value) || 0;
+
+      LEGS.forEach(leg => {
+        totalPV += parseFloat(document.getElementById(`leg_${leg}_pv`)?.value) || 0;
+        totalActive += parseFloat(document.getElementById(`leg_${leg}_active`)?.value) || 0;
+        totalPassive += parseFloat(document.getElementById(`leg_${leg}_passive`)?.value) || 0;
+      });
+
+      const kpiPV = document.getElementById('kpiTotalPV');
+      const kpiAct = document.getElementById('kpiTotalActive');
+      const kpiPas = document.getElementById('kpiTotalPassive');
+
+      if (kpiPV) kpiPV.innerText = `${totalPV.toLocaleString()} PV`;
+      if (kpiAct) kpiAct.innerText = `฿${totalActive.toLocaleString()}`;
+      if (kpiPas) kpiPas.innerText = `฿${totalPassive.toLocaleString()}`;
+    }
+
+    // บันทึกข้อมูลโปรไฟล์หลัก (ไม่มีช่องวันที่)
+    function handleProfileSubmit(e) {
+      e.preventDefault();
+
+      const profileData = {
+        fullName: document.getElementById('userFullName').value.trim(),
+        phone: document.getElementById('userPhone').value.trim(),
+        email: document.getElementById('userEmail').value.trim(),
+        careerId: document.getElementById('gameCareerSelect').value,
+        salary: parseFloat(document.getElementById('careerSalary').value) || 0,
+        expense: parseFloat(document.getElementById('careerExpense').value) || 0,
+        stats: {
+          heart: parseInt(document.getElementById('sliderHeart').value, 10),
+          time: parseInt(document.getElementById('sliderTime').value, 10),
+          knowledge: parseInt(document.getElementById('sliderKnowledge').value, 10)
+        },
+        qualification: {
+          fl: [
+            document.getElementById('qualify_fl_1').checked,
+            document.getElementById('qualify_fl_2').checked,
+            document.getElementById('qualify_fl_3').checked
+          ],
+          q12: [
+            document.getElementById('qualify_12_1').checked,
+            document.getElementById('qualify_12_2').checked,
+            document.getElementById('qualify_12_3').checked,
+            document.getElementById('qualify_12_4').checked,
+            document.getElementById('qualify_12_5').checked
+          ],
+          q21: [
+            document.getElementById('qualify_21_1').checked,
+            document.getElementById('qualify_21_2').checked,
+            document.getElementById('qualify_21_3').checked,
+            document.getElementById('qualify_21_4').checked,
+            document.getElementById('qualify_21_5').checked
+          ]
+        },
+        personalAmway: {
+          pv: parseFloat(document.getElementById('personalPV').value) || 0,
+          active: parseFloat(document.getElementById('personalActive').value) || 0,
+          passive: parseFloat(document.getElementById('personalPassive').value) || 0
+        },
+        legs: {}
+      };
+
+      LEGS.forEach(leg => {
+        profileData.legs[leg] = {
+          pv: parseFloat(document.getElementById(`leg_${leg}_pv`)?.value) || 0,
+          active: parseFloat(document.getElementById(`leg_${leg}_active`)?.value) || 0,
+          passive: parseFloat(document.getElementById(`leg_${leg}_passive`)?.value) || 0
+        };
+      });
+
+      localStorage.setItem('game_user_profile', JSON.stringify(profileData));
+      showToast('บันทึกข้อมูลโปรไฟล์เรียบร้อยแล้ว ✅', 'success');
+
+      // ล็อคฟอร์มหลังบันทึก
+      isEditMode = false;
+      applyLockState();
+    }
+
+    // โหลดข้อมูลโปรไฟล์
+    function loadProfileData() {
+      try {
+        const saved = localStorage.getItem('game_user_profile');
+        if (!saved) return;
+        const data = JSON.parse(saved);
+
+        document.getElementById('userFullName').value = data.fullName || '';
+        document.getElementById('userPhone').value = data.phone || '';
+        document.getElementById('userEmail').value = data.email || '';
+
+        if (data.careerId) {
+          document.getElementById('gameCareerSelect').value = data.careerId;
+          document.getElementById('careerSalary').value = data.salary || '';
+          document.getElementById('careerExpense').value = data.expense || '';
+        }
+
+        if (data.stats) {
+          updateStatBadge('Heart', data.stats.heart ?? 5);
+          updateStatBadge('Time', data.stats.time ?? 5);
+          updateStatBadge('Knowledge', data.stats.knowledge ?? 5);
+        }
+
+        if (data.qualification) {
+          // FL (3 ข้อ)
+          const fl = Array.isArray(data.qualification.fl) ? data.qualification.fl : (data.qualification.fl?.items || []);
+          document.getElementById('qualify_fl_1').checked = !!fl[0];
+          document.getElementById('qualify_fl_2').checked = !!fl[1];
+          document.getElementById('qualify_fl_3').checked = !!fl[2];
+
+          // 12% (5 ข้อ)
+          const q12 = Array.isArray(data.qualification.q12) ? data.qualification.q12 : (data.qualification.q12?.items || []);
+          document.getElementById('qualify_12_1').checked = !!q12[0];
+          document.getElementById('qualify_12_2').checked = !!q12[1];
+          document.getElementById('qualify_12_3').checked = !!q12[2];
+          document.getElementById('qualify_12_4').checked = !!q12[3];
+          document.getElementById('qualify_12_5').checked = !!q12[4];
+
+          // 21% (5 ข้อ)
+          const q21 = Array.isArray(data.qualification.q21) ? data.qualification.q21 : (data.qualification.q21?.items || []);
+          document.getElementById('qualify_21_1').checked = !!q21[0];
+          document.getElementById('qualify_21_2').checked = !!q21[1];
+          document.getElementById('qualify_21_3').checked = !!q21[2];
+          document.getElementById('qualify_21_4').checked = !!q21[3];
+          document.getElementById('qualify_21_5').checked = !!q21[4];
+
+          // อัปเดตแถบสีเขียว
+          document.querySelectorAll('#profileForm input[type="checkbox"]').forEach(syncCheckboxHighlight);
+        }
+
+        if (data.personalAmway) {
+          document.getElementById('personalPV').value = data.personalAmway.pv || '';
+          document.getElementById('personalActive').value = data.personalAmway.active || '';
+          document.getElementById('personalPassive').value = data.personalAmway.passive || '';
+        }
+
+        if (data.legs) {
+          LEGS.forEach(leg => {
+            if (data.legs[leg]) {
+              const elPv = document.getElementById(`leg_${leg}_pv`);
+              const elAct = document.getElementById(`leg_${leg}_active`);
+              const elPas = document.getElementById(`leg_${leg}_passive`);
+              if (elPv) elPv.value = data.legs[leg].pv || '';
+              if (elAct) elAct.value = data.legs[leg].active || '';
+              if (elPas) elPas.value = data.legs[leg].passive || '';
+            }
+          });
+        }
+
+        calculateTotalSummary();
+      } catch (err) {}
+    }
+
+    // ซิงก์ผลลัพธ์จากการสุ่มหน้า index.html
+    function checkDrawResultParams() {
+      try {
+        const rawLastDraw = localStorage.getItem('last_drawn_card_result');
+        if (rawLastDraw) {
+          const card = JSON.parse(rawLastDraw);
+          if (card.activeIncome > 0) {
+            const current = parseFloat(document.getElementById('personalActive').value) || 0;
+            document.getElementById('personalActive').value = current + card.activeIncome;
+          }
+          if (card.passiveIncome > 0) {
+            const current = parseFloat(document.getElementById('personalPassive').value) || 0;
+            document.getElementById('personalPassive').value = current + card.passiveIncome;
+          }
+          calculateTotalSummary();
+          localStorage.removeItem('last_drawn_card_result');
+          showToast(`นำผลลัพธ์จากการสุ่ม "${card.title}" มาอัปเดตแล้ว! 🎉`, 'success');
+        }
+      } catch (e) {}
+    }
+
+    function confirmResetProfile() {
+      if (!isEditMode) {
+        showToast('กรุณากด "ปลดล็อคแก้ไข" ก่อนทำการล้างข้อมูล', 'warning');
+        return;
+      }
+      document.getElementById('resetConfirmModal').classList.remove('hidden');
+    }
+
+    function closeResetModal() {
+      document.getElementById('resetConfirmModal').classList.add('hidden');
+    }
+
+    function executeResetProfile() {
+      localStorage.removeItem('game_user_profile');
+      document.getElementById('profileForm').reset();
+      updateStatBadge('Heart', 5);
+      updateStatBadge('Time', 5);
+      updateStatBadge('Knowledge', 5);
+      document.querySelectorAll('#profileForm input[type="checkbox"]').forEach(syncCheckboxHighlight);
+      calculateTotalSummary();
+      closeResetModal();
+      showToast('ล้างข้อมูลเรียบร้อยแล้ว', 'info');
+    }
+
+    // Toggle Theme
+    function toggleTheme() {
+      const isDark = document.documentElement.classList.toggle('dark');
+      localStorage.setItem('rnd_theme_dark', isDark ? 'true' : 'false');
+      document.getElementById('themeIcon').className = isDark ? 'fa-solid fa-moon text-xs' : 'fa-solid fa-sun text-xs text-amber-500';
+    }
+
+    function initTheme() {
+      const isDark = localStorage.getItem('rnd_theme_dark') !== 'false';
+      document.documentElement.classList.toggle('dark', isDark);
+      document.getElementById('themeIcon').className = isDark ? 'fa-solid fa-moon text-xs' : 'fa-solid fa-sun text-xs text-amber-500';
+    }
+
+    function showToast(msg, type = 'info') {
+      const toast = document.getElementById('toastNotification');
+      document.getElementById('toastMessage').innerText = msg;
+      toast.classList.remove('translate-x-full', 'opacity-0');
+      setTimeout(() => toast.classList.add('translate-x-full', 'opacity-0'), 2500);
+    }
+
+    function escapeHTML(str) {
+      if (!str) return '';
+      return String(str).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#039;');
+    }
+  </script>
+</body>
+</html>
