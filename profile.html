@@ -33,11 +33,6 @@
               blue: '#3B82F6',
               amber: '#F59E0B'
             }
-          },
-          boxShadow: {
-            'glow-red': '0 8px 25px -4px rgba(239, 68, 68, 0.25)',
-            'glow-emerald': '0 8px 25px -4px rgba(16, 185, 129, 0.25)',
-            'glow-blue': '0 8px 25px -4px rgba(59, 130, 246, 0.25)',
           }
         }
       }
@@ -75,19 +70,24 @@
       background: linear-gradient(135deg, #F87171 0%, #EF4444 50%, #DC2626 100%);
     }
 
-    /* สไตล์เมื่ออยู่ในสถานะล็อค */
-    input:disabled, select:disabled, textarea:disabled {
-      cursor: not-allowed;
-      opacity: 0.82;
-      background-color: rgba(241, 245, 249, 0.75) !important;
-      border-color: rgba(203, 213, 225, 0.6) !important;
+    /* สถานะเมื่อล็อคฟอร์ม */
+    .form-locked input, .form-locked select, .form-locked textarea {
+      cursor: not-allowed !important;
+      opacity: 0.75 !important;
+      background-color: rgba(241, 245, 249, 0.85) !important;
+      border-color: rgba(203, 213, 225, 0.7) !important;
+      pointer-events: none !important;
     }
-    .dark input:disabled, .dark select:disabled, .dark textarea:disabled {
-      background-color: rgba(15, 23, 42, 0.45) !important;
+    .dark .form-locked input, .dark .form-locked select, .dark .form-locked textarea {
+      background-color: rgba(15, 23, 42, 0.6) !important;
       border-color: rgba(255, 255, 255, 0.06) !important;
     }
+    .form-locked input[type="range"] {
+      pointer-events: none !important;
+      opacity: 0.6 !important;
+    }
 
-    /* Range Slider ปรับให้จับง่าย */
+    /* Range Slider */
     input[type=range] {
       -webkit-appearance: none;
       background: transparent;
@@ -105,7 +105,7 @@
       border: 3.5px solid currentColor;
       transition: transform 0.15s ease;
     }
-    input[type=range]::-webkit-slider-thumb:hover { transform: scale(1.18); }
+    input[type=range]::-webkit-slider-thumb:hover { transform: scale(1.15); }
     input[type=range]::-webkit-slider-runnable-track {
       width: 100%;
       height: 6px;
@@ -116,16 +116,16 @@
       background: #1E293B;
     }
 
-    /* คลาสแถบพื้นหลังสีเขียวเมื่อติ๊ก Checkbox */
-    .checkbox-active-green {
-      background-color: rgba(16, 185, 129, 0.15) !important;
-      border-color: rgba(16, 185, 129, 0.5) !important;
+    /* แถบสีเขียวทั้งแถวเมื่อกด Checkbox */
+    .checkbox-row.active-checked {
+      background-color: #ECFDF5 !important;
+      border-color: #10B981 !important;
       color: #065F46 !important;
     }
-    .dark .checkbox-active-green {
-      background-color: rgba(16, 185, 129, 0.22) !important;
-      border-color: rgba(16, 185, 129, 0.6) !important;
-      color: #6EE7B7 !important;
+    .dark .checkbox-row.active-checked {
+      background-color: rgba(6, 78, 59, 0.45) !important;
+      border-color: #059669 !important;
+      color: #A7F3D0 !important;
     }
   </style>
 </head>
@@ -153,18 +153,18 @@
 
       <!-- Action Controls -->
       <div class="flex items-center space-x-2">
-        <button onclick="fetchCareersFromCloud()" title="ดึงข้อมูลอาชีพจาก Google Sheets" class="px-3 py-2 rounded-xl text-xs font-bold transition-all flex items-center gap-1.5 border border-slate-200 dark:border-white/10 bg-white dark:bg-slate-800 shadow-sm hover:border-slate-300 dark:hover:border-white/20">
+        <button type="button" onclick="fetchCareersFromCloud()" title="ดึงข้อมูลอาชีพจาก Google Sheets" class="px-3 py-2 rounded-xl text-xs font-bold transition-all flex items-center gap-1.5 border border-slate-200 dark:border-white/10 bg-white dark:bg-slate-800 shadow-sm hover:border-slate-300 dark:hover:border-white/20">
           <i id="syncCareersIcon" class="fa-solid fa-rotate text-xs text-amber-500"></i>
           <span class="hidden sm:inline">Sync อาชีพ</span>
         </button>
 
-        <!-- ปุ่มสลับโหมดล็อค/แก้ไข (เริ่มต้นเป็นล็อค) -->
-        <button id="toggleEditBtn" onclick="toggleEditMode()" class="px-3.5 py-2 rounded-xl text-xs font-bold transition-all flex items-center gap-1.5 border border-slate-200 dark:border-white/10 bg-white dark:bg-slate-800 shadow-sm hover:border-slate-300 dark:hover:border-white/20">
+        <!-- ปุ่มล็อค / ปลดล็อค แก้ไข -->
+        <button type="button" id="toggleEditBtn" onclick="toggleEditMode()" class="px-3.5 py-2 rounded-xl text-xs font-bold transition-all flex items-center gap-1.5 border border-slate-200 dark:border-white/10 bg-white dark:bg-slate-800 shadow-sm hover:border-slate-300 dark:hover:border-white/20">
           <i id="editIcon" class="fa-solid fa-lock text-slate-400"></i>
           <span id="editText">ปลดล็อคแก้ไข</span>
         </button>
 
-        <button onclick="toggleTheme()" class="w-9 h-9 rounded-xl border border-slate-200 dark:border-white/10 bg-white dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:text-amber-500 flex items-center justify-center shadow-sm transition">
+        <button type="button" onclick="toggleTheme()" class="w-9 h-9 rounded-xl border border-slate-200 dark:border-white/10 bg-white dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:text-amber-500 flex items-center justify-center shadow-sm transition">
           <i id="themeIcon" class="fa-solid fa-moon text-xs"></i>
         </button>
       </div>
@@ -208,10 +208,10 @@
       </div>
     </section>
 
-    <!-- FORM WRAPPER -->
-    <form id="profileForm" onsubmit="handleProfileSubmit(event)" class="space-y-5 sm:space-y-6">
+    <!-- FORM WRAPPER (ใส่คลาส form-locked เป็นค่าเริ่มต้น) -->
+    <form id="profileForm" onsubmit="handleProfileSubmit(event)" class="space-y-5 sm:space-y-6 form-locked">
 
-      <!-- SECTION 1: ข้อมูลส่วนบุคคล (จำเป็นเฉพาะ ชื่อ ส่วนเบอร์และอีเมลไม่บังคับ) -->
+      <!-- SECTION 1: ข้อมูลส่วนบุคคล -->
       <div class="glass-card rounded-3xl p-5 sm:p-7 shadow-sm space-y-4">
         <div class="flex items-center gap-3 pb-3 border-b border-slate-100 dark:border-white/5">
           <div class="w-9 h-9 rounded-xl bg-gradient-to-br from-red-500 to-rose-600 text-white flex items-center justify-center text-sm shadow-sm">
@@ -224,7 +224,6 @@
         </div>
 
         <div class="grid grid-cols-1 sm:grid-cols-3 gap-3.5 sm:gap-4">
-          <!-- ชื่อ - สกุล (จำเป็น) -->
           <div>
             <label class="block text-xs font-bold text-slate-600 dark:text-slate-300 mb-1.5">ชื่อ - นามสกุล <span class="text-red-500">*</span></label>
             <div class="relative">
@@ -232,7 +231,6 @@
               <i class="fa-solid fa-user absolute left-3 top-3 text-slate-400 text-xs"></i>
             </div>
           </div>
-          <!-- เบอร์โทรศัพท์ (ไม่บังคับ) -->
           <div>
             <label class="block text-xs font-bold text-slate-600 dark:text-slate-300 mb-1.5">เบอร์โทรศัพท์ <span class="text-slate-400 font-normal text-[11px]">(ไม่บังคับ)</span></label>
             <div class="relative">
@@ -240,7 +238,6 @@
               <i class="fa-solid fa-phone absolute left-3 top-3 text-slate-400 text-xs"></i>
             </div>
           </div>
-          <!-- อีเมล (ไม่บังคับ) -->
           <div>
             <label class="block text-xs font-bold text-slate-600 dark:text-slate-300 mb-1.5">อีเมล (Email) <span class="text-slate-400 font-normal text-[11px]">(ไม่บังคับ)</span></label>
             <div class="relative">
@@ -271,12 +268,10 @@
         </div>
 
         <div class="grid grid-cols-1 sm:grid-cols-3 gap-3.5 sm:gap-4">
-          <!-- อาชีพ (จำเป็น) -->
           <div>
             <label class="block text-xs font-bold text-slate-600 dark:text-slate-300 mb-1.5">อาชีพในเกม <span class="text-red-500">*</span></label>
             <select id="gameCareerSelect" required onchange="onCareerSelected(this.value)" class="w-full bg-slate-50 dark:bg-slate-900/60 border border-slate-200 dark:border-white/10 rounded-xl px-3 py-2.5 text-sm font-bold text-slate-800 dark:text-white focus:ring-2 focus:ring-red-500 transition"></select>
           </div>
-          <!-- เงินเดือน -->
           <div>
             <label class="block text-xs font-bold text-slate-600 dark:text-slate-300 mb-1.5">เงินเดือน (Salary / เดือน)</label>
             <div class="relative">
@@ -284,7 +279,6 @@
               <span class="absolute left-3 top-2.5 text-slate-400 font-bold text-xs">฿</span>
             </div>
           </div>
-          <!-- รายจ่ายประจำ -->
           <div>
             <label class="block text-xs font-bold text-slate-600 dark:text-slate-300 mb-1.5">รายจ่ายประจำ (Expenses / เดือน)</label>
             <div class="relative">
@@ -294,7 +288,7 @@
           </div>
         </div>
 
-        <!-- ทรัพยากร 3 ด้าน (แถบสีชัดเจน ตัวเลขใหญ่ 0-10) -->
+        <!-- ทรัพยากร 3 ด้าน -->
         <div class="p-4 sm:p-6 rounded-3xl bg-slate-50/90 dark:bg-slate-900/50 border border-slate-200/80 dark:border-white/5 space-y-4">
           <div class="flex items-center justify-between border-b border-slate-200/60 dark:border-white/5 pb-2.5">
             <span class="text-xs sm:text-sm font-black uppercase tracking-wider text-slate-700 dark:text-slate-200 flex items-center gap-2">
@@ -305,7 +299,6 @@
           </div>
 
           <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-5">
-            
             <!-- 1. สุขภาพ (หัวใจ) -->
             <div class="p-4 sm:p-5 rounded-2xl bg-white dark:bg-slate-800/90 border-2 border-red-500/30 dark:border-red-500/40 shadow-sm space-y-3.5">
               <div class="flex justify-between items-center">
@@ -318,11 +311,9 @@
                   <span class="text-xs text-slate-400 font-bold">/10</span>
                 </div>
               </div>
-
               <div class="w-full bg-slate-100 dark:bg-slate-700/80 h-3.5 rounded-full overflow-hidden p-0.5 border border-slate-200 dark:border-slate-600/50">
                 <div id="barHeart" class="h-full rounded-full bg-gradient-to-r from-red-500 to-rose-600 shadow-sm transition-all duration-300" style="width: 50%;"></div>
               </div>
-
               <input type="range" min="0" max="10" value="5" id="sliderHeart" oninput="updateStatBadge('Heart', this.value)" class="w-full text-red-500">
             </div>
 
@@ -338,11 +329,9 @@
                   <span class="text-xs text-slate-400 font-bold">/10</span>
                 </div>
               </div>
-
               <div class="w-full bg-slate-100 dark:bg-slate-700/80 h-3.5 rounded-full overflow-hidden p-0.5 border border-slate-200 dark:border-slate-600/50">
                 <div id="barTime" class="h-full rounded-full bg-gradient-to-r from-sky-400 to-blue-600 shadow-sm transition-all duration-300" style="width: 50%;"></div>
               </div>
-
               <input type="range" min="0" max="10" value="5" id="sliderTime" oninput="updateStatBadge('Time', this.value)" class="w-full text-blue-500">
             </div>
 
@@ -358,19 +347,16 @@
                   <span class="text-xs text-slate-400 font-bold">/10</span>
                 </div>
               </div>
-
               <div class="w-full bg-slate-100 dark:bg-slate-700/80 h-3.5 rounded-full overflow-hidden p-0.5 border border-slate-200 dark:border-slate-600/50">
                 <div id="barKnowledge" class="h-full rounded-full bg-gradient-to-r from-purple-500 to-indigo-600 shadow-sm transition-all duration-300" style="width: 50%;"></div>
               </div>
-
               <input type="range" min="0" max="10" value="5" id="sliderKnowledge" oninput="updateStatBadge('Knowledge', this.value)" class="w-full text-purple-500">
             </div>
-
           </div>
         </div>
       </div>
 
-      <!-- SECTION 3: เช็คลิสต์ คุณสมบัติ (เมื่อเลือก ให้เปลี่ยนแถบพื้นหลังเป็นสีเขียว) -->
+      <!-- SECTION 3: เช็คลิสต์ คุณสมบัติ (ไม่มีวันที่ & แถบสีเขียวทั้งแถว) -->
       <div class="glass-card rounded-3xl p-5 sm:p-7 shadow-sm space-y-4">
         <div class="flex items-center gap-3 pb-3 border-b border-slate-100 dark:border-white/5">
           <div class="w-9 h-9 rounded-xl bg-gradient-to-br from-emerald-500 to-teal-600 text-white flex items-center justify-center text-sm shadow-sm">
@@ -378,123 +364,102 @@
           </div>
           <div>
             <h2 class="text-base font-bold text-slate-900 dark:text-white">3. เช็คลิสต์คุณสมบัติความก้าวหน้า (Qualifications)</h2>
-            <p class="text-[11px] text-slate-400">เมื่อติ๊กเลือกข้อใด แถบพื้นหลังจะเปลี่ยนเป็นสีเขียวทันที</p>
+            <p class="text-[11px] text-slate-400">เมื่อติ๊กเลือกข้อใด แถบพื้นหลังทั้งข้อความจะเปลี่ยนเป็นสีเขียว</p>
           </div>
         </div>
 
         <div class="grid grid-cols-1 lg:grid-cols-3 gap-3.5 sm:gap-4">
           <!-- FL (3 ข้อ) -->
-          <div class="p-4 rounded-2xl border border-red-200 dark:border-red-500/20 bg-red-50/30 dark:bg-red-950/20 flex flex-col justify-between space-y-3">
-            <div class="space-y-3">
-              <div class="flex items-center justify-between border-b border-red-200 dark:border-red-500/20 pb-2">
-                <span class="text-sm font-black text-slate-900 dark:text-white flex items-center gap-2">
-                  <span class="px-2 py-0.5 rounded-lg bg-red-500 text-white text-[11px] font-mono">FL</span>
-                  <span>คุณสมบัติ FL</span>
-                </span>
-                <span class="text-[10px] font-bold text-red-500 bg-red-100 dark:bg-red-950 px-2 py-0.5 rounded-full">3 ข้อ</span>
-              </div>
-
-              <div class="space-y-2 text-xs">
-                <label id="wrap_qualify_fl_1" class="flex items-center gap-2.5 cursor-pointer p-2 rounded-xl border border-transparent transition-all duration-200">
-                  <input type="checkbox" id="qualify_fl_1" onchange="syncCheckboxHighlight(this)" class="w-4 h-4 rounded text-emerald-600 focus:ring-emerald-500 accent-emerald-500">
-                  <span class="font-medium">1. เงื่อนไข FL ข้อที่ 1</span>
-                </label>
-                <label id="wrap_qualify_fl_2" class="flex items-center gap-2.5 cursor-pointer p-2 rounded-xl border border-transparent transition-all duration-200">
-                  <input type="checkbox" id="qualify_fl_2" onchange="syncCheckboxHighlight(this)" class="w-4 h-4 rounded text-emerald-600 focus:ring-emerald-500 accent-emerald-500">
-                  <span class="font-medium">2. เงื่อนไข FL ข้อที่ 2</span>
-                </label>
-                <label id="wrap_qualify_fl_3" class="flex items-center gap-2.5 cursor-pointer p-2 rounded-xl border border-transparent transition-all duration-200">
-                  <input type="checkbox" id="qualify_fl_3" onchange="syncCheckboxHighlight(this)" class="w-4 h-4 rounded text-emerald-600 focus:ring-emerald-500 accent-emerald-500">
-                  <span class="font-medium">3. เงื่อนไข FL ข้อที่ 3</span>
-                </label>
-              </div>
+          <div class="p-4 rounded-2xl border border-red-200 dark:border-red-500/20 bg-red-50/20 dark:bg-red-950/10 space-y-3">
+            <div class="flex items-center justify-between border-b border-red-200 dark:border-red-500/20 pb-2">
+              <span class="text-sm font-black text-slate-900 dark:text-white flex items-center gap-2">
+                <span class="px-2 py-0.5 rounded-lg bg-red-500 text-white text-[11px] font-mono">FL</span>
+                <span>คุณสมบัติ FL</span>
+              </span>
+              <span class="text-[10px] font-bold text-red-500 bg-red-100 dark:bg-red-950 px-2 py-0.5 rounded-full">3 ข้อ</span>
             </div>
 
-            <div class="pt-2 border-t border-red-200 dark:border-red-500/20">
-              <label class="block text-[11px] font-bold text-slate-400 mb-1">วันที่ผ่านคุณสมบัติ</label>
-              <input type="date" id="dateFL" class="w-full bg-white dark:bg-slate-900 border border-slate-200 dark:border-white/10 rounded-xl px-2.5 py-1.5 text-xs text-slate-700 dark:text-slate-200">
+            <div class="space-y-2 text-xs">
+              <label id="wrap_qualify_fl_1" class="checkbox-row flex items-center gap-2.5 cursor-pointer p-2.5 rounded-xl border border-slate-200/80 dark:border-white/5 bg-white/70 dark:bg-slate-800/60 transition-all duration-200">
+                <input type="checkbox" id="qualify_fl_1" onchange="syncCheckboxHighlight(this)" class="w-4 h-4 rounded text-emerald-600 focus:ring-emerald-500 accent-emerald-500">
+                <span class="font-medium flex-1">1. เงื่อนไข FL ข้อที่ 1</span>
+              </label>
+              <label id="wrap_qualify_fl_2" class="checkbox-row flex items-center gap-2.5 cursor-pointer p-2.5 rounded-xl border border-slate-200/80 dark:border-white/5 bg-white/70 dark:bg-slate-800/60 transition-all duration-200">
+                <input type="checkbox" id="qualify_fl_2" onchange="syncCheckboxHighlight(this)" class="w-4 h-4 rounded text-emerald-600 focus:ring-emerald-500 accent-emerald-500">
+                <span class="font-medium flex-1">2. เงื่อนไข FL ข้อที่ 2</span>
+              </label>
+              <label id="wrap_qualify_fl_3" class="checkbox-row flex items-center gap-2.5 cursor-pointer p-2.5 rounded-xl border border-slate-200/80 dark:border-white/5 bg-white/70 dark:bg-slate-800/60 transition-all duration-200">
+                <input type="checkbox" id="qualify_fl_3" onchange="syncCheckboxHighlight(this)" class="w-4 h-4 rounded text-emerald-600 focus:ring-emerald-500 accent-emerald-500">
+                <span class="font-medium flex-1">3. เงื่อนไข FL ข้อที่ 3</span>
+              </label>
             </div>
           </div>
 
           <!-- 12% (5 ข้อ) -->
-          <div class="p-4 rounded-2xl border border-blue-200 dark:border-blue-500/20 bg-blue-50/30 dark:bg-blue-950/20 flex flex-col justify-between space-y-3">
-            <div class="space-y-3">
-              <div class="flex items-center justify-between border-b border-blue-200 dark:border-blue-500/20 pb-2">
-                <span class="text-sm font-black text-slate-900 dark:text-white flex items-center gap-2">
-                  <span class="px-2 py-0.5 rounded-lg bg-blue-500 text-white text-[11px] font-mono">12%</span>
-                  <span>คุณสมบัติ 12%</span>
-                </span>
-                <span class="text-[10px] font-bold text-blue-500 bg-blue-100 dark:bg-blue-950 px-2 py-0.5 rounded-full">5 ข้อ</span>
-              </div>
-
-              <div class="space-y-1.5 text-xs">
-                <label id="wrap_qualify_12_1" class="flex items-center gap-2.5 cursor-pointer p-2 rounded-xl border border-transparent transition-all duration-200">
-                  <input type="checkbox" id="qualify_12_1" onchange="syncCheckboxHighlight(this)" class="w-4 h-4 rounded text-emerald-600 focus:ring-emerald-500 accent-emerald-500">
-                  <span class="font-medium">1. เงื่อนไข 12% ข้อที่ 1</span>
-                </label>
-                <label id="wrap_qualify_12_2" class="flex items-center gap-2.5 cursor-pointer p-2 rounded-xl border border-transparent transition-all duration-200">
-                  <input type="checkbox" id="qualify_12_2" onchange="syncCheckboxHighlight(this)" class="w-4 h-4 rounded text-emerald-600 focus:ring-emerald-500 accent-emerald-500">
-                  <span class="font-medium">2. เงื่อนไข 12% ข้อที่ 2</span>
-                </label>
-                <label id="wrap_qualify_12_3" class="flex items-center gap-2.5 cursor-pointer p-2 rounded-xl border border-transparent transition-all duration-200">
-                  <input type="checkbox" id="qualify_12_3" onchange="syncCheckboxHighlight(this)" class="w-4 h-4 rounded text-emerald-600 focus:ring-emerald-500 accent-emerald-500">
-                  <span class="font-medium">3. เงื่อนไข 12% ข้อที่ 3</span>
-                </label>
-                <label id="wrap_qualify_12_4" class="flex items-center gap-2.5 cursor-pointer p-2 rounded-xl border border-transparent transition-all duration-200">
-                  <input type="checkbox" id="qualify_12_4" onchange="syncCheckboxHighlight(this)" class="w-4 h-4 rounded text-emerald-600 focus:ring-emerald-500 accent-emerald-500">
-                  <span class="font-medium">4. เงื่อนไข 12% ข้อที่ 4</span>
-                </label>
-                <label id="wrap_qualify_12_5" class="flex items-center gap-2.5 cursor-pointer p-2 rounded-xl border border-transparent transition-all duration-200">
-                  <input type="checkbox" id="qualify_12_5" onchange="syncCheckboxHighlight(this)" class="w-4 h-4 rounded text-emerald-600 focus:ring-emerald-500 accent-emerald-500">
-                  <span class="font-medium">5. เงื่อนไข 12% ข้อที่ 5</span>
-                </label>
-              </div>
+          <div class="p-4 rounded-2xl border border-blue-200 dark:border-blue-500/20 bg-blue-50/20 dark:bg-blue-950/10 space-y-3">
+            <div class="flex items-center justify-between border-b border-blue-200 dark:border-blue-500/20 pb-2">
+              <span class="text-sm font-black text-slate-900 dark:text-white flex items-center gap-2">
+                <span class="px-2 py-0.5 rounded-lg bg-blue-500 text-white text-[11px] font-mono">12%</span>
+                <span>คุณสมบัติ 12%</span>
+              </span>
+              <span class="text-[10px] font-bold text-blue-500 bg-blue-100 dark:bg-blue-950 px-2 py-0.5 rounded-full">5 ข้อ</span>
             </div>
 
-            <div class="pt-2 border-t border-blue-200 dark:border-blue-500/20">
-              <label class="block text-[11px] font-bold text-slate-400 mb-1">วันที่ผ่านคุณสมบัติ</label>
-              <input type="date" id="date12" class="w-full bg-white dark:bg-slate-900 border border-slate-200 dark:border-white/10 rounded-xl px-2.5 py-1.5 text-xs text-slate-700 dark:text-slate-200">
+            <div class="space-y-1.5 text-xs">
+              <label id="wrap_qualify_12_1" class="checkbox-row flex items-center gap-2.5 cursor-pointer p-2.5 rounded-xl border border-slate-200/80 dark:border-white/5 bg-white/70 dark:bg-slate-800/60 transition-all duration-200">
+                <input type="checkbox" id="qualify_12_1" onchange="syncCheckboxHighlight(this)" class="w-4 h-4 rounded text-emerald-600 focus:ring-emerald-500 accent-emerald-500">
+                <span class="font-medium flex-1">1. เงื่อนไข 12% ข้อที่ 1</span>
+              </label>
+              <label id="wrap_qualify_12_2" class="checkbox-row flex items-center gap-2.5 cursor-pointer p-2.5 rounded-xl border border-slate-200/80 dark:border-white/5 bg-white/70 dark:bg-slate-800/60 transition-all duration-200">
+                <input type="checkbox" id="qualify_12_2" onchange="syncCheckboxHighlight(this)" class="w-4 h-4 rounded text-emerald-600 focus:ring-emerald-500 accent-emerald-500">
+                <span class="font-medium flex-1">2. เงื่อนไข 12% ข้อที่ 2</span>
+              </label>
+              <label id="wrap_qualify_12_3" class="checkbox-row flex items-center gap-2.5 cursor-pointer p-2.5 rounded-xl border border-slate-200/80 dark:border-white/5 bg-white/70 dark:bg-slate-800/60 transition-all duration-200">
+                <input type="checkbox" id="qualify_12_3" onchange="syncCheckboxHighlight(this)" class="w-4 h-4 rounded text-emerald-600 focus:ring-emerald-500 accent-emerald-500">
+                <span class="font-medium flex-1">3. เงื่อนไข 12% ข้อที่ 3</span>
+              </label>
+              <label id="wrap_qualify_12_4" class="checkbox-row flex items-center gap-2.5 cursor-pointer p-2.5 rounded-xl border border-slate-200/80 dark:border-white/5 bg-white/70 dark:bg-slate-800/60 transition-all duration-200">
+                <input type="checkbox" id="qualify_12_4" onchange="syncCheckboxHighlight(this)" class="w-4 h-4 rounded text-emerald-600 focus:ring-emerald-500 accent-emerald-500">
+                <span class="font-medium flex-1">4. เงื่อนไข 12% ข้อที่ 4</span>
+              </label>
+              <label id="wrap_qualify_12_5" class="checkbox-row flex items-center gap-2.5 cursor-pointer p-2.5 rounded-xl border border-slate-200/80 dark:border-white/5 bg-white/70 dark:bg-slate-800/60 transition-all duration-200">
+                <input type="checkbox" id="qualify_12_5" onchange="syncCheckboxHighlight(this)" class="w-4 h-4 rounded text-emerald-600 focus:ring-emerald-500 accent-emerald-500">
+                <span class="font-medium flex-1">5. เงื่อนไข 12% ข้อที่ 5</span>
+              </label>
             </div>
           </div>
 
           <!-- 21% (5 ข้อ) -->
-          <div class="p-4 rounded-2xl border border-emerald-200 dark:border-emerald-500/20 bg-emerald-50/30 dark:bg-emerald-950/20 flex flex-col justify-between space-y-3">
-            <div class="space-y-3">
-              <div class="flex items-center justify-between border-b border-emerald-200 dark:border-emerald-500/20 pb-2">
-                <span class="text-sm font-black text-slate-900 dark:text-white flex items-center gap-2">
-                  <span class="px-2 py-0.5 rounded-lg bg-emerald-500 text-white text-[11px] font-mono">21%</span>
-                  <span>คุณสมบัติ 21% (Silver)</span>
-                </span>
-                <span class="text-[10px] font-bold text-emerald-500 bg-emerald-100 dark:bg-emerald-950 px-2 py-0.5 rounded-full">5 ข้อ</span>
-              </div>
-
-              <div class="space-y-1.5 text-xs">
-                <label id="wrap_qualify_21_1" class="flex items-center gap-2.5 cursor-pointer p-2 rounded-xl border border-transparent transition-all duration-200">
-                  <input type="checkbox" id="qualify_21_1" onchange="syncCheckboxHighlight(this)" class="w-4 h-4 rounded text-emerald-600 focus:ring-emerald-500 accent-emerald-500">
-                  <span class="font-medium">1. เงื่อนไข 21% ข้อที่ 1</span>
-                </label>
-                <label id="wrap_qualify_21_2" class="flex items-center gap-2.5 cursor-pointer p-2 rounded-xl border border-transparent transition-all duration-200">
-                  <input type="checkbox" id="qualify_21_2" onchange="syncCheckboxHighlight(this)" class="w-4 h-4 rounded text-emerald-600 focus:ring-emerald-500 accent-emerald-500">
-                  <span class="font-medium">2. เงื่อนไข 21% ข้อที่ 2</span>
-                </label>
-                <label id="wrap_qualify_21_3" class="flex items-center gap-2.5 cursor-pointer p-2 rounded-xl border border-transparent transition-all duration-200">
-                  <input type="checkbox" id="qualify_21_3" onchange="syncCheckboxHighlight(this)" class="w-4 h-4 rounded text-emerald-600 focus:ring-emerald-500 accent-emerald-500">
-                  <span class="font-medium">3. เงื่อนไข 21% ข้อที่ 3</span>
-                </label>
-                <label id="wrap_qualify_21_4" class="flex items-center gap-2.5 cursor-pointer p-2 rounded-xl border border-transparent transition-all duration-200">
-                  <input type="checkbox" id="qualify_21_4" onchange="syncCheckboxHighlight(this)" class="w-4 h-4 rounded text-emerald-600 focus:ring-emerald-500 accent-emerald-500">
-                  <span class="font-medium">4. เงื่อนไข 21% ข้อที่ 4</span>
-                </label>
-                <label id="wrap_qualify_21_5" class="flex items-center gap-2.5 cursor-pointer p-2 rounded-xl border border-transparent transition-all duration-200">
-                  <input type="checkbox" id="qualify_21_5" onchange="syncCheckboxHighlight(this)" class="w-4 h-4 rounded text-emerald-600 focus:ring-emerald-500 accent-emerald-500">
-                  <span class="font-medium">5. เงื่อนไข 21% ข้อที่ 5</span>
-                </label>
-              </div>
+          <div class="p-4 rounded-2xl border border-emerald-200 dark:border-emerald-500/20 bg-emerald-50/20 dark:bg-emerald-950/10 space-y-3">
+            <div class="flex items-center justify-between border-b border-emerald-200 dark:border-emerald-500/20 pb-2">
+              <span class="text-sm font-black text-slate-900 dark:text-white flex items-center gap-2">
+                <span class="px-2 py-0.5 rounded-lg bg-emerald-500 text-white text-[11px] font-mono">21%</span>
+                <span>คุณสมบัติ 21% (Silver)</span>
+              </span>
+              <span class="text-[10px] font-bold text-emerald-500 bg-emerald-100 dark:bg-emerald-950 px-2 py-0.5 rounded-full">5 ข้อ</span>
             </div>
 
-            <div class="pt-2 border-t border-emerald-200 dark:border-emerald-500/20">
-              <label class="block text-[11px] font-bold text-slate-400 mb-1">วันที่ผ่านคุณสมบัติ</label>
-              <input type="date" id="date21" class="w-full bg-white dark:bg-slate-900 border border-slate-200 dark:border-white/10 rounded-xl px-2.5 py-1.5 text-xs text-slate-700 dark:text-slate-200">
+            <div class="space-y-1.5 text-xs">
+              <label id="wrap_qualify_21_1" class="checkbox-row flex items-center gap-2.5 cursor-pointer p-2.5 rounded-xl border border-slate-200/80 dark:border-white/5 bg-white/70 dark:bg-slate-800/60 transition-all duration-200">
+                <input type="checkbox" id="qualify_21_1" onchange="syncCheckboxHighlight(this)" class="w-4 h-4 rounded text-emerald-600 focus:ring-emerald-500 accent-emerald-500">
+                <span class="font-medium flex-1">1. เงื่อนไข 21% ข้อที่ 1</span>
+              </label>
+              <label id="wrap_qualify_21_2" class="checkbox-row flex items-center gap-2.5 cursor-pointer p-2.5 rounded-xl border border-slate-200/80 dark:border-white/5 bg-white/70 dark:bg-slate-800/60 transition-all duration-200">
+                <input type="checkbox" id="qualify_21_2" onchange="syncCheckboxHighlight(this)" class="w-4 h-4 rounded text-emerald-600 focus:ring-emerald-500 accent-emerald-500">
+                <span class="font-medium flex-1">2. เงื่อนไข 21% ข้อที่ 2</span>
+              </label>
+              <label id="wrap_qualify_21_3" class="checkbox-row flex items-center gap-2.5 cursor-pointer p-2.5 rounded-xl border border-slate-200/80 dark:border-white/5 bg-white/70 dark:bg-slate-800/60 transition-all duration-200">
+                <input type="checkbox" id="qualify_21_3" onchange="syncCheckboxHighlight(this)" class="w-4 h-4 rounded text-emerald-600 focus:ring-emerald-500 accent-emerald-500">
+                <span class="font-medium flex-1">3. เงื่อนไข 21% ข้อที่ 3</span>
+              </label>
+              <label id="wrap_qualify_21_4" class="checkbox-row flex items-center gap-2.5 cursor-pointer p-2.5 rounded-xl border border-slate-200/80 dark:border-white/5 bg-white/70 dark:bg-slate-800/60 transition-all duration-200">
+                <input type="checkbox" id="qualify_21_4" onchange="syncCheckboxHighlight(this)" class="w-4 h-4 rounded text-emerald-600 focus:ring-emerald-500 accent-emerald-500">
+                <span class="font-medium flex-1">4. เงื่อนไข 21% ข้อที่ 4</span>
+              </label>
+              <label id="wrap_qualify_21_5" class="checkbox-row flex items-center gap-2.5 cursor-pointer p-2.5 rounded-xl border border-slate-200/80 dark:border-white/5 bg-white/70 dark:bg-slate-800/60 transition-all duration-200">
+                <input type="checkbox" id="qualify_21_5" onchange="syncCheckboxHighlight(this)" class="w-4 h-4 rounded text-emerald-600 focus:ring-emerald-500 accent-emerald-500">
+                <span class="font-medium flex-1">5. เงื่อนไข 21% ข้อที่ 5</span>
+              </label>
             </div>
           </div>
         </div>
@@ -537,7 +502,7 @@
         </div>
       </div>
 
-      <!-- SECTION 5: 6 สายงาน (A, B, C, D, E, F) -->
+      <!-- SECTION 5: 6 สายงาน (A, B, C, D, E, F) แสดงผลชัดเจน -->
       <div class="glass-card rounded-3xl p-5 sm:p-7 shadow-sm space-y-4">
         <div class="flex items-center justify-between pb-3 border-b border-slate-100 dark:border-white/5">
           <div class="flex items-center gap-3">
@@ -551,7 +516,9 @@
           </div>
         </div>
 
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3.5 sm:gap-4" id="legsContainer"></div>
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3.5 sm:gap-4" id="legsContainer">
+          <!-- กล่องสายงาน A-F จะถูกเรนเดอร์โดย JavaScript -->
+        </div>
       </div>
 
       <!-- FLOATING ACTION DOCK -->
@@ -579,7 +546,6 @@
   <div id="careerManagerModal" class="hidden fixed inset-0 z-50 bg-slate-950/70 backdrop-blur-sm flex items-center justify-center p-3 sm:p-4 overflow-y-auto">
     <div class="bg-white dark:bg-[#111C44] rounded-3xl max-w-lg w-full p-5 sm:p-6 shadow-2xl border border-slate-200 dark:border-white/10 space-y-4 max-h-[90vh] flex flex-col my-auto">
       
-      <!-- Modal Header -->
       <div class="flex items-center justify-between pb-3 border-b border-slate-100 dark:border-white/10">
         <div class="flex items-center gap-2.5">
           <div class="w-8 h-8 rounded-xl bg-amber-500/10 text-amber-500 flex items-center justify-center text-sm">
@@ -590,34 +556,3 @@
             <p class="text-[11px] text-slate-400">เพิ่ม, แก้ไข หรือลบข้อมูลอาชีพ ซิงก์ลง Google Sheets ทันที</p>
           </div>
         </div>
-        <button type="button" onclick="closeCareerManagerModal()" class="w-8 h-8 rounded-lg text-slate-400 hover:text-slate-600 dark:hover:text-white flex items-center justify-center">
-          <i class="fa-solid fa-xmark text-lg"></i>
-        </button>
-      </div>
-
-      <!-- ฟอร์ม เพิ่ม / แก้ไข อาชีพ -->
-      <form id="careerCrudForm" onsubmit="handleCareerFormSubmit(event)" class="p-3.5 rounded-2xl bg-slate-50 dark:bg-slate-900/60 border border-slate-200 dark:border-white/5 space-y-3">
-        <input type="hidden" id="crudCareerId">
-        
-        <div class="flex items-center justify-between">
-          <span id="crudFormTitle" class="text-xs font-black uppercase text-amber-600 dark:text-amber-400 flex items-center gap-1">
-            <i class="fa-solid fa-plus-circle"></i> เพิ่มอาชีพใหม่
-          </span>
-          <button type="button" id="cancelEditCareerBtn" onclick="resetCareerCrudForm()" class="hidden text-[10px] text-slate-400 hover:text-red-500 underline font-semibold">
-            ยกเลิกแก้ไข
-          </button>
-        </div>
-
-        <div>
-          <label class="block text-[11px] font-bold text-slate-500 mb-1">1. ชื่ออาชีพ <span class="text-red-500">*</span></label>
-          <input type="text" id="crudCareerName" required placeholder="เช่น นักธุรกิจอิสระ, นักบิน..." class="w-full bg-white dark:bg-slate-800 border border-slate-200 dark:border-white/10 rounded-xl px-3 py-2 text-xs font-bold text-slate-800 dark:text-white focus:ring-2 focus:ring-amber-500">
-        </div>
-
-        <div class="grid grid-cols-2 gap-2.5">
-          <div>
-            <label class="block text-[11px] font-bold text-slate-500 mb-1">2. เงินเดือน (฿/ด.)</label>
-            <input type="number" id="crudCareerSalary" min="0" placeholder="0" class="w-full bg-white dark:bg-slate-800 border border-slate-200 dark:border-white/10 rounded-xl px-3 py-2 text-xs font-mono font-bold text-green-500 focus:ring-2 focus:ring-green-500">
-          </div>
-          <div>
-            <label class="block text-[11px] font-bold text-slate-500 mb-1">3. รายจ่ายประจำ (฿/ด.)</label>
-            <input type="number" id="crudCareerExpense" min="0" placeholder="0" class="w-full bg-white dark:bg-slate-800 border border-slate-2
