@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-  <title>Random Data Card Hub (Category Theming Edition)</title>
+  <title>Random Data Card Hub (Clone & Edit Edition)</title>
 
   <!-- Google Fonts: Prompt & Inter -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -215,7 +215,7 @@
   <!-- Main Container -->
   <main class="flex-1 max-w-7xl w-full mx-auto px-3 sm:px-6 lg:px-8 py-4 sm:py-6">
     
-    <!-- VIEW 1: CATEGORIES HOME (แสดงการ์ดหมวดหมู่ที่มีพื้นหลังเป็นสีประจำหมวด) -->
+    <!-- VIEW 1: CATEGORIES HOME -->
     <section id="view-categories" class="space-y-6 animate-pop-in">
       <div id="homeHeroBanner" class="rounded-3xl p-6 sm:p-8 text-white shadow-xl relative overflow-hidden border border-white/10 btn-theme-action">
         <div class="relative z-10 max-w-2xl space-y-3">
@@ -238,9 +238,8 @@
             <i class="fa-solid fa-layer-group text-slate-500"></i>
             <span>หมวดหมู่ทั้งหมดในระบบ</span>
           </h2>
-          <!-- ปุ่มเปิดจัดการหมวดหมู่ -->
           <button onclick="openCategoryModal()" class="text-xs font-bold hover:underline flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-700 text-slate-700 dark:text-slate-200 shadow-sm">
-            <i class="fa-solid fa-sliders text-red-500"></i> จัดการหมวดหมู่ (ชื่อ, ไอคอน, สีพื้นหลัง)
+            <i class="fa-solid fa-sliders text-red-500"></i> จัดการหมวดหมู่
           </button>
         </div>
         <div id="categoryCardsGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3.5 sm:gap-4"></div>
@@ -262,7 +261,6 @@
         </label>
       </div>
 
-      <!-- Main Draw Card -->
       <div class="relative max-w-xl mx-auto">
         <div class="relative bg-white dark:bg-slate-800 rounded-3xl border border-slate-200 dark:border-slate-700 card-vibrant-glow p-8 sm:p-12 text-center shadow-xl space-y-8">
           <div class="space-y-3">
@@ -292,12 +290,12 @@
       </div>
     </section>
 
-    <!-- VIEW 3: DATA REPOSITORY (คลังข้อมูล) -->
+    <!-- VIEW 3: DATA REPOSITORY (คลังข้อมูลการ์ด) -->
     <section id="view-data" class="hidden space-y-4 animate-pop-in">
       <div class="bg-white/80 dark:bg-slate-800/80 backdrop-blur border border-slate-200 dark:border-slate-700 rounded-2xl p-4 shadow-sm flex flex-col md:flex-row items-stretch md:items-center justify-between gap-3">
         <div class="flex flex-wrap items-center gap-2 flex-1">
           <div class="relative flex-1 min-w-[200px]">
-            <input type="text" id="searchInput" oninput="renderDataTable()" placeholder="ค้นหาข้อมูล, หัวข้อ, การ์ดใบนี้ใช้กับ..." class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-300 dark:border-slate-700 text-sm rounded-xl pl-9 pr-3 py-2 focus:ring-2 focus:ring-red-600">
+            <input type="text" id="searchInput" oninput="renderDataTable()" placeholder="ค้นหาการ์ด, หัวข้อ, การ์ดใบนี้ใช้กับ..." class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-300 dark:border-slate-700 text-sm rounded-xl pl-9 pr-3 py-2 focus:ring-2 focus:ring-red-600">
             <i class="fa-solid fa-magnifying-glass absolute left-3 top-2.5 text-slate-400 text-xs"></i>
           </div>
           <div class="relative w-44">
@@ -306,8 +304,9 @@
           </div>
         </div>
         <div class="flex flex-wrap items-center gap-2">
+          <!-- ปุ่มสร้างการ์ดใหม่ -->
           <button onclick="openAddEditModal()" class="px-4 py-2 text-white font-semibold text-sm rounded-xl shadow-md transition flex items-center gap-2 btn-theme-action">
-            <i class="fa-solid fa-plus"></i><span>เพิ่มข้อมูลใหม่</span>
+            <i class="fa-solid fa-plus"></i><span>สร้างการ์ดใหม่</span>
           </button>
           <button onclick="fetchFromGoogleSheets(true)" class="px-3.5 py-2 bg-slate-100 dark:bg-slate-700 border border-slate-300 dark:border-slate-600 text-sm font-semibold rounded-xl hover:bg-slate-200 transition flex items-center gap-1.5">
             <i class="fa-solid fa-arrows-rotate"></i><span>รีเฟรชข้อมูล</span>
@@ -321,16 +320,17 @@
             <thead class="bg-slate-50 dark:bg-slate-900/60 border-b border-slate-200 dark:border-slate-700 text-xs uppercase font-bold text-slate-500">
               <tr>
                 <th class="py-3 px-4 w-12 text-center">#</th>
-                <th class="py-3 px-4">หัวข้อ</th>
+                <th class="py-3 px-4">ชื่อการ์ด (Card Title)</th>
                 <th class="py-3 px-4 w-36 text-indigo-500">การ์ดใบนี้ใช้กับ</th>
-                <th class="py-3 px-4 w-28 text-amber-500">โอกาสสุ่ม</th>
+                <th class="py-3 px-4 w-24 text-amber-500">โอกาสสุ่ม</th>
                 <th class="py-3 px-4 w-24 text-red-600">ราคา</th>
                 <th class="py-3 px-4 w-24 text-green-500">Active</th>
                 <th class="py-3 px-4 w-24 text-emerald-600">Passive</th>
                 <th class="py-3 px-4 w-24">หมวดหมู่</th>
                 <th class="py-3 px-4 w-28">สิ่งที่ต้องใช้</th>
                 <th class="py-3 px-4 w-28">สิ่งที่ได้รับ</th>
-                <th class="py-3 px-4 w-20 text-right">จัดการ</th>
+                <!-- คอลัมน์จัดการ: แก้ไข / Clone / ลบ -->
+                <th class="py-3 px-4 w-32 text-center">จัดการการ์ด</th>
               </tr>
             </thead>
             <tbody id="tableBodyDesktop" class="divide-y divide-slate-100 dark:divide-slate-700/60"></tbody>
@@ -339,7 +339,7 @@
         <div id="tableBodyMobile" class="md:hidden divide-y divide-slate-200 dark:divide-slate-700/60 p-2 space-y-2"></div>
         <div id="emptyDataState" class="hidden p-10 text-center space-y-3">
           <i class="fa-solid fa-inbox text-4xl text-slate-300"></i>
-          <p class="text-sm text-slate-500">ไม่พบรายการข้อมูลในคลัง กด "เพิ่มข้อมูลใหม่" เพื่อเริ่มบันทึก</p>
+          <p class="text-sm text-slate-500">ไม่พบการ์ดในคลัง กด "สร้างการ์ดใหม่" เพื่อเริ่มบันทึก</p>
         </div>
       </div>
     </section>
@@ -463,18 +463,31 @@
     </div>
   </div>
 
-  <!-- Add / Edit Modal -->
+  <!-- ============================================================ -->
+  <!-- MODAL: จัดการการ์ด (เพิ่ม / แก้ไข / โคลนการ์ด) -->
+  <!-- ============================================================ -->
   <div id="itemModal" class="hidden fixed inset-0 z-50 bg-slate-950/70 backdrop-blur-sm flex items-center justify-center p-3 sm:p-4 overflow-y-auto">
     <div class="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-3xl max-w-xl w-full p-5 sm:p-6 shadow-2xl relative my-auto animate-pop-in">
       <div class="flex items-center justify-between pb-3 border-b border-slate-100 dark:border-slate-700">
-        <h3 id="itemModalTitle" class="text-lg font-bold text-slate-900 dark:text-white flex items-center gap-2"><i class="fa-solid fa-pen-to-square text-red-600"></i><span>เพิ่มข้อมูลใหม่</span></h3>
+        <div>
+          <h3 id="itemModalTitle" class="text-lg font-bold text-slate-900 dark:text-white flex items-center gap-2">
+            <i class="fa-solid fa-pen-to-square text-red-600"></i>
+            <span>แก้ไขการ์ด</span>
+          </h3>
+          <p id="itemModalSubtitle" class="text-xs text-slate-400 mt-0.5">แก้ไขรายละเอียดการ์ดและบันทึก</p>
+        </div>
         <button onclick="closeAddEditModal()" class="w-8 h-8 rounded-lg text-slate-400 hover:text-slate-700"><i class="fa-solid fa-xmark text-lg"></i></button>
       </div>
+
       <form id="itemForm" onsubmit="handleItemFormSubmit(event)" class="space-y-4 pt-3">
+        <!-- ฟิลด์เก็บสถานะ (โหมด edit / clone) และ Snapshot ข้อมูลเดิมเพื่อตรวจสอบความเปลี่ยนแปลง -->
         <input type="hidden" id="formItemId">
+        <input type="hidden" id="formIsCloneMode" value="false">
+        <input type="hidden" id="formOriginalSnapshot" value="">
+
         <div>
-          <label class="block text-xs font-bold uppercase text-slate-600 dark:text-slate-300 mb-1">หัวข้อ / ชื่อเรื่อง <span class="text-rose-500">*</span></label>
-          <input type="text" id="formTitle" required placeholder="ระบุหัวข้อข้อมูล..." class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded-xl px-3.5 py-2.5 text-sm focus:ring-2 focus:ring-red-600">
+          <label class="block text-xs font-bold uppercase text-slate-600 dark:text-slate-300 mb-1">ชื่อการ์ด (Card Title) <span class="text-rose-500">*</span></label>
+          <input type="text" id="formTitle" required placeholder="ระบุชื่อการ์ด..." class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded-xl px-3.5 py-2.5 text-sm focus:ring-2 focus:ring-red-600">
         </div>
 
         <div class="p-3 bg-indigo-50/60 dark:bg-indigo-950/30 rounded-2xl border border-indigo-200 dark:border-indigo-800/60 space-y-2">
@@ -533,51 +546,44 @@
 
         <div class="pt-3 border-t border-slate-100 dark:border-slate-700 flex items-center justify-end gap-2">
           <button type="button" onclick="closeAddEditModal()" class="px-4 py-2 rounded-xl text-slate-600 dark:text-slate-300 text-sm font-semibold">ยกเลิก</button>
-          <button type="submit" class="px-5 py-2 rounded-xl text-white text-sm font-semibold shadow btn-theme-action">บันทึกข้อมูลลงชีต</button>
+          <button type="submit" id="formSubmitBtn" class="px-5 py-2 rounded-xl text-white text-sm font-semibold shadow btn-theme-action">
+            บันทึกข้อมูล
+          </button>
         </div>
       </form>
     </div>
   </div>
 
-  <!-- ============================================================ -->
-  <!-- MODAL: จัดการหมวดหมู่ (แก้ไขชื่อ, เปลี่ยนไอคอน, เปลี่ยนสีประจำหมวด) -->
-  <!-- ============================================================ -->
+  <!-- CATEGORY MANAGER MODAL -->
   <div id="categoryModal" class="hidden fixed inset-0 z-50 bg-slate-950/70 backdrop-blur-sm flex items-center justify-center p-3 sm:p-4 overflow-y-auto">
     <div class="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-3xl max-w-lg w-full p-5 sm:p-6 shadow-2xl relative my-auto animate-pop-in space-y-4">
       <div class="flex items-center justify-between pb-3 border-b border-slate-100 dark:border-slate-700">
         <div>
           <h3 class="text-base font-bold text-slate-900 dark:text-white flex items-center gap-2">
             <i class="fa-solid fa-folder-tree text-red-600"></i>
-            <span>จัดการหมวดหมู่ (ชื่อ, ไอคอน, สีประจำหมวด)</span>
+            <span>จัดการหมวดหมู่</span>
           </h3>
-          <p class="text-xs text-slate-400 mt-0.5">สีที่เลือกจะถูกนำไปใช้เป็นพื้นหลังของการ์ดหมวดหมู่ที่หน้าแรก</p>
+          <p class="text-xs text-slate-400 mt-0.5">สีที่เลือกจะแสดงเป็นพื้นหลังการ์ดที่หน้าแรก</p>
         </div>
         <button onclick="closeCategoryModal()" class="w-8 h-8 rounded-lg text-slate-400 hover:text-slate-700"><i class="fa-solid fa-xmark"></i></button>
       </div>
 
-      <!-- ฟอร์มเพิ่มหมวดหมู่ใหม่ -->
       <div class="p-3 rounded-2xl bg-slate-50 dark:bg-slate-900/60 border border-slate-200 dark:border-slate-700 space-y-2">
         <span class="text-xs font-bold uppercase text-slate-500 block">เพิ่มหมวดหมู่ใหม่</span>
         <div class="flex items-center gap-2">
-          <!-- ปุ่มเลือกสีหมวดใหม่ -->
           <button type="button" onclick="openColorPicker(-1)" title="เลือกสีประจำหมวดหมู่" class="w-9 h-9 rounded-xl border border-slate-300 dark:border-slate-600 flex items-center justify-center shrink-0 shadow-sm transition hover:scale-105" id="newCatColorBtn">
             <span id="newCatColorPill" class="w-5 h-5 rounded-full shadow-inner bg-red-600"></span>
           </button>
-
-          <!-- ปุ่มเลือกไอคอนหมวดใหม่ -->
-          <button type="button" onclick="openIconPicker(-1)" title="เลือกไอคอนประจำหมวดหมู่" class="w-9 h-9 rounded-xl bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-600 text-slate-700 dark:text-slate-200 flex items-center justify-center text-sm shrink-0 shadow-sm transition hover:scale-105">
+          <button type="button" onclick="openIconPicker(-1)" title="เลือกไอคอน" class="w-9 h-9 rounded-xl bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-600 text-slate-700 dark:text-slate-200 flex items-center justify-center text-sm shrink-0 shadow-sm transition hover:scale-105">
             <i id="newCatIconPreview" class="fa-solid fa-folder"></i>
           </button>
-
           <input type="text" id="newCategoryInput" placeholder="ระบุชื่อหมวดหมู่..." class="flex-1 bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-700 rounded-xl px-3 py-2 text-xs font-bold text-slate-800 dark:text-white focus:ring-2 focus:ring-red-600">
-          
           <button onclick="handleAddCategory()" class="px-4 py-2 text-white rounded-xl text-xs font-bold shrink-0 shadow btn-theme-action">
             <i class="fa-solid fa-plus mr-1"></i>เพิ่ม
           </button>
         </div>
       </div>
 
-      <!-- รายการหมวดหมู่ทั้งหมดในระบบ -->
       <div class="space-y-1">
         <span class="text-[11px] font-bold uppercase tracking-wider text-slate-400">รายการหมวดหมู่ (<span id="catModalCountBadge">0</span>)</span>
         <div class="max-h-64 overflow-y-auto divide-y divide-slate-100 dark:divide-slate-700/60 pr-1" id="categoryListContainer"></div>
@@ -585,16 +591,16 @@
     </div>
   </div>
 
-  <!-- COLOR PICKER MODAL (30 เฉดสี สำหรับเปลี่ยนสีพื้นหลังประจำหมวดหมู่) -->
+  <!-- COLOR PICKER MODAL -->
   <div id="colorPickerModal" class="hidden fixed inset-0 z-50 bg-slate-950/70 backdrop-blur-sm flex items-center justify-center p-4">
     <div class="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-3xl max-w-lg w-full p-5 shadow-2xl relative animate-pop-in space-y-4">
       <div class="flex items-center justify-between pb-2 border-b border-slate-100 dark:border-slate-700">
         <div>
           <h4 class="font-bold text-sm text-slate-800 dark:text-white flex items-center gap-2">
             <i class="fa-solid fa-palette text-red-600"></i>
-            <span>เลือกสีประจำหมวดหมู่ (แสดงเป็นพื้นหลังหน้าแรก)</span>
+            <span>เลือกสีประจำหมวดหมู่</span>
           </h4>
-          <p class="text-xs text-slate-400 mt-0.5">คลิกเลือกสีที่ต้องการสำหรับหมวดหมู่นี้</p>
+          <p class="text-xs text-slate-400 mt-0.5">สีนี้จะแสดงเป็นพื้นหลังการ์ดที่หน้าแรก</p>
         </div>
         <button onclick="closeColorPicker()" class="w-7 h-7 rounded-lg text-slate-400 hover:text-slate-700 flex items-center justify-center">
           <i class="fa-solid fa-xmark"></i>
@@ -604,7 +610,7 @@
     </div>
   </div>
 
-  <!-- ICON PICKER MODAL (สำหรับเปลี่ยนไอคอนประจำหมวดหมู่) -->
+  <!-- ICON PICKER MODAL -->
   <div id="iconPickerModal" class="hidden fixed inset-0 z-50 bg-slate-950/70 backdrop-blur-sm flex items-center justify-center p-4">
     <div class="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-3xl max-w-md w-full p-5 shadow-2xl relative animate-pop-in space-y-3">
       <div class="flex items-center justify-between pb-2 border-b border-slate-100 dark:border-slate-700">
@@ -667,7 +673,6 @@
             <i class="fa-solid fa-download text-emerald-500"></i>
             <span>Export (ส่งออก)</span>
           </button>
-
           <button onclick="triggerImportDatabase()" class="w-full py-2 px-3 rounded-xl bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-600 hover:border-blue-500 text-slate-700 dark:text-slate-200 text-xs font-bold flex items-center justify-center gap-1.5 shadow-sm transition">
             <i class="fa-solid fa-upload text-blue-500"></i>
             <span>Import (นำเข้า)</span>
@@ -754,7 +759,6 @@
     let isDrawing = false;
     let soundEnabled = true;
 
-    // ระบบสี 30 เฉดสีสำหรับใช้เป็นสีประจำหมวดหมู่และพื้นหลังหน้าแรก
     const COLOR_PALETTES = {
       red: { id: "red", name: "1. แดงทับทิม", hex: "#EF4444", gradient: "linear-gradient(135deg, #EF4444 0%, #DC2626 50%, #991B1B 100%)", badge: "bg-red-100 text-red-800 dark:bg-red-950/80 dark:text-red-300" },
       crimson: { id: "crimson", name: "2. แดงเข้มคริมสัน", hex: "#BE123C", gradient: "linear-gradient(135deg, #F43F5E 0%, #BE123C 50%, #881337 100%)", badge: "bg-rose-100 text-rose-900 dark:bg-rose-950/80 dark:text-rose-300" },
@@ -846,9 +850,6 @@
       renderCategoryHomeCards();
     }
 
-    /* ==========================================================================
-       SYNC CLOUD: ดึงข้อมูลมาแสดงผลเท่านั้น (READ-ONLY)
-       ========================================================================== */
     async function fetchFromGoogleSheets(isManual = false) {
       if (!GOOGLE_SHEET_API_URL || GOOGLE_SHEET_API_URL.includes("PLACEHOLDER")) {
         setCloudStatus('ใช้งานแบบออฟไลน์', 'text-slate-400');
@@ -901,9 +902,6 @@
       }
     }
 
-    /* ==========================================================================
-       PUSH TO GOOGLE SHEETS: จะทำงานเมื่อผู้ใช้กด เพิ่ม/ลบ/แก้ไข เท่านั้น
-       ========================================================================== */
     async function pushToGoogleSheets() {
       saveLocalCache();
       if (!GOOGLE_SHEET_API_URL || GOOGLE_SHEET_API_URL.includes("PLACEHOLDER")) return;
@@ -946,9 +944,6 @@
       if (el) el.innerText = items.length;
     }
 
-    /* ==========================================================================
-       เรนเดอร์การ์ดหมวดหมู่ที่หน้าแรก: นำสีประจำหมวดมาแสดงเป็นพื้นหลังการ์ด
-       ========================================================================== */
     function renderCategoryHomeCards() {
       const grid = document.getElementById('categoryCardsGrid');
       if (!grid) return;
@@ -978,9 +973,7 @@
 
         html += `
           <div onclick="selectCategoryAndDraw('${escapeHTML(cat.name)}')" class="group cursor-pointer rounded-3xl p-6 text-white shadow-lg hover:shadow-2xl hover:-translate-y-1 transition duration-300 flex flex-col justify-between border border-white/20 relative overflow-hidden" style="background: ${meta.theme.gradient};">
-            <!-- เอฟเฟกต์ตกแต่งวงกลมโปร่งแสงด้านหลัง -->
             <div class="absolute -right-6 -bottom-6 w-28 h-28 rounded-full bg-white/10 pointer-events-none blur-xl"></div>
-
             <div class="relative z-10">
               <div class="flex items-center justify-between mb-4">
                 <div class="w-12 h-12 rounded-2xl bg-white/25 backdrop-blur-md flex items-center justify-center text-xl shadow text-white">
@@ -1108,6 +1101,9 @@
       document.getElementById('resultModal').classList.add('hidden');
     }
 
+    /* ==========================================================================
+       เรนเดอร์ตารางคลังข้อมูลการ์ด (มีทั้งปุ่มแก้ไข, ปุ่ม Clone, และปุ่มลบ)
+       ========================================================================== */
     function renderDataTable() {
       const query = (document.getElementById('searchInput')?.value || '').toLowerCase().trim();
       const filterCat = document.getElementById('tableCategoryFilter')?.value || 'ALL';
@@ -1143,8 +1139,19 @@
             <td class="py-3 px-4"><span class="text-xs px-2.5 py-1 rounded-full font-semibold border ${getCategoryMeta(item.category).theme.badge}">${escapeHTML(item.category)}</span></td>
             <td class="py-3 px-4 text-xs font-mono text-slate-400"><i class="fa-solid fa-heart text-red-500"></i> ${item.cost?.heart||0} | <i class="fa-solid fa-clock"></i> ${item.cost?.time||0} | <i class="fa-solid fa-book text-purple-500"></i> ${item.cost?.knowledge||0}</td>
             <td class="py-3 px-4 text-xs font-mono text-slate-400"><i class="fa-solid fa-heart text-red-500"></i> +${item.reward?.heart||0} | <i class="fa-solid fa-clock"></i> +${item.reward?.time||0} | <i class="fa-solid fa-book text-purple-500"></i> +${item.reward?.knowledge||0}</td>
-            <td class="py-3 px-4 text-right">
-              <button onclick="confirmDeleteItem('${item.id}')" class="p-1.5 text-slate-400 hover:text-red-500"><i class="fa-solid fa-trash-can text-xs"></i></button>
+            <td class="py-3 px-4 text-center space-x-1 whitespace-nowrap">
+              <!-- ปุ่มแก้ไขการ์ด -->
+              <button onclick="openAddEditModal('${item.id}', false)" class="p-1.5 text-slate-400 hover:text-blue-500 transition" title="แก้ไขการ์ดนี้">
+                <i class="fa-solid fa-pen text-xs"></i>
+              </button>
+              <!-- ปุ่ม Clone การ์ด -->
+              <button onclick="openAddEditModal('${item.id}', true)" class="p-1.5 text-slate-400 hover:text-emerald-500 transition" title="Clone การ์ดนี้เป็นใบใหม่">
+                <i class="fa-solid fa-copy text-xs"></i>
+              </button>
+              <!-- ปุ่มลบการ์ด -->
+              <button onclick="confirmDeleteItem('${item.id}')" class="p-1.5 text-slate-400 hover:text-red-500 transition" title="ลบการ์ดนี้">
+                <i class="fa-solid fa-trash-can text-xs"></i>
+              </button>
             </td>
           </tr>
         `).join('');
@@ -1152,16 +1159,21 @@
 
       if (mobileList) {
         mobileList.innerHTML = filtered.map(item => `
-          <div class="p-3 bg-white dark:bg-slate-800 rounded-xl space-y-1.5 border border-slate-100 dark:border-slate-700">
+          <div class="p-3 bg-white dark:bg-slate-800 rounded-xl space-y-2 border border-slate-100 dark:border-slate-700">
             <div class="flex justify-between items-start">
               <div>
                 <span class="text-[10px] px-2 py-0.5 rounded-full font-semibold border ${getCategoryMeta(item.category).theme.badge}">${escapeHTML(item.category)}</span>
                 <h4 class="font-bold text-sm text-slate-800 dark:text-white mt-1">${escapeHTML(item.title)}</h4>
               </div>
-              <button onclick="confirmDeleteItem('${item.id}')" class="p-1 text-slate-400 hover:text-red-500"><i class="fa-solid fa-trash-can text-xs"></i></button>
+              <div class="flex items-center gap-1">
+                <button onclick="openAddEditModal('${item.id}', false)" class="p-1.5 text-slate-400 hover:text-blue-500" title="แก้ไข"><i class="fa-solid fa-pen text-xs"></i></button>
+                <button onclick="openAddEditModal('${item.id}', true)" class="p-1.5 text-slate-400 hover:text-emerald-500" title="Clone"><i class="fa-solid fa-copy text-xs"></i></button>
+                <button onclick="confirmDeleteItem('${item.id}')" class="p-1.5 text-slate-400 hover:text-red-500" title="ลบ"><i class="fa-solid fa-trash-can text-xs"></i></button>
+              </div>
             </div>
-            <div class="text-xs font-mono text-slate-400">
-              ราคา: ฿${item.price || 0} | ใช้: <i class="fa-solid fa-book text-purple-400"></i> ${item.cost?.knowledge||0}
+            <div class="flex items-center justify-between text-xs font-mono text-slate-400">
+              <span>ราคา: ฿${item.price || 0}</span>
+              <span>ใช้: <i class="fa-solid fa-book text-purple-400"></i> ${item.cost?.knowledge||0}</span>
             </div>
           </div>
         `).join('');
@@ -1180,10 +1192,72 @@
       document.getElementById('legSelectWrapper').classList.toggle('hidden', type !== 'leg');
     }
 
-    function openAddEditModal() {
+    /* ==========================================================================
+       เปิดหน้าต่าง MODAL จัดการการ์ด (รองรับทั้ง สร้างใหม่ / แก้ไข / โคลน)
+       ========================================================================== */
+    function openAddEditModal(itemId = null, isClone = false) {
       document.getElementById('itemForm').reset();
-      document.getElementById('formItemId').value = '';
       updateCategoryDropdowns();
+
+      const modalTitle = document.getElementById('itemModalTitle');
+      const modalSubtitle = document.getElementById('itemModalSubtitle');
+      const submitBtn = document.getElementById('formSubmitBtn');
+
+      if (itemId) {
+        const item = items.find(i => i.id === itemId);
+        if (!item) return;
+
+        document.getElementById('formTitle').value = item.title || '';
+        document.getElementById('formTargetType').value = item.targetType || (item.targetLeg ? 'leg' : 'personal');
+        document.getElementById('formTargetLeg').value = item.targetLeg || 'A';
+        onTargetTypeChange();
+
+        document.getElementById('formCategory').value = item.category || categories[0]?.name;
+        document.getElementById('formPrice').value = item.price || '';
+        document.getElementById('formWeight').value = item.weight || 10;
+        document.getElementById('formActiveIncome').value = item.activeIncome || '';
+        document.getElementById('formPassiveIncome').value = item.passiveIncome || '';
+        document.getElementById('formDescription').value = item.description || '';
+
+        if (isClone) {
+          // โหมด CLONE การ์ด: ล้าง ID เพื่อให้บันทึกเป็นใบใหม่ และบันทึก Snapshot ไว้ตรวจสอบ
+          document.getElementById('formItemId').value = '';
+          document.getElementById('formIsCloneMode').value = 'true';
+          
+          // บันทึก Snapshot ข้อมูลเดิมเป็นสตริงเพื่อตรวจจับว่าผู้ใช้เปลี่ยนข้อมูลหรือไม่
+          const originalSnap = getCurrentFormSnapshot();
+          document.getElementById('formOriginalSnapshot').value = originalSnap;
+
+          modalTitle.innerHTML = `<i class="fa-solid fa-copy text-emerald-500"></i><span>โคลนการ์ดใบใหม่ (Clone Card)</span>`;
+          modalSubtitle.innerText = `ดึงข้อมูลจากการ์ด "${item.title}" กรุณาปรับเปลี่ยนข้อมูลก่อนบันทึกเป็นใบใหม่`;
+          submitBtn.innerHTML = `<i class="fa-solid fa-plus-circle mr-1"></i>บันทึกเป็นการ์ดใบใหม่`;
+          submitBtn.className = "px-5 py-2 rounded-xl text-white text-sm font-semibold shadow bg-emerald-600 hover:bg-emerald-700 transition";
+        } else {
+          // โหมด EDIT การ์ดเดิม
+          document.getElementById('formItemId').value = item.id;
+          document.getElementById('formIsCloneMode').value = 'false';
+          document.getElementById('formOriginalSnapshot').value = '';
+
+          modalTitle.innerHTML = `<i class="fa-solid fa-pen-to-square text-red-600"></i><span>แก้ไขข้อมูลการ์ด</span>`;
+          modalSubtitle.innerText = `แก้ไขรายละเอียดการ์ด #${item.id}`;
+          submitBtn.innerHTML = `<i class="fa-solid fa-cloud-arrow-up mr-1"></i>บันทึกการแก้ไขลงชีต`;
+          submitBtn.className = "px-5 py-2 rounded-xl text-white text-sm font-semibold shadow btn-theme-action";
+        }
+      } else {
+        // โหมด สร้างการ์ดใหม่ตั้งแต่ต้น
+        document.getElementById('formItemId').value = '';
+        document.getElementById('formIsCloneMode').value = 'false';
+        document.getElementById('formOriginalSnapshot').value = '';
+        document.getElementById('formTargetType').value = 'personal';
+        document.getElementById('formTargetLeg').value = 'A';
+        onTargetTypeChange();
+
+        modalTitle.innerHTML = `<i class="fa-solid fa-plus text-red-600"></i><span>สร้างการ์ดใหม่</span>`;
+        modalSubtitle.innerText = `กรอกข้อมูลการ์ดใหม่และบันทึกลงชีต`;
+        submitBtn.innerHTML = `<i class="fa-solid fa-cloud-arrow-up mr-1"></i>บันทึกการ์ดใหม่`;
+        submitBtn.className = "px-5 py-2 rounded-xl text-white text-sm font-semibold shadow btn-theme-action";
+      }
+
       document.getElementById('itemModal').classList.remove('hidden');
     }
 
@@ -1191,8 +1265,37 @@
       document.getElementById('itemModal').classList.add('hidden');
     }
 
+    // ฟังก์ชันรวบรวมค่าปัจจุบันในฟอร์มเป็น Snapshot เพื่อตรวจสอบความเปลี่ยนแปลง
+    function getCurrentFormSnapshot() {
+      return JSON.stringify({
+        title: document.getElementById('formTitle').value.trim(),
+        targetType: document.getElementById('formTargetType').value,
+        targetLeg: document.getElementById('formTargetLeg').value,
+        category: document.getElementById('formCategory').value,
+        price: parseFloat(document.getElementById('formPrice').value) || 0,
+        weight: parseInt(document.getElementById('formWeight').value, 10) || 10,
+        activeIncome: parseFloat(document.getElementById('formActiveIncome').value) || 0,
+        passiveIncome: parseFloat(document.getElementById('formPassiveIncome').value) || 0,
+        description: document.getElementById('formDescription').value.trim()
+      });
+    }
+
+    // บันทึกฟอร์มการ์ด (ตรวจสอบกรณี Clone แล้วไม่มีการเปลี่ยนแปลง)
     function handleItemFormSubmit(e) {
       e.preventDefault();
+
+      const isClone = document.getElementById('formIsCloneMode').value === 'true';
+      const originalSnapshot = document.getElementById('formOriginalSnapshot').value;
+      const currentSnapshot = getCurrentFormSnapshot();
+
+      // ตรวจสอบเงื่อนไข: หากเป็นโหมด Clone แต่ไม่มีการเปลี่ยนแปลงข้อมูล ให้ Pop-up เตือนทันที
+      if (isClone && originalSnapshot && originalSnapshot === currentSnapshot) {
+        alert("⚠️ ไม่พบการเปลี่ยนแปลงข้อมูล!\n\nกรุณาแก้ไขหรือปรับเปลี่ยนข้อมูลของการ์ดอย่างน้อย 1 รายการ (เช่น ชื่อการ์ด, ราคา, หรือรายละเอียด) ก่อนกดบันทึกเป็นใบใหม่ครับ");
+        document.getElementById('formTitle').focus();
+        return;
+      }
+
+      const id = document.getElementById('formItemId').value;
       const title = document.getElementById('formTitle').value.trim();
       const targetType = document.getElementById('formTargetType').value;
       const targetLeg = targetType === 'leg' ? document.getElementById('formTargetLeg').value : '';
@@ -1203,34 +1306,48 @@
       const passiveIncome = parseFloat(document.getElementById('formPassiveIncome').value) || 0;
       const description = document.getElementById('formDescription').value.trim();
 
-      items.unshift({
-        id: `c-${Date.now().toString().slice(-4)}`,
-        title, targetType, targetLeg, category, price, weight,
-        activeIncome, passiveIncome, description,
-        cost: { heart: 1, time: 1, knowledge: 1 },
-        reward: { heart: 2, time: 2, knowledge: 2 }
-      });
+      if (id && !isClone) {
+        // แก้ไขการ์ดเดิม
+        const idx = items.findIndex(i => i.id === id);
+        if (idx !== -1) {
+          items[idx] = {
+            ...items[idx],
+            title, targetType, targetLeg, category, price, weight,
+            activeIncome, passiveIncome, description
+          };
+          showToast(`บันทึกการแก้ไขการ์ด "${title}" เรียบร้อย`, 'success');
+        }
+      } else {
+        // เพิ่มการ์ดใบใหม่ (จากการสร้างใหม่ หรือ โคลน)
+        const newCard = {
+          id: `c-${Date.now().toString().slice(-4)}`,
+          title, targetType, targetLeg, category, price, weight,
+          activeIncome, passiveIncome, description,
+          cost: { heart: 1, time: 1, knowledge: 1 },
+          reward: { heart: 2, time: 2, knowledge: 2 }
+        };
+        items.unshift(newCard);
+        showToast(isClone ? `โคลนการ์ดใบใหม่ "${title}" เรียบร้อยแล้ว! 🎉` : `สร้างการ์ดใหม่เรียบร้อยแล้ว`, 'success');
+      }
 
+      // สั่งบันทึกลงชีตเฉพาะเมื่อมีการกดบันทึกโดยผู้ใช้
       pushToGoogleSheets();
       resetPool();
       renderDataTable();
       closeAddEditModal();
-      showToast('เพิ่มการ์ดใหม่และบันทึกลงชีตเรียบร้อยแล้ว', 'success');
     }
 
     function confirmDeleteItem(id) {
-      if (confirm('คุณต้องการลบข้อมูลนี้หรือไม่?')) {
+      if (confirm('คุณต้องการลบการ์ดนี้หรือไม่?')) {
         items = items.filter(i => i.id !== id);
         pushToGoogleSheets();
         resetPool();
         renderDataTable();
-        showToast('ลบข้อมูลเรียบร้อยแล้ว', 'info');
+        showToast('ลบการ์ดเรียบร้อยแล้ว', 'info');
       }
     }
 
-    /* ==========================================================================
-       จัดการหมวดหมู่: แก้ไขชื่อ, ไอคอน, สีประจำหมวด (พร้อมปุ่มครบถ้วน)
-       ========================================================================== */
+    /* === จัดการหมวดหมู่ === */
     function openCategoryModal() {
       newCategorySelectedIcon = "fa-folder";
       newCategorySelectedColor = "red";
@@ -1265,35 +1382,24 @@
         return `
           <div class="py-2.5 flex items-center justify-between gap-2 hover:bg-slate-50 dark:hover:bg-slate-700/40 px-2 rounded-xl transition">
             <div class="flex items-center gap-2 flex-1 min-w-0">
-              <!-- ปุ่มกดเปลี่ยนสีประจำหมวด -->
               <button type="button" onclick="openColorPicker(${idx})" title="คลิกเพื่อเปลี่ยนสีประจำหมวด" class="w-7 h-7 rounded-lg shadow-sm border border-slate-300 dark:border-slate-600 hover:scale-105 transition shrink-0" style="background: ${meta.theme.gradient};"></button>
-
-              <!-- ปุ่มกดเปลี่ยนไอคอน -->
               <button type="button" onclick="openIconPicker(${idx})" title="คลิกเพื่อเปลี่ยนไอคอน" class="w-8 h-8 rounded-lg bg-slate-100 dark:bg-slate-700 border border-slate-200 dark:border-slate-600 flex items-center justify-center text-sm text-slate-700 dark:text-slate-200 hover:scale-105 transition shrink-0">
                 <i class="fa-solid ${escapeHTML(meta.icon)}"></i>
               </button>
-
-              <span class="text-xs sm:text-sm font-bold text-slate-800 dark:text-white truncate" title="${escapeHTML(cat.name)}">
-                ${escapeHTML(cat.name)}
-              </span>
+              <span class="text-xs sm:text-sm font-bold text-slate-800 dark:text-white truncate" title="${escapeHTML(cat.name)}">${escapeHTML(cat.name)}</span>
               <span class="text-[11px] text-slate-400 font-mono">(${count})</span>
             </div>
 
             <div class="flex items-center gap-1 shrink-0">
-              <!-- ปุ่มจัดเรียงขึ้น / ลง -->
               <button type="button" onclick="moveCategoryOrder(${idx}, -1)" ${isFirst ? 'disabled class="p-1 text-slate-300 dark:text-slate-600 cursor-not-allowed"' : 'class="p-1 text-slate-400 hover:text-red-500"'} title="เลื่อนขึ้น">
                 <i class="fa-solid fa-arrow-up text-xs"></i>
               </button>
               <button type="button" onclick="moveCategoryOrder(${idx}, 1)" ${isLast ? 'disabled class="p-1 text-slate-300 dark:text-slate-600 cursor-not-allowed"' : 'class="p-1 text-slate-400 hover:text-red-500"'} title="เลื่อนลง">
                 <i class="fa-solid fa-arrow-down text-xs"></i>
               </button>
-
-              <!-- ปุ่มแก้ไขชื่อหมวดหมู่ -->
               <button type="button" onclick="promptRenameCategory(${idx})" class="p-1.5 text-slate-400 hover:text-blue-500 transition" title="แก้ไขชื่อหมวดหมู่">
                 <i class="fa-solid fa-pen text-xs"></i>
               </button>
-
-              <!-- ปุ่มลบหมวดหมู่ -->
               <button type="button" onclick="handleDeleteCategory('${escapeHTML(cat.name)}', ${count})" class="p-1.5 text-slate-400 hover:text-red-500 transition" title="ลบหมวดหมู่">
                 <i class="fa-solid fa-trash-can text-xs"></i>
               </button>
@@ -1343,7 +1449,6 @@
       }
 
       categories[index].name = cleanNew;
-      // อัปเดตรายการการ์ดที่มีชื่อหมวดเดิมให้เป็นชื่อใหม่
       items.forEach(it => {
         if (it.category === oldName) it.category = cleanNew;
       });
@@ -1404,7 +1509,6 @@
       }
     }
 
-    /* === แผงเลือกสี (Color Picker) === */
     function renderColorPickerGrid() {
       const grid = document.getElementById('colorPickerGrid');
       grid.innerHTML = Object.values(COLOR_PALETTES).map(palette => `
@@ -1446,7 +1550,6 @@
       closeColorPicker();
     }
 
-    /* === แผงเลือกไอคอน (Icon Picker) === */
     function renderIconPickerGrid() {
       const grid = document.getElementById('iconPickerGrid');
       grid.innerHTML = ICON_PRESETS.map(icon => `
@@ -1539,7 +1642,7 @@
             renderHistoryList();
 
             closeSettingModal();
-            showToast('นำเข้าและกู้คืนฐานข้อมูลสำเร็จ 📤✅', 'success');
+            showToast('นำเข้าและกู้คืนฐานข้อมูลสำเร็จแล้ว 📤✅', 'success');
           }
         } catch (err) {
           showToast('ไม่สามารถอ่านไฟล์ JSON ได้', 'danger');
