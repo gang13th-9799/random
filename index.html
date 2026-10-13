@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-  <title>Random Data Card Hub (Home Category Selector)</title>
+  <title>Random Data Card Hub</title>
 
   <!-- Google Fonts: Prompt & Inter -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -143,15 +143,6 @@
     .dark input[type=range]::-webkit-slider-runnable-track {
       background: #334155;
     }
-
-    /* ซ่อน Scrollbar ของแถบเลือกด่วนแต่ยังเลื่อนได้ */
-    .no-scrollbar::-webkit-scrollbar {
-      display: none;
-    }
-    .no-scrollbar {
-      -ms-overflow-style: none;
-      scrollbar-width: none;
-    }
   </style>
 </head>
 <body class="text-slate-800 dark:text-slate-100 min-h-screen flex flex-col font-sans transition-colors duration-200 pb-20 md:pb-6">
@@ -182,7 +173,7 @@
       <nav class="hidden md:flex items-center space-x-1 bg-slate-100 dark:bg-slate-800/80 p-1 rounded-xl border border-slate-200 dark:border-slate-700">
         <button id="nav-btn-categories" onclick="switchTab('categories')" class="px-3.5 py-1.5 rounded-lg text-sm font-semibold transition-all flex items-center space-x-2 bg-white dark:bg-slate-700 shadow-sm text-red-600 dark:text-white">
           <i class="fa-solid fa-folder-tree text-sm"></i>
-          <span>หมวดหมู่</span>
+          <span>หมวดหมู่การ์ด</span>
         </button>
         <button id="nav-btn-draw" onclick="switchTab('draw')" class="px-3.5 py-1.5 rounded-lg text-sm font-semibold transition-all flex items-center space-x-2 text-slate-600 dark:text-slate-300 hover:text-red-600 dark:hover:text-white">
           <i class="fa-solid fa-shuffle text-sm"></i>
@@ -224,10 +215,8 @@
   <!-- Main Container -->
   <main class="flex-1 max-w-7xl w-full mx-auto px-3 sm:px-6 lg:px-8 py-4 sm:py-6">
     
-    <!-- VIEW 1: CATEGORIES HOME -->
+    <!-- VIEW 1: CATEGORIES HOME (หน้าแรกแสดง "หมวดหมู่การ์ด") -->
     <section id="view-categories" class="space-y-6 animate-pop-in">
-      
-      <!-- Hero Banner -->
       <div id="homeHeroBanner" class="rounded-3xl p-6 sm:p-8 text-white shadow-xl relative overflow-hidden border border-white/10 btn-theme-action">
         <div class="relative z-10 max-w-2xl space-y-3">
           <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-black/20 backdrop-blur border border-white/20 text-xs font-semibold">
@@ -235,41 +224,23 @@
             <span>ระบบสุ่มการ์ดข้อมูลแบบถ่วงน้ำหนักเปอร์เซ็นต์ (Weighted Random)</span>
           </div>
           <h1 class="text-2xl sm:text-4xl font-extrabold tracking-tight leading-snug">
-            เลือกหมวดหมู่ที่ต้องการสุ่มข้อมูล
+            เลือกหมวดหมู่การ์ดที่ต้องการสุ่มข้อมูล
           </h1>
           <p class="text-sm sm:text-base opacity-90 font-light leading-relaxed">
-            เลือกหมวดหมู่ด้านล่างเพื่อเริ่มสุ่มข้อมูลตามอัตราเปอร์เซ็นต์ที่กำหนดไว้
+            เลือกหมวดหมู่การ์ดด้านล่างเพื่อเริ่มสุ่มข้อมูลตามอัตราเปอร์เซ็นต์ที่กำหนดไว้
           </p>
         </div>
       </div>
 
-      <!-- ======================================================== -->
-      <!-- ส่วนใหม่: ตัวเลือกหมวดหมู่ด่วนจากฐานข้อมูลที่หน้าแรก -->
-      <!-- ======================================================== -->
-      <div class="p-4 sm:p-5 rounded-3xl bg-white dark:bg-slate-800/90 border border-slate-200 dark:border-slate-700 shadow-sm space-y-3">
-        <div class="flex flex-wrap items-center justify-between gap-2 border-b border-slate-100 dark:border-slate-700/60 pb-2.5">
-          <span class="text-xs sm:text-sm font-black text-slate-800 dark:text-white flex items-center gap-2">
-            <i class="fa-solid fa-filter text-red-500"></i>
-            <span>เลือกหมวดหมู่จากฐานข้อมูลเพื่อสุ่มทันที</span>
-          </span>
-          <span class="text-[11px] text-slate-400 font-medium">คลิกหมวดหมู่เพื่อไปหน้าสุ่ม</span>
-        </div>
-
-        <!-- แถบปุ่มชิปเลือกด่วน (Quick Pill Chips) แบบเลื่อนแนวนอน -->
-        <div id="homeCategoryPills" class="flex items-center gap-2 overflow-x-auto no-scrollbar py-1">
-          <!-- จะถูกเรนเดอร์โดย JavaScript อัตโนมัติ -->
-        </div>
-      </div>
-
-      <!-- ส่วนแสดงการ์ดหมวดหมู่แบบเต็ม (พร้อมพื้นหลังประจำหมวด) -->
+      <!-- ส่วนแสดงการ์ดหมวดหมู่การ์ด (เอาแถบเลือกหมวดหมู่ด่วนออกแล้ว) -->
       <div class="space-y-3">
         <div class="flex items-center justify-between">
           <h2 class="text-base font-bold text-slate-800 dark:text-white flex items-center gap-2">
             <i class="fa-solid fa-layer-group text-slate-500"></i>
-            <span>หมวดหมู่ทั้งหมดในระบบ</span>
+            <span>หมวดหมู่การ์ด</span>
           </h2>
           <button onclick="openCategoryModal()" class="text-xs font-bold hover:underline flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-700 text-slate-700 dark:text-slate-200 shadow-sm">
-            <i class="fa-solid fa-sliders text-red-500"></i> จัดการหมวดหมู่
+            <i class="fa-solid fa-sliders text-red-500"></i> จัดการหมวดหมู่การ์ด
           </button>
         </div>
         <div id="categoryCardsGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3.5 sm:gap-4"></div>
@@ -281,7 +252,7 @@
       <div class="max-w-xl mx-auto flex items-center justify-between">
         <button onclick="switchTab('categories')" class="px-3.5 py-2 text-xs font-semibold text-slate-700 dark:text-slate-200 bg-white dark:bg-slate-800 hover:bg-slate-100 rounded-xl transition flex items-center gap-2 border border-slate-200 dark:border-slate-700 shadow-sm">
           <i class="fa-solid fa-arrow-left"></i>
-          <span>เปลี่ยนหมวดหมู่</span>
+          <span>เปลี่ยนหมวดหมู่การ์ด</span>
         </button>
 
         <label class="flex items-center gap-2 cursor-pointer select-none bg-white dark:bg-slate-800 px-3 py-1.5 rounded-xl border border-slate-200 dark:border-slate-700 shadow-sm">
@@ -291,6 +262,7 @@
         </label>
       </div>
 
+      <!-- Main Draw Card -->
       <div class="relative max-w-xl mx-auto">
         <div class="relative bg-white dark:bg-slate-800 rounded-3xl border border-slate-200 dark:border-slate-700 card-vibrant-glow p-8 sm:p-12 text-center shadow-xl space-y-8">
           <div class="space-y-3">
@@ -298,7 +270,7 @@
               <i id="stageCategoryIcon" class="fa-solid fa-dice"></i>
             </div>
             <div>
-              <span class="text-xs font-bold uppercase tracking-wider text-slate-400 block mb-1">หมวดหมู่ที่เลือก</span>
+              <span class="text-xs font-bold uppercase tracking-wider text-slate-400 block mb-1">หมวดหมู่การ์ดที่เลือก</span>
               <h2 id="stageCategoryTitle" class="app-title-text font-extrabold text-slate-900 dark:text-white tracking-normal leading-normal">
                 ทุกหมวดหมู่
               </h2>
@@ -312,7 +284,7 @@
           <div class="pt-2">
             <button id="drawActionBtn" onclick="triggerRandomDraw()" class="w-full btn-theme-action text-white py-5 px-8 rounded-2xl font-extrabold text-xl sm:text-2xl shadow-xl hover:scale-[1.02] active:scale-[0.98] transition-all flex items-center justify-center gap-3 group">
               <i id="drawBtnIcon" class="fa-solid fa-dice-five text-3xl group-hover:rotate-180 transition-transform duration-500"></i>
-              <span>สุ่มข้อมูล</span>
+              <span>สุ่มข้อมูลการ์ด</span>
             </button>
             <p class="text-xs text-slate-400 mt-3 font-medium">สุ่มโดยคำนึงถึงค่าน้ำหนักโอกาส (Weight) ของแต่ละใบ</p>
           </div>
@@ -395,14 +367,16 @@
 
   <!-- Mobile Bottom Nav -->
   <nav class="md:hidden fixed bottom-0 inset-x-0 bg-white/95 dark:bg-slate-900/95 backdrop-blur-lg border-t border-slate-200 dark:border-slate-800 z-50 px-2 py-2 flex items-center justify-around shadow-lg">
-    <button onclick="switchTab('categories')" id="m-nav-categories" class="flex flex-col items-center gap-1 font-bold text-red-600"><i class="fa-solid fa-folder-tree text-lg"></i><span class="text-[10px]">หมวดหมู่</span></button>
+    <button onclick="switchTab('categories')" id="m-nav-categories" class="flex flex-col items-center gap-1 font-bold text-red-600"><i class="fa-solid fa-folder-tree text-lg"></i><span class="text-[10px]">หมวดหมู่การ์ด</span></button>
     <button onclick="switchTab('draw')" id="m-nav-draw" class="flex flex-col items-center gap-1 text-slate-400 font-medium"><i class="fa-solid fa-shuffle text-lg"></i><span class="text-[10px]">สุ่มข้อมูล</span></button>
     <button onclick="switchTab('data')" id="m-nav-data" class="flex flex-col items-center gap-1 text-slate-400 font-medium"><i class="fa-solid fa-layer-group text-lg"></i><span class="text-[10px]">คลังข้อมูล</span></button>
     <button onclick="switchTab('history')" id="m-nav-history" class="flex flex-col items-center gap-1 text-slate-400 font-medium"><i class="fa-solid fa-clock-rotate-left text-lg"></i><span class="text-[10px]">ประวัติ</span></button>
     <a href="profile.html" class="flex flex-col items-center gap-1 text-slate-400 hover:text-red-600 font-medium"><i class="fa-solid fa-id-card text-lg text-red-500"></i><span class="text-[10px]">โปรไฟล์</span></a>
   </nav>
 
-  <!-- POP-UP RESULT MODAL -->
+  <!-- ============================================================ -->
+  <!-- POP-UP RESULT MODAL: ผลการสุ่มการ์ด (เพิ่มปุ่ม รับ / ไม่รับ การ์ด) -->
+  <!-- ============================================================ -->
   <div id="resultModal" class="hidden fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-md flex items-center justify-center p-3 sm:p-4 overflow-y-auto">
     <div class="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-3xl max-w-2xl w-full p-4 sm:p-7 shadow-2xl relative my-auto animate-pop-in space-y-4">
       <div class="flex items-center justify-between gap-2 border-b border-slate-100 dark:border-slate-700 pb-3">
@@ -413,12 +387,12 @@
           </span>
           <span id="popupIndexBadge" class="text-xs font-mono text-slate-400 font-semibold">#CARD-00</span>
         </div>
-        <button onclick="closeResultModal()" title="ปิดหน้าต่าง" class="w-8 h-8 rounded-lg text-slate-400 hover:text-slate-700 dark:hover:text-white flex items-center justify-center">
+        <button onclick="handleRejectCard()" title="ปิดหน้าต่าง" class="w-8 h-8 rounded-lg text-slate-400 hover:text-slate-700 dark:hover:text-white flex items-center justify-center">
           <i class="fa-solid fa-xmark text-lg"></i>
         </button>
       </div>
 
-      <div class="space-y-4 max-h-[72vh] overflow-y-auto pr-1">
+      <div class="space-y-4 max-h-[70vh] overflow-y-auto pr-1">
         <div class="space-y-1.5">
           <h2 id="popupTitle" class="app-title-text font-extrabold text-slate-900 dark:text-white tracking-normal"></h2>
           <div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-xl bg-indigo-50 dark:bg-indigo-950/40 border border-indigo-200 dark:border-indigo-800 text-indigo-600 dark:text-indigo-300 text-xs font-bold">
@@ -484,9 +458,26 @@
         </div>
       </div>
 
-      <div class="pt-3 border-t border-slate-100 dark:border-slate-700 flex items-center justify-between gap-3">
-        <button onclick="closeResultModal()" class="px-4 py-2.5 rounded-xl text-slate-600 dark:text-slate-300 bg-slate-100 dark:bg-slate-700 text-sm font-semibold">ปิด</button>
-        <button onclick="triggerRandomDraw()" class="px-5 py-2.5 rounded-xl text-white text-sm font-bold shadow btn-theme-action">สุ่มใหม่อีกครั้ง</button>
+      <!-- Pop-up Footer: เพิ่มปุ่ม รับการ์ด / ไม่รับการ์ด อย่างชัดเจน -->
+      <div class="pt-3 border-t border-slate-100 dark:border-slate-700 flex flex-wrap items-center justify-between gap-3">
+        <!-- ปุ่มสุ่มใหม่ -->
+        <button onclick="triggerRandomDraw()" class="px-4 py-2.5 rounded-xl border border-slate-300 dark:border-slate-600 text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700 text-xs sm:text-sm font-bold transition flex items-center gap-1.5">
+          <i class="fa-solid fa-dice-five"></i>
+          <span>สุ่มใหม่</span>
+        </button>
+
+        <!-- กลุ่มปุ่มตัดสินใจ: ไม่รับการ์ด / รับการ์ด -->
+        <div class="flex items-center gap-2 ml-auto">
+          <button type="button" onclick="handleRejectCard()" class="px-4 sm:px-5 py-2.5 rounded-xl border border-red-200 dark:border-red-900/60 bg-red-50 dark:bg-red-950/30 hover:bg-red-100 dark:hover:bg-red-900/50 text-red-600 dark:text-red-400 text-xs sm:text-sm font-black transition flex items-center gap-1.5 shadow-sm">
+            <i class="fa-solid fa-ban"></i>
+            <span>ไม่รับการ์ด</span>
+          </button>
+
+          <button type="button" onclick="handleAcceptCard()" class="px-5 sm:px-6 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-xs sm:text-sm font-black transition flex items-center gap-1.5 shadow-lg hover:scale-105 active:scale-95">
+            <i class="fa-solid fa-circle-check"></i>
+            <span>รับการ์ด</span>
+          </button>
+        </div>
       </div>
     </div>
   </div>
@@ -586,7 +577,7 @@
         <div>
           <h3 class="text-base font-bold text-slate-900 dark:text-white flex items-center gap-2">
             <i class="fa-solid fa-folder-tree text-red-600"></i>
-            <span>จัดการหมวดหมู่</span>
+            <span>จัดการหมวดหมู่การ์ด</span>
           </h3>
           <p class="text-xs text-slate-400 mt-0.5">สีที่เลือกจะแสดงเป็นพื้นหลังการ์ดที่หน้าแรก</p>
         </div>
@@ -610,7 +601,7 @@
       </div>
 
       <div class="space-y-1">
-        <span class="text-[11px] font-bold uppercase tracking-wider text-slate-400">รายการหมวดหมู่ (<span id="catModalCountBadge">0</span>)</span>
+        <span class="text-[11px] font-bold uppercase tracking-wider text-slate-400">รายการหมวดหมู่การ์ด (<span id="catModalCountBadge">0</span>)</span>
         <div class="max-h-64 overflow-y-auto divide-y divide-slate-100 dark:divide-slate-700/60 pr-1" id="categoryListContainer"></div>
       </div>
     </div>
@@ -859,7 +850,6 @@
 
       updateTotalBadgeCount();
       updateCategoryDropdowns();
-      renderHomeCategoryPills();
       renderCategoryHomeCards();
       resetPool();
       renderDataTable();
@@ -873,7 +863,6 @@
         localStorage.setItem('rnd_cache_history', JSON.stringify(historyLog));
       } catch (e) {}
       updateTotalBadgeCount();
-      renderHomeCategoryPills();
       renderCategoryHomeCards();
     }
 
@@ -924,7 +913,6 @@
         setCloudStatus('ใช้ออฟไลน์ (ติดต่อชีตไม่ได้)', 'text-amber-500');
       } finally {
         updateCategoryDropdowns();
-        renderHomeCategoryPills();
         renderCategoryHomeCards();
         resetPool();
         renderDataTable();
@@ -979,37 +967,7 @@
     }
 
     /* ==========================================================================
-       ฟังก์ชันใหม่: เรนเดอร์แถบตัวเลือกหมวดหมู่ด่วนที่หน้าแรก (Home Quick Category Selector)
-       ========================================================================== */
-    function renderHomeCategoryPills() {
-      const container = document.getElementById('homeCategoryPills');
-      if (!container) return;
-
-      let html = `
-        <button type="button" onclick="selectCategoryAndDraw('ALL')" class="px-4 py-2 rounded-2xl text-xs font-black transition-all flex items-center gap-1.5 shrink-0 bg-slate-900 text-white dark:bg-white dark:text-slate-900 shadow-sm hover:scale-105 active:scale-95">
-          <i class="fa-solid fa-dice text-amber-400"></i>
-          <span>ทุกหมวดหมู่ (${items.length})</span>
-        </button>
-      `;
-
-      categories.forEach(cat => {
-        const count = items.filter(i => i.category === cat.name).length;
-        const meta = getCategoryMeta(cat.name);
-        html += `
-          <button type="button" onclick="selectCategoryAndDraw('${escapeHTML(cat.name)}')" class="px-3.5 py-2 rounded-2xl text-xs font-bold transition-all flex items-center gap-2 shrink-0 border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-900 hover:border-slate-400 hover:scale-105 active:scale-95 text-slate-700 dark:text-slate-200 shadow-sm">
-            <span class="w-2.5 h-2.5 rounded-full shrink-0" style="background:${meta.theme.hex};"></span>
-            <i class="fa-solid ${escapeHTML(meta.icon)} text-[11px] text-slate-400"></i>
-            <span>${escapeHTML(cat.name)}</span>
-            <span class="text-[10px] font-mono font-black text-slate-400 bg-white dark:bg-slate-800 px-1.5 py-0.5 rounded-md border border-slate-200 dark:border-slate-700">${count}</span>
-          </button>
-        `;
-      });
-
-      container.innerHTML = html;
-    }
-
-    /* ==========================================================================
-       เรนเดอร์การ์ดหมวดหมู่ที่หน้าแรก: พื้นหลังตามสีประจำหมวด
+       เรนเดอร์การ์ดหมวดหมู่การ์ดที่หน้าแรก
        ========================================================================== */
     function renderCategoryHomeCards() {
       const grid = document.getElementById('categoryCardsGrid');
@@ -1025,7 +983,7 @@
               <span class="text-xs font-mono font-black px-3 py-1 rounded-full bg-white/20 backdrop-blur-md text-white border border-white/20">${items.length} รายการ</span>
             </div>
             <h3 class="font-extrabold text-xl text-white tracking-wide">สุ่มจากทุกหมวดหมู่</h3>
-            <p class="text-xs text-slate-200 mt-1 font-light opacity-90">สุ่มการ์ดข้อมูลรวมจากทุกหมวดหมู่ในระบบ</p>
+            <p class="text-xs text-slate-200 mt-1 font-light opacity-90">สุ่มการ์ดข้อมูลรวมจากทุกหมวดหมู่การ์ดในระบบ</p>
           </div>
           <div class="mt-5 pt-3 border-t border-white/10 flex items-center justify-between text-xs font-bold text-white/90">
             <span>เข้าสู่หน้าสุ่มทันที</span>
@@ -1133,7 +1091,7 @@
           }
 
           resetPool();
-          logHistory(pickedItem);
+          // แสดง Pop-up โดยยังไม่บันทึกผลทันที (รอให้ผู้ใช้กด รับ หรือ ไม่รับ)
           displayResultPopup(pickedItem);
           confetti({ particleCount: 40, spread: 50, origin: { y: 0.7 } });
           isDrawing = false;
@@ -1169,7 +1127,45 @@
     }
 
     /* ==========================================================================
-       เรนเดอร์ตารางคลังข้อมูลการ์ด (แก้ไข / Clone / ลบ)
+       ฟังก์ชันใหม่: จัดการการตัดสินใจ รับการ์ด / ไม่รับการ์ด
+       ========================================================================== */
+    // เมื่อกด "รับการ์ด" -> นำข้อมูลส่งต่อไปยัง Profile และบันทึกลงประวัติ
+    function handleAcceptCard() {
+      if (!currentItem) return;
+
+      // 1. ส่งผลลัพธ์ไปยัง Profile
+      syncDrawnResultToProfile(currentItem);
+
+      // 2. บันทึกลงประวัติ
+      logHistory(currentItem);
+
+      closeResultModal();
+      showToast(`รับการ์ด "${currentItem.title}" เรียบร้อยแล้ว! 🎉`, 'success');
+    }
+
+    // เมื่อกด "ไม่รับการ์ด" -> ยกเลิกผลการสุ่มและปิด Pop-up ทันที
+    function handleRejectCard() {
+      closeResultModal();
+      showToast('ไม่รับการ์ดใบนี้ (ยกเลิกผลการสุ่ม)', 'info');
+    }
+
+    function syncDrawnResultToProfile(card) {
+      if (!card) return;
+      try {
+        localStorage.setItem('last_drawn_card_result', JSON.stringify({
+          title: card.title,
+          targetType: card.targetType || 'personal',
+          targetLeg: card.targetLeg || '',
+          activeIncome: card.activeIncome || 0,
+          passiveIncome: card.passiveIncome || 0,
+          cost: card.cost || {},
+          reward: card.reward || {}
+        }));
+      } catch (e) {}
+    }
+
+    /* ==========================================================================
+       เรนเดอร์ตารางคลังข้อมูลการ์ด
        ========================================================================== */
     function renderDataTable() {
       const query = (document.getElementById('searchInput')?.value || '').toLowerCase().trim();
@@ -1256,9 +1252,6 @@
       document.getElementById('legSelectWrapper').classList.toggle('hidden', type !== 'leg');
     }
 
-    /* ==========================================================================
-       เปิด Modal การ์ด (แก้ไข / Clone)
-       ========================================================================== */
     function openAddEditModal(itemId = null, isClone = false) {
       document.getElementById('itemForm').reset();
       updateCategoryDropdowns();
@@ -1399,7 +1392,7 @@
       }
     }
 
-    /* === จัดการหมวดหมู่ === */
+    /* === จัดการหมวดหมู่การ์ด === */
     function openCategoryModal() {
       newCategorySelectedIcon = "fa-folder";
       newCategorySelectedColor = "red";
@@ -1484,7 +1477,6 @@
 
       pushToGoogleSheets();
       updateCategoryDropdowns();
-      renderHomeCategoryPills();
       renderCategoryModalList();
       renderCategoryHomeCards();
       showToast(`เพิ่มหมวดหมู่ "${name}" สำเร็จ`, 'success');
@@ -1513,7 +1505,6 @@
 
       pushToGoogleSheets();
       updateCategoryDropdowns();
-      renderHomeCategoryPills();
       renderCategoryModalList();
       renderCategoryHomeCards();
       renderDataTable();
@@ -1529,7 +1520,6 @@
       categories[targetIndex] = temp;
 
       pushToGoogleSheets();
-      renderHomeCategoryPills();
       renderCategoryModalList();
       renderCategoryHomeCards();
       updateCategoryDropdowns();
@@ -1556,7 +1546,6 @@
 
         pushToGoogleSheets();
         updateCategoryDropdowns();
-        renderHomeCategoryPills();
         renderCategoryModalList();
         renderCategoryHomeCards();
         renderDataTable();
@@ -1598,7 +1587,6 @@
         categories[colorPickerTargetIdx].color = colorId;
         updateStageCategoryUI();
         pushToGoogleSheets();
-        renderHomeCategoryPills();
         renderCategoryModalList();
         renderCategoryHomeCards();
         renderDataTable();
@@ -1633,7 +1621,6 @@
         categories[iconPickerTargetIdx].icon = iconClass;
         updateStageCategoryUI();
         pushToGoogleSheets();
-        renderHomeCategoryPills();
         renderCategoryModalList();
         renderCategoryHomeCards();
         showToast('เปลี่ยนไอคอนเรียบร้อยแล้ว', 'success');
@@ -1693,7 +1680,6 @@
             pushToGoogleSheets();
 
             updateCategoryDropdowns();
-            renderHomeCategoryPills();
             renderCategoryHomeCards();
             resetPool();
             renderDataTable();
