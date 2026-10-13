@@ -215,15 +215,11 @@
   <!-- Main Container -->
   <main class="flex-1 max-w-7xl w-full mx-auto px-3 sm:px-6 lg:px-8 py-4 sm:py-6">
     
-    <!-- ======================================================== -->
-    <!-- VIEW 1: หน้าแรก (หมวดหมู่การ์ด & แถบแสดงสถานะผู้เล่นแบบกระชับ) -->
-    <!-- ======================================================== -->
+    <!-- VIEW 1: หน้าแรก -->
     <section id="view-categories" class="space-y-5 animate-pop-in">
       
-      <!-- แถบแสดงสถานะผู้เล่น: ซ่อนเมื่อยังไม่ Login / แสดงเฉพาะไอคอนและตัวหนังสือกระชับ ไม่ตีกรอบหนา -->
+      <!-- แถบแสดงสถานะผู้เล่น (ซ่อนเมื่อยังไม่ Login) -->
       <div id="homeProfileDashboard" class="hidden py-2 px-1 border-b border-slate-200/80 dark:border-slate-800 space-y-2 text-xs">
-        
-        <!-- แถวบน: ข้อมูลบัญชี, อาชีพ, และสเตตัส 3 ด้าน -->
         <div class="flex flex-wrap items-center justify-between gap-3 text-slate-700 dark:text-slate-300">
           <div class="flex items-center gap-3 flex-wrap">
             <span class="font-bold flex items-center gap-1.5 text-slate-900 dark:text-white">
@@ -237,7 +233,6 @@
             </span>
           </div>
 
-          <!-- ทรัพยากร 3 ด้าน (ไอคอน + ตัวเลข) -->
           <div class="flex items-center gap-4 font-mono font-bold">
             <span class="flex items-center gap-1 text-red-500" title="สุขภาพ (หัวใจ)">
               <i class="fa-solid fa-heart"></i>
@@ -257,7 +252,6 @@
           </div>
         </div>
 
-        <!-- แถวล่าง: ตัวเลขการเงินกระชับ (ไอคอน + ตัวเลข) -->
         <div class="flex flex-wrap items-center gap-x-4 gap-y-1 font-mono text-[11px] text-slate-500 dark:text-slate-400">
           <span class="flex items-center gap-1">
             <i class="fa-solid fa-money-bill-wave text-green-500"></i> เงินเดือน:
@@ -280,7 +274,6 @@
             <strong id="homeProfileNetSurplus" class="text-indigo-600 dark:text-indigo-400">฿0</strong>
           </span>
         </div>
-
       </div>
 
       <!-- รายการหมวดหมู่การ์ด -->
@@ -434,8 +427,13 @@
             <span id="popupCategoryName">หมวดหมู่</span>
           </span>
           <span id="popupIndexBadge" class="text-xs font-mono text-slate-400 font-semibold">#CARD-00</span>
+          
+          <!-- ป้ายเตือนหากเป็นการ์ดที่บังคับรับ -->
+          <span id="popupForceAcceptBadge" class="hidden text-[10px] font-black px-2 py-0.5 rounded-full bg-red-100 dark:bg-red-950 text-red-600 dark:text-red-400 border border-red-200 dark:border-red-800 uppercase animate-pulse">
+            <i class="fa-solid fa-lock text-[9px] mr-1"></i>บังคับรับ
+          </span>
         </div>
-        <button onclick="handleRejectCard()" title="ปิดหน้าต่าง" class="w-8 h-8 rounded-lg text-slate-400 hover:text-slate-700 dark:hover:text-white flex items-center justify-center">
+        <button id="popupCloseXBtn" onclick="handleRejectCard()" title="ปิดหน้าต่าง" class="w-8 h-8 rounded-lg text-slate-400 hover:text-slate-700 dark:hover:text-white flex items-center justify-center">
           <i class="fa-solid fa-xmark text-lg"></i>
         </button>
       </div>
@@ -506,6 +504,7 @@
         </div>
       </div>
 
+      <!-- Pop-up Footer: จัดการปุ่มรับ และซ่อนปุ่มไม่รับหากเป็นการ์ดบังคับรับ -->
       <div class="pt-3 border-t border-slate-100 dark:border-slate-700 flex flex-wrap items-center justify-between gap-3">
         <button onclick="triggerRandomDraw()" class="px-4 py-2.5 rounded-xl border border-slate-300 dark:border-slate-600 text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700 text-xs sm:text-sm font-bold transition flex items-center gap-1.5">
           <i class="fa-solid fa-dice-five"></i>
@@ -513,7 +512,8 @@
         </button>
 
         <div class="flex items-center gap-2 ml-auto">
-          <button type="button" onclick="handleRejectCard()" class="px-4 sm:px-5 py-2.5 rounded-xl border border-red-200 dark:border-red-900/60 bg-red-50 dark:bg-red-950/30 hover:bg-red-100 dark:hover:bg-red-900/50 text-red-600 dark:text-red-400 text-xs sm:text-sm font-black transition flex items-center gap-1.5 shadow-sm">
+          <!-- ปุ่มไม่รับการ์ด (จะถูกซ่อนถ้า forceAccept เป็น true) -->
+          <button type="button" id="popupRejectBtn" onclick="handleRejectCard()" class="px-4 sm:px-5 py-2.5 rounded-xl border border-red-200 dark:border-red-900/60 bg-red-50 dark:bg-red-950/30 hover:bg-red-100 dark:hover:bg-red-900/50 text-red-600 dark:text-red-400 text-xs sm:text-sm font-black transition flex items-center gap-1.5 shadow-sm">
             <i class="fa-solid fa-ban"></i>
             <span>ไม่รับการ์ด</span>
           </button>
@@ -527,7 +527,7 @@
     </div>
   </div>
 
-  <!-- MODAL: จัดการการ์ด -->
+  <!-- MODAL: จัดการการ์ด (เพิ่มกล่อง Checkbox "บังคับรับการ์ด") -->
   <div id="itemModal" class="hidden fixed inset-0 z-50 bg-slate-950/70 backdrop-blur-sm flex items-center justify-center p-3 sm:p-4 overflow-y-auto">
     <div class="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-3xl max-w-xl w-full p-5 sm:p-6 shadow-2xl relative my-auto animate-pop-in">
       <div class="flex items-center justify-between pb-3 border-b border-slate-100 dark:border-slate-700">
@@ -605,6 +605,20 @@
           <textarea id="formDescription" rows="2" placeholder="ระบุรายละเอียดเพิ่มเติม..." class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded-xl px-3.5 py-2 text-sm focus:ring-2 focus:ring-red-600"></textarea>
         </div>
 
+        <!-- ======================================================== -->
+        <!-- กล่อง Checkbox: บังคับรับการ์ด -->
+        <!-- ======================================================== -->
+        <div class="p-3 rounded-2xl bg-red-50/50 dark:bg-red-950/20 border border-red-200 dark:border-red-900/40 flex items-center justify-between">
+          <div class="space-y-0.5">
+            <label for="formForceAccept" class="text-xs font-black text-red-600 dark:text-red-400 flex items-center gap-1.5 cursor-pointer">
+              <i class="fa-solid fa-lock text-xs"></i>
+              <span>บังคับรับการ์ด</span>
+            </label>
+            <p class="text-[11px] text-slate-500 dark:text-slate-400">เมื่อสุ่มได้การ์ดใบนี้ ระบบจะไม่แสดงปุ่ม "ไม่รับการ์ด" (ผู้เล่นต้องรับเท่านั้น)</p>
+          </div>
+          <input type="checkbox" id="formForceAccept" class="w-5 h-5 rounded text-red-600 focus:ring-red-500 accent-red-600 cursor-pointer shrink-0">
+        </div>
+
         <!-- ส่วนกำหนด: สิ่งที่ต้องใช้ & สิ่งที่ได้รับ -->
         <div class="p-3.5 bg-slate-50 dark:bg-slate-900/80 rounded-2xl border border-slate-200 dark:border-slate-700 space-y-3">
           <div class="flex items-center justify-between">
@@ -614,7 +628,6 @@
             </button>
           </div>
 
-          <!-- สิ่งที่ต้องใช้ -->
           <div class="space-y-2 border-b border-slate-200 dark:border-slate-700/80 pb-3">
             <span class="text-[11px] font-bold text-red-600 flex items-center gap-1">
               <i class="fa-solid fa-hand-holding-dollar"></i> สิ่งที่ต้องใช้ (Cost: 0-10)
@@ -636,7 +649,6 @@
             </div>
           </div>
 
-          <!-- สิ่งที่ได้รับ -->
           <div class="space-y-2 pt-1">
             <span class="text-[11px] font-bold text-emerald-600 dark:text-emerald-400 flex items-center gap-1">
               <i class="fa-solid fa-gift"></i> สิ่งที่ได้รับ (Reward: 0-10)
@@ -788,12 +800,10 @@
             <i class="fa-solid fa-file-excel text-base text-emerald-600"></i>
             <span>Sheets (.CSV)</span>
           </button>
-
           <button onclick="exportDatabase()" class="w-full py-2.5 px-2 rounded-xl bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-600 hover:border-slate-400 text-slate-700 dark:text-slate-200 text-xs font-bold flex flex-col items-center justify-center gap-1 shadow-sm transition" title="สำรองข้อมูลทั้งระบบเพื่อนำกลับมา Import">
             <i class="fa-solid fa-download text-base text-blue-500"></i>
             <span>Backup (.JSON)</span>
           </button>
-
           <button onclick="triggerImportDatabase()" class="w-full py-2.5 px-2 rounded-xl bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-600 hover:border-blue-500 text-slate-700 dark:text-slate-200 text-xs font-bold flex flex-col items-center justify-center gap-1 shadow-sm transition" title="นำเข้าไฟล์สำรองเพื่อกู้คืนข้อมูล">
             <i class="fa-solid fa-upload text-base text-purple-500"></i>
             <span>Import</span>
@@ -837,6 +847,7 @@
         weight: 70,
         activeIncome: 15000,
         passiveIncome: 0,
+        forceAccept: false,
         description: "สละเวลา 15 นาทีจัดลำดับความสำคัญของงานที่ต้องทำ 3 อันดับแรก",
         cost: { heart: 2, time: 3, knowledge: 0 },
         reward: { heart: 4, time: 5, knowledge: 4 }
@@ -851,6 +862,7 @@
         weight: 20,
         activeIncome: 0,
         passiveIncome: 500,
+        forceAccept: true, // ตัวอย่างการ์ดที่บังคับรับ
         description: "ช่วยกระตุ้นระบบขับถ่ายและการไหลเวียนโลหิตหลังตื่นนอน",
         cost: { heart: 0, time: 1, knowledge: 0 },
         reward: { heart: 5, time: 0, knowledge: 2 }
@@ -865,6 +877,7 @@
         weight: 10,
         activeIncome: 0,
         passiveIncome: 3500,
+        forceAccept: false,
         description: "สนับสนุนและผลักดันยอดสายงาน A ให้เติบโตอย่างมั่นคง",
         cost: { heart: 1, time: 2, knowledge: 3 },
         reward: { heart: 3, time: 2, knowledge: 6 }
@@ -931,15 +944,12 @@
     window.addEventListener('DOMContentLoaded', () => {
       initTheme();
       loadLocalCache();
-      loadProfileSummary(); // เรียกโหลดและตรวจสอบสถานะการ Login
+      loadProfileSummary();
       renderIconPickerGrid();
       renderColorPickerGrid();
       fetchFromGoogleSheets(false);
     });
 
-    /* ==========================================================================
-       ฟังก์ชันแสดงสถานะผู้เล่น: ซ่อนเมื่อยังไม่ Login / แสดงแบบ Minimalist
-       ========================================================================== */
     function loadProfileSummary() {
       const dashboard = document.getElementById('homeProfileDashboard');
       if (!dashboard) return;
@@ -949,7 +959,6 @@
         let currentAccount = null;
         if (savedSession) currentAccount = JSON.parse(savedSession);
 
-        // ตรวจสอบเงื่อนไขการ Login: หากไม่มี Session หรือเป็น guest_default ให้ซ่อนแถบนี้จากการมองเห็น
         const isLoggedIn = (currentAccount && currentAccount.id && currentAccount.id !== 'guest_default');
 
         if (!isLoggedIn) {
@@ -957,25 +966,19 @@
           return;
         }
 
-        // หาก Login แล้ว ให้แสดงแถบสถานะ
         dashboard.classList.remove('hidden');
 
         const profileKey = `game_user_profile_${currentAccount.id}`;
         const rawProfile = localStorage.getItem(profileKey);
         let profile = rawProfile ? JSON.parse(rawProfile) : {};
 
-        // ดึงฐานข้อมูลอาชีพ
         const savedCareers = localStorage.getItem('game_careers_database');
         const careersDB = savedCareers ? JSON.parse(savedCareers) : [];
         const careerObj = careersDB.find(c => c.id === profile.careerId);
 
-        // 1. ชื่อผู้เล่น
         document.getElementById('homeProfileName').innerText = profile.fullName || currentAccount.name || 'ผู้เล่น';
-
-        // 2. อาชีพ
         document.getElementById('homeProfileCareer').innerText = careerObj?.name || (profile.careerId ? profile.careerId : 'ยังไม่ระบุอาชีพ');
 
-        // 3. คำนวณรายรับ-รายจ่าย
         const salary = parseFloat(profile.salary) || (careerObj?.salary || 0);
         const expense = parseFloat(profile.expense) || (careerObj?.expense || 0);
 
@@ -989,7 +992,6 @@
           });
         }
 
-        // สูตรคำนวณเงินคงเหลือต่อเดือน: (เงินเดือน + Active + Passive) - รายจ่ายประจำ
         const netSurplus = (salary + totalActive + totalPassive) - expense;
 
         document.getElementById('homeProfileSalary').innerText = `฿${salary.toLocaleString()}`;
@@ -998,7 +1000,6 @@
         document.getElementById('homeProfileExpense').innerText = `฿${expense.toLocaleString()}`;
         document.getElementById('homeProfileNetSurplus').innerText = `฿${netSurplus.toLocaleString()}`;
 
-        // 4. ค่าพลังทรัพยากร 3 ด้าน (แสดงเฉพาะไอคอนและตัวเลข)
         const heartVal = profile.stats?.heart ?? (careerObj?.heart ?? 5);
         const timeVal = profile.stats?.time ?? (careerObj?.time ?? 5);
         const knowledgeVal = profile.stats?.knowledge ?? (careerObj?.knowledge ?? 5);
@@ -1047,9 +1048,6 @@
       renderCategoryHomeCards();
     }
 
-    /* ==========================================================================
-       SYNC CLOUD: ดึงข้อมูลมาแสดงผลเท่านั้น (READ-ONLY)
-       ========================================================================== */
     async function fetchFromGoogleSheets(isManual = false) {
       if (!GOOGLE_SHEET_API_URL || GOOGLE_SHEET_API_URL.includes("PLACEHOLDER")) {
         setCloudStatus('ใช้งานแบบออฟไลน์', 'text-slate-400');
@@ -1102,9 +1100,6 @@
       }
     }
 
-    /* ==========================================================================
-       PUSH TO GOOGLE SHEETS: ทำงานเฉพาะเมื่อกด เพิ่ม/ลบ/แก้ไข เท่านั้น
-       ========================================================================== */
     async function pushToGoogleSheets() {
       saveLocalCache();
       if (!GOOGLE_SHEET_API_URL || GOOGLE_SHEET_API_URL.includes("PLACEHOLDER")) return;
@@ -1147,9 +1142,6 @@
       if (el) el.innerText = items.length;
     }
 
-    /* ==========================================================================
-       เรนเดอร์การ์ดหมวดหมู่การ์ดที่หน้าแรก
-       ========================================================================== */
     function renderCategoryHomeCards() {
       const grid = document.getElementById('categoryCardsGrid');
       if (!grid) return;
@@ -1279,6 +1271,9 @@
       }, 70);
     }
 
+    /* ==========================================================================
+       แสดงผล Pop-up สุ่มการ์ด (ตรวจสอบสถานะ บังคับรับการ์ด)
+       ========================================================================== */
     function displayResultPopup(item) {
       if (!item) return;
       currentItem = item;
@@ -1299,6 +1294,24 @@
       document.getElementById('popup-reward-time-val').innerText = `+${item.reward?.time || 0}/10`;
       document.getElementById('popup-reward-knowledge-val').innerText = `+${item.reward?.knowledge || 0}/10`;
 
+      // ตรวจสอบสถานะ บังคับรับการ์ด
+      const isForceAccept = !!item.forceAccept;
+      const rejectBtn = document.getElementById('popupRejectBtn');
+      const closeXBtn = document.getElementById('popupCloseXBtn');
+      const forceBadge = document.getElementById('popupForceAcceptBadge');
+
+      if (isForceAccept) {
+        // หากเป็นการ์ดบังคับรับ: ซ่อนปุ่มไม่รับการ์ด และปุ่มปิด X
+        rejectBtn.classList.add('hidden');
+        closeXBtn.classList.add('hidden');
+        forceBadge.classList.remove('hidden');
+      } else {
+        // หากเป็นการ์ดปกติ: แสดงปุ่มไม่รับการ์ด
+        rejectBtn.classList.remove('hidden');
+        closeXBtn.classList.remove('hidden');
+        forceBadge.classList.add('hidden');
+      }
+
       document.getElementById('resultModal').classList.remove('hidden');
     }
 
@@ -1316,6 +1329,11 @@
     }
 
     function handleRejectCard() {
+      // ป้องกันการปฏิเสธหากเป็นการ์ดบังคับรับ
+      if (currentItem && currentItem.forceAccept) {
+        showToast('การ์ดใบนี้มีผลบังคับรับ ไม่สามารถปฏิเสธได้', 'warning');
+        return;
+      }
       closeResultModal();
       showToast('ไม่รับการ์ดใบนี้ (ยกเลิกผลการสุ่ม)', 'info');
     }
@@ -1374,10 +1392,18 @@
           const rewardT = Number(item.reward?.time) || 0;
           const rewardK = Number(item.reward?.knowledge) || 0;
 
+          // แสดงสัญลักษณ์แม่กุญแจหากเป็นการ์ดบังคับรับ
+          const forceIcon = item.forceAccept 
+            ? `<span title="การ์ดใบนี้บังคับรับ" class="ml-1 text-[11px] text-red-500 font-bold"><i class="fa-solid fa-lock"></i></span>` 
+            : '';
+
           return `
             <tr class="hover:bg-slate-50 dark:hover:bg-slate-700/40">
               <td class="py-3 px-4 text-center font-mono text-xs text-slate-400">${idx + 1}</td>
-              <td class="py-3 px-4 font-bold text-slate-800 dark:text-white">${escapeHTML(item.title)}</td>
+              <td class="py-3 px-4 font-bold text-slate-800 dark:text-white">
+                <span>${escapeHTML(item.title)}</span>
+                ${forceIcon}
+              </td>
               <td class="py-3 px-4 font-medium text-slate-700 dark:text-slate-300">${formatTargetBadge(item)}</td>
               <td class="py-3 px-4 font-mono font-bold text-xs text-amber-500">${item.weight || 10}</td>
               <td class="py-3 px-4 font-mono font-bold text-xs text-red-600">฿${(item.price || 0).toLocaleString()}</td>
@@ -1416,12 +1442,19 @@
           const rewardT = Number(item.reward?.time) || 0;
           const rewardK = Number(item.reward?.knowledge) || 0;
 
+          const forceLabel = item.forceAccept 
+            ? `<span class="text-[10px] text-red-500 font-bold"><i class="fa-solid fa-lock"></i> บังคับรับ</span>` 
+            : '';
+
           return `
             <div class="p-3 bg-white dark:bg-slate-800 rounded-xl space-y-2 border border-slate-100 dark:border-slate-700">
               <div class="flex justify-between items-start">
                 <div>
-                  <span class="text-[10px] px-2 py-0.5 rounded-full font-semibold border ${getCategoryMeta(item.category).theme.badge}">${escapeHTML(item.category)}</span>
-                  <span class="text-xs font-semibold text-slate-600 dark:text-slate-300">ใช้กับ: ${formatTargetBadge(item)}</span>
+                  <div class="flex items-center gap-1.5 flex-wrap">
+                    <span class="text-[10px] px-2 py-0.5 rounded-full font-semibold border ${getCategoryMeta(item.category).theme.badge}">${escapeHTML(item.category)}</span>
+                    <span class="text-xs font-semibold text-slate-600 dark:text-slate-300">ใช้กับ: ${formatTargetBadge(item)}</span>
+                    ${forceLabel}
+                  </div>
                   <h4 class="font-bold text-sm text-slate-800 dark:text-white mt-1">${escapeHTML(item.title)}</h4>
                 </div>
                 <div class="flex items-center gap-1">
@@ -1498,6 +1531,9 @@
         document.getElementById('formActiveIncome').value = item.activeIncome || '';
         document.getElementById('formPassiveIncome').value = item.passiveIncome || '';
         document.getElementById('formDescription').value = item.description || '';
+        
+        // กำหนดค่า บังคับรับการ์ด
+        document.getElementById('formForceAccept').checked = !!item.forceAccept;
 
         document.getElementById('sliderCostHeart').value = item.cost?.heart || 0;
         document.getElementById('sliderCostTime').value = item.cost?.time || 0;
@@ -1532,6 +1568,7 @@
         document.getElementById('formOriginalSnapshot').value = '';
         document.getElementById('formTargetType').value = 'personal';
         document.getElementById('formTargetLeg').value = 'A';
+        document.getElementById('formForceAccept').checked = false;
         onTargetTypeChange();
         randomizeFormSliders();
 
@@ -1560,6 +1597,7 @@
         activeIncome: parseFloat(document.getElementById('formActiveIncome').value) || 0,
         passiveIncome: parseFloat(document.getElementById('formPassiveIncome').value) || 0,
         description: document.getElementById('formDescription').value.trim(),
+        forceAccept: document.getElementById('formForceAccept').checked,
         cost: {
           heart: Number(document.getElementById('sliderCostHeart').value) || 0,
           time: Number(document.getElementById('sliderCostTime').value) || 0,
@@ -1596,6 +1634,7 @@
       const activeIncome = parseFloat(document.getElementById('formActiveIncome').value) || 0;
       const passiveIncome = parseFloat(document.getElementById('formPassiveIncome').value) || 0;
       const description = document.getElementById('formDescription').value.trim();
+      const forceAccept = document.getElementById('formForceAccept').checked;
 
       const cost = {
         heart: Number(document.getElementById('sliderCostHeart').value) || 0,
@@ -1614,7 +1653,7 @@
           items[idx] = {
             ...items[idx],
             title, targetType, targetLeg, category, price, weight,
-            activeIncome, passiveIncome, description, cost, reward
+            activeIncome, passiveIncome, description, forceAccept, cost, reward
           };
           showToast(`บันทึกการแก้ไขการ์ด "${title}" เรียบร้อย`, 'success');
         }
@@ -1622,7 +1661,7 @@
         const newCard = {
           id: `c-${Date.now().toString().slice(-4)}`,
           title, targetType, targetLeg, category, price, weight,
-          activeIncome, passiveIncome, description,
+          activeIncome, passiveIncome, description, forceAccept,
           cost, reward
         };
         items.unshift(newCard);
@@ -1896,6 +1935,7 @@
         "ราคา (Price)",
         "Active Income",
         "Passive Income",
+        "บังคับรับการ์ด (Force Accept)",
         "สิ่งที่ต้องใช้-หัวใจ",
         "สิ่งที่ต้องใช้-เวลา",
         "สิ่งที่ต้องใช้-ความรู้",
@@ -1919,6 +1959,7 @@
           item.price || 0,
           item.activeIncome || 0,
           item.passiveIncome || 0,
+          item.forceAccept ? "TRUE" : "FALSE",
           item.cost?.heart || 0,
           item.cost?.time || 0,
           item.cost?.knowledge || 0,
