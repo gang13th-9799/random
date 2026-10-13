@@ -195,7 +195,8 @@
 
       <!-- Sync Button & Settings -->
       <div class="flex items-center space-x-2">
-        <button onclick="fetchFromGoogleSheets(true)" title="ดึงข้อมูลล่าสุดจาก Google Sheets" class="px-2.5 py-1.5 rounded-lg border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-200 hover:bg-slate-50 text-xs font-bold transition flex items-center gap-1.5 shadow-sm">
+        <!-- ปุ่ม Sync Cloud (ดึงข้อมูลแสดงผลเท่านั้น) -->
+        <button onclick="fetchFromGoogleSheets(true)" title="ดึงข้อมูลจาก Google Sheets มาแสดงผล" class="px-2.5 py-1.5 rounded-lg border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-200 hover:bg-slate-50 text-xs font-bold transition flex items-center gap-1.5 shadow-sm">
           <i id="syncIcon" class="fa-solid fa-rotate text-xs"></i>
           <span class="hidden sm:inline">Sync Cloud</span>
         </button>
@@ -204,8 +205,7 @@
           <i id="soundIcon" class="fa-solid fa-volume-high text-xs"></i>
         </button>
 
-        <!-- ปุ่ม Setting -->
-        <button id="settingModalBtn" onclick="openSettingModal()" title="การตั้งค่า" class="w-8 h-8 rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:text-red-600 flex items-center justify-center transition shadow-sm group">
+        <button id="settingModalBtn" onclick="openSettingModal()" title="การตั้งค่าและสำรองข้อมูล" class="w-8 h-8 rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:text-red-600 flex items-center justify-center transition shadow-sm group">
           <i class="fa-solid fa-gear text-sm group-hover:rotate-90 transition-transform duration-300"></i>
         </button>
       </div>
@@ -239,7 +239,6 @@
             <i class="fa-solid fa-layer-group text-slate-500"></i>
             <span>หมวดหมู่ทั้งหมดในระบบ</span>
           </h2>
-          <!-- ปุ่มจัดการหมวดหมู่ -->
           <button onclick="openCategoryModal()" class="text-xs font-semibold hover:underline flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-700 text-slate-700 dark:text-slate-200">
             <i class="fa-solid fa-gear"></i> จัดการหมวดหมู่
           </button>
@@ -538,7 +537,7 @@
 
         <div class="pt-3 border-t border-slate-100 dark:border-slate-700 flex items-center justify-end gap-2">
           <button type="button" onclick="closeAddEditModal()" class="px-4 py-2 rounded-xl text-slate-600 dark:text-slate-300 text-sm font-semibold">ยกเลิก</button>
-          <button type="submit" class="px-5 py-2 rounded-xl text-white text-sm font-semibold shadow btn-theme-action">บันทึกข้อมูล</button>
+          <button type="submit" class="px-5 py-2 rounded-xl text-white text-sm font-semibold shadow btn-theme-action">บันทึกข้อมูลลงชีต</button>
         </div>
       </form>
     </div>
@@ -566,7 +565,7 @@
     </div>
   </div>
 
-  <!-- SETTING MODAL -->
+  <!-- SETTING MODAL (เพิ่มฟังก์ชัน Backup Database: Import & Export) -->
   <div id="settingModal" class="hidden fixed inset-0 z-50 bg-slate-950/70 backdrop-blur-sm flex items-center justify-center p-4">
     <div class="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-3xl max-w-md w-full p-5 sm:p-6 shadow-2xl relative animate-pop-in space-y-5">
       <div class="flex items-center justify-between pb-3 border-b border-slate-100 dark:border-slate-700">
@@ -576,7 +575,7 @@
           </div>
           <div>
             <h3 class="font-bold text-base text-slate-900 dark:text-white">การตั้งค่าระบบ</h3>
-            <p class="text-xs text-slate-400">ปรับแต่งโหมดการแสดงผล</p>
+            <p class="text-xs text-slate-400">ปรับแต่งและจัดการสำรองข้อมูล</p>
           </div>
         </div>
         <button onclick="closeSettingModal()" class="w-8 h-8 rounded-lg text-slate-400 hover:text-slate-700 flex items-center justify-center">
@@ -584,6 +583,7 @@
         </button>
       </div>
 
+      <!-- สลับโหมดสว่าง / มืด -->
       <div class="p-3 bg-slate-50 dark:bg-slate-900/60 rounded-2xl border border-slate-200 dark:border-slate-700/80 flex items-center justify-between">
         <div class="flex items-center gap-3">
           <div class="w-8 h-8 rounded-xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 flex items-center justify-center text-sm shadow-sm">
@@ -597,6 +597,33 @@
         <button onclick="toggleTheme()" class="px-3 py-1.5 rounded-xl text-xs font-bold border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-200 shadow-sm">
           สลับโหมด
         </button>
+      </div>
+
+      <!-- ส่วน Backup Database (Import / Export) -->
+      <div class="p-3.5 bg-slate-50 dark:bg-slate-900/60 rounded-2xl border border-slate-200 dark:border-slate-700/80 space-y-3">
+        <div class="flex items-center gap-2">
+          <i class="fa-solid fa-database text-xs text-amber-500"></i>
+          <span class="text-xs font-bold text-slate-800 dark:text-white">สำรองและกู้คืนฐานข้อมูล (Backup Database)</span>
+        </div>
+        <p class="text-[11px] text-slate-400 leading-relaxed">
+          ส่งออกไฟล์ฐานข้อมูลเก็บไว้ในเครื่องของคุณ หรือนำเข้าไฟล์ที่เคยสำรองไว้
+        </p>
+
+        <div class="grid grid-cols-2 gap-2 pt-1">
+          <!-- ปุ่ม Export Database -->
+          <button onclick="exportDatabase()" class="w-full py-2 px-3 rounded-xl bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-600 hover:border-emerald-500 text-slate-700 dark:text-slate-200 text-xs font-bold flex items-center justify-center gap-1.5 shadow-sm transition">
+            <i class="fa-solid fa-download text-emerald-500"></i>
+            <span>Export (ส่งออก)</span>
+          </button>
+
+          <!-- ปุ่ม Import Database -->
+          <button onclick="triggerImportDatabase()" class="w-full py-2 px-3 rounded-xl bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-600 hover:border-blue-500 text-slate-700 dark:text-slate-200 text-xs font-bold flex items-center justify-center gap-1.5 shadow-sm transition">
+            <i class="fa-solid fa-upload text-blue-500"></i>
+            <span>Import (นำเข้า)</span>
+          </button>
+          <!-- Input ไฟล์ซ่อนสำหรับ Import -->
+          <input type="file" id="importFileInput" accept=".json" onchange="handleImportFile(event)" class="hidden">
+        </div>
       </div>
 
       <div class="pt-2 flex justify-end">
@@ -726,13 +753,17 @@
       renderCategoryHomeCards();
     }
 
+    /* ==========================================================================
+       SYNC CLOUD: ดึงข้อมูลจาก Google Sheets มาแสดงผลบนหน้าเว็บเท่านั้น
+       (READ-ONLY: ไม่มีการส่งข้อมูลขึ้นไปเขียนทับเด็ดขาด)
+       ========================================================================== */
     async function fetchFromGoogleSheets(isManual = false) {
       if (!GOOGLE_SHEET_API_URL || GOOGLE_SHEET_API_URL.includes("PLACEHOLDER")) {
         setCloudStatus('ใช้งานแบบออฟไลน์', 'text-slate-400');
         return;
       }
 
-      setCloudStatus('กำลังตรวจสอบ...', 'text-amber-500');
+      setCloudStatus('กำลังดึงข้อมูลจาก Cloud...', 'text-amber-500');
       const syncIcon = document.getElementById('syncIcon');
       if (syncIcon) syncIcon.classList.add('animate-spin');
 
@@ -743,32 +774,35 @@
         if (data) {
           let updated = false;
 
+          // ดึงรายการการ์ดมาอัปเดตหน้าจอ
           if (Array.isArray(data.items) && data.items.length > 0) {
             items = data.items;
             updated = true;
-          } else if (items.length > 0) {
-            pushToGoogleSheets();
           }
 
+          // ดึงหมวดหมู่มาอัปเดตหน้าจอ
           if (Array.isArray(data.categories) && data.categories.length > 0) {
             categories = normalizeCategories(data.categories);
             updated = true;
           }
 
+          // ดึงประวัติมาอัปเดตหน้าจอ
           if (Array.isArray(data.historyLog) && data.historyLog.length > 0) {
             historyLog = data.historyLog;
           }
 
           if (updated) {
             saveLocalCache();
-            setCloudStatus('ออนไลน์ (ซิงก์แล้ว)', 'text-emerald-500');
-            if (isManual) showToast('ซิงก์ข้อมูลจาก Google Sheets สำเร็จ ☁️', 'success');
+            setCloudStatus('ออนไลน์ (ซิงก์ข้อมูลแล้ว)', 'text-emerald-500');
+            if (isManual) showToast('ดึงข้อมูลล่าสุดจาก Google Sheets มาแสดงผลแล้ว ☁️', 'success');
           } else {
             setCloudStatus('พร้อมใช้งาน (แคชในเครื่อง)', 'text-emerald-500');
+            if (isManual) showToast('ฐานข้อมูลบน Google Sheets เป็นข้อมูลล่าสุดแล้ว', 'info');
           }
         }
       } catch (err) {
         setCloudStatus('ใช้ออฟไลน์ (ติดต่อชีตไม่ได้)', 'text-amber-500');
+        if (isManual) showToast('ไม่สามารถเชื่อมต่อ Google Sheets ได้ในขณะนี้', 'warning');
       } finally {
         updateCategoryDropdowns();
         renderCategoryHomeCards();
@@ -779,10 +813,14 @@
       }
     }
 
+    /* ==========================================================================
+       PUSH TO GOOGLE SHEETS: จะถูกเรียกใช้เฉพาะเมื่อมีคำสั่ง เพิ่ม/ลบ/แก้ไข จากผู้ใช้เท่านั้น
+       ========================================================================== */
     async function pushToGoogleSheets() {
       saveLocalCache();
       if (!GOOGLE_SHEET_API_URL || GOOGLE_SHEET_API_URL.includes("PLACEHOLDER")) return;
 
+      setCloudStatus('กำลังบันทึกลงชีต...', 'text-amber-500');
       try {
         await fetch(GOOGLE_SHEET_API_URL, {
           method: 'POST',
@@ -790,7 +828,82 @@
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ categories, items, historyLog })
         });
-      } catch (e) {}
+        setCloudStatus('บันทึกออนไลน์สำเร็จ', 'text-emerald-500');
+      } catch (e) {
+        setCloudStatus('บันทึกลงชีตไม่สำเร็จ', 'text-red-500');
+      }
+    }
+
+    /* ==========================================================================
+       BACKUP DATABASE: ฟังก์ชัน IMPORT & EXPORT
+       ========================================================================== */
+    function exportDatabase() {
+      const dbPayload = {
+        app: "RandomDataCardHub",
+        version: "1.0",
+        exportDate: new Date().toISOString(),
+        categories: categories,
+        items: items,
+        historyLog: historyLog
+      };
+
+      const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(dbPayload, null, 2));
+      const downloadAnchor = document.createElement('a');
+      downloadAnchor.setAttribute("href", dataStr);
+      downloadAnchor.setAttribute("download", `database_backup_${new Date().toISOString().slice(0,10)}.json`);
+      document.body.appendChild(downloadAnchor);
+      downloadAnchor.click();
+      downloadAnchor.remove();
+
+      showToast('ส่งออกไฟล์สำรองฐานข้อมูลสำเร็จ 📥', 'success');
+    }
+
+    function triggerImportDatabase() {
+      document.getElementById('importFileInput').click();
+    }
+
+    function handleImportFile(event) {
+      const file = event.target.files[0];
+      if (!file) return;
+
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        try {
+          const importedData = JSON.parse(e.target.result);
+
+          if (!importedData || !Array.isArray(importedData.items)) {
+            showToast('รูปแบบไฟล์สำรองไม่ถูกต้อง', 'warning');
+            return;
+          }
+
+          if (confirm(`พบข้อมูล ${importedData.items.length} รายการ คุณต้องการนำเข้าข้อมูลนี้ใช่หรือไม่?`)) {
+            items = importedData.items;
+            if (Array.isArray(importedData.categories) && importedData.categories.length > 0) {
+              categories = normalizeCategories(importedData.categories);
+            }
+            if (Array.isArray(importedData.historyLog)) {
+              historyLog = importedData.historyLog;
+            }
+
+            // บันทึกเข้าเครื่องและอัปเดตไปยัง Google Sheets ทันที
+            saveLocalCache();
+            pushToGoogleSheets();
+
+            updateCategoryDropdowns();
+            renderCategoryHomeCards();
+            resetPool();
+            renderDataTable();
+            renderHistoryList();
+
+            closeSettingModal();
+            showToast('นำเข้าและกู้คืนฐานข้อมูลสำเร็จแล้ว 📤✅', 'success');
+          }
+        } catch (err) {
+          showToast('ไม่สามารถอ่านไฟล์ JSON ได้', 'danger');
+        }
+      };
+      reader.readAsText(file);
+      event.target.value = ''; // รีเซ็ต input
     }
 
     function setCloudStatus(msg, colorClass) {
@@ -1047,6 +1160,7 @@
       document.getElementById('itemModal').classList.add('hidden');
     }
 
+    // มีการบันทึกเพิ่มข้อมูล -> สั่ง Push ไปยัง Google Sheets
     function handleItemFormSubmit(e) {
       e.preventDefault();
       const title = document.getElementById('formTitle').value.trim();
@@ -1071,9 +1185,10 @@
       resetPool();
       renderDataTable();
       closeAddEditModal();
-      showToast('เพิ่มการ์ดใหม่เรียบร้อยแล้ว', 'success');
+      showToast('เพิ่มการ์ดใหม่และบันทึกลงชีตเรียบร้อยแล้ว', 'success');
     }
 
+    // มีการลบข้อมูล -> สั่ง Push ไปยัง Google Sheets
     function confirmDeleteItem(id) {
       if (confirm('คุณต้องการลบข้อมูลนี้หรือไม่?')) {
         items = items.filter(i => i.id !== id);
@@ -1084,7 +1199,6 @@
       }
     }
 
-    /* === ฟังก์ชันจัดการหมวดหมู่ (Category Management) === */
     function openCategoryModal() {
       renderCategoryModalList();
       document.getElementById('categoryModal').classList.remove('hidden');
@@ -1097,7 +1211,7 @@
     function renderCategoryModalList() {
       const container = document.getElementById('categoryListContainer');
       if (!container) return;
-      container.innerHTML = categories.map((cat, idx) => `
+      container.innerHTML = categories.map((cat) => `
         <div class="py-2.5 flex items-center justify-between text-sm">
           <span class="font-bold text-slate-800 dark:text-white">${escapeHTML(cat.name)}</span>
           <button onclick="handleDeleteCategory('${escapeHTML(cat.name)}')" class="text-xs text-red-500 hover:underline">ลบ</button>
@@ -1105,6 +1219,7 @@
       `).join('');
     }
 
+    // เพิ่มหมวดหมู่ -> สั่ง Push ไปยัง Google Sheets
     function handleAddCategory() {
       const input = document.getElementById('newCategoryInput');
       const name = input.value.trim();
@@ -1122,6 +1237,7 @@
       showToast('เพิ่มหมวดหมู่สำเร็จ', 'success');
     }
 
+    // ลบหมวดหมู่ -> สั่ง Push ไปยัง Google Sheets
     function handleDeleteCategory(catName) {
       if (categories.length <= 1) {
         showToast('ต้องมีหมวดหมู่อย่างน้อย 1 หมวด', 'warning');
@@ -1137,7 +1253,6 @@
       }
     }
 
-    /* === ฟังก์ชันการตั้งค่า (Settings Modal) === */
     function openSettingModal() {
       updateSettingModalUI();
       document.getElementById('settingModal').classList.remove('hidden');
@@ -1161,7 +1276,6 @@
       const isDark = document.documentElement.classList.toggle('dark');
       localStorage.setItem('rnd_theme_dark', isDark ? 'true' : 'false');
       updateSettingModalUI();
-      showToast(isDark ? 'เปลี่ยนเป็น Night Mode' : 'เปลี่ยนเป็น Light Mode', 'info');
     }
 
     function initTheme() {
@@ -1198,9 +1312,11 @@
       `).join('');
     }
 
+    // ล้างประวัติ -> สั่ง Push ไปยัง Google Sheets
     function clearHistoryLog() {
       historyLog = [];
       saveLocalCache();
+      pushToGoogleSheets();
       renderHistoryList();
       showToast('ล้างประวัติการสุ่มเรียบร้อยแล้ว', 'info');
     }
