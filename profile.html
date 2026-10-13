@@ -128,6 +128,17 @@
     .dark input[type=range]::-webkit-slider-runnable-track {
       background: #1E293B;
     }
+
+    .checkbox-row.active-checked {
+      background-color: #ECFDF5 !important;
+      border-color: #10B981 !important;
+      color: #065F46 !important;
+    }
+    .dark .checkbox-row.active-checked {
+      background-color: rgba(6, 78, 59, 0.5) !important;
+      border-color: #059669 !important;
+      color: #A7F3D0 !important;
+    }
   </style>
 </head>
 <body class="text-slate-800 dark:text-slate-100 min-h-screen flex flex-col font-sans pb-32 md:pb-20 transition-colors duration-200">
@@ -166,7 +177,7 @@
           <span class="hidden md:inline">Sync ชีต</span>
         </button>
 
-        <button type="button" id="toggleEditBtn" onclick="toggleEditMode()" class="px-2.5 sm:px-3.5 py-2 rounded-xl text-xs sm:text-sm font-bold transition-all flex items-center gap-1.5 border border-slate-200 dark:border-white/10 bg-white dark:bg-slate-800 shadow-sm">
+        <button type="button" id="toggleEditBtn" onclick="toggleEditMode()" class="px-2.5 sm:px-3.5 py-2 rounded-xl text-xs sm:text-sm font-bold transition-all flex items-center gap-1.5 border border-slate-200 dark:border-slate-800 shadow-sm">
           <i id="editIcon" class="fa-solid fa-lock text-slate-400"></i>
           <span id="editText" class="hidden sm:inline">ปลดล็อคแก้ไข</span>
         </button>
@@ -187,7 +198,6 @@
         <span>ข้อมูลโปรไฟล์ของฉัน</span>
       </button>
 
-      <!-- แท็บ Admin (จะแสดงเฉพาะเมื่อ Admin ล็อกอินสำเร็จ) -->
       <button type="button" id="tabAdminPanelBtn" onclick="switchMainTab('admin')" class="hidden px-4 py-2 rounded-2xl font-black text-sm transition-all bg-slate-200 dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:text-amber-500 flex items-center gap-2">
         <i class="fa-solid fa-shield-halved text-amber-500"></i>
         <span>👑 แผงควบคุม Admin (<span id="userTotalCountBadge">0</span>)</span>
@@ -201,18 +211,22 @@
     <!-- VIEW 1: หน้าโปรไฟล์หลัก -->
     <div id="viewMainProfile" class="space-y-6">
       
-      <!-- KPI DASHBOARD SUMMARY -->
-      <section class="grid grid-cols-1 sm:grid-cols-3 gap-4">
-        <div class="glass-card rounded-2xl p-4 sm:p-5 relative overflow-hidden flex items-center gap-4 border-l-4 border-l-blue-500 shadow-sm">
-          <div class="w-14 h-14 rounded-2xl bg-blue-500/10 text-blue-500 flex items-center justify-center text-2xl shrink-0">
-            <i class="fa-solid fa-coins"></i>
+      <!-- ======================================================== -->
+      <!-- KPI DASHBOARD SUMMARY (เปลี่ยนเป็น เงินสด และเพิ่ม เงินคงเหลือต่อเดือน) -->
+      <!-- ======================================================== -->
+      <section class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+        <!-- 1. เงินสดติดตัวเริ่มต้น (Cash) -->
+        <div class="glass-card rounded-2xl p-4 sm:p-5 relative overflow-hidden flex items-center gap-4 border-l-4 border-l-amber-500 shadow-sm">
+          <div class="w-14 h-14 rounded-2xl bg-amber-500/10 text-amber-500 flex items-center justify-center text-2xl shrink-0">
+            <i class="fa-solid fa-wallet"></i>
           </div>
           <div class="min-w-0">
-            <span class="text-xs font-bold uppercase tracking-wider text-slate-400 block">PV รวมทั้งกลุ่ม</span>
-            <div class="text-2xl sm:text-3xl font-black font-mono text-blue-600 dark:text-blue-400 truncate" id="kpiTotalPV">0 PV</div>
+            <span class="text-xs font-bold uppercase tracking-wider text-slate-400 block">เงินสดติดตัวเริ่มต้น</span>
+            <div class="text-2xl sm:text-3xl font-black font-mono text-amber-500 truncate" id="kpiCash">฿0</div>
           </div>
         </div>
 
+        <!-- 2. Active Income รวม -->
         <div class="glass-card rounded-2xl p-4 sm:p-5 relative overflow-hidden flex items-center gap-4 border-l-4 border-l-green-500 shadow-sm">
           <div class="w-14 h-14 rounded-2xl bg-green-500/10 text-green-500 flex items-center justify-center text-xl shrink-0">
             <i class="fa-solid fa-hand-holding-dollar"></i>
@@ -223,6 +237,7 @@
           </div>
         </div>
 
+        <!-- 3. Passive Income รวม -->
         <div class="glass-card rounded-2xl p-4 sm:p-5 relative overflow-hidden flex items-center gap-4 border-l-4 border-l-emerald-500 shadow-sm">
           <div class="w-14 h-14 rounded-2xl bg-emerald-500/10 text-emerald-500 flex items-center justify-center text-xl shrink-0">
             <i class="fa-solid fa-seedling"></i>
@@ -230,6 +245,20 @@
           <div class="min-w-0">
             <span class="text-xs font-bold uppercase tracking-wider text-slate-400 block">Passive Income รวม</span>
             <div class="text-2xl sm:text-3xl font-black font-mono text-emerald-600 dark:text-emerald-400 truncate" id="kpiTotalPassive">฿0</div>
+          </div>
+        </div>
+
+        <!-- 4. เงินคงเหลือต่อเดือน (Net Surplus ต่อรอบเงินเดือน) -->
+        <div class="glass-card rounded-2xl p-4 sm:p-5 relative overflow-hidden flex items-center gap-4 border-l-4 border-l-indigo-500 shadow-sm bg-gradient-to-br from-indigo-50/50 to-purple-50/50 dark:from-indigo-950/20 dark:to-purple-950/20">
+          <div class="w-14 h-14 rounded-2xl bg-indigo-500/10 text-indigo-500 flex items-center justify-center text-2xl shrink-0">
+            <i class="fa-solid fa-scale-balanced"></i>
+          </div>
+          <div class="min-w-0 flex-1">
+            <div class="flex items-center justify-between">
+              <span class="text-xs font-bold uppercase tracking-wider text-indigo-600 dark:text-indigo-400 block truncate">เงินคงเหลือต่อเดือน</span>
+            </div>
+            <div class="text-2xl sm:text-3xl font-black font-mono text-indigo-600 dark:text-indigo-400 truncate" id="kpiNetSurplus">฿0</div>
+            <p class="text-[10px] text-slate-400 dark:text-slate-500 font-medium truncate mt-0.5">*รับเมื่อสุ่มเจอการ์ดเงินเดือน</p>
           </div>
         </div>
       </section>
@@ -275,7 +304,7 @@
             </div>
           </div>
 
-          <!-- SECTION 2: อาชีพในเกม & พลังทรัพยากร (เพิ่มเงินสดติดตัว + ปุ่มจัดการอาชีพเล็กลงเหลือแค่ไอคอน) -->
+          <!-- SECTION 2: อาชีพในเกม & พลังทรัพยากร -->
           <div class="glass-card rounded-3xl p-5 sm:p-7 shadow-sm space-y-4">
             <div class="flex items-center justify-between pb-3 border-b border-slate-100 dark:border-white/5">
               <div class="flex items-center gap-3">
@@ -288,13 +317,11 @@
                 </div>
               </div>
               
-              <!-- ปุ่มจัดการอาชีพแบบย่อขนาดเหลือแค่ไอคอน -->
               <button type="button" id="openCareerManagerBtn" onclick="openCareerManagerModal()" title="จัดการอาชีพ (เพิ่ม/ลบ/แก้ไข)" class="w-10 h-10 rounded-xl bg-amber-500/10 hover:bg-amber-500/20 text-amber-600 dark:text-amber-400 border border-amber-500/30 flex items-center justify-center text-sm shadow-sm transition">
                 <i class="fa-solid fa-sliders"></i>
               </button>
             </div>
 
-            <!-- เพิ่มช่อง "เงินสดติดตัว" เข้าไปในแถวข้อมูลอาชีพ -->
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
               <div>
                 <label class="block text-xs sm:text-sm font-bold text-slate-600 dark:text-slate-300 mb-1.5">อาชีพในเกม <span class="text-red-500">*</span></label>
@@ -305,7 +332,7 @@
                   <i class="fa-solid fa-wallet text-sm"></i> เงินสดติดตัวเริ่มต้น
                 </label>
                 <div class="relative">
-                  <input type="number" id="careerCash" placeholder="0" class="w-full bg-slate-50 dark:bg-slate-900/60 border border-slate-200 dark:border-white/10 rounded-xl pl-9 pr-3.5 py-3 text-sm sm:text-base font-mono font-bold text-amber-600 dark:text-amber-400 focus:ring-2 focus:ring-amber-500 transition">
+                  <input type="number" id="careerCash" oninput="calculateTotalSummary()" placeholder="0" class="w-full bg-slate-50 dark:bg-slate-900/60 border border-slate-200 dark:border-white/10 rounded-xl pl-9 pr-3.5 py-3 text-sm sm:text-base font-mono font-bold text-amber-600 dark:text-amber-400 focus:ring-2 focus:ring-amber-500 transition">
                   <span class="absolute left-3.5 top-3 text-slate-400 font-bold text-sm">฿</span>
                 </div>
               </div>
@@ -314,7 +341,7 @@
                   <i class="fa-solid fa-money-bill-wave text-sm"></i> เงินเดือน (Salary / ด.)
                 </label>
                 <div class="relative">
-                  <input type="number" id="careerSalary" placeholder="0" class="w-full bg-slate-50 dark:bg-slate-900/60 border border-slate-200 dark:border-white/10 rounded-xl pl-9 pr-3.5 py-3 text-sm sm:text-base font-mono font-bold text-green-500 focus:ring-2 focus:ring-green-500 transition">
+                  <input type="number" id="careerSalary" oninput="calculateTotalSummary()" placeholder="0" class="w-full bg-slate-50 dark:bg-slate-900/60 border border-slate-200 dark:border-white/10 rounded-xl pl-9 pr-3.5 py-3 text-sm sm:text-base font-mono font-bold text-green-500 focus:ring-2 focus:ring-green-500 transition">
                   <span class="absolute left-3.5 top-3 text-slate-400 font-bold text-sm">฿</span>
                 </div>
               </div>
@@ -323,7 +350,7 @@
                   <i class="fa-solid fa-receipt text-sm"></i> รายจ่ายประจำ (Expenses / ด.)
                 </label>
                 <div class="relative">
-                  <input type="number" id="careerExpense" placeholder="0" class="w-full bg-slate-50 dark:bg-slate-900/60 border border-slate-200 dark:border-white/10 rounded-xl pl-8 pr-3.5 py-3 text-sm sm:text-base font-mono font-bold text-red-500 focus:ring-2 focus:ring-red-500 transition">
+                  <input type="number" id="careerExpense" oninput="calculateTotalSummary()" placeholder="0" class="w-full bg-slate-50 dark:bg-slate-900/60 border border-slate-200 dark:border-white/10 rounded-xl pl-8 pr-3.5 py-3 text-sm sm:text-base font-mono font-bold text-red-500 focus:ring-2 focus:ring-red-500 transition">
                   <span class="absolute left-3.5 top-3 text-slate-400 font-bold text-sm">฿</span>
                 </div>
               </div>
@@ -397,7 +424,7 @@
             </div>
           </div>
 
-          <!-- SECTION 3: เช็คลิสต์ คุณสมบัติ (ดึงจากฐานข้อมูลเช็คลิสต์คุณสมบัติแบบไดนามิก พร้อมปุ่มจัดการ) -->
+          <!-- SECTION 3: เช็คลิสต์ คุณสมบัติ -->
           <div class="glass-card rounded-3xl p-5 sm:p-7 shadow-sm space-y-4">
             <div class="flex items-center justify-between pb-3 border-b border-slate-100 dark:border-white/5">
               <div class="flex items-center gap-3">
@@ -410,16 +437,12 @@
                 </div>
               </div>
 
-              <!-- ปุ่มจัดการฐานข้อมูลคุณสมบัติ -->
               <button type="button" id="openQualManagerBtn" onclick="openQualManagerModal()" title="จัดการคุณสมบัติ (เพิ่ม/ลบ/แก้ไข หมวดหมู่ & รายละเอียด)" class="w-10 h-10 rounded-xl bg-emerald-500/10 hover:bg-emerald-500/20 text-emerald-600 dark:text-emerald-400 border border-emerald-500/30 flex items-center justify-center text-sm shadow-sm transition">
                 <i class="fa-solid fa-sliders"></i>
               </button>
             </div>
 
-            <!-- กล่องแสดงผลเช็คลิสต์แบบไดนามิกตามหมวดหมู่ (ยังคงสไตล์ UI สวยงามตามเดิม) -->
-            <div id="qualificationsDisplayContainer" class="grid grid-cols-1 lg:grid-cols-3 gap-4">
-              <!-- JS จะเป็นผู้เรนเดอร์หมวดหมู่และรายการเช็คลิสต์ลงในนี้ -->
-            </div>
+            <div id="qualificationsDisplayContainer" class="grid grid-cols-1 lg:grid-cols-3 gap-4"></div>
           </div>
 
           <!-- SECTION 4: ยอดส่วนตัว Amway -->
@@ -473,9 +496,7 @@
               </div>
             </div>
 
-            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4" id="legsContainer">
-              <!-- สายงาน A - F ถูกสร้างอย่างเป็นระบบ -->
-            </div>
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4" id="legsContainer"></div>
           </div>
 
         </fieldset>
@@ -555,7 +576,7 @@
 
   </main>
 
-  <!-- MODAL: จัดการฐานข้อมูลอาชีพ (เพิ่มเงินสดติดตัวเริ่มต้น) -->
+  <!-- MODAL: จัดการฐานข้อมูลอาชีพ -->
   <div id="careerManagerModal" class="hidden fixed inset-0 z-50 bg-slate-950/70 backdrop-blur-sm flex items-center justify-center p-3 sm:p-4 overflow-y-auto">
     <div class="bg-white dark:bg-[#111C44] rounded-3xl max-w-lg w-full p-5 sm:p-6 shadow-2xl border border-slate-200 dark:border-white/10 space-y-4 max-h-[92vh] flex flex-col my-auto">
       <div class="flex items-center justify-between pb-3 border-b border-slate-100 dark:border-white/10">
@@ -604,7 +625,6 @@
           </div>
         </div>
 
-        <!-- กำหนดค่าพลังประจำอาชีพ 3 ด้าน -->
         <div class="p-3 bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-white/10 space-y-2.5">
           <span class="text-[11px] font-bold uppercase text-slate-500 block">5. ค่าพลังทรัพยากรประจำอาชีพ (0 - 10)</span>
           
@@ -640,9 +660,7 @@
     </div>
   </div>
 
-  <!-- ============================================================ -->
-  <!-- MODAL ใหม่: จัดการฐานข้อมูลเช็คลิสต์คุณสมบัติ (Qualifications DB) -->
-  <!-- ============================================================ -->
+  <!-- MODAL: จัดการฐานข้อมูลเช็คลิสต์คุณสมบัติ -->
   <div id="qualManagerModal" class="hidden fixed inset-0 z-50 bg-slate-950/70 backdrop-blur-sm flex items-center justify-center p-3 sm:p-4 overflow-y-auto">
     <div class="bg-white dark:bg-[#111C44] rounded-3xl max-w-lg w-full p-5 sm:p-6 shadow-2xl border border-slate-200 dark:border-white/10 space-y-4 max-h-[92vh] flex flex-col my-auto animate-pop-in">
       <div class="flex items-center justify-between pb-3 border-b border-slate-100 dark:border-white/10">
@@ -660,7 +678,6 @@
         </button>
       </div>
 
-      <!-- ฟอร์มเพิ่ม/แก้ไขข้อคุณสมบัติ -->
       <form id="qualCrudForm" onsubmit="handleQualFormSubmit(event)" class="p-3.5 sm:p-4 rounded-2xl bg-slate-50 dark:bg-slate-900/60 border border-slate-200 dark:border-white/5 space-y-3">
         <input type="hidden" id="crudQualId">
         
@@ -702,7 +719,6 @@
         </button>
       </form>
 
-      <!-- ตารางรายการคุณสมบัติทั้งหมดในระบบ -->
       <div class="space-y-2 flex-1 overflow-hidden flex flex-col">
         <span class="text-xs font-bold uppercase tracking-wider text-slate-400">รายการคุณสมบัติทั้งหมด (<span id="qualTotalCountBadge">0</span>)</span>
         <div id="qualListTableContainer" class="flex-1 overflow-y-auto space-y-2 pr-1 divide-y divide-slate-100 dark:divide-white/5"></div>
@@ -710,7 +726,7 @@
     </div>
   </div>
 
-  <!-- MODAL: เข้าสู่ระบบ (LOGIN MODAL) -->
+  <!-- MODAL: เข้าสู่ระบบ -->
   <div id="loginModal" class="hidden fixed inset-0 z-50 bg-slate-950/75 backdrop-blur-sm flex items-center justify-center p-3 sm:p-4 overflow-y-auto">
     <div class="bg-white dark:bg-[#111C44] rounded-3xl max-w-md w-full p-6 sm:p-7 shadow-2xl border border-slate-200 dark:border-white/10 space-y-5 my-auto animate-pop-in">
       <div class="flex items-center justify-between pb-3 border-b border-slate-100 dark:border-white/10">
@@ -834,7 +850,6 @@
   <script>
     const GOOGLE_SHEET_API_URL = "https://script.google.com/macros/s/AKfycbzq9oD33K3nf_r2JRq5RjCafAQIvt2o9ywvJ1EvXvVg4l9QyUalIuQvxxT7zQ890nR1/exec";
 
-    // ฐานข้อมูลอาชีพเริ่มต้น (เพิ่มเงินสดติดตัว cash เข้าไปด้วย)
     const DEFAULT_CAREERS = [
       { id: "business_owner", name: "เจ้าของธุรกิจส่วนตัว", cash: 100000, salary: 75000, expense: 45000, heart: 6, time: 4, knowledge: 8 },
       { id: "software_engineer", name: "วิศวกรซอฟต์แวร์ / โปรแกรมเมอร์", cash: 50000, salary: 65000, expense: 32000, heart: 5, time: 3, knowledge: 9 },
@@ -845,7 +860,6 @@
       { id: "office_worker", name: "พนักงานบริษัททั่วไป", cash: 20000, salary: 30000, expense: 18000, heart: 6, time: 5, knowledge: 5 }
     ];
 
-    // ฐานข้อมูลเช็คลิสต์คุณสมบัติเริ่มต้น (Qualifications Database)
     const DEFAULT_QUALIFICATIONS = [
       { id: "q_fl_1", category: "FL", color: "red", text: "เงื่อนไข FL ข้อที่ 1" },
       { id: "q_fl_2", category: "FL", color: "red", text: "เงื่อนไข FL ข้อที่ 2" },
@@ -1347,12 +1361,10 @@
       renderQualManagerTable();
     }
 
-    // เรนเดอร์เช็คลิสต์คุณสมบัติในหน้าจอหลัก (จัดหมวดหมู่ และยังคงสไตล์สวยงามตามเดิม)
     function renderQualificationsDisplay() {
       const container = document.getElementById('qualificationsDisplayContainer');
       if (!container) return;
 
-      // จัดกลุ่มตามหมวดหมู่ (Category)
       const categoriesMap = {};
       qualificationsDB.forEach(item => {
         const cat = item.category || 'ทั่วไป';
@@ -1407,7 +1419,6 @@
       }).join('');
     }
 
-    // Modal จัดการคุณสมบัติ
     function openQualManagerModal() {
       resetQualCrudForm();
       renderQualManagerTable();
@@ -1459,7 +1470,7 @@
       }
 
       saveQualificationsDB();
-      loadProfileData(); // โหลดสถานะติ๊กถูกกลับมา
+      loadProfileData();
       resetQualCrudForm();
     }
 
@@ -1512,7 +1523,7 @@
     }
 
     /* ==========================================================================
-       ฐานข้อมูลอาชีพ (Careers Database) พร้อม เงินสดติดตัว
+       ฐานข้อมูลอาชีพ (Careers Database)
        ========================================================================== */
     async function loadCareersDB() {
       try {
@@ -1593,6 +1604,7 @@
         updateStatBadge('Time', career.time !== undefined ? career.time : 5);
         updateStatBadge('Knowledge', career.knowledge !== undefined ? career.knowledge : 5);
 
+        calculateTotalSummary();
         showToast(`เลือกอาชีพ "${career.name}" (พร้อมดึงเงินสดติดตัวและสเตตัส)`, 'info');
       }
     }
@@ -1694,6 +1706,7 @@
           document.getElementById('careerSalary').value = '';
           document.getElementById('careerExpense').value = '';
         }
+        calculateTotalSummary();
         showToast(`ลบอาชีพ "${name}" เรียบร้อยแล้ว`, 'info');
       }
     }
@@ -1743,24 +1756,34 @@
       if (bar) bar.style.width = `${val * 10}%`;
     }
 
+    /* ==========================================================================
+       คำนวณและอัปเดตแถบ KPI ด้านบน (เงินสด, Active รวม, Passive รวม, เงินคงเหลือต่อเดือน)
+       ========================================================================== */
     function calculateTotalSummary() {
-      let totalPV = parseFloat(document.getElementById('personalPV')?.value) || 0;
+      const cash = parseFloat(document.getElementById('careerCash')?.value) || 0;
+      const salary = parseFloat(document.getElementById('careerSalary')?.value) || 0;
+      const expense = parseFloat(document.getElementById('careerExpense')?.value) || 0;
+
       let totalActive = parseFloat(document.getElementById('personalActive')?.value) || 0;
       let totalPassive = parseFloat(document.getElementById('personalPassive')?.value) || 0;
 
       LEGS.forEach(leg => {
-        totalPV += parseFloat(document.getElementById(`leg_${leg}_pv`)?.value) || 0;
         totalActive += parseFloat(document.getElementById(`leg_${leg}_active`)?.value) || 0;
         totalPassive += parseFloat(document.getElementById(`leg_${leg}_passive`)?.value) || 0;
       });
 
-      const kpiPV = document.getElementById('kpiTotalPV');
-      const kpiAct = document.getElementById('kpiTotalActive');
-      const kpiPas = document.getElementById('kpiTotalPassive');
+      // เงินคงเหลือต่อเดือน = (เงินเดือน + Active Income รวม + Passive Income รวม) - รายจ่ายประจำ
+      const netSurplus = (salary + totalActive + totalPassive) - expense;
 
-      if (kpiPV) kpiPV.innerText = `${totalPV.toLocaleString()} PV`;
-      if (kpiAct) kpiAct.innerText = `฿${totalActive.toLocaleString()}`;
-      if (kpiPas) kpiPas.innerText = `฿${totalPassive.toLocaleString()}`;
+      const kpiCashEl = document.getElementById('kpiCash');
+      const kpiActEl = document.getElementById('kpiTotalActive');
+      const kpiPasEl = document.getElementById('kpiTotalPassive');
+      const kpiNetEl = document.getElementById('kpiNetSurplus');
+
+      if (kpiCashEl) kpiCashEl.innerText = `฿${cash.toLocaleString()}`;
+      if (kpiActEl) kpiActEl.innerText = `฿${totalActive.toLocaleString()}`;
+      if (kpiPasEl) kpiPasEl.innerText = `฿${totalPassive.toLocaleString()}`;
+      if (kpiNetEl) kpiNetEl.innerText = `฿${netSurplus.toLocaleString()}`;
     }
 
     /* ==========================================================================
@@ -1785,7 +1808,6 @@
         return false;
       }
 
-      // บันทึกสถานะการติ๊กของเช็คลิสต์คุณสมบัติเป็น Map { [id]: boolean }
       const checkedQuals = {};
       qualificationsDB.forEach(q => {
         const cb = document.getElementById(q.id);
@@ -1886,7 +1908,6 @@
           }
         }
 
-        // โหลดสถานะติ๊กถูกของเช็คลิสต์คุณสมบัติ
         if (data.qualificationsChecked) {
           Object.keys(data.qualificationsChecked).forEach(qId => {
             const cb = document.getElementById(qId);
@@ -1986,7 +2007,7 @@
 
     function escapeHTML(str) {
       if (!str) return '';
-      return String(str).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#039;');
+      return String(str).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
     }
   </script>
 </body>
