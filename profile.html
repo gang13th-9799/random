@@ -212,43 +212,21 @@
     <div id="viewMainProfile" class="space-y-6">
       
       <!-- ======================================================== -->
-      <!-- KPI DASHBOARD SUMMARY (เปลี่ยนเป็น เงินสด และเพิ่ม เงินคงเหลือต่อเดือน) -->
+      <!-- KPI DASHBOARD SUMMARY (เงินสด -> เงินคงเหลือต่อเดือน -> Active -> Passive) -->
       <!-- ======================================================== -->
       <section class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-        <!-- 1. เงินสดติดตัวเริ่มต้น (Cash) -->
+        <!-- 1. เงินสด (Cash) -->
         <div class="glass-card rounded-2xl p-4 sm:p-5 relative overflow-hidden flex items-center gap-4 border-l-4 border-l-amber-500 shadow-sm">
           <div class="w-14 h-14 rounded-2xl bg-amber-500/10 text-amber-500 flex items-center justify-center text-2xl shrink-0">
             <i class="fa-solid fa-wallet"></i>
           </div>
           <div class="min-w-0">
-            <span class="text-xs font-bold uppercase tracking-wider text-slate-400 block">เงินสดติดตัวเริ่มต้น</span>
+            <span class="text-xs font-bold uppercase tracking-wider text-slate-400 block">เงินสด</span>
             <div class="text-2xl sm:text-3xl font-black font-mono text-amber-500 truncate" id="kpiCash">฿0</div>
           </div>
         </div>
 
-        <!-- 2. Active Income รวม -->
-        <div class="glass-card rounded-2xl p-4 sm:p-5 relative overflow-hidden flex items-center gap-4 border-l-4 border-l-green-500 shadow-sm">
-          <div class="w-14 h-14 rounded-2xl bg-green-500/10 text-green-500 flex items-center justify-center text-xl shrink-0">
-            <i class="fa-solid fa-hand-holding-dollar"></i>
-          </div>
-          <div class="min-w-0">
-            <span class="text-xs font-bold uppercase tracking-wider text-slate-400 block">Active Income รวม</span>
-            <div class="text-2xl sm:text-3xl font-black font-mono text-green-500 truncate" id="kpiTotalActive">฿0</div>
-          </div>
-        </div>
-
-        <!-- 3. Passive Income รวม -->
-        <div class="glass-card rounded-2xl p-4 sm:p-5 relative overflow-hidden flex items-center gap-4 border-l-4 border-l-emerald-500 shadow-sm">
-          <div class="w-14 h-14 rounded-2xl bg-emerald-500/10 text-emerald-500 flex items-center justify-center text-xl shrink-0">
-            <i class="fa-solid fa-seedling"></i>
-          </div>
-          <div class="min-w-0">
-            <span class="text-xs font-bold uppercase tracking-wider text-slate-400 block">Passive Income รวม</span>
-            <div class="text-2xl sm:text-3xl font-black font-mono text-emerald-600 dark:text-emerald-400 truncate" id="kpiTotalPassive">฿0</div>
-          </div>
-        </div>
-
-        <!-- 4. เงินคงเหลือต่อเดือน (Net Surplus ต่อรอบเงินเดือน) -->
+        <!-- 2. เงินคงเหลือต่อเดือน (Net Surplus ต่อรอบเงินเดือน - ย้ายมาไว้ถัดจากเงินสด) -->
         <div class="glass-card rounded-2xl p-4 sm:p-5 relative overflow-hidden flex items-center gap-4 border-l-4 border-l-indigo-500 shadow-sm bg-gradient-to-br from-indigo-50/50 to-purple-50/50 dark:from-indigo-950/20 dark:to-purple-950/20">
           <div class="w-14 h-14 rounded-2xl bg-indigo-500/10 text-indigo-500 flex items-center justify-center text-2xl shrink-0">
             <i class="fa-solid fa-scale-balanced"></i>
@@ -259,6 +237,28 @@
             </div>
             <div class="text-2xl sm:text-3xl font-black font-mono text-indigo-600 dark:text-indigo-400 truncate" id="kpiNetSurplus">฿0</div>
             <p class="text-[10px] text-slate-400 dark:text-slate-500 font-medium truncate mt-0.5">*รับเมื่อสุ่มเจอการ์ดเงินเดือน</p>
+          </div>
+        </div>
+
+        <!-- 3. Active Income รวม -->
+        <div class="glass-card rounded-2xl p-4 sm:p-5 relative overflow-hidden flex items-center gap-4 border-l-4 border-l-green-500 shadow-sm">
+          <div class="w-14 h-14 rounded-2xl bg-green-500/10 text-green-500 flex items-center justify-center text-xl shrink-0">
+            <i class="fa-solid fa-hand-holding-dollar"></i>
+          </div>
+          <div class="min-w-0">
+            <span class="text-xs font-bold uppercase tracking-wider text-slate-400 block">Active Income รวม</span>
+            <div class="text-2xl sm:text-3xl font-black font-mono text-green-500 truncate" id="kpiTotalActive">฿0</div>
+          </div>
+        </div>
+
+        <!-- 4. Passive Income รวม -->
+        <div class="glass-card rounded-2xl p-4 sm:p-5 relative overflow-hidden flex items-center gap-4 border-l-4 border-l-emerald-500 shadow-sm">
+          <div class="w-14 h-14 rounded-2xl bg-emerald-500/10 text-emerald-500 flex items-center justify-center text-xl shrink-0">
+            <i class="fa-solid fa-seedling"></i>
+          </div>
+          <div class="min-w-0">
+            <span class="text-xs font-bold uppercase tracking-wider text-slate-400 block">Passive Income รวม</span>
+            <div class="text-2xl sm:text-3xl font-black font-mono text-emerald-600 dark:text-emerald-400 truncate" id="kpiTotalPassive">฿0</div>
           </div>
         </div>
       </section>
@@ -565,7 +565,7 @@
                 <th class="py-3 px-3 w-28 text-right text-blue-500">PV รวม</th>
                 <th class="py-3 px-3 w-28 text-right text-green-500">Active</th>
                 <th class="py-3 px-3 w-28 text-right text-emerald-500">Passive</th>
-                <th class="py-3 px-3 w-40 text-center">การดำเนินการ</th>
+                <th class="py-3 px-4 w-40 text-center">การดำเนินการ</th>
               </tr>
             </thead>
             <tbody id="adminUserTableBody" class="divide-y divide-slate-100 dark:divide-white/5 font-medium"></tbody>
@@ -1757,7 +1757,7 @@
     }
 
     /* ==========================================================================
-       คำนวณและอัปเดตแถบ KPI ด้านบน (เงินสด, Active รวม, Passive รวม, เงินคงเหลือต่อเดือน)
+       คำนวณและอัปเดตแถบ KPI ด้านบน (เงินสด, เงินคงเหลือต่อเดือน, Active รวม, Passive รวม)
        ========================================================================== */
     function calculateTotalSummary() {
       const cash = parseFloat(document.getElementById('careerCash')?.value) || 0;
@@ -1776,14 +1776,14 @@
       const netSurplus = (salary + totalActive + totalPassive) - expense;
 
       const kpiCashEl = document.getElementById('kpiCash');
+      const kpiNetEl = document.getElementById('kpiNetSurplus');
       const kpiActEl = document.getElementById('kpiTotalActive');
       const kpiPasEl = document.getElementById('kpiTotalPassive');
-      const kpiNetEl = document.getElementById('kpiNetSurplus');
 
       if (kpiCashEl) kpiCashEl.innerText = `฿${cash.toLocaleString()}`;
+      if (kpiNetEl) kpiNetEl.innerText = `฿${netSurplus.toLocaleString()}`;
       if (kpiActEl) kpiActEl.innerText = `฿${totalActive.toLocaleString()}`;
       if (kpiPasEl) kpiPasEl.innerText = `฿${totalPassive.toLocaleString()}`;
-      if (kpiNetEl) kpiNetEl.innerText = `฿${netSurplus.toLocaleString()}`;
     }
 
     /* ==========================================================================
@@ -2007,7 +2007,7 @@
 
     function escapeHTML(str) {
       if (!str) return '';
-      return String(str).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+      return String(str).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#039;');
     }
   </script>
 </body>
