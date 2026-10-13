@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-  <title>Random Data Card Hub (Clone & Edit Edition)</title>
+  <title>Random Data Card Hub (Home Category Selector)</title>
 
   <!-- Google Fonts: Prompt & Inter -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -143,6 +143,15 @@
     .dark input[type=range]::-webkit-slider-runnable-track {
       background: #334155;
     }
+
+    /* ซ่อน Scrollbar ของแถบเลือกด่วนแต่ยังเลื่อนได้ */
+    .no-scrollbar::-webkit-scrollbar {
+      display: none;
+    }
+    .no-scrollbar {
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+    }
   </style>
 </head>
 <body class="text-slate-800 dark:text-slate-100 min-h-screen flex flex-col font-sans transition-colors duration-200 pb-20 md:pb-6">
@@ -217,6 +226,8 @@
     
     <!-- VIEW 1: CATEGORIES HOME -->
     <section id="view-categories" class="space-y-6 animate-pop-in">
+      
+      <!-- Hero Banner -->
       <div id="homeHeroBanner" class="rounded-3xl p-6 sm:p-8 text-white shadow-xl relative overflow-hidden border border-white/10 btn-theme-action">
         <div class="relative z-10 max-w-2xl space-y-3">
           <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-black/20 backdrop-blur border border-white/20 text-xs font-semibold">
@@ -232,6 +243,25 @@
         </div>
       </div>
 
+      <!-- ======================================================== -->
+      <!-- ส่วนใหม่: ตัวเลือกหมวดหมู่ด่วนจากฐานข้อมูลที่หน้าแรก -->
+      <!-- ======================================================== -->
+      <div class="p-4 sm:p-5 rounded-3xl bg-white dark:bg-slate-800/90 border border-slate-200 dark:border-slate-700 shadow-sm space-y-3">
+        <div class="flex flex-wrap items-center justify-between gap-2 border-b border-slate-100 dark:border-slate-700/60 pb-2.5">
+          <span class="text-xs sm:text-sm font-black text-slate-800 dark:text-white flex items-center gap-2">
+            <i class="fa-solid fa-filter text-red-500"></i>
+            <span>เลือกหมวดหมู่จากฐานข้อมูลเพื่อสุ่มทันที</span>
+          </span>
+          <span class="text-[11px] text-slate-400 font-medium">คลิกหมวดหมู่เพื่อไปหน้าสุ่ม</span>
+        </div>
+
+        <!-- แถบปุ่มชิปเลือกด่วน (Quick Pill Chips) แบบเลื่อนแนวนอน -->
+        <div id="homeCategoryPills" class="flex items-center gap-2 overflow-x-auto no-scrollbar py-1">
+          <!-- จะถูกเรนเดอร์โดย JavaScript อัตโนมัติ -->
+        </div>
+      </div>
+
+      <!-- ส่วนแสดงการ์ดหมวดหมู่แบบเต็ม (พร้อมพื้นหลังประจำหมวด) -->
       <div class="space-y-3">
         <div class="flex items-center justify-between">
           <h2 class="text-base font-bold text-slate-800 dark:text-white flex items-center gap-2">
@@ -304,7 +334,6 @@
           </div>
         </div>
         <div class="flex flex-wrap items-center gap-2">
-          <!-- ปุ่มสร้างการ์ดใหม่ -->
           <button onclick="openAddEditModal()" class="px-4 py-2 text-white font-semibold text-sm rounded-xl shadow-md transition flex items-center gap-2 btn-theme-action">
             <i class="fa-solid fa-plus"></i><span>สร้างการ์ดใหม่</span>
           </button>
@@ -329,7 +358,6 @@
                 <th class="py-3 px-4 w-24">หมวดหมู่</th>
                 <th class="py-3 px-4 w-28">สิ่งที่ต้องใช้</th>
                 <th class="py-3 px-4 w-28">สิ่งที่ได้รับ</th>
-                <!-- คอลัมน์จัดการ: แก้ไข / Clone / ลบ -->
                 <th class="py-3 px-4 w-32 text-center">จัดการการ์ด</th>
               </tr>
             </thead>
@@ -463,9 +491,7 @@
     </div>
   </div>
 
-  <!-- ============================================================ -->
-  <!-- MODAL: จัดการการ์ด (เพิ่ม / แก้ไข / โคลนการ์ด) -->
-  <!-- ============================================================ -->
+  <!-- MODAL: จัดการการ์ด (สร้างใหม่ / แก้ไข / โคลน) -->
   <div id="itemModal" class="hidden fixed inset-0 z-50 bg-slate-950/70 backdrop-blur-sm flex items-center justify-center p-3 sm:p-4 overflow-y-auto">
     <div class="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-3xl max-w-xl w-full p-5 sm:p-6 shadow-2xl relative my-auto animate-pop-in">
       <div class="flex items-center justify-between pb-3 border-b border-slate-100 dark:border-slate-700">
@@ -480,7 +506,6 @@
       </div>
 
       <form id="itemForm" onsubmit="handleItemFormSubmit(event)" class="space-y-4 pt-3">
-        <!-- ฟิลด์เก็บสถานะ (โหมด edit / clone) และ Snapshot ข้อมูลเดิมเพื่อตรวจสอบความเปลี่ยนแปลง -->
         <input type="hidden" id="formItemId">
         <input type="hidden" id="formIsCloneMode" value="false">
         <input type="hidden" id="formOriginalSnapshot" value="">
@@ -834,6 +859,7 @@
 
       updateTotalBadgeCount();
       updateCategoryDropdowns();
+      renderHomeCategoryPills();
       renderCategoryHomeCards();
       resetPool();
       renderDataTable();
@@ -847,9 +873,13 @@
         localStorage.setItem('rnd_cache_history', JSON.stringify(historyLog));
       } catch (e) {}
       updateTotalBadgeCount();
+      renderHomeCategoryPills();
       renderCategoryHomeCards();
     }
 
+    /* ==========================================================================
+       SYNC CLOUD: ดึงข้อมูลมาแสดงผลเท่านั้น (READ-ONLY)
+       ========================================================================== */
     async function fetchFromGoogleSheets(isManual = false) {
       if (!GOOGLE_SHEET_API_URL || GOOGLE_SHEET_API_URL.includes("PLACEHOLDER")) {
         setCloudStatus('ใช้งานแบบออฟไลน์', 'text-slate-400');
@@ -894,6 +924,7 @@
         setCloudStatus('ใช้ออฟไลน์ (ติดต่อชีตไม่ได้)', 'text-amber-500');
       } finally {
         updateCategoryDropdowns();
+        renderHomeCategoryPills();
         renderCategoryHomeCards();
         resetPool();
         renderDataTable();
@@ -902,6 +933,9 @@
       }
     }
 
+    /* ==========================================================================
+       PUSH TO GOOGLE SHEETS: ทำงานเฉพาะเมื่อกด เพิ่ม/ลบ/แก้ไข เท่านั้น
+       ========================================================================== */
     async function pushToGoogleSheets() {
       saveLocalCache();
       if (!GOOGLE_SHEET_API_URL || GOOGLE_SHEET_API_URL.includes("PLACEHOLDER")) return;
@@ -944,6 +978,39 @@
       if (el) el.innerText = items.length;
     }
 
+    /* ==========================================================================
+       ฟังก์ชันใหม่: เรนเดอร์แถบตัวเลือกหมวดหมู่ด่วนที่หน้าแรก (Home Quick Category Selector)
+       ========================================================================== */
+    function renderHomeCategoryPills() {
+      const container = document.getElementById('homeCategoryPills');
+      if (!container) return;
+
+      let html = `
+        <button type="button" onclick="selectCategoryAndDraw('ALL')" class="px-4 py-2 rounded-2xl text-xs font-black transition-all flex items-center gap-1.5 shrink-0 bg-slate-900 text-white dark:bg-white dark:text-slate-900 shadow-sm hover:scale-105 active:scale-95">
+          <i class="fa-solid fa-dice text-amber-400"></i>
+          <span>ทุกหมวดหมู่ (${items.length})</span>
+        </button>
+      `;
+
+      categories.forEach(cat => {
+        const count = items.filter(i => i.category === cat.name).length;
+        const meta = getCategoryMeta(cat.name);
+        html += `
+          <button type="button" onclick="selectCategoryAndDraw('${escapeHTML(cat.name)}')" class="px-3.5 py-2 rounded-2xl text-xs font-bold transition-all flex items-center gap-2 shrink-0 border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-900 hover:border-slate-400 hover:scale-105 active:scale-95 text-slate-700 dark:text-slate-200 shadow-sm">
+            <span class="w-2.5 h-2.5 rounded-full shrink-0" style="background:${meta.theme.hex};"></span>
+            <i class="fa-solid ${escapeHTML(meta.icon)} text-[11px] text-slate-400"></i>
+            <span>${escapeHTML(cat.name)}</span>
+            <span class="text-[10px] font-mono font-black text-slate-400 bg-white dark:bg-slate-800 px-1.5 py-0.5 rounded-md border border-slate-200 dark:border-slate-700">${count}</span>
+          </button>
+        `;
+      });
+
+      container.innerHTML = html;
+    }
+
+    /* ==========================================================================
+       เรนเดอร์การ์ดหมวดหมู่ที่หน้าแรก: พื้นหลังตามสีประจำหมวด
+       ========================================================================== */
     function renderCategoryHomeCards() {
       const grid = document.getElementById('categoryCardsGrid');
       if (!grid) return;
@@ -1102,7 +1169,7 @@
     }
 
     /* ==========================================================================
-       เรนเดอร์ตารางคลังข้อมูลการ์ด (มีทั้งปุ่มแก้ไข, ปุ่ม Clone, และปุ่มลบ)
+       เรนเดอร์ตารางคลังข้อมูลการ์ด (แก้ไข / Clone / ลบ)
        ========================================================================== */
     function renderDataTable() {
       const query = (document.getElementById('searchInput')?.value || '').toLowerCase().trim();
@@ -1140,15 +1207,12 @@
             <td class="py-3 px-4 text-xs font-mono text-slate-400"><i class="fa-solid fa-heart text-red-500"></i> ${item.cost?.heart||0} | <i class="fa-solid fa-clock"></i> ${item.cost?.time||0} | <i class="fa-solid fa-book text-purple-500"></i> ${item.cost?.knowledge||0}</td>
             <td class="py-3 px-4 text-xs font-mono text-slate-400"><i class="fa-solid fa-heart text-red-500"></i> +${item.reward?.heart||0} | <i class="fa-solid fa-clock"></i> +${item.reward?.time||0} | <i class="fa-solid fa-book text-purple-500"></i> +${item.reward?.knowledge||0}</td>
             <td class="py-3 px-4 text-center space-x-1 whitespace-nowrap">
-              <!-- ปุ่มแก้ไขการ์ด -->
               <button onclick="openAddEditModal('${item.id}', false)" class="p-1.5 text-slate-400 hover:text-blue-500 transition" title="แก้ไขการ์ดนี้">
                 <i class="fa-solid fa-pen text-xs"></i>
               </button>
-              <!-- ปุ่ม Clone การ์ด -->
-              <button onclick="openAddEditModal('${item.id}', true)" class="p-1.5 text-slate-400 hover:text-emerald-500 transition" title="Clone การ์ดนี้เป็นใบใหม่">
+              <button onclick="openAddEditModal('${item.id}', true)" class="p-1.5 text-slate-400 hover:text-emerald-500 transition" title="Clone การ์ดนี้">
                 <i class="fa-solid fa-copy text-xs"></i>
               </button>
-              <!-- ปุ่มลบการ์ด -->
               <button onclick="confirmDeleteItem('${item.id}')" class="p-1.5 text-slate-400 hover:text-red-500 transition" title="ลบการ์ดนี้">
                 <i class="fa-solid fa-trash-can text-xs"></i>
               </button>
@@ -1193,7 +1257,7 @@
     }
 
     /* ==========================================================================
-       เปิดหน้าต่าง MODAL จัดการการ์ด (รองรับทั้ง สร้างใหม่ / แก้ไข / โคลน)
+       เปิด Modal การ์ด (แก้ไข / Clone)
        ========================================================================== */
     function openAddEditModal(itemId = null, isClone = false) {
       document.getElementById('itemForm').reset();
@@ -1220,20 +1284,15 @@
         document.getElementById('formDescription').value = item.description || '';
 
         if (isClone) {
-          // โหมด CLONE การ์ด: ล้าง ID เพื่อให้บันทึกเป็นใบใหม่ และบันทึก Snapshot ไว้ตรวจสอบ
           document.getElementById('formItemId').value = '';
           document.getElementById('formIsCloneMode').value = 'true';
-          
-          // บันทึก Snapshot ข้อมูลเดิมเป็นสตริงเพื่อตรวจจับว่าผู้ใช้เปลี่ยนข้อมูลหรือไม่
-          const originalSnap = getCurrentFormSnapshot();
-          document.getElementById('formOriginalSnapshot').value = originalSnap;
+          document.getElementById('formOriginalSnapshot').value = getCurrentFormSnapshot();
 
           modalTitle.innerHTML = `<i class="fa-solid fa-copy text-emerald-500"></i><span>โคลนการ์ดใบใหม่ (Clone Card)</span>`;
           modalSubtitle.innerText = `ดึงข้อมูลจากการ์ด "${item.title}" กรุณาปรับเปลี่ยนข้อมูลก่อนบันทึกเป็นใบใหม่`;
           submitBtn.innerHTML = `<i class="fa-solid fa-plus-circle mr-1"></i>บันทึกเป็นการ์ดใบใหม่`;
           submitBtn.className = "px-5 py-2 rounded-xl text-white text-sm font-semibold shadow bg-emerald-600 hover:bg-emerald-700 transition";
         } else {
-          // โหมด EDIT การ์ดเดิม
           document.getElementById('formItemId').value = item.id;
           document.getElementById('formIsCloneMode').value = 'false';
           document.getElementById('formOriginalSnapshot').value = '';
@@ -1244,7 +1303,6 @@
           submitBtn.className = "px-5 py-2 rounded-xl text-white text-sm font-semibold shadow btn-theme-action";
         }
       } else {
-        // โหมด สร้างการ์ดใหม่ตั้งแต่ต้น
         document.getElementById('formItemId').value = '';
         document.getElementById('formIsCloneMode').value = 'false';
         document.getElementById('formOriginalSnapshot').value = '';
@@ -1265,7 +1323,6 @@
       document.getElementById('itemModal').classList.add('hidden');
     }
 
-    // ฟังก์ชันรวบรวมค่าปัจจุบันในฟอร์มเป็น Snapshot เพื่อตรวจสอบความเปลี่ยนแปลง
     function getCurrentFormSnapshot() {
       return JSON.stringify({
         title: document.getElementById('formTitle').value.trim(),
@@ -1280,7 +1337,6 @@
       });
     }
 
-    // บันทึกฟอร์มการ์ด (ตรวจสอบกรณี Clone แล้วไม่มีการเปลี่ยนแปลง)
     function handleItemFormSubmit(e) {
       e.preventDefault();
 
@@ -1288,9 +1344,8 @@
       const originalSnapshot = document.getElementById('formOriginalSnapshot').value;
       const currentSnapshot = getCurrentFormSnapshot();
 
-      // ตรวจสอบเงื่อนไข: หากเป็นโหมด Clone แต่ไม่มีการเปลี่ยนแปลงข้อมูล ให้ Pop-up เตือนทันที
       if (isClone && originalSnapshot && originalSnapshot === currentSnapshot) {
-        alert("⚠️ ไม่พบการเปลี่ยนแปลงข้อมูล!\n\nกรุณาแก้ไขหรือปรับเปลี่ยนข้อมูลของการ์ดอย่างน้อย 1 รายการ (เช่น ชื่อการ์ด, ราคา, หรือรายละเอียด) ก่อนกดบันทึกเป็นใบใหม่ครับ");
+        alert("⚠️ ไม่พบการเปลี่ยนแปลงข้อมูล!\n\nกรุณาแก้ไขหรือปรับเปลี่ยนข้อมูลของการ์ดอย่างน้อย 1 รายการก่อนกดบันทึกเป็นใบใหม่ครับ");
         document.getElementById('formTitle').focus();
         return;
       }
@@ -1307,7 +1362,6 @@
       const description = document.getElementById('formDescription').value.trim();
 
       if (id && !isClone) {
-        // แก้ไขการ์ดเดิม
         const idx = items.findIndex(i => i.id === id);
         if (idx !== -1) {
           items[idx] = {
@@ -1318,7 +1372,6 @@
           showToast(`บันทึกการแก้ไขการ์ด "${title}" เรียบร้อย`, 'success');
         }
       } else {
-        // เพิ่มการ์ดใบใหม่ (จากการสร้างใหม่ หรือ โคลน)
         const newCard = {
           id: `c-${Date.now().toString().slice(-4)}`,
           title, targetType, targetLeg, category, price, weight,
@@ -1330,7 +1383,6 @@
         showToast(isClone ? `โคลนการ์ดใบใหม่ "${title}" เรียบร้อยแล้ว! 🎉` : `สร้างการ์ดใหม่เรียบร้อยแล้ว`, 'success');
       }
 
-      // สั่งบันทึกลงชีตเฉพาะเมื่อมีการกดบันทึกโดยผู้ใช้
       pushToGoogleSheets();
       resetPool();
       renderDataTable();
@@ -1432,6 +1484,7 @@
 
       pushToGoogleSheets();
       updateCategoryDropdowns();
+      renderHomeCategoryPills();
       renderCategoryModalList();
       renderCategoryHomeCards();
       showToast(`เพิ่มหมวดหมู่ "${name}" สำเร็จ`, 'success');
@@ -1460,6 +1513,7 @@
 
       pushToGoogleSheets();
       updateCategoryDropdowns();
+      renderHomeCategoryPills();
       renderCategoryModalList();
       renderCategoryHomeCards();
       renderDataTable();
@@ -1475,6 +1529,7 @@
       categories[targetIndex] = temp;
 
       pushToGoogleSheets();
+      renderHomeCategoryPills();
       renderCategoryModalList();
       renderCategoryHomeCards();
       updateCategoryDropdowns();
@@ -1501,6 +1556,7 @@
 
         pushToGoogleSheets();
         updateCategoryDropdowns();
+        renderHomeCategoryPills();
         renderCategoryModalList();
         renderCategoryHomeCards();
         renderDataTable();
@@ -1542,6 +1598,7 @@
         categories[colorPickerTargetIdx].color = colorId;
         updateStageCategoryUI();
         pushToGoogleSheets();
+        renderHomeCategoryPills();
         renderCategoryModalList();
         renderCategoryHomeCards();
         renderDataTable();
@@ -1576,6 +1633,7 @@
         categories[iconPickerTargetIdx].icon = iconClass;
         updateStageCategoryUI();
         pushToGoogleSheets();
+        renderHomeCategoryPills();
         renderCategoryModalList();
         renderCategoryHomeCards();
         showToast('เปลี่ยนไอคอนเรียบร้อยแล้ว', 'success');
@@ -1583,7 +1641,6 @@
       closeIconPicker();
     }
 
-    /* === สำรองและกู้คืนฐานข้อมูล (Backup Database) === */
     function exportDatabase() {
       const dbPayload = {
         app: "RandomDataCardHub",
@@ -1636,6 +1693,7 @@
             pushToGoogleSheets();
 
             updateCategoryDropdowns();
+            renderHomeCategoryPills();
             renderCategoryHomeCards();
             resetPool();
             renderDataTable();
@@ -1652,7 +1710,6 @@
       event.target.value = '';
     }
 
-    /* === การตั้งค่าระบบ (Settings Modal) === */
     function openSettingModal() {
       updateSettingModalUI();
       document.getElementById('settingModal').classList.remove('hidden');
@@ -1715,7 +1772,6 @@
     function clearHistoryLog() {
       historyLog = [];
       saveLocalCache();
-      pushToGoogleSheets();
       renderHistoryList();
       showToast('ล้างประวัติการสุ่มเรียบร้อยแล้ว', 'info');
     }
