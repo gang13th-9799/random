@@ -215,10 +215,10 @@
   <!-- Main Container -->
   <main class="flex-1 max-w-7xl w-full mx-auto px-3 sm:px-6 lg:px-8 py-4 sm:py-6">
     
-    <!-- VIEW 1: หน้าแรก (หมวดหมู่การ์ด & แถบแสดงสถานะผู้เล่นแบบกระชับ) -->
+    <!-- VIEW 1: หน้าแรก -->
     <section id="view-categories" class="space-y-5 animate-pop-in">
       
-      <!-- แถบแสดงสถานะผู้เล่น: ซ่อนเมื่อยังไม่ Login / แสดงแบบกระชับ พร้อมเพิ่มข้อมูล "เงินสด" -->
+      <!-- แถบแสดงสถานะผู้เล่น: ซ่อนเมื่อยังไม่ Login / แสดงแบบกระชับ -->
       <div id="homeProfileDashboard" class="hidden py-2 px-1 border-b border-slate-200/80 dark:border-slate-800 space-y-2 text-xs">
         
         <!-- แถวบน: ข้อมูลบัญชี, อาชีพ, และสเตตัส 3 ด้าน -->
@@ -255,7 +255,7 @@
           </div>
         </div>
 
-        <!-- แถวล่าง: ตัวเลขการเงินกระชับ (เพิ่ม เงินสด นำหน้า ตามด้วย เงินคงเหลือ/ด.) -->
+        <!-- แถวล่าง: ตัวเลขการเงินกระชับ (มีเงินสด) -->
         <div class="flex flex-wrap items-center gap-x-4 gap-y-1 font-mono text-[11px] text-slate-500 dark:text-slate-400">
           <span class="flex items-center gap-1 font-bold">
             <i class="fa-solid fa-wallet text-amber-500"></i> เงินสด:
@@ -956,9 +956,6 @@
       fetchFromGoogleSheets(false);
     });
 
-    /* ==========================================================================
-       ฟังก์ชันดึงข้อมูลโปรไฟล์: เพิ่มดึงค่า "เงินสด" มาแสดงผลในแถบผู้เล่น
-       ========================================================================== */
     function loadProfileSummary() {
       const dashboard = document.getElementById('homeProfileDashboard');
       if (!dashboard) return;
@@ -985,15 +982,15 @@
         const careersDB = savedCareers ? JSON.parse(savedCareers) : [];
         const careerObj = careersDB.find(c => c.id === profile.careerId);
 
-        // 1. ชื่อผู้เล่น & อาชีพ
+        // 1. ข้อมูลผู้เล่น
         document.getElementById('homeProfileName').innerText = profile.fullName || currentAccount.name || 'ผู้เล่น';
         document.getElementById('homeProfileCareer').innerText = careerObj?.name || (profile.careerId ? profile.careerId : 'ยังไม่ระบุอาชีพ');
 
-        // 2. เงินสดติดตัว (ดึงจากโปรไฟล์ หรือค่าตั้งต้นของอาชีพ)
+        // 2. เงินสดติดตัว
         const cashVal = parseFloat(profile.cash) || (careerObj?.cash || 0);
         document.getElementById('homeProfileCash').innerText = `฿${cashVal.toLocaleString()}`;
 
-        // 3. คำนวณรายรับ-รายจ่าย
+        // 3. รายรับ-รายจ่าย
         const salary = parseFloat(profile.salary) || (careerObj?.salary || 0);
         const expense = parseFloat(profile.expense) || (careerObj?.expense || 0);
 
@@ -1007,7 +1004,6 @@
           });
         }
 
-        // เงินคงเหลือต่อเดือน = (เงินเดือน + Active + Passive) - รายจ่ายประจำ
         const netSurplus = (salary + totalActive + totalPassive) - expense;
 
         document.getElementById('homeProfileSalary').innerText = `฿${salary.toLocaleString()}`;
@@ -1016,7 +1012,7 @@
         document.getElementById('homeProfileExpense').innerText = `฿${expense.toLocaleString()}`;
         document.getElementById('homeProfileNetSurplus').innerText = `฿${netSurplus.toLocaleString()}`;
 
-        // 4. ค่าพลังทรัพยากร 3 ด้าน
+        // 4. สเตตัส 3 ด้าน
         const heartVal = profile.stats?.heart ?? (careerObj?.heart ?? 5);
         const timeVal = profile.stats?.time ?? (careerObj?.time ?? 5);
         const knowledgeVal = profile.stats?.knowledge ?? (careerObj?.knowledge ?? 5);
@@ -1117,20 +1113,31 @@
       }
     }
 
+    /* ==========================================================================
+       PUSH TO GOOGLE SHEETS: แก้ไข CORS & Payload ให้บันทึกเข้า Google Cloud ได้ 100%
+       ========================================================================== */
     async function pushToGoogleSheets() {
       saveLocalCache();
       if (!GOOGLE_SHEET_API_URL || GOOGLE_SHEET_API_URL.includes("PLACEHOLDER")) return;
 
       setCloudStatus('กำลังบันทึกลงชีต...', 'text-amber-500');
       try {
+        const payload = {
+          action: 'saveData',
+          items: items,
+          categories: categories,
+          historyLog: historyLog
+        };
+
         await fetch(GOOGLE_SHEET_API_URL, {
           method: 'POST',
           mode: 'no-cors',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ categories, items, historyLog })
+          headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+          body: JSON.stringify(payload)
         });
         setCloudStatus('บันทึกออนไลน์สำเร็จ', 'text-emerald-500');
       } catch (e) {
+        console.error("Push to Google Sheets error:", e);
         setCloudStatus('บันทึกไม่สำเร็จ', 'text-red-500');
       }
     }
@@ -1776,6 +1783,7 @@
 
       pushToGoogleSheets();
       updateCategoryDropdowns();
+      renderCategoryModalList();
       renderCategoryHomeCards();
       showToast(`เพิ่มหมวดหมู่ "${name}" สำเร็จ`, 'success');
     }
