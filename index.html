@@ -435,6 +435,133 @@
     <a href="profile.html" class="flex flex-col items-center gap-1 text-slate-400 hover:text-red-600 font-medium"><i class="fa-solid fa-id-card text-lg text-red-500"></i><span class="text-[10px]">โปรไฟล์</span></a>
   </nav>
 
+  <!-- ============================================================ -->
+  <!-- SETTING MODAL (เพิ่ม Tab Data Base และตารางเลือก Snapshot) -->
+  <!-- ============================================================ -->
+  <div id="settingModal" class="hidden fixed inset-0 z-50 bg-slate-950/75 backdrop-blur-sm flex items-center justify-center p-3 sm:p-4 overflow-y-auto">
+    <div class="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-3xl max-w-lg w-full p-5 sm:p-6 shadow-2xl relative animate-pop-in space-y-4 my-auto">
+      
+      <!-- Modal Header -->
+      <div class="flex items-center justify-between pb-3 border-b border-slate-100 dark:border-slate-700">
+        <div class="flex items-center gap-2.5">
+          <div class="w-9 h-9 rounded-xl bg-slate-100 dark:bg-slate-700 text-slate-700 dark:text-slate-200 flex items-center justify-center text-lg shadow-sm">
+            <i class="fa-solid fa-gear"></i>
+          </div>
+          <div>
+            <h3 class="font-bold text-base text-slate-900 dark:text-white">การตั้งค่าระบบ & ฐานข้อมูล</h3>
+            <p class="text-xs text-slate-400">เลือกฐานข้อมูลและจัดการสำรองข้อมูล</p>
+          </div>
+        </div>
+        <button onclick="closeSettingModal()" class="w-8 h-8 rounded-lg text-slate-400 hover:text-slate-700 flex items-center justify-center">
+          <i class="fa-solid fa-xmark text-lg"></i>
+        </button>
+      </div>
+
+      <!-- Tab Switcher: ทั่วไป vs ฐานข้อมูล (Data Base) -->
+      <div class="grid grid-cols-2 gap-1 bg-slate-100 dark:bg-slate-900/60 p-1 rounded-2xl border border-slate-200 dark:border-slate-700 text-xs font-bold text-center">
+        <button type="button" id="tabSettingGeneralBtn" onclick="switchSettingTab('general')" class="py-2 rounded-xl transition bg-white dark:bg-slate-800 text-red-600 dark:text-white shadow-sm flex items-center justify-center gap-1.5">
+          <i class="fa-solid fa-sliders"></i>
+          <span>ทั่วไป (General)</span>
+        </button>
+        <button type="button" id="tabSettingDatabaseBtn" onclick="switchSettingTab('database')" class="py-2 rounded-xl transition text-slate-500 hover:text-slate-800 dark:hover:text-white flex items-center justify-center gap-1.5">
+          <i class="fa-solid fa-server"></i>
+          <span>ฐานข้อมูล (Data Base)</span>
+        </button>
+      </div>
+
+      <!-- TAB 1 CONTENT: ทั่วไป & สำรองข้อมูล -->
+      <div id="settingTabContentGeneral" class="space-y-4">
+        <!-- สลับโหมด สว่าง / มืด -->
+        <div class="p-3 bg-slate-50 dark:bg-slate-900/60 rounded-2xl border border-slate-200 dark:border-slate-700/80 flex items-center justify-between">
+          <div class="flex items-center gap-3">
+            <div class="w-8 h-8 rounded-xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 flex items-center justify-center text-sm shadow-sm">
+              <i id="settingThemeIcon" class="fa-solid fa-moon text-red-500"></i>
+            </div>
+            <div>
+              <span class="text-xs font-bold text-slate-800 dark:text-white block">โหมดสว่าง / มืด</span>
+              <span id="settingThemeStatusText" class="text-[10px] text-slate-400">Night Mode</span>
+            </div>
+          </div>
+          <button onclick="toggleTheme()" class="px-3 py-1.5 rounded-xl text-xs font-bold border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-200 shadow-sm">
+            สลับโหมด
+          </button>
+        </div>
+
+        <!-- สำรองและส่งออกฐานข้อมูล -->
+        <div class="p-3.5 bg-slate-50 dark:bg-slate-900/60 rounded-2xl border border-slate-200 dark:border-slate-700/80 space-y-3">
+          <div class="flex items-center gap-2">
+            <i class="fa-solid fa-database text-xs text-amber-500"></i>
+            <span class="text-xs font-bold text-slate-800 dark:text-white">สำรองและส่งออกฐานข้อมูล (Backup & Export)</span>
+          </div>
+          <p class="text-[11px] text-slate-400 leading-relaxed">
+            ส่งออกไฟล์ฐานข้อมูลเก็บไว้ หรือนำไปเปิดใช้งานต่อบน Google Sheets / Excel
+          </p>
+
+          <div class="grid grid-cols-3 gap-2 pt-1">
+            <button onclick="exportDatabaseToCSV()" class="w-full py-2.5 px-2 rounded-xl bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-300 dark:border-emerald-700 hover:bg-emerald-100 text-emerald-700 dark:text-emerald-300 text-xs font-bold flex flex-col items-center justify-center gap-1 shadow-sm transition" title="ส่งออกไฟล์สำหรับเปิดใน Google Sheets / Excel">
+              <i class="fa-solid fa-file-excel text-base text-emerald-600"></i>
+              <span>Sheets (.CSV)</span>
+            </button>
+            <button onclick="exportDatabase()" class="w-full py-2.5 px-2 rounded-xl bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-600 hover:border-slate-400 text-slate-700 dark:text-slate-200 text-xs font-bold flex flex-col items-center justify-center gap-1 shadow-sm transition" title="สำรองข้อมูลทั้งระบบเพื่อนำกลับมา Import">
+              <i class="fa-solid fa-download text-base text-blue-500"></i>
+              <span>Backup (.JSON)</span>
+            </button>
+            <button onclick="triggerImportDatabase()" class="w-full py-2.5 px-2 rounded-xl bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-600 hover:border-blue-500 text-slate-700 dark:text-slate-200 text-xs font-bold flex flex-col items-center justify-center gap-1 shadow-sm transition" title="นำเข้าไฟล์สำรองเพื่อกู้คืนข้อมูล">
+              <i class="fa-solid fa-upload text-base text-purple-500"></i>
+              <span>Import</span>
+            </button>
+            <input type="file" id="importFileInput" accept=".json" onchange="handleImportFile(event)" class="hidden">
+          </div>
+        </div>
+      </div>
+
+      <!-- TAB 2 CONTENT: ตารางรายการ Data Base ให้เลือกใช้งาน -->
+      <div id="settingTabContentDatabase" class="hidden space-y-3.5">
+        
+        <!-- แถบควบคุมบนแท็บ Data Base -->
+        <div class="flex items-center justify-between">
+          <span class="text-xs font-bold text-slate-700 dark:text-slate-300 uppercase flex items-center gap-1.5">
+            <i class="fa-solid fa-table-list text-blue-500"></i>
+            <span>รายการฐานข้อมูลที่บันทึกไว้</span>
+          </span>
+          <button type="button" onclick="createManualDbSnapshot()" class="px-2.5 py-1 rounded-xl bg-indigo-50 dark:bg-indigo-950/60 text-indigo-600 dark:text-indigo-300 border border-indigo-200 dark:border-indigo-800 text-[11px] font-bold hover:bg-indigo-100 transition flex items-center gap-1 shadow-sm" title="บันทึกข้อมูลการ์ด ณ ขณะนี้เป็น Snapshot ตัวใหม่">
+            <i class="fa-solid fa-camera text-[10px]"></i>
+            <span>บันทึก Snapshot ตอนนี้</span>
+          </button>
+        </div>
+
+        <!-- ตารางรายการฐานข้อมูล (Database Selection Table) -->
+        <div class="border border-slate-200 dark:border-slate-700 rounded-2xl overflow-hidden bg-slate-50 dark:bg-slate-900/60 max-h-64 overflow-y-auto">
+          <table class="w-full text-left text-xs text-slate-600 dark:text-slate-300">
+            <thead class="bg-white dark:bg-slate-800 border-b border-slate-200 dark:border-slate-700 text-[10px] uppercase font-bold text-slate-400 sticky top-0">
+              <tr>
+                <th class="py-2.5 px-3">ชื่อฐานข้อมูล / แหล่งที่มา</th>
+                <th class="py-2.5 px-2 text-center w-14">Version</th>
+                <th class="py-2.5 px-2 text-center w-20">วันเวลา</th>
+                <th class="py-2.5 px-2 text-right w-16">จำนวน</th>
+                <th class="py-2.5 px-3 text-center w-20">เลือกใช้</th>
+              </tr>
+            </thead>
+            <tbody id="databaseListTableBody" class="divide-y divide-slate-100 dark:divide-slate-800 font-medium"></tbody>
+          </table>
+        </div>
+
+        <div class="p-2.5 rounded-xl bg-slate-100 dark:bg-slate-900/90 border border-slate-200 dark:border-slate-700 text-[11px] text-slate-500 space-y-1">
+          <p class="flex items-center gap-1.5 font-bold text-slate-700 dark:text-slate-300">
+            <i class="fa-solid fa-circle-info text-blue-500"></i>
+            <span>คำแนะนำ:</span>
+          </p>
+          <p>• เมื่อกด <strong>"เลือกใช้"</strong> ระบบจะสลับฐานข้อมูลของเครื่องนี้ไปใช้ข้อมูลชุดนั้นทันที</p>
+          <p>• หากต้องการให้อุปกรณ์อื่นตรงกัน ให้คลิก <strong>"Push Master"</strong> ส่งชุดที่เลือกขึ้น Google Sheets</p>
+        </div>
+      </div>
+
+      <div class="pt-2 flex justify-end">
+        <button onclick="closeSettingModal()" class="px-5 py-2 rounded-xl text-white text-xs font-bold shadow btn-theme-action">เสร็จสิ้น</button>
+      </div>
+    </div>
+  </div>
+
   <!-- POP-UP RESULT MODAL -->
   <div id="resultModal" class="hidden fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-md flex items-center justify-center p-3 sm:p-4 overflow-y-auto">
     <div class="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-3xl max-w-2xl w-full p-4 sm:p-7 shadow-2xl relative my-auto animate-pop-in space-y-4">
@@ -923,118 +1050,6 @@
     </div>
   </div>
 
-  <!-- ============================================================ -->
-  <!-- SETTING MODAL: แสดงชื่อฐานข้อมูล, เลขเวอร์ชัน, และปุ่มล้างแคช -->
-  <!-- ============================================================ -->
-  <div id="settingModal" class="hidden fixed inset-0 z-50 bg-slate-950/70 backdrop-blur-sm flex items-center justify-center p-4">
-    <div class="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-3xl max-w-md w-full p-5 sm:p-6 shadow-2xl relative animate-pop-in space-y-4">
-      
-      <!-- Modal Header -->
-      <div class="flex items-center justify-between pb-3 border-b border-slate-100 dark:border-slate-700">
-        <div class="flex items-center gap-2.5">
-          <div class="w-9 h-9 rounded-xl bg-slate-100 dark:bg-slate-700 text-slate-700 dark:text-slate-200 flex items-center justify-center text-lg shadow-sm">
-            <i class="fa-solid fa-gear"></i>
-          </div>
-          <div>
-            <h3 class="font-bold text-base text-slate-900 dark:text-white">การตั้งค่าระบบ</h3>
-            <p class="text-xs text-slate-400">ข้อมูลฐานข้อมูลและเวอร์ชัน</p>
-          </div>
-        </div>
-        <button onclick="closeSettingModal()" class="w-8 h-8 rounded-lg text-slate-400 hover:text-slate-700 flex items-center justify-center">
-          <i class="fa-solid fa-xmark text-lg"></i>
-        </button>
-      </div>
-
-      <!-- CARD 1: ข้อมูลฐานข้อมูลและเลขเวอร์ชัน (Database Info & Version) -->
-      <div class="p-3.5 bg-slate-50 dark:bg-slate-900/60 rounded-2xl border border-slate-200 dark:border-slate-700/80 space-y-2.5">
-        <div class="flex items-center justify-between">
-          <div class="flex items-center gap-2">
-            <i class="fa-solid fa-server text-blue-500 text-sm"></i>
-            <span class="text-xs font-bold text-slate-800 dark:text-white">สถานะฐานข้อมูลชีต</span>
-          </div>
-          <span id="settingDatabaseBadge" class="text-[10px] font-mono font-bold px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-700 dark:bg-emerald-950/80 dark:text-emerald-300 border border-emerald-300 dark:border-emerald-800">
-            CONNECTED
-          </span>
-        </div>
-
-        <div class="text-[11px] font-mono text-slate-600 dark:text-slate-400 space-y-1 bg-white dark:bg-slate-800 p-2.5 rounded-xl border border-slate-200/60 dark:border-slate-700/60">
-          <div class="flex justify-between items-center">
-            <span class="text-slate-400">แหล่งข้อมูล:</span>
-            <span id="settingDatabaseName" class="font-bold text-slate-800 dark:text-slate-200">Google Sheets DataHub</span>
-          </div>
-          <div class="flex justify-between items-center">
-            <span class="text-slate-400">เวอร์ชันฐานข้อมูล:</span>
-            <span id="settingDatabaseVersion" class="font-bold text-indigo-500 font-mono">v1.0 (ตรวจนับอยู่...)</span>
-          </div>
-          <div class="flex justify-between items-center">
-            <span class="text-slate-400">ซิงก์ล่าสุด:</span>
-            <span id="settingDatabaseLastSync" class="text-slate-500 dark:text-slate-400">-</span>
-          </div>
-          <div class="flex justify-between items-center border-t border-slate-100 dark:border-slate-700 pt-1 mt-1">
-            <span class="text-slate-400">จำนวนการ์ด:</span>
-            <span>
-              <strong id="settingCardCountCloud" class="text-emerald-500">ชีต: -</strong> | 
-              <strong id="settingCardCountLocal" class="text-slate-700 dark:text-slate-300">เครื่องนี้: 0</strong>
-            </span>
-          </div>
-        </div>
-
-        <!-- ปุ่มบังคับล้างแคชเครื่องและดึงจากชีตใหม่ -->
-        <button type="button" onclick="hardResetLocalFromCloud()" class="w-full py-2 px-3 rounded-xl bg-indigo-50 dark:bg-indigo-950/50 hover:bg-indigo-100 text-indigo-700 dark:text-indigo-300 text-xs font-bold transition flex items-center justify-center gap-1.5 border border-indigo-200 dark:border-indigo-800">
-          <i class="fa-solid fa-arrows-rotate text-xs"></i>
-          <span>ล้างแคชเครื่องนี้และโหลดใหม่จากชีต (แก้ข้อมูลไม่เท่ากัน)</span>
-        </button>
-      </div>
-
-      <!-- CARD 2: สลับโหมด สว่าง / มืด -->
-      <div class="p-3 bg-slate-50 dark:bg-slate-900/60 rounded-2xl border border-slate-200 dark:border-slate-700/80 flex items-center justify-between">
-        <div class="flex items-center gap-3">
-          <div class="w-8 h-8 rounded-xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 flex items-center justify-center text-sm shadow-sm">
-            <i id="settingThemeIcon" class="fa-solid fa-moon text-red-500"></i>
-          </div>
-          <div>
-            <span class="text-xs font-bold text-slate-800 dark:text-white block">โหมดสว่าง / มืด</span>
-            <span id="settingThemeStatusText" class="text-[10px] text-slate-400">Night Mode</span>
-          </div>
-        </div>
-        <button onclick="toggleTheme()" class="px-3 py-1.5 rounded-xl text-xs font-bold border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-200 shadow-sm">
-          สลับโหมด
-        </button>
-      </div>
-
-      <!-- CARD 3: สำรองและส่งออกฐานข้อมูล -->
-      <div class="p-3.5 bg-slate-50 dark:bg-slate-900/60 rounded-2xl border border-slate-200 dark:border-slate-700/80 space-y-3">
-        <div class="flex items-center gap-2">
-          <i class="fa-solid fa-database text-xs text-amber-500"></i>
-          <span class="text-xs font-bold text-slate-800 dark:text-white">สำรองและส่งออกฐานข้อมูล (Backup & Export)</span>
-        </div>
-        <p class="text-[11px] text-slate-400 leading-relaxed">
-          ส่งออกไฟล์ฐานข้อมูลเก็บไว้ หรือนำไปเปิดใช้งานต่อบน Google Sheets / Excel
-        </p>
-
-        <div class="grid grid-cols-3 gap-2 pt-1">
-          <button onclick="exportDatabaseToCSV()" class="w-full py-2.5 px-2 rounded-xl bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-300 dark:border-emerald-700 hover:bg-emerald-100 text-emerald-700 dark:text-emerald-300 text-xs font-bold flex flex-col items-center justify-center gap-1 shadow-sm transition" title="ส่งออกไฟล์สำหรับเปิดใน Google Sheets / Excel">
-            <i class="fa-solid fa-file-excel text-base text-emerald-600"></i>
-            <span>Sheets (.CSV)</span>
-          </button>
-          <button onclick="exportDatabase()" class="w-full py-2.5 px-2 rounded-xl bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-600 hover:border-slate-400 text-slate-700 dark:text-slate-200 text-xs font-bold flex flex-col items-center justify-center gap-1 shadow-sm transition" title="สำรองข้อมูลทั้งระบบเพื่อนำกลับมา Import">
-            <i class="fa-solid fa-download text-base text-blue-500"></i>
-            <span>Backup (.JSON)</span>
-          </button>
-          <button onclick="triggerImportDatabase()" class="w-full py-2.5 px-2 rounded-xl bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-600 hover:border-blue-500 text-slate-700 dark:text-slate-200 text-xs font-bold flex flex-col items-center justify-center gap-1 shadow-sm transition" title="นำเข้าไฟล์สำรองเพื่อกู้คืนข้อมูล">
-            <i class="fa-solid fa-upload text-base text-purple-500"></i>
-            <span>Import</span>
-          </button>
-          <input type="file" id="importFileInput" accept=".json" onchange="handleImportFile(event)" class="hidden">
-        </div>
-      </div>
-
-      <div class="pt-2 flex justify-end">
-        <button onclick="closeSettingModal()" class="px-5 py-2 rounded-xl text-white text-xs font-bold shadow btn-theme-action">เสร็จสิ้น</button>
-      </div>
-    </div>
-  </div>
-
   <!-- Toast Notification -->
   <div id="toastNotification" class="fixed top-20 right-4 z-50 transform translate-x-full opacity-0 transition-all duration-300 bg-slate-900 dark:bg-white text-white dark:text-slate-900 px-4 py-2.5 rounded-xl shadow-xl flex items-center gap-2 text-xs font-bold">
     <i id="toastIcon" class="fa-solid fa-check text-emerald-400"></i>
@@ -1116,10 +1131,12 @@
     let isDrawing = false;
     let soundEnabled = true;
 
-    // ข้อมูลเวอร์ชันและการซิงก์
+    // ข้อมูลเวอร์ชันและการจัดการ Snapshot
     let currentDbVersion = 1;
     let lastCloudSyncedTime = null;
     let lastCloudCardCount = 0;
+    let dbSnapshots = [];
+    let activeSnapshotId = "cloud_active";
 
     const COLOR_PALETTES = {
       red: { id: "red", name: "1. แดงทับทิม", hex: "#EF4444", gradient: "linear-gradient(135deg, #EF4444 0%, #DC2626 50%, #991B1B 100%)", badge: "bg-red-100 text-red-800 dark:bg-red-950/80 dark:text-red-300" },
@@ -1173,6 +1190,7 @@
       initTheme();
       loadLocalCache();
       loadProfileSummary();
+      loadDbSnapshotsList();
       renderIconPickerGrid();
       renderColorPickerGrid();
       fetchFromGoogleSheets(false);
@@ -1458,7 +1476,7 @@
     }
 
     /* ==========================================================================
-       FETCH FROM GOOGLE SHEETS (พร้อมอ่านเลขเวอร์ชันและเวลาอัปเดต)
+       FETCH FROM GOOGLE SHEETS
        ========================================================================== */
     async function fetchFromGoogleSheets(isManual = false) {
       if (!GOOGLE_SHEET_API_URL || GOOGLE_SHEET_API_URL.includes("PLACEHOLDER")) {
@@ -1471,21 +1489,40 @@
       if (syncIcon) syncIcon.classList.add('animate-spin');
 
       try {
-        const res = await fetch(`${GOOGLE_SHEET_API_URL}?t=${Date.now()}`);
+        const freshUrl = `${GOOGLE_SHEET_API_URL}${GOOGLE_SHEET_API_URL.includes('?') ? '&' : '?'}nocache=${Date.now()}`;
+        const res = await fetch(freshUrl, {
+          method: 'GET',
+          cache: 'no-store'
+        });
         const data = await res.json();
 
         if (data) {
           let updated = false;
 
-          if (Array.isArray(data.items) && data.items.length > 0) {
+          if (Array.isArray(data.items)) {
             lastCloudCardCount = data.items.length;
+            
+            if (data.dbVersion) {
+              currentDbVersion = parseInt(data.dbVersion, 10);
+            }
+
             const cloudItems = data.items.map(it => ({ ...it, syncStatus: "synced" }));
             const cloudIds = new Set(cloudItems.map(i => i.id));
-
-            // นำการ์ดที่ค้างในเครื่องมารวม
             const pendingLocalItems = items.filter(i => i.syncStatus === 'local_only' && !cloudIds.has(i.id));
+
             items = [...cloudItems, ...pendingLocalItems];
             updated = true;
+
+            // บันทึก/อัปเดต snapshot จาก Cloud ลงในลิสต์อัตโนมัติ
+            registerDbSnapshot({
+              id: "cloud_active",
+              name: "Google Sheets (Cloud Master)",
+              version: `v${currentDbVersion}`,
+              dateStr: new Date().toLocaleString('th-TH', { dateStyle: 'short', timeStyle: 'short' }),
+              count: items.length,
+              items: JSON.parse(JSON.stringify(items)),
+              categories: JSON.parse(JSON.stringify(categories))
+            });
           }
 
           if (Array.isArray(data.categories) && data.categories.length > 0) {
@@ -1497,14 +1534,12 @@
             historyLog = data.historyLog;
           }
 
-          // อัปเดตเวอร์ชันและเวลา
-          if (data.dbVersion) currentDbVersion = parseInt(data.dbVersion, 10);
           lastCloudSyncedTime = new Date().toLocaleTimeString('th-TH', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
 
           if (updated) {
             saveLocalCache();
             setCloudStatus(`ออนไลน์ (v${currentDbVersion} | ${items.length} ใบ)`, 'text-emerald-500');
-            if (isManual) showToast(`ซิงก์สำเร็จ! ได้รับข้อมูลเวอร์ชัน v${currentDbVersion} (${items.length} รายการ) ☁️`, 'success');
+            if (isManual) showToast(`ซิงก์สำเร็จ! เวอร์ชัน v${currentDbVersion} (${items.length} รายการ) ☁️`, 'success');
           } else {
             setCloudStatus(`พร้อมใช้งาน (v${currentDbVersion})`, 'text-emerald-500');
             if (isManual) showToast('ข้อมูลเป็นปัจจุบันแล้ว', 'info');
@@ -1518,30 +1553,15 @@
         resetPool();
         renderDataTable();
         renderHistoryList();
-        updateSettingModalUI();
+        renderDbSnapshotsTable();
         if (syncIcon) syncIcon.classList.remove('animate-spin');
       }
     }
 
-    /* บังคับดึงข้อมูลจาก Cloud มาเขียนทับข้อมูลในเครื่อง 100% */
     async function forceSyncFromCloud() {
-      if (!confirm("คุณต้องการดึงข้อมูลล่าสุดจาก Google Sheets มาแทนที่ข้อมูลในเครื่องนี้ใช่หรือไม่?")) return;
       await fetchFromGoogleSheets(true);
     }
 
-    /* ล้างแคชในเครื่องทิ้งทั้งหมด และโหลดชุดข้อมูลบริสุทธิ์จากชีต */
-    async function hardResetLocalFromCloud() {
-      if (!confirm("⚠️ ต้องการล้างแคชการ์ดในเครื่องนี้ทิ้งทั้งหมด แล้วดาวน์โหลดจาก Google Sheets ใหม่ใช่หรือไม่?\n(เหมาะสำหรับแก้ปัญหาจำนวนการ์ด 2 เครื่องไม่เท่ากัน)")) return;
-      
-      localStorage.removeItem('rnd_cache_items');
-      localStorage.removeItem('rnd_cache_categories');
-      items = [];
-      showToast('กำลังล้างแคชและดาวน์โหลดใหม่...', 'info');
-      await fetchFromGoogleSheets(true);
-      closeSettingModal();
-    }
-
-    /* บังคับส่งข้อมูลทั้งเครื่องขึ้นไปเขียนทับบน Google Sheets */
     async function forcePushToCloud() {
       if (!confirm(`ต้องการส่งข้อมูลทั้ง ${items.length} รายการจากเครื่องนี้ขึ้นไปแทนที่บน Google Sheets ใช่หรือไม่?`)) return;
       await pushToGoogleSheets();
@@ -1551,7 +1571,7 @@
       saveLocalCache();
       if (!GOOGLE_SHEET_API_URL || GOOGLE_SHEET_API_URL.includes("PLACEHOLDER")) return;
 
-      currentDbVersion++; // เพิ่มเลขเวอร์ชันเมื่อมีการอัปโหลด
+      currentDbVersion++;
       setCloudStatus('กำลังบันทึกลงชีต...', 'text-amber-500');
       try {
         const payload = {
@@ -1572,16 +1592,184 @@
 
         items.forEach(it => it.syncStatus = "synced");
         lastCloudSyncedTime = new Date().toLocaleTimeString('th-TH', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+        lastCloudCardCount = items.length;
+
+        registerDbSnapshot({
+          id: `snap_${Date.now()}`,
+          name: `Snapshot v${currentDbVersion} (Manual Push)`,
+          version: `v${currentDbVersion}`,
+          dateStr: new Date().toLocaleString('th-TH', { dateStyle: 'short', timeStyle: 'short' }),
+          count: items.length,
+          items: JSON.parse(JSON.stringify(items)),
+          categories: JSON.parse(JSON.stringify(categories))
+        });
+
         saveLocalCache();
         renderDataTable();
-        updateSettingModalUI();
+        renderDbSnapshotsTable();
 
         setCloudStatus(`บันทึกสำเร็จ (v${currentDbVersion})`, 'text-emerald-500');
         showToast(`บันทึกข้อมูล v${currentDbVersion} ขึ้น Google Sheets เรียบร้อยแล้ว ☁️`, 'success');
       } catch (e) {
-        console.error("Push to Google Sheets error:", e);
         setCloudStatus('บันทึกไม่สำเร็จ (ค้างในเครื่อง)', 'text-red-500');
         showToast('เกิดข้อผิดพลาดในการบันทึกลงชีต ข้อมูลยังถูกเก็บไว้ในเครื่อง', 'warning');
+      }
+    }
+
+    /* ==========================================================================
+       ระบบจัดการ Database Snapshot & สลับฐานข้อมูล
+       ========================================================================== */
+    function loadDbSnapshotsList() {
+      try {
+        const raw = localStorage.getItem('rnd_db_snapshots');
+        dbSnapshots = raw ? JSON.parse(raw) : [];
+      } catch (e) {
+        dbSnapshots = [];
+      }
+      renderDbSnapshotsTable();
+    }
+
+    function saveDbSnapshotsList() {
+      try {
+        localStorage.setItem('rnd_db_snapshots', JSON.stringify(dbSnapshots));
+      } catch (e) {}
+      renderDbSnapshotsTable();
+    }
+
+    function registerDbSnapshot(snap) {
+      const idx = dbSnapshots.findIndex(s => s.id === snap.id);
+      if (idx !== -1) {
+        dbSnapshots[idx] = snap;
+      } else {
+        dbSnapshots.unshift(snap);
+      }
+      if (dbSnapshots.length > 20) dbSnapshots.pop();
+      saveDbSnapshotsList();
+    }
+
+    function createManualDbSnapshot() {
+      const snapName = prompt("ระบุชื่อ Snapshot ฐานข้อมูลนี้:", `Snapshot ชุด ${items.length} ใบ (${new Date().toLocaleTimeString('th-TH')})`);
+      if (!snapName || !snapName.trim()) return;
+
+      const newSnap = {
+        id: `snap_${Date.now()}`,
+        name: snapName.trim(),
+        version: `v${currentDbVersion}`,
+        dateStr: new Date().toLocaleString('th-TH', { dateStyle: 'short', timeStyle: 'short' }),
+        count: items.length,
+        items: JSON.parse(JSON.stringify(items)),
+        categories: JSON.parse(JSON.stringify(categories))
+      };
+
+      activeSnapshotId = newSnap.id;
+      registerDbSnapshot(newSnap);
+      showToast(`บันทึก Snapshot "${snapName}" สำเร็จ 📸`, 'success');
+    }
+
+    function activateDbSnapshot(snapId) {
+      const targetSnap = dbSnapshots.find(s => s.id === snapId);
+      if (!targetSnap) return;
+
+      if (confirm(`คุณต้องการสลับไปใช้งานฐานข้อมูล "${targetSnap.name}" (Version: ${targetSnap.version} | ${targetSnap.count} ใบ) ใช่หรือไม่?`)) {
+        items = JSON.parse(JSON.stringify(targetSnap.items || []));
+        if (targetSnap.categories && targetSnap.categories.length > 0) {
+          categories = JSON.parse(JSON.stringify(targetSnap.categories));
+        }
+        currentDbVersion = parseInt((targetSnap.version || '1').replace(/\D/g, ''), 10) || 1;
+        activeSnapshotId = targetSnap.id;
+
+        saveLocalCache();
+        updateCategoryDropdowns();
+        renderCategoryHomeCards();
+        resetPool();
+        renderDataTable();
+        renderDbSnapshotsTable();
+
+        showToast(`สลับไปใช้ฐานข้อมูล "${targetSnap.name}" เรียบร้อยแล้ว 🎉`, 'success');
+      }
+    }
+
+    function deleteDbSnapshot(snapId, name) {
+      if (snapId === 'cloud_active') {
+        showToast('ไม่สามารถลบฐานข้อมูล Cloud Master ได้', 'warning');
+        return;
+      }
+      if (confirm(`ต้องการลบ Snapshot "${name}" ออกจากรายการใช่หรือไม่?`)) {
+        dbSnapshots = dbSnapshots.filter(s => s.id !== snapId);
+        saveDbSnapshotsList();
+        showToast('ลบ Snapshot เรียบร้อยแล้ว', 'info');
+      }
+    }
+
+    function renderDbSnapshotsTable() {
+      const tbody = document.getElementById('databaseListTableBody');
+      if (!tbody) return;
+
+      // เพิ่ม Cloud Master หากยังไม่มี
+      if (!dbSnapshots.some(s => s.id === 'cloud_active')) {
+        dbSnapshots.unshift({
+          id: "cloud_active",
+          name: "Google Sheets (Cloud Master)",
+          version: `v${currentDbVersion}`,
+          dateStr: lastCloudSyncedTime || "ซิงก์อัตโนมัติ",
+          count: items.length,
+          items: JSON.parse(JSON.stringify(items)),
+          categories: JSON.parse(JSON.stringify(categories))
+        });
+      }
+
+      tbody.innerHTML = dbSnapshots.map(s => {
+        const isActive = (s.id === activeSnapshotId) || (activeSnapshotId === 'cloud_active' && s.id === 'cloud_active');
+
+        const activeBadge = isActive 
+          ? `<span class="inline-flex items-center gap-1 text-[9px] font-black px-1.5 py-0.5 rounded-full bg-emerald-100 text-emerald-700 dark:bg-emerald-950/80 dark:text-emerald-300 border border-emerald-300 dark:border-emerald-800 shrink-0"><i class="fa-solid fa-check text-[8px]"></i> ใช้งานอยู่</span>` 
+          : '';
+
+        const actionBtn = isActive
+          ? `<span class="text-[10px] text-emerald-600 dark:text-emerald-400 font-bold">Active</span>`
+          : `<button type="button" onclick="activateDbSnapshot('${s.id}')" class="px-2.5 py-1 rounded-lg bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-[10px] shadow transition">เลือกใช้</button>`;
+
+        const deleteBtn = (s.id !== 'cloud_active') 
+          ? `<button type="button" onclick="deleteDbSnapshot('${s.id}', '${escapeHTML(s.name)}')" class="p-1 text-slate-400 hover:text-red-500 transition ml-1" title="ลบ Snapshot นี้"><i class="fa-solid fa-trash-can text-[10px]"></i></button>`
+          : '';
+
+        return `
+          <tr class="hover:bg-white dark:hover:bg-slate-800/80 transition-colors ${isActive ? 'bg-indigo-50/30 dark:bg-indigo-950/20' : ''}">
+            <td class="py-2 px-3">
+              <div class="flex items-center gap-1.5 flex-wrap">
+                <span class="font-bold text-slate-800 dark:text-white truncate max-w-[140px] sm:max-w-[180px]">${escapeHTML(s.name)}</span>
+                ${activeBadge}
+              </div>
+            </td>
+            <td class="py-2 px-2 text-center font-mono font-bold text-indigo-500">${escapeHTML(s.version || 'v1.0')}</td>
+            <td class="py-2 px-2 text-center font-mono text-[10px] text-slate-400 whitespace-nowrap">${escapeHTML(s.dateStr || '-')}</td>
+            <td class="py-2 px-2 text-right font-mono font-bold text-slate-700 dark:text-slate-300">${(s.count || 0).toLocaleString()}</td>
+            <td class="py-2 px-3 text-center whitespace-nowrap">
+              ${actionBtn}
+              ${deleteBtn}
+            </td>
+          </tr>
+        `;
+      }).join('');
+    }
+
+    function switchSettingTab(tab) {
+      const cGeneral = document.getElementById('settingTabContentGeneral');
+      const cDatabase = document.getElementById('settingTabContentDatabase');
+      const bGeneral = document.getElementById('tabSettingGeneralBtn');
+      const bDatabase = document.getElementById('tabSettingDatabaseBtn');
+
+      if (tab === 'database') {
+        cGeneral.classList.add('hidden');
+        cDatabase.classList.remove('hidden');
+        bDatabase.className = "py-2 rounded-xl transition bg-white dark:bg-slate-800 text-red-600 dark:text-white shadow-sm flex items-center justify-center gap-1.5";
+        bGeneral.className = "py-2 rounded-xl transition text-slate-500 hover:text-slate-800 dark:hover:text-white flex items-center justify-center gap-1.5";
+        renderDbSnapshotsTable();
+      } else {
+        cGeneral.classList.remove('hidden');
+        cDatabase.classList.add('hidden');
+        bGeneral.className = "py-2 rounded-xl transition bg-white dark:bg-slate-800 text-red-600 dark:text-white shadow-sm flex items-center justify-center gap-1.5";
+        bDatabase.className = "py-2 rounded-xl transition text-slate-500 hover:text-slate-800 dark:hover:text-white flex items-center justify-center gap-1.5";
       }
     }
 
@@ -1709,7 +1897,6 @@
 
     function triggerRandomDraw() {
       if (isDrawing || items.length === 0) return;
-
       const isUnique = document.getElementById('uniqueDrawToggle').checked;
       let eligible = (selectedCategory === 'ALL') ? items : items.filter(i => i.category === selectedCategory);
       if (eligible.length === 0) return;
@@ -2316,6 +2503,7 @@
       }
     }
 
+    /* === จัดการหมวดหมู่การ์ด === */
     function openCategoryModal() {
       newCategorySelectedIcon = "fa-folder";
       newCategorySelectedColor = "red";
@@ -2690,6 +2878,7 @@
     }
 
     function openSettingModal() {
+      switchSettingTab('general');
       updateSettingModalUI();
       document.getElementById('settingModal').classList.remove('hidden');
     }
@@ -2698,7 +2887,6 @@
       document.getElementById('settingModal').classList.add('hidden');
     }
 
-    /* อัปเดต Label แสดงชื่อฐานข้อมูลและเลขเวอร์ชันใน Setting */
     function updateSettingModalUI() {
       const isDark = document.documentElement.classList.contains('dark');
       const icon = document.getElementById('settingThemeIcon');
@@ -2706,38 +2894,6 @@
       if (icon && text) {
         icon.className = isDark ? "fa-solid fa-moon text-red-500" : "fa-solid fa-sun text-amber-500";
         text.innerText = isDark ? "Night Mode (โหมดมืด)" : "Light Mode (โหมดสว่าง)";
-      }
-
-      const dbNameEl = document.getElementById('settingDatabaseName');
-      const dbBadgeEl = document.getElementById('settingDatabaseBadge');
-      const dbVerEl = document.getElementById('settingDatabaseVersion');
-      const dbSyncEl = document.getElementById('settingDatabaseLastSync');
-      const cloudCountEl = document.getElementById('settingCardCountCloud');
-      const localCountEl = document.getElementById('settingCardCountLocal');
-
-      if (dbNameEl && dbBadgeEl) {
-        if (!GOOGLE_SHEET_API_URL || GOOGLE_SHEET_API_URL.includes("PLACEHOLDER")) {
-          dbNameEl.innerText = "Local Storage (ออฟไลน์)";
-          dbBadgeEl.innerText = "OFFLINE";
-          dbBadgeEl.className = "text-[10px] font-mono font-bold px-2 py-0.5 rounded-full bg-slate-200 text-slate-600 dark:bg-slate-700 dark:text-slate-300";
-          if (dbVerEl) dbVerEl.innerText = `v${currentDbVersion} (Local)`;
-        } else {
-          dbNameEl.innerText = "Google Sheets: DataHub";
-          dbBadgeEl.innerText = "CONNECTED";
-          dbBadgeEl.className = "text-[10px] font-mono font-bold px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-700 dark:bg-emerald-950/80 dark:text-emerald-300 border border-emerald-300 dark:border-emerald-800";
-          if (dbVerEl) dbVerEl.innerText = `v${currentDbVersion} (ชีตออนไลน์)`;
-        }
-      }
-
-      if (dbSyncEl) {
-        dbSyncEl.innerText = lastCloudSyncedTime || "ยังไม่ได้ซิงก์ในรอบนี้";
-      }
-
-      if (cloudCountEl) {
-        cloudCountEl.innerText = `ชีต: ${lastCloudCardCount > 0 ? lastCloudCardCount : 'ตรวจนับอยู่...'}`;
-      }
-      if (localCountEl) {
-        localCountEl.innerText = `เครื่องนี้: ${items.length}`;
       }
     }
 
