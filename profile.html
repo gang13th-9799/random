@@ -228,7 +228,7 @@
       
       <!-- KPI DASHBOARD SUMMARY -->
       <section class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-        <!-- 1. เงินสด (Cash) -->
+        <!-- 1. เงินสด -->
         <div class="glass-card rounded-2xl p-4 sm:p-5 relative overflow-hidden flex items-center gap-4 border-l-4 border-l-amber-500 shadow-sm">
           <div class="w-14 h-14 rounded-2xl bg-amber-500/10 text-amber-500 flex items-center justify-center text-2xl shrink-0">
             <i class="fa-solid fa-wallet"></i>
@@ -374,6 +374,7 @@
               </div>
 
               <div class="grid grid-cols-1 sm:grid-cols-3 gap-3.5 sm:gap-4">
+                <!-- 1. หัวใจ -->
                 <div class="p-3.5 sm:p-4 rounded-2xl bg-white dark:bg-slate-800/90 border-2 border-red-500/30 dark:border-red-500/40 shadow-sm space-y-3">
                   <div class="flex justify-between items-center">
                     <span class="text-red-500 flex items-center">
@@ -390,6 +391,7 @@
                   <input type="range" min="0" max="10" value="5" id="sliderHeart" oninput="updateStatBadge('Heart', this.value)" class="w-full text-red-500">
                 </div>
 
+                <!-- 2. เวลา -->
                 <div class="p-3.5 sm:p-4 rounded-2xl bg-white dark:bg-slate-800/90 border-2 border-blue-500/30 dark:border-blue-500/40 shadow-sm space-y-3">
                   <div class="flex justify-between items-center">
                     <span class="text-blue-500 flex items-center">
@@ -406,6 +408,7 @@
                   <input type="range" min="0" max="10" value="5" id="sliderTime" oninput="updateStatBadge('Time', this.value)" class="w-full text-blue-500">
                 </div>
 
+                <!-- 3. ความรู้ -->
                 <div class="p-3.5 sm:p-4 rounded-2xl bg-white dark:bg-slate-800/90 border-2 border-purple-500/30 dark:border-purple-500/40 shadow-sm space-y-3">
                   <div class="flex justify-between items-center">
                     <span class="text-purple-500 flex items-center">
@@ -425,23 +428,16 @@
             </div>
           </div>
 
-          <!-- SECTION 3: เช็คลิสต์ คุณสมบัติ (ปุ่มจัดการบันทึกเป็นฐานข้อมูลหลัก ส่วนการติ๊กผูกกับ Account) -->
+          <!-- SECTION 3: เช็คลิสต์ คุณสมบัติ (ย้ายปุ่มจัดการไปไว้ใน Setting Modal เรียบร้อยแล้ว) -->
           <div class="glass-card rounded-3xl p-5 sm:p-7 shadow-sm space-y-4">
-            <div class="flex items-center justify-between pb-3 border-b border-slate-100 dark:border-white/5">
-              <div class="flex items-center gap-3">
-                <div class="w-10 h-10 rounded-2xl bg-gradient-to-br from-emerald-500 to-teal-600 text-white flex items-center justify-center text-base shadow-sm">
-                  <i class="fa-solid fa-list-check"></i>
-                </div>
-                <div>
-                  <h2 class="text-lg font-bold text-slate-900 dark:text-white">3. เช็คลิสต์คุณสมบัติความก้าวหน้า (Qualifications)</h2>
-                  <p class="text-xs text-slate-400">การติ๊กถูกจะผูกติดกับบัญชีผู้เล่นของคุณ (ไม่กระทบผู้อื่น)</p>
-                </div>
+            <div class="flex items-center gap-3 pb-3 border-b border-slate-100 dark:border-white/5">
+              <div class="w-10 h-10 rounded-2xl bg-gradient-to-br from-emerald-500 to-teal-600 text-white flex items-center justify-center text-base shadow-sm">
+                <i class="fa-solid fa-list-check"></i>
               </div>
-
-              <!-- ปุ่มจัดการคุณสมบัติฐานข้อมูลหลัก (Master Qualifications DB) -->
-              <button type="button" id="openQualManagerBtn" onclick="openQualManagerModal()" title="จัดการคุณสมบัติฐานข้อมูลหลัก (เพิ่ม/ลบ/แก้ไข ข้อกำหนดกลาง)" class="w-10 h-10 rounded-xl bg-emerald-500/10 hover:bg-emerald-500/20 text-emerald-600 dark:text-emerald-400 border border-emerald-500/30 flex items-center justify-center text-sm shadow-sm transition">
-                <i class="fa-solid fa-sliders"></i>
-              </button>
+              <div>
+                <h2 class="text-lg font-bold text-slate-900 dark:text-white">3. เช็คลิสต์คุณสมบัติความก้าวหน้า (Qualifications)</h2>
+                <p class="text-xs text-slate-400">การติ๊กถูกจะผูกติดกับบัญชีผู้เล่นของคุณ (ไม่กระทบผู้อื่น)</p>
+              </div>
             </div>
 
             <div id="qualificationsDisplayContainer" class="grid grid-cols-1 lg:grid-cols-3 gap-4"></div>
@@ -584,7 +580,7 @@
   </main>
 
   <!-- ============================================================ -->
-  <!-- SETTING MODAL -->
+  <!-- SETTING MODAL: รวมจัดการ Theme, อาชีพต้นแบบ, เช็คลิสต์ และ Import/Export -->
   <!-- ============================================================ -->
   <div id="settingModal" class="hidden fixed inset-0 z-50 bg-slate-950/75 backdrop-blur-sm flex items-center justify-center p-3 sm:p-4 overflow-y-auto">
     <div class="bg-white dark:bg-[#111C44] rounded-3xl max-w-md w-full p-5 sm:p-6 shadow-2xl border border-slate-200 dark:border-white/10 space-y-4 my-auto animate-pop-in">
@@ -596,7 +592,7 @@
           </div>
           <div>
             <h3 class="font-bold text-base sm:text-lg text-slate-900 dark:text-white">การตั้งค่าระบบ (Settings)</h3>
-            <p class="text-xs text-slate-400">จัดการหน้าตา, อาชีพ และสำรองข้อมูล</p>
+            <p class="text-xs text-slate-400">จัดการหน้าตา, ฐานข้อมูล และสำรองข้อมูล</p>
           </div>
         </div>
         <button type="button" onclick="closeSettingModal()" class="w-8 h-8 rounded-xl text-slate-400 hover:text-slate-600 dark:hover:text-white flex items-center justify-center">
@@ -620,7 +616,7 @@
         </button>
       </div>
 
-      <!-- 2. จัดการอาชีพต้นแบบ -->
+      <!-- 2. จัดการอาชีพต้นแบบ (Master Careers) -->
       <div class="p-3.5 bg-slate-50 dark:bg-slate-900/60 rounded-2xl border border-slate-200 dark:border-white/5 flex items-center justify-between">
         <div class="flex items-center gap-3">
           <div class="w-9 h-9 rounded-xl bg-amber-500/10 text-amber-500 flex items-center justify-center text-sm">
@@ -637,7 +633,24 @@
         </button>
       </div>
 
-      <!-- 3. สำรองข้อมูลและส่งออกฐานข้อมูล -->
+      <!-- 3. จัดการเช็คลิสต์คุณสมบัติฐานข้อมูลหลัก (Master Qualifications) [ย้ายมาไว้ที่นี่] -->
+      <div class="p-3.5 bg-slate-50 dark:bg-slate-900/60 rounded-2xl border border-slate-200 dark:border-white/5 flex items-center justify-between">
+        <div class="flex items-center gap-3">
+          <div class="w-9 h-9 rounded-xl bg-emerald-500/10 text-emerald-500 flex items-center justify-center text-sm">
+            <i class="fa-solid fa-list-check"></i>
+          </div>
+          <div>
+            <span class="text-xs font-bold text-slate-800 dark:text-white block">จัดการเช็คลิสต์คุณสมบัติ</span>
+            <span class="text-[10px] text-slate-400">แก้ไขฐานข้อมูลข้อกำหนดหลัก (Master DB)</span>
+          </div>
+        </div>
+        <button type="button" onclick="closeSettingModal(); openQualManagerModal();" class="px-3.5 py-1.5 rounded-xl text-xs font-bold bg-emerald-600 hover:bg-emerald-700 text-white shadow-sm flex items-center gap-1.5">
+          <i class="fa-solid fa-sliders text-[11px]"></i>
+          <span>จัดการ</span>
+        </button>
+      </div>
+
+      <!-- 4. สำรองข้อมูลและส่งออกฐานข้อมูล -->
       <div class="p-3.5 bg-slate-50 dark:bg-slate-900/60 rounded-2xl border border-slate-200 dark:border-white/5 space-y-3">
         <div>
           <span class="text-xs font-bold text-slate-800 dark:text-white block flex items-center gap-1.5">
@@ -757,9 +770,7 @@
     </div>
   </div>
 
-  <!-- ============================================================ -->
   <!-- MODAL: จัดการฐานข้อมูลคุณสมบัติหลัก (Master Qualifications DB) -->
-  <!-- ============================================================ -->
   <div id="qualManagerModal" class="hidden fixed inset-0 z-50 bg-slate-950/70 backdrop-blur-sm flex items-center justify-center p-3 sm:p-4 overflow-y-auto">
     <div class="bg-white dark:bg-[#111C44] rounded-3xl max-w-lg w-full p-5 sm:p-6 shadow-2xl border border-slate-200 dark:border-white/10 space-y-4 max-h-[92vh] flex flex-col my-auto animate-pop-in">
       <div class="flex items-center justify-between pb-3 border-b border-slate-100 dark:border-white/10">
@@ -782,7 +793,7 @@
         
         <div class="flex items-center justify-between">
           <span id="crudQualFormTitle" class="text-xs sm:text-sm font-black uppercase text-emerald-600 dark:text-emerald-400 flex items-center gap-1">
-            <i class="fa-solid fa-plus-circle"></i> เพิ่มข้อคุณสมบัติใหม่
+            <i class="fa-solid fa-plus-circle"></i> เพิ่มข้อคุณสมบัติใหม่ (Master DB)
           </span>
           <button type="button" id="cancelEditQualBtn" onclick="resetQualCrudForm()" class="hidden text-xs text-slate-400 hover:text-red-500 underline font-semibold">
             ยกเลิกแก้ไข
@@ -949,7 +960,6 @@
   <script>
     const GOOGLE_SHEET_API_URL = "https://script.google.com/macros/s/AKfycbzq9oD33K3nf_r2JRq5RjCafAQIvt2o9ywvJ1EvXvVg4l9QyUalIuQvxxT7zQ890nR1/exec";
 
-    // ฐานข้อมูลอาชีพต้นแบบ (Master Template DB)
     const DEFAULT_CAREERS = [
       { id: "business_owner", name: "เจ้าของธุรกิจส่วนตัว", cash: 100000, salary: 75000, expense: 45000, heart: 6, time: 4, knowledge: 8 },
       { id: "software_engineer", name: "วิศวกรซอฟต์แวร์ / โปรแกรมเมอร์", cash: 50000, salary: 65000, expense: 32000, heart: 5, time: 3, knowledge: 9 },
@@ -960,7 +970,6 @@
       { id: "office_worker", name: "พนักงานบริษัททั่วไป", cash: 20000, salary: 30000, expense: 18000, heart: 6, time: 5, knowledge: 5 }
     ];
 
-    // ฐานข้อมูลคุณสมบัติหลัก (Master Qualifications DB)
     const DEFAULT_QUALIFICATIONS = [
       { id: "q_fl_1", category: "FL", color: "red", text: "เงื่อนไข FL ข้อที่ 1" },
       { id: "q_fl_2", category: "FL", color: "red", text: "เงื่อนไข FL ข้อที่ 2" },
@@ -1385,7 +1394,6 @@
         row.classList.add('bg-white/70', 'dark:bg-slate-800/60', 'border-slate-200/80', 'dark:border-white/5');
       }
 
-      // บันทึกสถานะการติ๊กผูกติดกับบัญชีผู้เล่นทันที
       if (isEditMode) {
         savePlayerAccountQualificationState();
       }
@@ -1443,7 +1451,6 @@
 
       const saveBtn = document.getElementById('saveProfileBtn');
       const resetBtn = document.getElementById('resetBtn');
-      const openQualBtn = document.getElementById('openQualManagerBtn');
 
       if (saveBtn) {
         saveBtn.disabled = !isEditMode;
@@ -1454,15 +1461,10 @@
         resetBtn.disabled = !isEditMode;
         resetBtn.classList.toggle('opacity-50', !isEditMode);
       }
-      if (openQualBtn) {
-        openQualBtn.disabled = !isEditMode;
-        openQualBtn.classList.toggle('opacity-50', !isEditMode);
-      }
     }
 
     /* ==========================================================================
        ฐานข้อมูลคุณสมบัติหลัก (Master Qualifications DB)
-       * บันทึก เพิ่ม/แก้ไข/ลบ เข้าสู่ Master DB และซิงก์ขึ้น Google Sheets *
        ========================================================================== */
     async function loadQualificationsDB() {
       try {
@@ -1486,19 +1488,17 @@
           localStorage.setItem('game_qualifications_database', JSON.stringify(qualificationsDB));
           renderQualificationsDisplay();
           renderQualManagerTable();
-          loadProfileData(); // ดึงสถานะติ๊กถูกของบัญชีผู้เล่นกลับมาแสดง
+          loadProfileData();
         }
       } catch (e) {}
     }
 
     async function saveQualificationsDB() {
-      // 1. บันทึก Master DB ลงในเครื่อง
       localStorage.setItem('game_qualifications_database', JSON.stringify(qualificationsDB));
       renderQualificationsDisplay();
       renderQualManagerTable();
-      loadProfileData(); // เรนเดอร์การติ๊กถูกของบัญชีปัจจุบันกลับคืน
+      loadProfileData();
 
-      // 2. ซิงก์ขึ้น Google Cloud ไปยังชีตกลาง
       if (!GOOGLE_SHEET_API_URL || GOOGLE_SHEET_API_URL.includes("PLACEHOLDER")) return;
       try {
         await fetch(GOOGLE_SHEET_API_URL, {
@@ -1760,10 +1760,6 @@
       }
     }
 
-    /* ==========================================================================
-       เมื่อเลือกอาชีพ: ดึงค่าต้นแบบเข้าสู่ฟอร์มส่วนตัวของผู้เล่น
-       (การแก้ไขหลังจากนี้จะผูกกับ Account ผู้เล่น ไม่ทับ Master Careers)
-       ========================================================================== */
     function onCareerSelected(careerId) {
       const career = careersDB.find(c => c.id === careerId);
       if (career) {
@@ -2111,9 +2107,6 @@
       }
     }
 
-    /* ==========================================================================
-       บันทึกข้อมูลโปรไฟล์: ผูกข้อมูลไว้เฉพาะใน Account ที่ล็อกอินอยู่
-       ========================================================================== */
     function saveProfileData(isAutoSave = false) {
       const fullNameInput = document.getElementById('userFullName');
       const careerSelect = document.getElementById('gameCareerSelect');
@@ -2233,7 +2226,6 @@
           }
         }
 
-        // โหลดสถานะติ๊กถูกเฉพาะบัญชีนี้
         if (data.qualificationsChecked) {
           Object.keys(data.qualificationsChecked).forEach(qId => {
             const cb = document.getElementById(qId);
@@ -2321,6 +2313,7 @@
     function initTheme() {
       const isDark = localStorage.getItem('rnd_theme_dark') !== 'false';
       document.documentElement.classList.toggle('dark', isDark);
+      updateSettingModalUI();
     }
 
     function showToast(msg, type = 'info') {
@@ -2332,7 +2325,7 @@
 
     function escapeHTML(str) {
       if (!str) return '';
-      return String(str).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#039;');
+      return String(str).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
     }
   </script>
 </body>
