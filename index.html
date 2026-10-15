@@ -111,6 +111,25 @@
       background: var(--theme-btn-gradient);
     }
 
+    /* Custom Scrollbar for Data Tables */
+    .custom-scrollbar::-webkit-scrollbar {
+      height: 6px;
+      width: 6px;
+    }
+    .custom-scrollbar::-webkit-scrollbar-track {
+      background: rgba(241, 245, 249, 0.5);
+    }
+    .dark .custom-scrollbar::-webkit-scrollbar-track {
+      background: rgba(15, 23, 42, 0.5);
+    }
+    .custom-scrollbar::-webkit-scrollbar-thumb {
+      background: #CBD5E1;
+      border-radius: 9999px;
+    }
+    .dark .custom-scrollbar::-webkit-scrollbar-thumb {
+      background: #334155;
+    }
+
     input[type=range] {
       -webkit-appearance: none;
       background: transparent;
@@ -217,8 +236,6 @@
     
     <!-- VIEW 1: หน้าแรก -->
     <section id="view-categories" class="space-y-5 animate-pop-in">
-      
-      <!-- แถบแสดงสถานะผู้เล่น -->
       <div id="homeProfileDashboard" class="hidden py-2 px-1 border-b border-slate-200/80 dark:border-slate-800 space-y-2 text-xs">
         <div class="flex flex-wrap items-center justify-between gap-3 text-slate-700 dark:text-slate-300">
           <div class="flex items-center gap-3 flex-wrap">
@@ -233,7 +250,6 @@
             </span>
           </div>
 
-          <!-- ทรัพยากร 3 ด้าน -->
           <div class="flex items-center gap-4 font-mono font-bold">
             <span class="flex items-center gap-1 text-red-500" title="สุขภาพ (หัวใจ)">
               <i class="fa-solid fa-heart"></i>
@@ -340,55 +356,92 @@
       </div>
     </section>
 
-    <!-- VIEW 3: คลังข้อมูลการ์ด -->
+    <!-- ========================================================================== -->
+    <!-- VIEW 3: คลังข้อมูลการ์ด (UX/UI ADAPTIVE RESPONSIVE RESOLUTION) -->
+    <!-- ========================================================================== -->
     <section id="view-data" class="hidden space-y-4 animate-pop-in">
-      <div class="bg-white/80 dark:bg-slate-800/80 backdrop-blur border border-slate-200 dark:border-slate-700 rounded-2xl p-4 shadow-sm flex flex-col md:flex-row items-stretch md:items-center justify-between gap-3">
+      
+      <!-- Top Bar: ตัวกรอง, ค้นหา, สลับมุมมอง และ ปุ่มสร้างการ์ด -->
+      <div class="bg-white/80 dark:bg-slate-800/80 backdrop-blur border border-slate-200 dark:border-slate-700 rounded-2xl p-3 sm:p-4 shadow-sm flex flex-col md:flex-row items-stretch md:items-center justify-between gap-3">
+        
         <div class="flex flex-wrap items-center gap-2 flex-1">
+          <!-- Search Input -->
           <div class="relative flex-1 min-w-[200px]">
-            <input type="text" id="searchInput" oninput="renderDataTable()" placeholder="ค้นหาการ์ด, หัวข้อ, การ์ดใบนี้ใช้กับ..." class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-300 dark:border-slate-700 text-sm rounded-xl pl-9 pr-3 py-2 focus:ring-2 focus:ring-red-600">
-            <i class="fa-solid fa-magnifying-glass absolute left-3 top-2.5 text-slate-400 text-xs"></i>
+            <input type="text" id="searchInput" oninput="renderDataTable()" placeholder="ค้นหาการ์ด, คำอธิบาย, เป้าหมาย..." class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-300 dark:border-slate-700 text-sm rounded-xl pl-9 pr-3 py-2.5 focus:ring-2 focus:ring-red-600 transition">
+            <i class="fa-solid fa-magnifying-glass absolute left-3 top-3.5 text-slate-400 text-xs"></i>
           </div>
-          <div class="relative w-44">
-            <select id="tableCategoryFilter" onchange="renderDataTable()" class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-300 dark:border-slate-700 text-sm rounded-xl px-3 py-2 pr-8 focus:ring-2 focus:ring-red-600"></select>
+
+          <!-- Category Filter Dropdown -->
+          <div class="relative w-full sm:w-44">
+            <select id="tableCategoryFilter" onchange="renderDataTable()" class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-300 dark:border-slate-700 text-sm rounded-xl px-3 py-2.5 pr-8 focus:ring-2 focus:ring-red-600 transition font-medium text-slate-800 dark:text-slate-200"></select>
             <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2.5 text-slate-400"><i class="fa-solid fa-chevron-down text-xs"></i></div>
           </div>
         </div>
-        <div class="flex flex-wrap items-center gap-2">
-          <button onclick="openAddEditModal()" class="px-4 py-2 text-white font-semibold text-sm rounded-xl shadow-md transition flex items-center gap-2 btn-theme-action">
-            <i class="fa-solid fa-plus"></i><span>สร้างการ์ดใหม่</span>
+
+        <div class="flex items-center gap-2 justify-between sm:justify-end">
+          
+          <!-- View Switcher (Auto/Grid/Table) -->
+          <div class="inline-flex rounded-xl p-1 bg-slate-100 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 text-xs font-bold text-slate-600 dark:text-slate-300 shadow-inner">
+            <button type="button" id="viewModeAutoBtn" onclick="setDataViewMode('auto')" class="px-2.5 py-1.5 rounded-lg transition-all flex items-center gap-1.5 bg-white dark:bg-slate-800 text-red-600 shadow-sm" title="ปรับมุมมองอัตโนมัติตามอุปกรณ์">
+              <i class="fa-solid fa-wand-magic-sparkles"></i>
+              <span class="hidden sm:inline">Auto</span>
+            </button>
+            <button type="button" id="viewModeCardBtn" onclick="setDataViewMode('card')" class="px-2.5 py-1.5 rounded-lg transition-all flex items-center gap-1.5 hover:text-red-500" title="มุมมองแบบการ์ด">
+              <i class="fa-solid fa-grip"></i>
+              <span class="hidden sm:inline">การ์ด</span>
+            </button>
+            <button type="button" id="viewModeTableBtn" onclick="setDataViewMode('table')" class="px-2.5 py-1.5 rounded-lg transition-all flex items-center gap-1.5 hover:text-red-500" title="มุมมองแบบตาราง">
+              <i class="fa-solid fa-table-list"></i>
+              <span class="hidden sm:inline">ตาราง</span>
+            </button>
+          </div>
+
+          <button onclick="openAddEditModal()" class="px-4 py-2.5 text-white font-semibold text-xs sm:text-sm rounded-xl shadow-md transition flex items-center gap-1.5 btn-theme-action shrink-0 hover:scale-105 active:scale-95">
+            <i class="fa-solid fa-plus text-xs"></i><span>สร้างการ์ดใหม่</span>
           </button>
-          <button onclick="fetchFromGoogleSheets(true)" class="px-3.5 py-2 bg-slate-100 dark:bg-slate-700 border border-slate-300 dark:border-slate-600 text-sm font-semibold rounded-xl hover:bg-slate-200 transition flex items-center gap-1.5">
-            <i class="fa-solid fa-arrows-rotate"></i><span>รีเฟรชข้อมูล</span>
+          
+          <button onclick="fetchFromGoogleSheets(true)" title="รีเฟรชข้อมูลล่าสุด" class="p-2.5 bg-slate-100 dark:bg-slate-700/80 border border-slate-300 dark:border-slate-600 text-slate-700 dark:text-slate-200 text-xs font-semibold rounded-xl hover:bg-slate-200 transition shrink-0">
+            <i class="fa-solid fa-rotate text-xs"></i>
           </button>
         </div>
       </div>
 
-      <div class="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-2xl shadow-sm overflow-hidden">
-        <div class="hidden md:block overflow-x-auto">
-          <table class="w-full text-left text-sm text-slate-600 dark:text-slate-300">
-            <thead class="bg-slate-50 dark:bg-slate-900/60 border-b border-slate-200 dark:border-slate-700 text-xs uppercase font-bold text-slate-500">
+      <!-- Container บรรจุตารางและการ์ด -->
+      <div class="bg-white dark:bg-slate-800/90 border border-slate-200 dark:border-slate-700/80 rounded-2xl sm:rounded-3xl shadow-sm overflow-hidden p-0 sm:p-2">
+        
+        <!-- 1. มุมมองแบบตารางความหนาแน่นสูง (High-Density Desktop Table View) -->
+        <div id="dataTableViewContainer" class="hidden lg:block overflow-x-auto custom-scrollbar">
+          <table class="w-full text-left text-xs sm:text-sm text-slate-600 dark:text-slate-300">
+            <thead class="sticky top-0 z-10 bg-slate-100/95 dark:bg-slate-900/95 backdrop-blur border-b border-slate-200 dark:border-slate-700 text-[11px] uppercase font-bold text-slate-500 dark:text-slate-400">
               <tr>
-                <th class="py-3 px-4 w-12 text-center">#</th>
-                <th class="py-3 px-4">ชื่อการ์ด (Card Title)</th>
-                <th class="py-3 px-4 w-36 text-indigo-500">การ์ดใบนี้ใช้กับ</th>
-                <th class="py-3 px-4 w-24 text-blue-500">PV ของการ์ด</th>
-                <th class="py-3 px-4 w-24 text-amber-500">โอกาสสุ่ม</th>
-                <th class="py-3 px-4 w-24 text-red-600">ราคา</th>
-                <th class="py-3 px-4 w-24 text-green-500">Active</th>
-                <th class="py-3 px-4 w-24 text-emerald-600">Passive</th>
-                <th class="py-3 px-4 w-24">หมวดหมู่</th>
-                <th class="py-3 px-4 w-28">สิ่งที่ต้องใช้</th>
-                <th class="py-3 px-4 w-28">สิ่งที่ได้รับ</th>
-                <th class="py-3 px-4 w-32 text-center">จัดการการ์ด</th>
+                <th class="py-3 px-3 w-10 text-center">#</th>
+                <th class="py-3 px-3">ชื่อการ์ด (Card Title)</th>
+                <th class="py-3 px-3 w-32 text-indigo-500">การ์ดใบนี้ใช้กับ</th>
+                <th class="py-3 px-3 w-24 text-blue-500">PV ของการ์ด</th>
+                <th class="py-3 px-3 w-20 text-amber-500 text-center">โอกาสสุ่ม</th>
+                <th class="py-3 px-3 w-24 text-red-600">ราคา</th>
+                <th class="py-3 px-3 w-24 text-green-500">Active</th>
+                <th class="py-3 px-3 w-24 text-emerald-500">Passive</th>
+                <th class="py-3 px-3 w-24">หมวดหมู่</th>
+                <th class="py-3 px-3 w-28">สิ่งที่ต้องใช้</th>
+                <th class="py-3 px-3 w-28">สิ่งที่ได้รับ</th>
+                <th class="py-3 px-3 w-28 text-center">จัดการ</th>
               </tr>
             </thead>
-            <tbody id="tableBodyDesktop" class="divide-y divide-slate-100 dark:divide-slate-700/60"></tbody>
+            <tbody id="tableBodyDesktop" class="divide-y divide-slate-100 dark:divide-slate-700/60 font-medium"></tbody>
           </table>
         </div>
-        <div id="tableBodyMobile" class="md:hidden divide-y divide-slate-200 dark:divide-slate-700/60 p-2 space-y-2"></div>
-        <div id="emptyDataState" class="hidden p-10 text-center space-y-3">
-          <i class="fa-solid fa-inbox text-4xl text-slate-300"></i>
-          <p class="text-sm text-slate-500">ไม่พบการ์ดในคลัง กด "สร้างการ์ดใหม่" เพื่อเริ่มบันทึก</p>
+
+        <!-- 2. มุมมองแบบการ์ดตอบสนองอัตโนมัติ (Adaptive Responsive Card Grid: มือถือ 1 คอลัมน์ / แท็บเล็ต 2 คอลัมน์) -->
+        <div id="dataCardViewContainer" class="grid grid-cols-1 sm:grid-cols-2 gap-3 p-3 lg:hidden"></div>
+
+        <!-- Empty State -->
+        <div id="emptyDataState" class="hidden p-12 text-center space-y-3">
+          <div class="w-16 h-16 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-300 flex items-center justify-center mx-auto text-2xl">
+            <i class="fa-solid fa-box-open"></i>
+          </div>
+          <p class="text-sm font-bold text-slate-700 dark:text-slate-300">ไม่พบการ์ดที่ตรงกับเงื่อนไขการค้นหา</p>
+          <p class="text-xs text-slate-400">ลองเปลี่ยนคำค้นหา หรือกดสร้างการ์ดใหม่เพื่อเริ่มบันทึก</p>
         </div>
       </div>
     </section>
@@ -423,9 +476,7 @@
     <a href="profile.html" class="flex flex-col items-center gap-1 text-slate-400 hover:text-red-600 font-medium"><i class="fa-solid fa-id-card text-lg text-red-500"></i><span class="text-[10px]">โปรไฟล์</span></a>
   </nav>
 
-  <!-- ============================================================ -->
-  <!-- POP-UP RESULT MODAL: ผลการสุ่ม + จำลอง PV ส่วนตัว / สายงาน -->
-  <!-- ============================================================ -->
+  <!-- POP-UP RESULT MODAL -->
   <div id="resultModal" class="hidden fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-md flex items-center justify-center p-3 sm:p-4 overflow-y-auto">
     <div class="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-3xl max-w-2xl w-full p-4 sm:p-7 shadow-2xl relative my-auto animate-pop-in space-y-4">
       
@@ -455,7 +506,7 @@
         </div>
       </div>
 
-      <!-- MINI POP-UP: แสดงผลจำลองสถานะผู้เล่น ก่อน/หลัง รับการ์ด (จำลอง PV รายสายงาน & ส่วนบุคคล) -->
+      <!-- MINI POP-UP: แสดงผลจำลองสถานะผู้เล่น ก่อน/หลัง รับการ์ด -->
       <div id="playerMiniModal" class="hidden rounded-2xl p-4 bg-gradient-to-br from-slate-50 to-indigo-50/40 dark:from-slate-900 dark:to-indigo-950/40 border-2 border-indigo-400/50 dark:border-indigo-600/50 shadow-2xl space-y-3 text-xs animate-pop-in relative">
         <div class="flex items-center justify-between border-b border-indigo-100 dark:border-indigo-900/60 pb-2">
           <div class="flex items-center gap-2">
@@ -471,7 +522,7 @@
         </div>
 
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5 font-mono">
-          <!-- 1. เงินสดติดตัว (หักราคาการ์ด) -->
+          <!-- 1. เงินสดติดตัว -->
           <div class="p-2.5 rounded-xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 flex items-center justify-between">
             <div>
               <span class="text-slate-400 block text-[10px] uppercase font-bold flex items-center gap-1">
@@ -486,7 +537,7 @@
             <span id="simCashDiffBadge" class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-red-100 text-red-600 dark:bg-red-950 dark:text-red-400">-฿0</span>
           </div>
 
-          <!-- 2. เงินคงเหลือต่อเดือน (Net Surplus ใหม่) -->
+          <!-- 2. เงินคงเหลือต่อเดือน -->
           <div class="p-2.5 rounded-xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 flex items-center justify-between">
             <div>
               <span class="text-slate-400 block text-[10px] uppercase font-bold flex items-center gap-1">
@@ -531,7 +582,7 @@
             <span id="simPassiveDiffBadge" class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-teal-100 text-teal-600 dark:bg-teal-950 dark:text-teal-400">+฿0</span>
           </div>
 
-          <!-- 5. กล่องจำลอง PV: แสดงทั้ง PV ส่วนตัว หรือ PV สายงาน A - F ที่เปลี่ยนแปลง -->
+          <!-- 5. กล่องจำลอง PV -->
           <div id="simPvImpactWrapper" class="col-span-1 sm:col-span-2 p-2.5 rounded-xl bg-blue-50/70 dark:bg-blue-950/30 border border-blue-200 dark:border-blue-800 flex items-center justify-between">
             <div>
               <span id="simPvImpactTitle" class="text-blue-500 dark:text-blue-400 block text-[10px] uppercase font-bold flex items-center gap-1">
@@ -580,7 +631,7 @@
       <!-- Pop-up Content -->
       <div class="space-y-4 max-h-[70vh] overflow-y-auto pr-1">
         
-        <!-- ชื่อการ์ด, เป้าหมายการใช้งาน และ PV ด้านขวา -->
+        <!-- ชื่อการ์ด, เป้าหมาย และ PV -->
         <div class="space-y-2">
           <h2 id="popupTitle" class="app-title-text font-extrabold text-slate-900 dark:text-white tracking-normal leading-snug"></h2>
           
@@ -591,7 +642,6 @@
               <span id="popupSubtitle">ข้อมูลส่วนตัว</span>
             </div>
 
-            <!-- ป้าย: แสดง PV ของการ์ด ต่อจากด้านขวา -->
             <div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-xl bg-blue-50 dark:bg-blue-950/40 border border-blue-200 dark:border-blue-800 text-blue-600 dark:text-blue-300 text-xs font-mono font-bold shadow-sm">
               <i class="fa-solid fa-award text-[11px] text-blue-500"></i>
               <span class="text-slate-400 font-medium">PV:</span>
@@ -600,7 +650,6 @@
           </div>
         </div>
 
-        <!-- รายละเอียดข้อความการ์ด -->
         <p id="popupDescription" class="app-desc-text text-slate-600 dark:text-slate-300 whitespace-pre-line font-normal leading-relaxed"></p>
 
         <!-- กล่องข้อมูลการเงินของการ์ด -->
@@ -619,7 +668,7 @@
           </div>
         </div>
 
-        <!-- Condition Stats: สิ่งที่ต้องใช้ & สิ่งที่ได้รับ -->
+        <!-- Condition Stats -->
         <div class="pt-1">
           <div class="grid grid-cols-1 sm:grid-cols-2 gap-3.5 sm:gap-4">
             
@@ -706,7 +755,7 @@
     </div>
   </div>
 
-  <!-- MODAL: จัดการการ์ด (มีช่อง PV) -->
+  <!-- MODAL: จัดการการ์ด -->
   <div id="itemModal" class="hidden fixed inset-0 z-50 bg-slate-950/70 backdrop-blur-sm flex items-center justify-center p-3 sm:p-4 overflow-y-auto">
     <div class="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-3xl max-w-xl w-full p-5 sm:p-6 shadow-2xl relative my-auto animate-pop-in">
       <div class="flex items-center justify-between pb-3 border-b border-slate-100 dark:border-slate-700">
@@ -1076,6 +1125,7 @@
     let currentItem = null;
     let isDrawing = false;
     let soundEnabled = true;
+    let dataViewMode = 'auto'; // 'auto' | 'card' | 'table'
 
     const COLOR_PALETTES = {
       red: { id: "red", name: "1. แดงทับทิม", hex: "#EF4444", gradient: "linear-gradient(135deg, #EF4444 0%, #DC2626 50%, #991B1B 100%)", badge: "bg-red-100 text-red-800 dark:bg-red-950/80 dark:text-red-300" },
@@ -1132,7 +1182,62 @@
       renderIconPickerGrid();
       renderColorPickerGrid();
       fetchFromGoogleSheets(false);
+      
+      // ฟังสัญญาณปรับเปลี่ยนขนาดหน้าจอแบบ Realtime
+      window.addEventListener('resize', applyAdaptiveLayout);
     });
+
+    /* ==========================================================================
+       UX/UI ADAPTIVE LAYOUT LOGIC
+       ========================================================================== */
+    function setDataViewMode(mode) {
+      dataViewMode = mode;
+      
+      const autoBtn = document.getElementById('viewModeAutoBtn');
+      const cardBtn = document.getElementById('viewModeCardBtn');
+      const tableBtn = document.getElementById('viewModeTableBtn');
+
+      [autoBtn, cardBtn, tableBtn].forEach(b => {
+        if (b) {
+          b.className = "px-2.5 py-1.5 rounded-lg transition-all flex items-center gap-1.5 hover:text-red-500";
+        }
+      });
+
+      if (mode === 'auto') {
+        if (autoBtn) autoBtn.className = "px-2.5 py-1.5 rounded-lg transition-all flex items-center gap-1.5 bg-white dark:bg-slate-800 text-red-600 shadow-sm";
+      } else if (mode === 'card') {
+        if (cardBtn) cardBtn.className = "px-2.5 py-1.5 rounded-lg transition-all flex items-center gap-1.5 bg-white dark:bg-slate-800 text-red-600 shadow-sm";
+      } else if (mode === 'table') {
+        if (tableBtn) tableBtn.className = "px-2.5 py-1.5 rounded-lg transition-all flex items-center gap-1.5 bg-white dark:bg-slate-800 text-red-600 shadow-sm";
+      }
+
+      applyAdaptiveLayout();
+    }
+
+    function applyAdaptiveLayout() {
+      const tableWrapper = document.getElementById('dataTableViewContainer');
+      const cardWrapper = document.getElementById('dataCardViewContainer');
+      if (!tableWrapper || !cardWrapper) return;
+
+      const width = window.innerWidth;
+
+      if (dataViewMode === 'table') {
+        tableWrapper.classList.remove('hidden');
+        cardWrapper.classList.add('hidden');
+      } else if (dataViewMode === 'card') {
+        tableWrapper.classList.add('hidden');
+        cardWrapper.classList.remove('hidden');
+      } else {
+        // Mode Auto: เช็ค Resolution หน้าจออัตโนมัติ
+        if (width >= 1024) {
+          tableWrapper.classList.remove('hidden');
+          cardWrapper.classList.add('hidden');
+        } else {
+          tableWrapper.classList.add('hidden');
+          cardWrapper.classList.remove('hidden');
+        }
+      }
+    }
 
     /* ==========================================================================
        ฟังก์ชันดึงข้อมูลโปรไฟล์ผู้เล่น และระบบจำลองสถานะ ก่อน/หลัง รับการ์ด
@@ -1262,7 +1367,6 @@
       };
     }
 
-    // ฟังก์ชันคำนวณและแสดงผลจำลองสถานะใน Mini Pop-up (รวมจำลอง PV ส่วนตัว และ PV สายงาน A-F)
     function updatePlayerMiniSimulation() {
       const p = getPlayerCurrentProfile();
       if (!p || !currentItem) return;
@@ -1306,7 +1410,7 @@
       document.getElementById('simNetAfter').innerText = `฿${newNetSurplus.toLocaleString()}`;
       document.getElementById('simNetDiffBadge').innerText = `+฿${netDiff.toLocaleString()}`;
 
-      // 4. จำลอง PV (ตรวจสอบว่าเป็นการ์ดใช้กับส่วนตัว หรือใช้กับสายงาน A-F)
+      // 4. จำลอง PV
       const pvWrapper = document.getElementById('simPvImpactWrapper');
       const pvTitle = document.getElementById('simPvImpactTitle');
       const isLegTarget = (currentItem.targetType === 'leg' && currentItem.targetLeg);
@@ -1322,7 +1426,6 @@
         document.getElementById('simPvDiffBadge').innerText = `+${cardPv.toLocaleString()} PV`;
         pvWrapper.classList.remove('hidden');
       } else {
-        // การ์ดใช้กับข้อมูลส่วนบุคคล
         const newPersonalPv = p.personalPv + cardPv;
         pvTitle.innerHTML = `<i class="fa-solid fa-award text-blue-500"></i> PV รวมส่วนบุคคล (Personal PV)`;
         document.getElementById('simPvBefore').innerText = `${p.personalPv.toLocaleString()} PV`;
@@ -1470,9 +1573,6 @@
       }
     }
 
-    /* ==========================================================================
-       PUSH TO GOOGLE SHEETS
-       ========================================================================== */
     async function pushToGoogleSheets() {
       saveLocalCache();
       if (!GOOGLE_SHEET_API_URL || GOOGLE_SHEET_API_URL.includes("PLACEHOLDER")) return;
@@ -1830,28 +1930,35 @@
       return 'ข้อมูลส่วนตัว';
     }
 
+    /* ==========================================================================
+       เรนเดอร์ข้อมูลคลังการ์ดแบบ Responsive (ตารางสำหรับเดสก์ท็อป + การ์ดสำหรับมือถือ/แท็บเล็ต)
+       ========================================================================== */
     function renderDataTable() {
       const query = (document.getElementById('searchInput')?.value || '').toLowerCase().trim();
       const filterCat = document.getElementById('tableCategoryFilter')?.value || 'ALL';
 
       let filtered = items.filter(item => {
-        const matchesQuery = !query || item.title.toLowerCase().includes(query);
+        const matchesQuery = !query || 
+          item.title.toLowerCase().includes(query) || 
+          (item.description && item.description.toLowerCase().includes(query)) ||
+          formatTargetBadge(item).toLowerCase().includes(query);
         const matchesCat = (filterCat === 'ALL') || (item.category === filterCat);
         return matchesQuery && matchesCat;
       });
 
       const desktopTbody = document.getElementById('tableBodyDesktop');
-      const mobileList = document.getElementById('tableBodyMobile');
+      const cardListContainer = document.getElementById('dataCardViewContainer');
       const emptyState = document.getElementById('emptyDataState');
 
       if (filtered.length === 0) {
         if (desktopTbody) desktopTbody.innerHTML = '';
-        if (mobileList) mobileList.innerHTML = '';
+        if (cardListContainer) cardListContainer.innerHTML = '';
         emptyState.classList.remove('hidden');
         return;
       }
       emptyState.classList.add('hidden');
 
+      // 1. เรนเดอร์ลงในตาราง Desktop Table
       if (desktopTbody) {
         desktopTbody.innerHTML = filtered.map((item, idx) => {
           const costH = Number(item.cost?.heart) || 0;
@@ -1867,26 +1974,30 @@
             : '';
 
           return `
-            <tr class="hover:bg-slate-50 dark:hover:bg-slate-700/40">
-              <td class="py-3 px-4 text-center font-mono text-xs text-slate-400">${idx + 1}</td>
-              <td class="py-3 px-4 font-bold text-slate-800 dark:text-white">
-                <span>${escapeHTML(item.title)}</span>
+            <tr class="hover:bg-slate-50 dark:hover:bg-slate-700/40 transition">
+              <td class="py-3 px-3 text-center font-mono text-xs text-slate-400">${idx + 1}</td>
+              <td class="py-3 px-3">
+                <span class="font-bold text-slate-800 dark:text-white">${escapeHTML(item.title)}</span>
                 ${forceIcon}
               </td>
-              <td class="py-3 px-4 font-medium text-slate-700 dark:text-slate-300">${formatTargetBadge(item)}</td>
-              <td class="py-3 px-4 font-mono font-bold text-xs text-blue-500">${(item.pv || 0).toLocaleString()}</td>
-              <td class="py-3 px-4 font-mono font-bold text-xs text-amber-500">${item.weight || 10}</td>
-              <td class="py-3 px-4 font-mono font-bold text-xs text-red-600">฿${(item.price || 0).toLocaleString()}</td>
-              <td class="py-3 px-4 font-mono font-bold text-xs text-green-500">฿${(item.activeIncome || 0).toLocaleString()}</td>
-              <td class="py-3 px-4 font-mono font-bold text-xs text-emerald-500">฿${(item.passiveIncome || 0).toLocaleString()}</td>
-              <td class="py-3 px-4"><span class="text-xs px-2.5 py-1 rounded-full font-semibold border ${getCategoryMeta(item.category).theme.badge}">${escapeHTML(item.category)}</span></td>
-              <td class="py-3 px-4 text-xs font-mono text-slate-400">
-                <i class="fa-solid fa-heart text-red-500"></i> ${costH} | <i class="fa-solid fa-clock text-slate-500"></i> ${costT} | <i class="fa-solid fa-book text-purple-500"></i> ${costK}
+              <td class="py-3 px-3 font-medium text-slate-700 dark:text-slate-300">${formatTargetBadge(item)}</td>
+              <td class="py-3 px-3 font-mono font-bold text-xs text-blue-500">${(item.pv || 0).toLocaleString()}</td>
+              <td class="py-3 px-3 font-mono font-bold text-xs text-amber-500 text-center">${item.weight || 10}</td>
+              <td class="py-3 px-3 font-mono font-bold text-xs text-red-600">฿${(item.price || 0).toLocaleString()}</td>
+              <td class="py-3 px-3 font-mono font-bold text-xs text-green-500">฿${(item.activeIncome || 0).toLocaleString()}</td>
+              <td class="py-3 px-3 font-mono font-bold text-xs text-emerald-500">฿${(item.passiveIncome || 0).toLocaleString()}</td>
+              <td class="py-3 px-3"><span class="text-xs px-2.5 py-0.5 rounded-full font-semibold border ${getCategoryMeta(item.category).theme.badge}">${escapeHTML(item.category)}</span></td>
+              <td class="py-3 px-3 text-xs font-mono text-slate-400 whitespace-nowrap">
+                <span class="text-red-500 font-bold"><i class="fa-solid fa-heart text-[10px]"></i> ${costH}</span> | 
+                <span class="text-blue-500 font-bold"><i class="fa-solid fa-clock text-[10px]"></i> ${costT}</span> | 
+                <span class="text-purple-500 font-bold"><i class="fa-solid fa-book text-[10px]"></i> ${costK}</span>
               </td>
-              <td class="py-3 px-4 text-xs font-mono text-slate-400">
-                <i class="fa-solid fa-heart text-red-500"></i> +${rewardH} | <i class="fa-solid fa-clock text-slate-500"></i> +${rewardT} | <i class="fa-solid fa-book text-purple-500"></i> +${rewardK}
+              <td class="py-3 px-3 text-xs font-mono text-slate-400 whitespace-nowrap">
+                <span class="text-red-500 font-bold">+${rewardH}</span> | 
+                <span class="text-blue-500 font-bold">+${rewardT}</span> | 
+                <span class="text-purple-500 font-bold">+${rewardK}</span>
               </td>
-              <td class="py-3 px-4 text-center space-x-1 whitespace-nowrap">
+              <td class="py-3 px-3 text-center space-x-1 whitespace-nowrap">
                 <button onclick="openAddEditModal('${item.id}', false)" class="p-1.5 text-slate-400 hover:text-blue-500 transition" title="แก้ไขการ์ดนี้">
                   <i class="fa-solid fa-pen text-xs"></i>
                 </button>
@@ -1902,8 +2013,9 @@
         }).join('');
       }
 
-      if (mobileList) {
-        mobileList.innerHTML = filtered.map(item => {
+      // 2. เรนเดอร์ลงในการ์ดแบบ Adaptive Grid (Mobile / Tablet)
+      if (cardListContainer) {
+        cardListContainer.innerHTML = filtered.map(item => {
           const costH = Number(item.cost?.heart) || 0;
           const costT = Number(item.cost?.time) || 0;
           const costK = Number(item.cost?.knowledge) || 0;
@@ -1912,50 +2024,76 @@
           const rewardT = Number(item.reward?.time) || 0;
           const rewardK = Number(item.reward?.knowledge) || 0;
 
-          const forceLabel = item.forceAccept 
-            ? `<span class="text-[10px] text-red-500 font-bold"><i class="fa-solid fa-lock"></i> บังคับรับ</span>` 
+          const forceBadge = item.forceAccept 
+            ? `<span class="text-[10px] px-2 py-0.5 rounded-full font-bold bg-red-100 dark:bg-red-950/80 text-red-600 dark:text-red-400 border border-red-200 dark:border-red-800"><i class="fa-solid fa-lock text-[9px] mr-1"></i>บังคับรับ</span>` 
             : '';
 
           return `
-            <div class="p-3 bg-white dark:bg-slate-800 rounded-xl space-y-2 border border-slate-100 dark:border-slate-700">
-              <div class="flex justify-between items-start">
-                <div>
+            <div class="p-4 bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700/80 shadow-sm space-y-3 hover:border-slate-300 dark:hover:border-slate-600 transition">
+              
+              <!-- Header การ์ด -->
+              <div class="flex items-start justify-between gap-2">
+                <div class="min-w-0 flex-1 space-y-1">
                   <div class="flex items-center gap-1.5 flex-wrap">
-                    <span class="text-[10px] px-2 py-0.5 rounded-full font-semibold border ${getCategoryMeta(item.category).theme.badge}">${escapeHTML(item.category)}</span>
-                    <span class="text-xs font-semibold text-slate-600 dark:text-slate-300">ใช้กับ: ${formatTargetBadge(item)}</span>
-                    <span class="text-xs font-mono font-bold text-blue-500">${(item.pv || 0).toLocaleString()} PV</span>
-                    ${forceLabel}
+                    <span class="text-[10px] px-2.5 py-0.5 rounded-full font-bold border ${getCategoryMeta(item.category).theme.badge}">${escapeHTML(item.category)}</span>
+                    <span class="text-xs font-semibold text-slate-500 dark:text-slate-400">ใช้กับ: <strong class="text-slate-800 dark:text-slate-200">${formatTargetBadge(item)}</strong></span>
+                    ${forceBadge}
                   </div>
-                  <h4 class="font-bold text-sm text-slate-800 dark:text-white mt-1">${escapeHTML(item.title)}</h4>
+                  <h4 class="font-extrabold text-sm sm:text-base text-slate-900 dark:text-white leading-snug">${escapeHTML(item.title)}</h4>
                 </div>
-                <div class="flex items-center gap-1">
-                  <button onclick="openAddEditModal('${item.id}', false)" class="p-1.5 text-slate-400 hover:text-blue-500" title="แก้ไข"><i class="fa-solid fa-pen text-xs"></i></button>
-                  <button onclick="openAddEditModal('${item.id}', true)" class="p-1.5 text-slate-400 hover:text-emerald-500" title="Clone"><i class="fa-solid fa-copy text-xs"></i></button>
-                  <button onclick="confirmDeleteItem('${item.id}')" class="p-1.5 text-slate-400 hover:text-red-500" title="ลบ"><i class="fa-solid fa-trash-can text-xs"></i></button>
+                
+                <div class="flex items-center gap-0.5 shrink-0 bg-slate-50 dark:bg-slate-900/60 p-1 rounded-xl border border-slate-200 dark:border-slate-700/60">
+                  <button onclick="openAddEditModal('${item.id}', false)" class="w-7 h-7 flex items-center justify-center rounded-lg text-slate-400 hover:text-blue-500 transition" title="แก้ไข"><i class="fa-solid fa-pen text-xs"></i></button>
+                  <button onclick="openAddEditModal('${item.id}', true)" class="w-7 h-7 flex items-center justify-center rounded-lg text-slate-400 hover:text-emerald-500 transition" title="Clone"><i class="fa-solid fa-copy text-xs"></i></button>
+                  <button onclick="confirmDeleteItem('${item.id}')" class="w-7 h-7 flex items-center justify-center rounded-lg text-slate-400 hover:text-red-500 transition" title="ลบ"><i class="fa-solid fa-trash-can text-xs"></i></button>
                 </div>
               </div>
-              <div class="flex items-center justify-between text-xs font-mono text-slate-400">
-                <span>ราคา: ฿${item.price || 0}</span>
-                <span>น้ำหนัก: ${item.weight || 10}</span>
+
+              <!-- รายละเอียดการ์ด -->
+              ${item.description ? `<p class="text-xs text-slate-500 dark:text-slate-400 line-clamp-2">${escapeHTML(item.description)}</p>` : ''}
+
+              <!-- ตัวเลขสรุปการเงิน & PV -->
+              <div class="grid grid-cols-4 gap-1.5 p-2 rounded-xl bg-slate-50 dark:bg-slate-900/60 text-center font-mono">
+                <div class="p-1 rounded-lg bg-white dark:bg-slate-800 border border-slate-200/50 dark:border-slate-700/50">
+                  <span class="text-[9px] text-slate-400 font-bold block">ราคา</span>
+                  <span class="text-xs font-black text-red-600">฿${(item.price || 0).toLocaleString()}</span>
+                </div>
+                <div class="p-1 rounded-lg bg-white dark:bg-slate-800 border border-slate-200/50 dark:border-slate-700/50">
+                  <span class="text-[9px] text-blue-500 font-bold block">PV</span>
+                  <span class="text-xs font-black text-blue-500">${(item.pv || 0).toLocaleString()}</span>
+                </div>
+                <div class="p-1 rounded-lg bg-white dark:bg-slate-800 border border-slate-200/50 dark:border-slate-700/50">
+                  <span class="text-[9px] text-green-500 font-bold block">Active</span>
+                  <span class="text-xs font-black text-green-500">฿${(item.activeIncome || 0).toLocaleString()}</span>
+                </div>
+                <div class="p-1 rounded-lg bg-white dark:bg-slate-800 border border-slate-200/50 dark:border-slate-700/50">
+                  <span class="text-[9px] text-emerald-500 font-bold block">Passive</span>
+                  <span class="text-xs font-black text-emerald-500">฿${(item.passiveIncome || 0).toLocaleString()}</span>
+                </div>
               </div>
-              <div class="grid grid-cols-2 gap-2 text-[11px] bg-slate-50 dark:bg-slate-900/60 p-2 rounded-lg font-mono">
+
+              <!-- ทรัพยากร สิ่งที่ต้องใช้ & ได้รับ -->
+              <div class="grid grid-cols-2 gap-2 text-[11px] p-2.5 rounded-xl bg-slate-50 dark:bg-slate-900/60 border border-slate-200/60 dark:border-slate-700/60 font-mono">
                 <div>
-                  <span class="text-slate-400 block text-[9px] uppercase font-bold">ใช้:</span>
-                  <span class="text-red-500"><i class="fa-solid fa-heart"></i> ${costH}</span> |
-                  <span class="text-slate-500"><i class="fa-solid fa-clock"></i> ${costT}</span> |
-                  <span class="text-purple-500"><i class="fa-solid fa-book"></i> ${costK}</span>
+                  <span class="text-slate-400 block text-[9px] uppercase font-bold mb-0.5">ใช้ (Cost):</span>
+                  <span class="text-red-500 font-bold"><i class="fa-solid fa-heart text-[9px]"></i> ${costH}</span> |
+                  <span class="text-blue-500 font-bold"><i class="fa-solid fa-clock text-[9px]"></i> ${costT}</span> |
+                  <span class="text-purple-500 font-bold"><i class="fa-solid fa-book text-[9px]"></i> ${costK}</span>
                 </div>
                 <div>
-                  <span class="text-slate-400 block text-[9px] uppercase font-bold">ได้:</span>
+                  <span class="text-slate-400 block text-[9px] uppercase font-bold mb-0.5">ได้ (Reward):</span>
                   <span class="text-red-500 font-bold">+${rewardH}</span> |
-                  <span class="text-slate-500 font-bold">+${rewardT}</span> |
+                  <span class="text-blue-500 font-bold">+${rewardT}</span> |
                   <span class="text-purple-500 font-bold">+${rewardK}</span>
                 </div>
               </div>
+
             </div>
           `;
         }).join('');
       }
+
+      applyAdaptiveLayout();
     }
 
     function onTargetTypeChange() {
@@ -2243,388 +2381,4 @@
 
       pushToGoogleSheets();
       updateCategoryDropdowns();
-      renderCategoryHomeCards();
-      showToast(`เพิ่มหมวดหมู่ "${name}" สำเร็จ`, 'success');
-    }
-
-    function promptRenameCategory(index) {
-      const oldName = categories[index].name;
-      const newName = prompt('ระบุชื่อหมวดหมู่ใหม่:', oldName);
-      if (!newName || !newName.trim() || newName.trim() === oldName) return;
-
-      const cleanNew = newName.trim();
-      if (categories.some((c, i) => i !== index && c.name === cleanNew)) {
-        showToast('มีหมวดหมู่นี้อยู่แล้ว', 'warning');
-        return;
-      }
-
-      categories[index].name = cleanNew;
-      items.forEach(it => {
-        if (it.category === oldName) it.category = cleanNew;
-      });
-
-      if (selectedCategory === oldName) {
-        selectedCategory = cleanNew;
-        updateStageCategoryUI();
-      }
-
-      pushToGoogleSheets();
-      updateCategoryDropdowns();
-      renderCategoryModalList();
-      renderCategoryHomeCards();
-      renderDataTable();
-      showToast(`เปลี่ยนชื่อเป็น "${cleanNew}" เรียบร้อยแล้ว`, 'success');
-    }
-
-    function moveCategoryOrder(index, direction) {
-      const targetIndex = index + direction;
-      if (targetIndex < 0 || targetIndex >= categories.length) return;
-
-      const temp = categories[index];
-      categories[index] = categories[targetIndex];
-      categories[targetIndex] = temp;
-
-      pushToGoogleSheets();
-      renderCategoryModalList();
-      renderCategoryHomeCards();
-      updateCategoryDropdowns();
-    }
-
-    function handleDeleteCategory(catName, count = 0) {
-      if (categories.length <= 1) {
-        showToast('ต้องมีหมวดหมู่อย่างน้อย 1 หมวด', 'warning');
-        return;
-      }
-      const msg = count > 0 
-        ? `มีข้อมูลการ์ด ${count} รายการในหมวดนี้ ข้อมูลจะถูกย้ายไปหมวดอื่น ต้องการลบหรือไม่?`
-        : `คุณต้องการลบหมวดหมู่ "${catName}" หรือไม่?`;
-
-      if (confirm(msg)) {
-        categories = categories.filter(c => c.name !== catName);
-        const fallback = categories[0].name;
-        items.forEach(it => { if (it.category === catName) it.category = fallback; });
-
-        if (selectedCategory === catName) {
-          selectedCategory = "ALL";
-          updateStageCategoryUI();
-        }
-
-        pushToGoogleSheets();
-        updateCategoryDropdowns();
-        renderCategoryModalList();
-        renderCategoryHomeCards();
-        renderDataTable();
-        resetPool();
-        showToast('ลบหมวดหมู่สำเร็จ', 'info');
-      }
-    }
-
-    function renderColorPickerGrid() {
-      const grid = document.getElementById('colorPickerGrid');
-      grid.innerHTML = Object.values(COLOR_PALETTES).map(palette => `
-        <button type="button" onclick="selectColor('${palette.id}')" class="w-full p-2.5 rounded-2xl flex items-center justify-between border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 hover:border-slate-400 transition text-left group">
-          <div class="flex items-center gap-3">
-            <span class="w-7 h-7 rounded-full shadow-inner border border-slate-200 shrink-0" style="background-color: ${palette.hex};"></span>
-            <div>
-              <span class="text-xs font-bold text-slate-800 dark:text-white block">${palette.name}</span>
-              <div class="w-32 sm:w-44 h-2 rounded-full mt-1 border border-slate-200/50" style="background: ${palette.gradient};"></div>
-            </div>
-          </div>
-          <span class="text-xs font-semibold px-2 py-0.5 rounded-lg border ${palette.badge}">ตัวอย่าง</span>
-        </button>
-      `).join('');
-    }
-
-    function openColorPicker(categoryIndex) {
-      colorPickerTargetIdx = categoryIndex;
-      document.getElementById('colorPickerModal').classList.remove('hidden');
-    }
-
-    function closeColorPicker() {
-      document.getElementById('colorPickerModal').classList.add('hidden');
-    }
-
-    function selectColor(colorId) {
-      if (colorPickerTargetIdx === -1) {
-        newCategorySelectedColor = colorId;
-        updateNewCatColorBtnUI();
-      } else if (colorPickerTargetIdx >= 0 && colorPickerTargetIdx < categories.length) {
-        categories[colorPickerTargetIdx].color = colorId;
-        updateStageCategoryUI();
-        pushToGoogleSheets();
-        renderCategoryModalList();
-        renderCategoryHomeCards();
-        renderDataTable();
-        showToast('เปลี่ยนสีประจำหมวดหมู่เรียบร้อยแล้ว 🎨', 'success');
-      }
-      closeColorPicker();
-    }
-
-    function renderIconPickerGrid() {
-      const grid = document.getElementById('iconPickerGrid');
-      grid.innerHTML = ICON_PRESETS.map(icon => `
-        <button type="button" onclick="selectIcon('${icon}')" class="w-10 h-10 rounded-xl bg-slate-50 dark:bg-slate-700 hover:bg-slate-200 border border-slate-200 dark:border-slate-600 text-slate-700 dark:text-slate-200 flex items-center justify-center text-base transition">
-          <i class="fa-solid ${icon}"></i>
-        </button>
-      `).join('');
-    }
-
-    function openIconPicker(categoryIndex) {
-      iconPickerTargetIdx = categoryIndex;
-      document.getElementById('iconPickerModal').classList.remove('hidden');
-    }
-
-    function closeIconPicker() {
-      document.getElementById('iconPickerModal').classList.add('hidden');
-    }
-
-    function selectIcon(iconClass) {
-      if (iconPickerTargetIdx === -1) {
-        newCategorySelectedIcon = iconClass;
-        document.getElementById('newCatIconPreview').className = `fa-solid ${iconClass}`;
-      } else if (iconPickerTargetIdx >= 0 && iconPickerTargetIdx < categories.length) {
-        categories[iconPickerTargetIdx].icon = iconClass;
-        updateStageCategoryUI();
-        pushToGoogleSheets();
-        renderCategoryModalList();
-        renderCategoryHomeCards();
-        showToast('เปลี่ยนไอคอนเรียบร้อยแล้ว', 'success');
-      }
-      closeIconPicker();
-    }
-
-    /* === ส่งออกข้อมูลเป็น CSV สำหรับเปิดใน Google Sheets / Excel (เพิ่มคอลัมน์ PV) === */
-    function exportDatabaseToCSV() {
-      if (!items || items.length === 0) {
-        showToast('ไม่มีข้อมูลการ์ดในระบบสำหรับส่งออก', 'warning');
-        return;
-      }
-
-      const headers = [
-        "ID",
-        "ชื่อการ์ด (Title)",
-        "การ์ดใบนี้ใช้กับ (Target)",
-        "PV ของการ์ด",
-        "หมวดหมู่ (Category)",
-        "โอกาสสุ่ม (Weight)",
-        "ราคา (Price)",
-        "Active Income",
-        "Passive Income",
-        "บังคับรับการ์ด (Force Accept)",
-        "สิ่งที่ต้องใช้-หัวใจ",
-        "สิ่งที่ต้องใช้-เวลา",
-        "สิ่งที่ต้องใช้-ความรู้",
-        "สิ่งที่ได้รับ-หัวใจ",
-        "สิ่งที่ได้รับ-เวลา",
-        "สิ่งที่ได้รับ-ความรู้",
-        "รายละเอียด (Description)"
-      ];
-
-      const rows = items.map(item => {
-        const target = (item.targetType === 'leg' || item.targetLeg) 
-          ? `สายงาน ${item.targetLeg || 'A'}` 
-          : 'ข้อมูลส่วนตัว';
-
-        return [
-          `"${item.id || ''}"`,
-          `"${(item.title || '').replace(/"/g, '""')}"`,
-          `"${target}"`,
-          item.pv || 0,
-          `"${item.category || ''}"`,
-          item.weight || 10,
-          item.price || 0,
-          item.activeIncome || 0,
-          item.passiveIncome || 0,
-          item.forceAccept ? "TRUE" : "FALSE",
-          item.cost?.heart || 0,
-          item.cost?.time || 0,
-          item.cost?.knowledge || 0,
-          item.reward?.heart || 0,
-          item.reward?.time || 0,
-          item.reward?.knowledge || 0,
-          `"${(item.description || '').replace(/"/g, '""')}"`
-        ].join(",");
-      });
-
-      const csvContent = "\uFEFF" + [headers.join(","), ...rows].join("\r\n");
-      const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
-      const url = URL.createObjectURL(blob);
-      const link = document.createElement("a");
-      link.setAttribute("href", url);
-      link.setAttribute("download", `Cards_Database_${new Date().toISOString().slice(0, 10)}.csv`);
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
-      URL.revokeObjectURL(url);
-
-      showToast('ส่งออกไฟล์ CSV สำหรับ Google Sheets สำเร็จ 📊', 'success');
-    }
-
-    function exportDatabase() {
-      const dbPayload = {
-        app: "RandomDataCardHub",
-        version: "1.0",
-        exportDate: new Date().toISOString(),
-        categories: categories,
-        items: items,
-        historyLog: historyLog
-      };
-
-      const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(dbPayload, null, 2));
-      const downloadAnchor = document.createElement('a');
-      downloadAnchor.setAttribute("href", dataStr);
-      downloadAnchor.setAttribute("download", `database_backup_${new Date().toISOString().slice(0,10)}.json`);
-      document.body.appendChild(downloadAnchor);
-      downloadAnchor.click();
-      downloadAnchor.remove();
-
-      showToast('ส่งออกไฟล์สำรองฐานข้อมูลสำเร็จ 📥', 'success');
-    }
-
-    function triggerImportDatabase() {
-      document.getElementById('importFileInput').click();
-    }
-
-    function handleImportFile(event) {
-      const file = event.target.files[0];
-      if (!file) return;
-
-      const reader = new FileReader();
-      reader.onload = function(e) {
-        try {
-          const importedData = JSON.parse(e.target.result);
-
-          if (!importedData || !Array.isArray(importedData.items)) {
-            showToast('รูปแบบไฟล์สำรองไม่ถูกต้อง', 'warning');
-            return;
-          }
-
-          if (confirm(`พบข้อมูล ${importedData.items.length} รายการ ต้องการนำเข้าข้อมูลใช่หรือไม่?`)) {
-            items = importedData.items;
-            if (Array.isArray(importedData.categories) && importedData.categories.length > 0) {
-              categories = normalizeCategories(importedData.categories);
-            }
-            if (Array.isArray(importedData.historyLog)) {
-              historyLog = importedData.historyLog;
-            }
-
-            saveLocalCache();
-            pushToGoogleSheets();
-
-            updateCategoryDropdowns();
-            renderCategoryHomeCards();
-            resetPool();
-            renderDataTable();
-            renderHistoryList();
-
-            closeSettingModal();
-            showToast('นำเข้าและกู้คืนฐานข้อมูลสำเร็จแล้ว 📤✅', 'success');
-          }
-        } catch (err) {
-          showToast('ไม่สามารถอ่านไฟล์ JSON ได้', 'danger');
-        }
-      };
-      reader.readAsText(file);
-      event.target.value = '';
-    }
-
-    function openSettingModal() {
-      updateSettingModalUI();
-      document.getElementById('settingModal').classList.remove('hidden');
-    }
-
-    function closeSettingModal() {
-      document.getElementById('settingModal').classList.add('hidden');
-    }
-
-    function updateSettingModalUI() {
-      const isDark = document.documentElement.classList.contains('dark');
-      const icon = document.getElementById('settingThemeIcon');
-      const text = document.getElementById('settingThemeStatusText');
-      if (icon && text) {
-        icon.className = isDark ? "fa-solid fa-moon text-red-500" : "fa-solid fa-sun text-amber-500";
-        text.innerText = isDark ? "Night Mode (โหมดมืด)" : "Light Mode (โหมดสว่าง)";
-      }
-    }
-
-    function toggleTheme() {
-      const isDark = document.documentElement.classList.toggle('dark');
-      localStorage.setItem('rnd_theme_dark', isDark ? 'true' : 'false');
-      updateSettingModalUI();
-    }
-
-    function initTheme() {
-      const isDark = localStorage.getItem('rnd_theme_dark') !== 'false';
-      document.documentElement.classList.toggle('dark', isDark);
-    }
-
-    function logHistory(item) {
-      historyLog.unshift({ ...item, timestamp: Date.now() });
-      if (historyLog.length > 50) historyLog.pop();
-      saveLocalCache();
-      renderHistoryList();
-    }
-
-    function renderHistoryList() {
-      const container = document.getElementById('historyListContainer');
-      const empty = document.getElementById('emptyHistoryState');
-      if (!container) return;
-
-      if (historyLog.length === 0) {
-        container.innerHTML = '';
-        empty.classList.remove('hidden');
-        return;
-      }
-      empty.classList.add('hidden');
-      container.innerHTML = historyLog.map(h => `
-        <li class="p-3.5 flex justify-between items-center text-xs">
-          <div>
-            <span class="font-bold text-slate-800 dark:text-white">${escapeHTML(h.title)}</span>
-            <span class="text-[10px] text-slate-400 ml-2">${new Date(h.timestamp).toLocaleTimeString('th-TH')}</span>
-          </div>
-          <div class="flex items-center gap-2">
-            <span class="font-bold text-blue-500">+${(h.pv || 0).toLocaleString()} PV</span>
-            <span class="font-bold text-emerald-500">+฿${(h.activeIncome || 0).toLocaleString()}</span>
-          </div>
-        </li>
-      `).join('');
-    }
-
-    function clearHistoryLog() {
-      historyLog = [];
-      saveLocalCache();
-      pushToGoogleSheets();
-      renderHistoryList();
-      showToast('ล้างประวัติการสุ่มเรียบร้อยแล้ว', 'info');
-    }
-
-    function switchTab(tabId) {
-      ['categories', 'draw', 'data', 'history'].forEach(v => {
-        const viewEl = document.getElementById(`view-${v}`);
-        if (viewEl) viewEl.classList.toggle('hidden', v !== tabId);
-
-        const dBtn = document.getElementById(`nav-btn-${v}`);
-        if (dBtn) dBtn.className = (v === tabId) ? 'px-3.5 py-1.5 rounded-lg text-sm font-semibold bg-white dark:bg-slate-700 shadow-sm text-red-600 dark:text-white' : 'px-3.5 py-1.5 rounded-lg text-sm font-semibold text-slate-600 dark:text-slate-300 hover:text-red-600';
-      });
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-    }
-
-    function toggleSound() {
-      soundEnabled = !soundEnabled;
-      document.getElementById('soundIcon').className = soundEnabled ? 'fa-solid fa-volume-high text-xs' : 'fa-solid fa-volume-xmark text-xs text-slate-400';
-    }
-
-    function showToast(msg, type = 'info') {
-      const toast = document.getElementById('toastNotification');
-      document.getElementById('toastMessage').innerText = msg;
-      toast.classList.remove('translate-x-full', 'opacity-0');
-      setTimeout(() => toast.classList.add('translate-x-full', 'opacity-0'), 2200);
-    }
-
-    function escapeHTML(str) {
-      if (!str) return '';
-      return String(str).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
-    }
-  </script>
-</body>
-</html>
+      renderCategoryHome
