@@ -424,7 +424,7 @@
   </nav>
 
   <!-- ============================================================ -->
-  <!-- POP-UP RESULT MODAL: ผลการสุ่ม + PV Badge + จำลอง PV ส่วนตัว -->
+  <!-- POP-UP RESULT MODAL: ผลการสุ่ม + จำลอง PV ส่วนตัว / สายงาน -->
   <!-- ============================================================ -->
   <div id="resultModal" class="hidden fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-md flex items-center justify-center p-3 sm:p-4 overflow-y-auto">
     <div class="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-3xl max-w-2xl w-full p-4 sm:p-7 shadow-2xl relative my-auto animate-pop-in space-y-4">
@@ -455,7 +455,7 @@
         </div>
       </div>
 
-      <!-- MINI POP-UP: แสดงผลจำลองสถานะผู้เล่น ก่อน/หลัง รับการ์ด (รวมจำลอง PV ส่วนตัว) -->
+      <!-- MINI POP-UP: แสดงผลจำลองสถานะผู้เล่น ก่อน/หลัง รับการ์ด (จำลอง PV รายสายงาน & ส่วนบุคคล) -->
       <div id="playerMiniModal" class="hidden rounded-2xl p-4 bg-gradient-to-br from-slate-50 to-indigo-50/40 dark:from-slate-900 dark:to-indigo-950/40 border-2 border-indigo-400/50 dark:border-indigo-600/50 shadow-2xl space-y-3 text-xs animate-pop-in relative">
         <div class="flex items-center justify-between border-b border-indigo-100 dark:border-indigo-900/60 pb-2">
           <div class="flex items-center gap-2">
@@ -531,10 +531,10 @@
             <span id="simPassiveDiffBadge" class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-teal-100 text-teal-600 dark:bg-teal-950 dark:text-teal-400">+฿0</span>
           </div>
 
-          <!-- 5. จำลอง PV ส่วนตัว (แสดงเฉพาะเมื่อเป็นการ์ดใช้กับส่วนตัว) -->
-          <div id="simPersonalPvWrapper" class="col-span-1 sm:col-span-2 p-2.5 rounded-xl bg-blue-50/70 dark:bg-blue-950/30 border border-blue-200 dark:border-blue-800 flex items-center justify-between">
+          <!-- 5. กล่องจำลอง PV: แสดงทั้ง PV ส่วนตัว หรือ PV สายงาน A - F ที่เปลี่ยนแปลง -->
+          <div id="simPvImpactWrapper" class="col-span-1 sm:col-span-2 p-2.5 rounded-xl bg-blue-50/70 dark:bg-blue-950/30 border border-blue-200 dark:border-blue-800 flex items-center justify-between">
             <div>
-              <span class="text-blue-500 dark:text-blue-400 block text-[10px] uppercase font-bold flex items-center gap-1">
+              <span id="simPvImpactTitle" class="text-blue-500 dark:text-blue-400 block text-[10px] uppercase font-bold flex items-center gap-1">
                 <i class="fa-solid fa-award"></i> PV รวมส่วนบุคคล (Personal PV)
               </span>
               <div class="flex items-baseline gap-1 mt-0.5">
@@ -585,7 +585,6 @@
           <h2 id="popupTitle" class="app-title-text font-extrabold text-slate-900 dark:text-white tracking-normal leading-snug"></h2>
           
           <div class="flex flex-wrap items-center gap-2">
-            <!-- ป้าย: การ์ดใบนี้ใช้กับ -->
             <div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-xl bg-indigo-50 dark:bg-indigo-950/40 border border-indigo-200 dark:border-indigo-800 text-indigo-600 dark:text-indigo-300 text-xs font-bold">
               <i class="fa-solid fa-bullseye text-[11px]"></i>
               <span class="text-slate-400 font-medium">การ์ดใบนี้ใช้กับ:</span>
@@ -707,7 +706,7 @@
     </div>
   </div>
 
-  <!-- MODAL: จัดการการ์ด (เพิ่มช่อง PV ของการ์ด) -->
+  <!-- MODAL: จัดการการ์ด (มีช่อง PV) -->
   <div id="itemModal" class="hidden fixed inset-0 z-50 bg-slate-950/70 backdrop-blur-sm flex items-center justify-center p-3 sm:p-4 overflow-y-auto">
     <div class="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-3xl max-w-xl w-full p-5 sm:p-6 shadow-2xl relative my-auto animate-pop-in">
       <div class="flex items-center justify-between pb-3 border-b border-slate-100 dark:border-slate-700">
@@ -754,7 +753,6 @@
           </div>
         </div>
         
-        <!-- หมวดหมู่, ราคา, น้ำหนัก, และเพิ่มช่อง PV ของการ์ด -->
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
           <div>
             <label class="block text-xs font-bold uppercase text-slate-600 dark:text-slate-300 mb-1">หมวดหมู่ <span class="text-rose-500">*</span></label>
@@ -983,12 +981,10 @@
             <i class="fa-solid fa-file-excel text-base text-emerald-600"></i>
             <span>Sheets (.CSV)</span>
           </button>
-
           <button onclick="exportDatabase()" class="w-full py-2.5 px-2 rounded-xl bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-600 hover:border-slate-400 text-slate-700 dark:text-slate-200 text-xs font-bold flex flex-col items-center justify-center gap-1 shadow-sm transition" title="สำรองข้อมูลทั้งระบบเพื่อนำกลับมา Import">
             <i class="fa-solid fa-download text-base text-blue-500"></i>
             <span>Backup (.JSON)</span>
           </button>
-
           <button onclick="triggerImportDatabase()" class="w-full py-2.5 px-2 rounded-xl bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-600 hover:border-blue-500 text-slate-700 dark:text-slate-200 text-xs font-bold flex flex-col items-center justify-center gap-1 shadow-sm transition" title="นำเข้าไฟล์สำรองเพื่อกู้คืนข้อมูล">
             <i class="fa-solid fa-upload text-base text-purple-500"></i>
             <span>Import</span>
@@ -1163,8 +1159,10 @@
         let totalActive = parseFloat(profile.personalAmway?.active) || 0;
         let totalPassive = parseFloat(profile.personalAmway?.passive) || 0;
 
+        const legsPvMap = {};
         if (profile.legs) {
           ['A', 'B', 'C', 'D', 'E', 'F'].forEach(leg => {
+            legsPvMap[leg] = parseFloat(profile.legs[leg]?.pv) || 0;
             totalActive += parseFloat(profile.legs[leg]?.active) || 0;
             totalPassive += parseFloat(profile.legs[leg]?.passive) || 0;
           });
@@ -1185,6 +1183,7 @@
           careerName: careerObj?.name || (profile.careerId ? profile.careerId : 'ยังไม่ระบุอาชีพ'),
           cash,
           personalPv,
+          legsPvMap,
           salary,
           expense,
           totalActive,
@@ -1263,7 +1262,7 @@
       };
     }
 
-    // ฟังก์ชันคำนวณและแสดงผลจำลองสถานะใน Mini Pop-up (รวมจำลอง PV ส่วนตัว)
+    // ฟังก์ชันคำนวณและแสดงผลจำลองสถานะใน Mini Pop-up (รวมจำลอง PV ส่วนตัว และ PV สายงาน A-F)
     function updatePlayerMiniSimulation() {
       const p = getPlayerCurrentProfile();
       if (!p || !currentItem) return;
@@ -1307,17 +1306,29 @@
       document.getElementById('simNetAfter').innerText = `฿${newNetSurplus.toLocaleString()}`;
       document.getElementById('simNetDiffBadge').innerText = `+฿${netDiff.toLocaleString()}`;
 
-      // 4. จำลอง PV ส่วนบุคคล (ถ้าเป็นการ์ดใช้กับส่วนบุคคล ให้แสดงผลจำลอง)
-      const isPersonal = (currentItem.targetType === 'personal' || !currentItem.targetLeg);
-      const pvWrapper = document.getElementById('simPersonalPvWrapper');
-      if (isPersonal) {
-        pvWrapper.classList.remove('hidden');
-        const newPv = p.personalPv + cardPv;
-        document.getElementById('simPvBefore').innerText = `${p.personalPv.toLocaleString()} PV`;
-        document.getElementById('simPvAfter').innerText = `${newPv.toLocaleString()} PV`;
+      // 4. จำลอง PV (ตรวจสอบว่าเป็นการ์ดใช้กับส่วนตัว หรือใช้กับสายงาน A-F)
+      const pvWrapper = document.getElementById('simPvImpactWrapper');
+      const pvTitle = document.getElementById('simPvImpactTitle');
+      const isLegTarget = (currentItem.targetType === 'leg' && currentItem.targetLeg);
+
+      if (isLegTarget) {
+        const legKey = currentItem.targetLeg;
+        const currentLegPv = p.legsPvMap?.[legKey] || 0;
+        const newLegPv = currentLegPv + cardPv;
+
+        pvTitle.innerHTML = `<i class="fa-solid fa-sitemap text-indigo-500"></i> PV สายงาน ${escapeHTML(legKey)} (Leg ${escapeHTML(legKey)} PV)`;
+        document.getElementById('simPvBefore').innerText = `${currentLegPv.toLocaleString()} PV`;
+        document.getElementById('simPvAfter').innerText = `${newLegPv.toLocaleString()} PV`;
         document.getElementById('simPvDiffBadge').innerText = `+${cardPv.toLocaleString()} PV`;
+        pvWrapper.classList.remove('hidden');
       } else {
-        pvWrapper.classList.add('hidden');
+        // การ์ดใช้กับข้อมูลส่วนบุคคล
+        const newPersonalPv = p.personalPv + cardPv;
+        pvTitle.innerHTML = `<i class="fa-solid fa-award text-blue-500"></i> PV รวมส่วนบุคคล (Personal PV)`;
+        document.getElementById('simPvBefore').innerText = `${p.personalPv.toLocaleString()} PV`;
+        document.getElementById('simPvAfter').innerText = `${newPersonalPv.toLocaleString()} PV`;
+        document.getElementById('simPvDiffBadge').innerText = `+${cardPv.toLocaleString()} PV`;
+        pvWrapper.classList.remove('hidden');
       }
 
       // 5. จำลองสเตตัส 3 ด้าน
@@ -1459,6 +1470,9 @@
       }
     }
 
+    /* ==========================================================================
+       PUSH TO GOOGLE SHEETS
+       ========================================================================== */
     async function pushToGoogleSheets() {
       saveLocalCache();
       if (!GOOGLE_SHEET_API_URL || GOOGLE_SHEET_API_URL.includes("PLACEHOLDER")) return;
@@ -1638,9 +1652,6 @@
       }, 70);
     }
 
-    /* ==========================================================================
-       แสดงผล Pop-up สุ่มการ์ด (แสดง PV ต่อจาก การ์ดใบนี้ใช้กับ)
-       ========================================================================== */
     function displayResultPopup(item) {
       if (!item) return;
       currentItem = item;
@@ -1649,7 +1660,6 @@
       const miniModal = document.getElementById('playerMiniModal');
       if (miniModal) miniModal.classList.add('hidden');
 
-      // 1. หัวข้อ, หมวดหมู่, เป้าหมาย และ PV ของการ์ด
       document.getElementById('popupTitle').innerText = item.title || 'ไม่มีชื่อการ์ด';
       document.getElementById('popupSubtitle').innerText = (item.targetType === 'leg' || item.targetLeg) ? `สายงาน ${item.targetLeg || 'A'}` : 'ข้อมูลส่วนตัว';
       document.getElementById('popupCardPv').innerText = `${(Number(item.pv) || 0).toLocaleString()} PV`;
@@ -1658,12 +1668,10 @@
       document.getElementById('popupCategoryIcon').className = `fa-solid ${meta.icon} text-[10px]`;
       document.getElementById('popupIndexBadge').innerText = `#${item.id || 'CARD'}`;
 
-      // 2. ตัวเลขการเงินของการ์ด
       document.getElementById('popupPrice').innerText = `฿${(Number(item.price) || 0).toLocaleString()}`;
       document.getElementById('popupActive').innerText = `+฿${(Number(item.activeIncome) || 0).toLocaleString()}`;
       document.getElementById('popupPassive').innerText = `+฿${(Number(item.passiveIncome) || 0).toLocaleString()}`;
 
-      // 3. ทรัพยากร สิ่งที่ต้องใช้ (Cost)
       const costH = Number(item.cost?.heart) || 0;
       const costT = Number(item.cost?.time) || 0;
       const costK = Number(item.cost?.knowledge) || 0;
@@ -1671,7 +1679,6 @@
       document.getElementById('popup-cost-time-val').innerText = `${costT}/10`;
       document.getElementById('popup-cost-knowledge-val').innerText = `${costK}/10`;
 
-      // 4. ทรัพยากร สิ่งที่ได้รับ (Reward)
       const rewardH = Number(item.reward?.heart) || 0;
       const rewardT = Number(item.reward?.time) || 0;
       const rewardK = Number(item.reward?.knowledge) || 0;
@@ -1679,7 +1686,6 @@
       document.getElementById('popup-reward-time-val').innerText = `+${rewardT}/10`;
       document.getElementById('popup-reward-knowledge-val').innerText = `+${rewardK}/10`;
 
-      // 5. ตรวจสอบสถานะ บังคับรับการ์ด
       const isForceAccept = !!item.forceAccept;
       const rejectBtn = document.getElementById('popupRejectBtn');
       const closeXBtn = document.getElementById('popupCloseXBtn');
@@ -1695,7 +1701,6 @@
         forceBadge.classList.add('hidden');
       }
 
-      // 6. ตรวจสอบเงื่อนไขความพร้อม (เงินสด และ ทรัพยากร)
       const p = getPlayerCurrentProfile();
       const check = checkAffordabilityAndValidate(p, item);
       const acceptBtn = document.getElementById('popupAcceptBtn');
@@ -1727,9 +1732,6 @@
       document.getElementById('resultModal').classList.add('hidden');
     }
 
-    /* ==========================================================================
-       กดยืนยันรับการ์ด: หักเงินสด เพิ่มรายได้ ค่าพลัง และบวก PV เข้าส่วนตัว/สายงาน
-       ========================================================================== */
     function handleAcceptCard() {
       if (!currentItem) return;
       const p = getPlayerCurrentProfile();
@@ -1770,20 +1772,17 @@
         const cardPassive = Number(currentItem.passiveIncome) || 0;
         const cardPv = Number(currentItem.pv) || 0;
 
-        // แยกการบันทึก PV และรายได้ตามเป้าหมาย (สายงาน vs ส่วนตัว)
         if (currentItem.targetType === 'leg' && currentItem.targetLeg) {
           const legKey = currentItem.targetLeg;
           if (!updatedProfile.legs) updatedProfile.legs = {};
           if (!updatedProfile.legs[legKey]) updatedProfile.legs[legKey] = { pv: 0, active: 0, passive: 0 };
           
-          // บวก PV และรายได้เข้าไปที่สายงานนั้น
           updatedProfile.legs[legKey].pv = (parseFloat(updatedProfile.legs[legKey].pv) || 0) + cardPv;
           updatedProfile.legs[legKey].active = (parseFloat(updatedProfile.legs[legKey].active) || 0) + cardActive;
           updatedProfile.legs[legKey].passive = (parseFloat(updatedProfile.legs[legKey].passive) || 0) + cardPassive;
         } else {
           if (!updatedProfile.personalAmway) updatedProfile.personalAmway = { pv: 0, active: 0, passive: 0 };
           
-          // บวก PV และรายได้เข้าไปที่ส่วนตัว
           updatedProfile.personalAmway.pv = (parseFloat(updatedProfile.personalAmway.pv) || 0) + cardPv;
           updatedProfile.personalAmway.active = (parseFloat(updatedProfile.personalAmway.active) || 0) + cardActive;
           updatedProfile.personalAmway.passive = (parseFloat(updatedProfile.personalAmway.passive) || 0) + cardPassive;
@@ -2244,7 +2243,6 @@
 
       pushToGoogleSheets();
       updateCategoryDropdowns();
-      renderCategoryModalList();
       renderCategoryHomeCards();
       showToast(`เพิ่มหมวดหมู่ "${name}" สำเร็จ`, 'success');
     }
