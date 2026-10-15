@@ -195,7 +195,7 @@
 
       <!-- Sync Button & Settings -->
       <div class="flex items-center space-x-2">
-        <button onclick="fetchFromGoogleSheets(true)" title="ดึงข้อมูลจาก Google Sheets มาแสดงผล" class="px-2.5 py-1.5 rounded-lg border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-200 hover:bg-slate-50 text-xs font-bold transition flex items-center gap-1.5 shadow-sm">
+        <button onclick="forceSyncFromCloud()" title="ดึงข้อมูลจาก Google Sheets มาแสดงผลและแทนที่ข้อมูลในเครื่อง" class="px-2.5 py-1.5 rounded-lg border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-200 hover:bg-slate-50 text-xs font-bold transition flex items-center gap-1.5 shadow-sm">
           <i id="syncIcon" class="fa-solid fa-rotate text-xs"></i>
           <span class="hidden sm:inline">Sync Cloud</span>
         </button>
@@ -340,55 +340,81 @@
       </div>
     </section>
 
-    <!-- VIEW 3: คลังข้อมูลการ์ด -->
+    <!-- ======================================================== -->
+    <!-- VIEW 3: คลังข้อมูลการ์ด (แยกแยะสถานะการซิงก์ Cloud vs Local) -->
+    <!-- ======================================================== -->
     <section id="view-data" class="hidden space-y-4 animate-pop-in">
-      <div class="bg-white/80 dark:bg-slate-800/80 backdrop-blur border border-slate-200 dark:border-slate-700 rounded-2xl p-4 shadow-sm flex flex-col md:flex-row items-stretch md:items-center justify-between gap-3">
+      
+      <!-- กล่องแจ้งเตือนรายการที่ค้างเฉพาะในเครื่อง (ถ้ามี) -->
+      <div id="localOnlyAlertBanner" class="hidden p-3.5 rounded-2xl bg-amber-50 dark:bg-amber-950/40 border border-amber-300 dark:border-amber-700/60 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 shadow-sm">
+        <div class="flex items-center gap-2.5 text-amber-800 dark:text-amber-300 text-xs font-bold">
+          <i class="fa-solid fa-circle-exclamation text-base text-amber-500 shrink-0"></i>
+          <span>พบการ์ด <strong id="localOnlyCountText" class="text-sm underline">0</strong> รายการที่มีเฉพาะในเครื่องนี้ (ยังไม่ขึ้นชีตออนไลน์)</span>
+        </div>
+        <button onclick="forcePushToCloud()" class="px-3.5 py-1.5 rounded-xl bg-amber-500 hover:bg-amber-600 text-white text-xs font-black shadow transition flex items-center gap-1.5 shrink-0">
+          <i class="fa-solid fa-cloud-arrow-up"></i>
+          <span>อัปโหลดขึ้นชีตทั้งหมด</span>
+        </button>
+      </div>
+
+      <!-- แถบค้นหาและปุ่มจัดการ -->
+      <div class="bg-white/80 dark:bg-slate-800/80 backdrop-blur border border-slate-200 dark:border-slate-700 rounded-2xl p-4 shadow-sm flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3">
         <div class="flex flex-wrap items-center gap-2 flex-1">
-          <div class="relative flex-1 min-w-[200px]">
-            <input type="text" id="searchInput" oninput="renderDataTable()" placeholder="ค้นหาการ์ด, หัวข้อ, การ์ดใบนี้ใช้กับ..." class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-300 dark:border-slate-700 text-sm rounded-xl pl-9 pr-3 py-2 focus:ring-2 focus:ring-red-600">
-            <i class="fa-solid fa-magnifying-glass absolute left-3 top-2.5 text-slate-400 text-xs"></i>
+          <div class="relative flex-1 min-w-[180px]">
+            <input type="text" id="searchInput" oninput="renderDataTable()" placeholder="ค้นหาการ์ด, ใช้กับ..." class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-300 dark:border-slate-700 text-sm rounded-xl pl-9 pr-3 py-2 focus:ring-2 focus:ring-red-600 outline-none">
+            <i class="fa-solid fa-magnifying-glass absolute left-3 top-3 text-slate-400 text-xs"></i>
           </div>
-          <div class="relative w-44">
-            <select id="tableCategoryFilter" onchange="renderDataTable()" class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-300 dark:border-slate-700 text-sm rounded-xl px-3 py-2 pr-8 focus:ring-2 focus:ring-red-600"></select>
-            <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2.5 text-slate-400"><i class="fa-solid fa-chevron-down text-xs"></i></div>
+          <div class="relative w-full sm:w-44">
+            <select id="tableCategoryFilter" onchange="renderDataTable()" class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-300 dark:border-slate-700 text-sm rounded-xl px-3 py-2 pr-8 focus:ring-2 focus:ring-red-600 outline-none"></select>
+            <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2.5 text-slate-400">
+              <i class="fa-solid fa-chevron-down text-xs"></i>
+            </div>
           </div>
         </div>
-        <div class="flex flex-wrap items-center gap-2">
-          <button onclick="openAddEditModal()" class="px-4 py-2 text-white font-semibold text-sm rounded-xl shadow-md transition flex items-center gap-2 btn-theme-action">
+
+        <div class="flex items-center gap-2 justify-end">
+          <button onclick="openAddEditModal()" class="flex-1 sm:flex-none px-4 py-2 text-white font-semibold text-xs sm:text-sm rounded-xl shadow-md transition flex items-center justify-center gap-2 btn-theme-action">
             <i class="fa-solid fa-plus"></i><span>สร้างการ์ดใหม่</span>
           </button>
-          <button onclick="fetchFromGoogleSheets(true)" class="px-3.5 py-2 bg-slate-100 dark:bg-slate-700 border border-slate-300 dark:border-slate-600 text-sm font-semibold rounded-xl hover:bg-slate-200 transition flex items-center gap-1.5">
-            <i class="fa-solid fa-arrows-rotate"></i><span>รีเฟรชข้อมูล</span>
+          <button onclick="forceSyncFromCloud()" title="ดึงข้อมูลจาก Google Sheets และแทนที่ข้อมูลในเครื่อง" class="p-2 sm:px-3.5 sm:py-2 bg-slate-100 dark:bg-slate-700 border border-slate-300 dark:border-slate-600 text-xs sm:text-sm font-semibold rounded-xl hover:bg-slate-200 transition flex items-center justify-center gap-1.5">
+            <i class="fa-solid fa-arrows-rotate"></i><span class="hidden sm:inline">รีเฟรช</span>
           </button>
         </div>
       </div>
 
+      <!-- กล่องแสดงผลตามความละเอียดหน้าจอ (Adaptive Display) -->
       <div class="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-2xl shadow-sm overflow-hidden">
-        <div class="hidden md:block overflow-x-auto">
-          <table class="w-full text-left text-sm text-slate-600 dark:text-slate-300">
-            <thead class="bg-slate-50 dark:bg-slate-900/60 border-b border-slate-200 dark:border-slate-700 text-xs uppercase font-bold text-slate-500">
+        
+        <!-- โหมด Desktop / Tablet (แสดงตารางแนวนอน) -->
+        <div class="hidden sm:block overflow-x-auto">
+          <table class="w-full text-left text-xs sm:text-sm text-slate-600 dark:text-slate-300 border-collapse">
+            <thead class="bg-slate-50 dark:bg-slate-900/60 border-b border-slate-200 dark:border-slate-700 text-[11px] sm:text-xs uppercase font-bold text-slate-500 whitespace-nowrap">
               <tr>
-                <th class="py-3 px-4 w-12 text-center">#</th>
-                <th class="py-3 px-4">ชื่อการ์ด (Card Title)</th>
-                <th class="py-3 px-4 w-36 text-indigo-500">การ์ดใบนี้ใช้กับ</th>
-                <th class="py-3 px-4 w-24 text-blue-500">PV ของการ์ด</th>
-                <th class="py-3 px-4 w-24 text-amber-500">โอกาสสุ่ม</th>
-                <th class="py-3 px-4 w-24 text-red-600">ราคา</th>
-                <th class="py-3 px-4 w-24 text-green-500">Active</th>
-                <th class="py-3 px-4 w-24 text-emerald-600">Passive</th>
-                <th class="py-3 px-4 w-24">หมวดหมู่</th>
-                <th class="py-3 px-4 w-28">สิ่งที่ต้องใช้</th>
-                <th class="py-3 px-4 w-28">สิ่งที่ได้รับ</th>
-                <th class="py-3 px-4 w-32 text-center">จัดการการ์ด</th>
+                <th class="py-3 px-3 text-center w-10">#</th>
+                <th class="py-3 px-3 w-20 text-center">สถานะ</th>
+                <th class="py-3 px-4 min-w-[180px]">ชื่อการ์ด</th>
+                <th class="py-3 px-3 text-indigo-500 min-w-[110px]">ใช้กับ</th>
+                <th class="py-3 px-3 text-blue-500 text-right min-w-[80px]">PV</th>
+                <th class="py-3 px-3 text-red-600 text-right min-w-[80px]">ราคา</th>
+                <th class="py-3 px-3 text-green-500 text-right min-w-[90px]">Active</th>
+                <th class="py-3 px-3 text-emerald-500 text-right min-w-[90px]">Passive</th>
+                <th class="py-3 px-3 text-center min-w-[90px]">หมวดหมู่</th>
+                <th class="py-3 px-3 text-center min-w-[110px]">สิ่งที่ต้องใช้</th>
+                <th class="py-3 px-3 text-center min-w-[110px]">สิ่งที่ได้รับ</th>
+                <th class="py-3 px-3 text-center w-28 sticky right-0 bg-slate-50 dark:bg-slate-900/90 shadow-l">จัดการ</th>
               </tr>
             </thead>
             <tbody id="tableBodyDesktop" class="divide-y divide-slate-100 dark:divide-slate-700/60"></tbody>
           </table>
         </div>
-        <div id="tableBodyMobile" class="md:hidden divide-y divide-slate-200 dark:divide-slate-700/60 p-2 space-y-2"></div>
-        <div id="emptyDataState" class="hidden p-10 text-center space-y-3">
-          <i class="fa-solid fa-inbox text-4xl text-slate-300"></i>
-          <p class="text-sm text-slate-500">ไม่พบการ์ดในคลัง กด "สร้างการ์ดใหม่" เพื่อเริ่มบันทึก</p>
+
+        <!-- โหมด Mobile (แสดงเป็นการ์ดคอมแพกต์) -->
+        <div id="tableBodyMobile" class="sm:hidden p-3 space-y-3 bg-slate-50/50 dark:bg-slate-900/40"></div>
+
+        <!-- สถานะไม่มีข้อมูล -->
+        <div id="emptyDataState" class="hidden p-10 text-center space-y-2">
+          <i class="fa-solid fa-inbox text-3xl text-slate-300"></i>
+          <p class="text-xs text-slate-500">ไม่พบการ์ดข้อมูลตามเงื่อนไข</p>
         </div>
       </div>
     </section>
@@ -423,9 +449,7 @@
     <a href="profile.html" class="flex flex-col items-center gap-1 text-slate-400 hover:text-red-600 font-medium"><i class="fa-solid fa-id-card text-lg text-red-500"></i><span class="text-[10px]">โปรไฟล์</span></a>
   </nav>
 
-  <!-- ============================================================ -->
-  <!-- POP-UP RESULT MODAL: ผลการสุ่ม + จำลอง PV ส่วนตัว / สายงาน -->
-  <!-- ============================================================ -->
+  <!-- POP-UP RESULT MODAL -->
   <div id="resultModal" class="hidden fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-md flex items-center justify-center p-3 sm:p-4 overflow-y-auto">
     <div class="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-3xl max-w-2xl w-full p-4 sm:p-7 shadow-2xl relative my-auto animate-pop-in space-y-4">
       
@@ -455,7 +479,7 @@
         </div>
       </div>
 
-      <!-- MINI POP-UP: แสดงผลจำลองสถานะผู้เล่น ก่อน/หลัง รับการ์ด (จำลอง PV รายสายงาน & ส่วนบุคคล) -->
+      <!-- MINI POP-UP: แสดงผลจำลองสถานะผู้เล่น ก่อน/หลัง รับการ์ด -->
       <div id="playerMiniModal" class="hidden rounded-2xl p-4 bg-gradient-to-br from-slate-50 to-indigo-50/40 dark:from-slate-900 dark:to-indigo-950/40 border-2 border-indigo-400/50 dark:border-indigo-600/50 shadow-2xl space-y-3 text-xs animate-pop-in relative">
         <div class="flex items-center justify-between border-b border-indigo-100 dark:border-indigo-900/60 pb-2">
           <div class="flex items-center gap-2">
@@ -471,7 +495,7 @@
         </div>
 
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5 font-mono">
-          <!-- 1. เงินสดติดตัว (หักราคาการ์ด) -->
+          <!-- 1. เงินสดติดตัว -->
           <div class="p-2.5 rounded-xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 flex items-center justify-between">
             <div>
               <span class="text-slate-400 block text-[10px] uppercase font-bold flex items-center gap-1">
@@ -486,7 +510,7 @@
             <span id="simCashDiffBadge" class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-red-100 text-red-600 dark:bg-red-950 dark:text-red-400">-฿0</span>
           </div>
 
-          <!-- 2. เงินคงเหลือต่อเดือน (Net Surplus ใหม่) -->
+          <!-- 2. เงินคงเหลือต่อเดือน -->
           <div class="p-2.5 rounded-xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 flex items-center justify-between">
             <div>
               <span class="text-slate-400 block text-[10px] uppercase font-bold flex items-center gap-1">
@@ -531,7 +555,7 @@
             <span id="simPassiveDiffBadge" class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-teal-100 text-teal-600 dark:bg-teal-950 dark:text-teal-400">+฿0</span>
           </div>
 
-          <!-- 5. กล่องจำลอง PV: แสดงทั้ง PV ส่วนตัว หรือ PV สายงาน A - F ที่เปลี่ยนแปลง -->
+          <!-- 5. กล่องจำลอง PV -->
           <div id="simPvImpactWrapper" class="col-span-1 sm:col-span-2 p-2.5 rounded-xl bg-blue-50/70 dark:bg-blue-950/30 border border-blue-200 dark:border-blue-800 flex items-center justify-between">
             <div>
               <span id="simPvImpactTitle" class="text-blue-500 dark:text-blue-400 block text-[10px] uppercase font-bold flex items-center gap-1">
@@ -706,7 +730,7 @@
     </div>
   </div>
 
-  <!-- MODAL: จัดการการ์ด (มีช่อง PV) -->
+  <!-- MODAL: จัดการการ์ด -->
   <div id="itemModal" class="hidden fixed inset-0 z-50 bg-slate-950/70 backdrop-blur-sm flex items-center justify-center p-3 sm:p-4 overflow-y-auto">
     <div class="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-3xl max-w-xl w-full p-5 sm:p-6 shadow-2xl relative my-auto animate-pop-in">
       <div class="flex items-center justify-between pb-3 border-b border-slate-100 dark:border-slate-700">
@@ -1030,6 +1054,7 @@
         activeIncome: 15000,
         passiveIncome: 0,
         forceAccept: false,
+        syncStatus: "synced",
         description: "สละเวลา 15 นาทีจัดลำดับความสำคัญของงานที่ต้องทำ 3 อันดับแรก",
         cost: { heart: 2, time: 3, knowledge: 0 },
         reward: { heart: 4, time: 5, knowledge: 4 }
@@ -1046,6 +1071,7 @@
         activeIncome: 0,
         passiveIncome: 500,
         forceAccept: true,
+        syncStatus: "synced",
         description: "ช่วยกระตุ้นระบบขับถ่ายและการไหลเวียนโลหิตหลังตื่นนอน",
         cost: { heart: 0, time: 1, knowledge: 0 },
         reward: { heart: 5, time: 0, knowledge: 2 }
@@ -1062,6 +1088,7 @@
         activeIncome: 0,
         passiveIncome: 3500,
         forceAccept: false,
+        syncStatus: "synced",
         description: "สนับสนุนและผลักดันยอดสายงาน A ให้เติบโตอย่างมั่นคง",
         cost: { heart: 1, time: 2, knowledge: 3 },
         reward: { heart: 3, time: 2, knowledge: 6 }
@@ -1134,9 +1161,6 @@
       fetchFromGoogleSheets(false);
     });
 
-    /* ==========================================================================
-       ฟังก์ชันดึงข้อมูลโปรไฟล์ผู้เล่น และระบบจำลองสถานะ ก่อน/หลัง รับการ์ด
-       ========================================================================== */
     function getPlayerCurrentProfile() {
       try {
         const savedSession = localStorage.getItem('game_auth_session');
@@ -1262,7 +1286,6 @@
       };
     }
 
-    // ฟังก์ชันคำนวณและแสดงผลจำลองสถานะใน Mini Pop-up (รวมจำลอง PV ส่วนตัว และ PV สายงาน A-F)
     function updatePlayerMiniSimulation() {
       const p = getPlayerCurrentProfile();
       if (!p || !currentItem) return;
@@ -1274,7 +1297,6 @@
 
       const check = checkAffordabilityAndValidate(p, currentItem);
 
-      // 1. จำลองเงินสด
       const newCash = p.cash - cardPrice;
       document.getElementById('simCashBefore').innerText = `฿${p.cash.toLocaleString()}`;
       document.getElementById('simCashAfter').innerText = `฿${newCash.toLocaleString()}`;
@@ -1288,7 +1310,6 @@
         document.getElementById('simCashAfter').classList.add('text-amber-500');
       }
 
-      // 2. จำลอง Active & Passive
       const newActive = p.totalActive + cardActive;
       const newPassive = p.totalPassive + cardPassive;
       document.getElementById('simActiveBefore').innerText = `฿${p.totalActive.toLocaleString()}`;
@@ -1299,14 +1320,12 @@
       document.getElementById('simPassiveAfter').innerText = `฿${newPassive.toLocaleString()}`;
       document.getElementById('simPassiveDiffBadge').innerText = `+฿${cardPassive.toLocaleString()}`;
 
-      // 3. จำลอง เงินคงเหลือต่อเดือน
       const newNetSurplus = (p.salary + newActive + newPassive) - p.expense;
       const netDiff = newNetSurplus - p.netSurplus;
       document.getElementById('simNetBefore').innerText = `฿${p.netSurplus.toLocaleString()}`;
       document.getElementById('simNetAfter').innerText = `฿${newNetSurplus.toLocaleString()}`;
       document.getElementById('simNetDiffBadge').innerText = `+฿${netDiff.toLocaleString()}`;
 
-      // 4. จำลอง PV (ตรวจสอบว่าเป็นการ์ดใช้กับส่วนตัว หรือใช้กับสายงาน A-F)
       const pvWrapper = document.getElementById('simPvImpactWrapper');
       const pvTitle = document.getElementById('simPvImpactTitle');
       const isLegTarget = (currentItem.targetType === 'leg' && currentItem.targetLeg);
@@ -1322,7 +1341,6 @@
         document.getElementById('simPvDiffBadge').innerText = `+${cardPv.toLocaleString()} PV`;
         pvWrapper.classList.remove('hidden');
       } else {
-        // การ์ดใช้กับข้อมูลส่วนบุคคล
         const newPersonalPv = p.personalPv + cardPv;
         pvTitle.innerHTML = `<i class="fa-solid fa-award text-blue-500"></i> PV รวมส่วนบุคคล (Personal PV)`;
         document.getElementById('simPvBefore').innerText = `${p.personalPv.toLocaleString()} PV`;
@@ -1331,7 +1349,6 @@
         pvWrapper.classList.remove('hidden');
       }
 
-      // 5. จำลองสเตตัส 3 ด้าน
       const costH = Number(currentItem.cost?.heart) || 0;
       const rewardH = Number(currentItem.reward?.heart) || 0;
       const rawNetH = p.heart - costH + rewardH;
@@ -1383,6 +1400,9 @@
       }
     }
 
+    /* ==========================================================================
+       LOAD & SAVE LOCAL CACHE (พร้อมระบุ syncStatus)
+       ========================================================================== */
     function loadLocalCache() {
       try {
         const cItems = localStorage.getItem('rnd_cache_items');
@@ -1418,6 +1438,9 @@
       renderCategoryHomeCards();
     }
 
+    /* ==========================================================================
+       SYNC WITH GOOGLE SHEETS
+       ========================================================================== */
     async function fetchFromGoogleSheets(isManual = false) {
       if (!GOOGLE_SHEET_API_URL || GOOGLE_SHEET_API_URL.includes("PLACEHOLDER")) {
         setCloudStatus('ใช้งานแบบออฟไลน์', 'text-slate-400');
@@ -1429,14 +1452,20 @@
       if (syncIcon) syncIcon.classList.add('animate-spin');
 
       try {
-        const res = await fetch(GOOGLE_SHEET_API_URL);
+        const res = await fetch(`${GOOGLE_SHEET_API_URL}?t=${Date.now()}`);
         const data = await res.json();
 
         if (data) {
           let updated = false;
 
           if (Array.isArray(data.items) && data.items.length > 0) {
-            items = data.items;
+            // มาร์กการ์ดที่มาจากชีตว่าเป็น synced ทั้งหมด
+            const cloudItems = data.items.map(it => ({ ...it, syncStatus: "synced" }));
+            const cloudIds = new Set(cloudItems.map(i => i.id));
+
+            // หากในเครื่องมีการ์ดที่เพิ่งสร้างใหม่ (local_only) และยังไม่ขึ้นชีต ให้นำมาต่อท้ายไว้ไม่ให้หาย
+            const pendingLocalItems = items.filter(i => i.syncStatus === 'local_only' && !cloudIds.has(i.id));
+            items = [...cloudItems, ...pendingLocalItems];
             updated = true;
           }
 
@@ -1452,7 +1481,7 @@
           if (updated) {
             saveLocalCache();
             setCloudStatus('ออนไลน์ (ซิงก์แล้ว)', 'text-emerald-500');
-            if (isManual) showToast('ดึงข้อมูลล่าสุดจาก Google Sheets มาแสดงผลแล้ว ☁️', 'success');
+            if (isManual) showToast(`ดึงข้อมูลล่าสุดจาก Google Sheets มาแสดงผลแล้ว (${items.length} รายการ) ☁️`, 'success');
           } else {
             setCloudStatus('พร้อมใช้งาน (แคชในเครื่อง)', 'text-emerald-500');
             if (isManual) showToast('ข้อมูลเป็นปัจจุบันแล้ว', 'info');
@@ -1470,9 +1499,18 @@
       }
     }
 
-    /* ==========================================================================
-       PUSH TO GOOGLE SHEETS
-       ========================================================================== */
+    /* บังคับดึงข้อมูลจาก Cloud มาเขียนทับข้อมูลในเครื่อง 100% */
+    async function forceSyncFromCloud() {
+      if (!confirm("คุณต้องการดึงข้อมูลล่าสุดจาก Google Sheets มาแทนที่ข้อมูลในเครื่องนี้ใช่หรือไม่?")) return;
+      await fetchFromGoogleSheets(true);
+    }
+
+    /* บังคับส่งข้อมูลทั้งเครื่องขึ้นไปเขียนทับบน Google Sheets */
+    async function forcePushToCloud() {
+      if (!confirm(`ต้องการส่งข้อมูลทั้ง ${items.length} รายการจากเครื่องนี้ขึ้นไปแทนที่บน Google Sheets ใช่หรือไม่?`)) return;
+      await pushToGoogleSheets();
+    }
+
     async function pushToGoogleSheets() {
       saveLocalCache();
       if (!GOOGLE_SHEET_API_URL || GOOGLE_SHEET_API_URL.includes("PLACEHOLDER")) return;
@@ -1481,7 +1519,8 @@
       try {
         const payload = {
           action: 'saveData',
-          items: items,
+          // การ์ดทุกใบที่ส่งขึ้นชีตจะถูกปรับสถานะเป็น synced
+          items: items.map(it => ({ ...it, syncStatus: "synced" })),
           categories: categories,
           historyLog: historyLog
         };
@@ -1492,10 +1531,18 @@
           headers: { 'Content-Type': 'text/plain;charset=utf-8' },
           body: JSON.stringify(payload)
         });
+
+        // เปลี่ยนสถานะในเครื่องเป็น synced ทั้งหมด
+        items.forEach(it => it.syncStatus = "synced");
+        saveLocalCache();
+        renderDataTable();
+
         setCloudStatus('บันทึกออนไลน์สำเร็จ', 'text-emerald-500');
+        showToast('ข้อมูลทั้งหมดซิงก์ขึ้น Google Sheets เรียบร้อยแล้ว ☁️', 'success');
       } catch (e) {
         console.error("Push to Google Sheets error:", e);
-        setCloudStatus('บันทึกไม่สำเร็จ', 'text-red-500');
+        setCloudStatus('บันทึกไม่สำเร็จ (ค้างในเครื่อง)', 'text-red-500');
+        showToast('เกิดข้อผิดพลาดในการบันทึกลงชีต ข้อมูลยังถูกเก็บไว้ในเครื่อง', 'warning');
       }
     }
 
@@ -1830,12 +1877,31 @@
       return 'ข้อมูลส่วนตัว';
     }
 
+    /* ==========================================================================
+       เรนเดอร์ตารางคลังข้อมูล (แสดง Badge แยก: ชีต ☁️ VS เฉพาะเครื่อง 📱)
+       ========================================================================== */
     function renderDataTable() {
       const query = (document.getElementById('searchInput')?.value || '').toLowerCase().trim();
       const filterCat = document.getElementById('tableCategoryFilter')?.value || 'ALL';
 
+      // นับจำนวนการ์ดที่มีเฉพาะในเครื่องนี้
+      const localOnlyCount = items.filter(i => i.syncStatus === 'local_only').length;
+      const banner = document.getElementById('localOnlyAlertBanner');
+      const bannerCount = document.getElementById('localOnlyCountText');
+      if (banner && bannerCount) {
+        if (localOnlyCount > 0) {
+          bannerCount.innerText = localOnlyCount;
+          banner.classList.remove('hidden');
+        } else {
+          banner.classList.add('hidden');
+        }
+      }
+
       let filtered = items.filter(item => {
-        const matchesQuery = !query || item.title.toLowerCase().includes(query);
+        const matchesQuery = !query || 
+          (item.title && item.title.toLowerCase().includes(query)) ||
+          (item.targetLeg && item.targetLeg.toLowerCase().includes(query)) ||
+          (item.category && item.category.toLowerCase().includes(query));
         const matchesCat = (filterCat === 'ALL') || (item.category === filterCat);
         return matchesQuery && matchesCat;
       });
@@ -1847,11 +1913,12 @@
       if (filtered.length === 0) {
         if (desktopTbody) desktopTbody.innerHTML = '';
         if (mobileList) mobileList.innerHTML = '';
-        emptyState.classList.remove('hidden');
+        if (emptyState) emptyState.classList.remove('hidden');
         return;
       }
-      emptyState.classList.add('hidden');
+      if (emptyState) emptyState.classList.add('hidden');
 
+      // 1. เรนเดอร์ Desktop / Tablet
       if (desktopTbody) {
         desktopTbody.innerHTML = filtered.map((item, idx) => {
           const costH = Number(item.cost?.heart) || 0;
@@ -1863,37 +1930,61 @@
           const rewardK = Number(item.reward?.knowledge) || 0;
 
           const forceIcon = item.forceAccept 
-            ? `<span title="การ์ดใบนี้บังคับรับ" class="ml-1 text-[11px] text-red-500 font-bold"><i class="fa-solid fa-lock"></i></span>` 
+            ? `<span title="การ์ดใบนี้บังคับรับ" class="ml-1 text-[10px] text-red-500"><i class="fa-solid fa-lock"></i></span>` 
             : '';
 
+          // ตรวจสอบสถานะการซิงก์
+          const isSynced = (item.syncStatus === "synced");
+          const syncBadge = isSynced 
+            ? `<span title="ข้อมูลบันทึกบน Google Sheet เรียบร้อยแล้ว" class="inline-flex items-center gap-1 text-[10px] font-bold text-emerald-600 bg-emerald-50 dark:bg-emerald-950/60 px-2 py-0.5 rounded-full border border-emerald-200 dark:border-emerald-800"><i class="fa-solid fa-cloud text-[9px]"></i> ชีต</span>`
+            : `<span title="ข้อมูลนี้มีเฉพาะในเครื่องนี้ ยังไม่ถูกบันทึกลง Google Sheet" class="inline-flex items-center gap-1 text-[10px] font-bold text-amber-600 bg-amber-50 dark:bg-amber-950/60 px-2 py-0.5 rounded-full border border-amber-300 dark:border-amber-800 animate-pulse"><i class="fa-solid fa-mobile-screen text-[9px]"></i> เฉพาะเครื่อง</span>`;
+
           return `
-            <tr class="hover:bg-slate-50 dark:hover:bg-slate-700/40">
-              <td class="py-3 px-4 text-center font-mono text-xs text-slate-400">${idx + 1}</td>
-              <td class="py-3 px-4 font-bold text-slate-800 dark:text-white">
-                <span>${escapeHTML(item.title)}</span>
+            <tr class="hover:bg-slate-50 dark:hover:bg-slate-700/30 transition-colors">
+              <td class="py-2.5 px-3 text-center font-mono text-[11px] text-slate-400">${idx + 1}</td>
+              <td class="py-2.5 px-3 text-center whitespace-nowrap">${syncBadge}</td>
+              <td class="py-2.5 px-4 font-bold text-slate-800 dark:text-white">
+                <span class="line-clamp-2">${escapeHTML(item.title)}</span>
                 ${forceIcon}
               </td>
-              <td class="py-3 px-4 font-medium text-slate-700 dark:text-slate-300">${formatTargetBadge(item)}</td>
-              <td class="py-3 px-4 font-mono font-bold text-xs text-blue-500">${(item.pv || 0).toLocaleString()}</td>
-              <td class="py-3 px-4 font-mono font-bold text-xs text-amber-500">${item.weight || 10}</td>
-              <td class="py-3 px-4 font-mono font-bold text-xs text-red-600">฿${(item.price || 0).toLocaleString()}</td>
-              <td class="py-3 px-4 font-mono font-bold text-xs text-green-500">฿${(item.activeIncome || 0).toLocaleString()}</td>
-              <td class="py-3 px-4 font-mono font-bold text-xs text-emerald-500">฿${(item.passiveIncome || 0).toLocaleString()}</td>
-              <td class="py-3 px-4"><span class="text-xs px-2.5 py-1 rounded-full font-semibold border ${getCategoryMeta(item.category).theme.badge}">${escapeHTML(item.category)}</span></td>
-              <td class="py-3 px-4 text-xs font-mono text-slate-400">
-                <i class="fa-solid fa-heart text-red-500"></i> ${costH} | <i class="fa-solid fa-clock text-slate-500"></i> ${costT} | <i class="fa-solid fa-book text-purple-500"></i> ${costK}
+              <td class="py-2.5 px-3 font-semibold text-xs text-indigo-600 dark:text-indigo-400">
+                ${formatTargetBadge(item)}
               </td>
-              <td class="py-3 px-4 text-xs font-mono text-slate-400">
-                <i class="fa-solid fa-heart text-red-500"></i> +${rewardH} | <i class="fa-solid fa-clock text-slate-500"></i> +${rewardT} | <i class="fa-solid fa-book text-purple-500"></i> +${rewardK}
+              <td class="py-2.5 px-3 font-mono font-bold text-right text-blue-500">
+                ${(item.pv || 0).toLocaleString()}
               </td>
-              <td class="py-3 px-4 text-center space-x-1 whitespace-nowrap">
-                <button onclick="openAddEditModal('${item.id}', false)" class="p-1.5 text-slate-400 hover:text-blue-500 transition" title="แก้ไขการ์ดนี้">
+              <td class="py-2.5 px-3 font-mono font-bold text-right text-red-600 dark:text-red-400">
+                ฿${(item.price || 0).toLocaleString()}
+              </td>
+              <td class="py-2.5 px-3 font-mono font-bold text-right text-green-500">
+                ฿${(item.activeIncome || 0).toLocaleString()}
+              </td>
+              <td class="py-2.5 px-3 font-mono font-bold text-right text-emerald-500">
+                ฿${(item.passiveIncome || 0).toLocaleString()}
+              </td>
+              <td class="py-2.5 px-3 text-center whitespace-nowrap">
+                <span class="text-[10px] px-2 py-0.5 rounded-full font-semibold border ${getCategoryMeta(item.category).theme.badge}">
+                  ${escapeHTML(item.category)}
+                </span>
+              </td>
+              <td class="py-2.5 px-3 text-center font-mono text-[11px] text-slate-500 whitespace-nowrap">
+                <span class="text-red-500 font-bold">${costH}</span> / 
+                <span class="text-blue-500 font-bold">${costT}</span> / 
+                <span class="text-purple-500 font-bold">${costK}</span>
+              </td>
+              <td class="py-2.5 px-3 text-center font-mono text-[11px] text-slate-500 whitespace-nowrap">
+                <span class="text-red-500 font-bold">+${rewardH}</span> / 
+                <span class="text-blue-500 font-bold">+${rewardT}</span> / 
+                <span class="text-purple-500 font-bold">+${rewardK}</span>
+              </td>
+              <td class="py-2.5 px-3 text-center whitespace-nowrap sticky right-0 bg-white/95 dark:bg-slate-800/95 backdrop-blur shadow-l">
+                <button onclick="openAddEditModal('${item.id}', false)" class="p-1.5 text-slate-400 hover:text-blue-500 transition" title="แก้ไข">
                   <i class="fa-solid fa-pen text-xs"></i>
                 </button>
-                <button onclick="openAddEditModal('${item.id}', true)" class="p-1.5 text-slate-400 hover:text-emerald-500 transition" title="Clone การ์ดนี้">
+                <button onclick="openAddEditModal('${item.id}', true)" class="p-1.5 text-slate-400 hover:text-emerald-500 transition" title="โคลน">
                   <i class="fa-solid fa-copy text-xs"></i>
                 </button>
-                <button onclick="confirmDeleteItem('${item.id}')" class="p-1.5 text-slate-400 hover:text-red-500 transition" title="ลบการ์ดนี้">
+                <button onclick="confirmDeleteItem('${item.id}')" class="p-1.5 text-slate-400 hover:text-red-500 transition" title="ลบ">
                   <i class="fa-solid fa-trash-can text-xs"></i>
                 </button>
               </td>
@@ -1902,6 +1993,7 @@
         }).join('');
       }
 
+      // 2. เรนเดอร์ Mobile
       if (mobileList) {
         mobileList.innerHTML = filtered.map(item => {
           const costH = Number(item.cost?.heart) || 0;
@@ -1912,43 +2004,75 @@
           const rewardT = Number(item.reward?.time) || 0;
           const rewardK = Number(item.reward?.knowledge) || 0;
 
-          const forceLabel = item.forceAccept 
-            ? `<span class="text-[10px] text-red-500 font-bold"><i class="fa-solid fa-lock"></i> บังคับรับ</span>` 
+          const forceBadge = item.forceAccept 
+            ? `<span class="text-[10px] text-red-500 font-bold bg-red-50 dark:bg-red-950/60 px-1.5 py-0.5 rounded border border-red-200 dark:border-red-900/40"><i class="fa-solid fa-lock text-[9px]"></i> บังคับรับ</span>` 
             : '';
 
+          const isSynced = (item.syncStatus === "synced");
+          const syncBadge = isSynced
+            ? `<span class="text-[10px] font-bold text-emerald-600 bg-emerald-50 dark:bg-emerald-950/60 px-2 py-0.5 rounded-full border border-emerald-200"><i class="fa-solid fa-cloud text-[9px]"></i> ชีต</span>`
+            : `<span class="text-[10px] font-bold text-amber-600 bg-amber-50 dark:bg-amber-950/60 px-2 py-0.5 rounded-full border border-amber-300 animate-pulse"><i class="fa-solid fa-mobile-screen text-[9px]"></i> เฉพาะเครื่อง</span>`;
+
           return `
-            <div class="p-3 bg-white dark:bg-slate-800 rounded-xl space-y-2 border border-slate-100 dark:border-slate-700">
-              <div class="flex justify-between items-start">
-                <div>
-                  <div class="flex items-center gap-1.5 flex-wrap">
-                    <span class="text-[10px] px-2 py-0.5 rounded-full font-semibold border ${getCategoryMeta(item.category).theme.badge}">${escapeHTML(item.category)}</span>
-                    <span class="text-xs font-semibold text-slate-600 dark:text-slate-300">ใช้กับ: ${formatTargetBadge(item)}</span>
-                    <span class="text-xs font-mono font-bold text-blue-500">${(item.pv || 0).toLocaleString()} PV</span>
-                    ${forceLabel}
-                  </div>
-                  <h4 class="font-bold text-sm text-slate-800 dark:text-white mt-1">${escapeHTML(item.title)}</h4>
+            <div class="p-3.5 bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700/80 shadow-sm space-y-2.5">
+              <div class="flex items-start justify-between gap-2">
+                <div class="flex flex-wrap items-center gap-1.5">
+                  ${syncBadge}
+                  <span class="text-[10px] px-2 py-0.5 rounded-full font-semibold border ${getCategoryMeta(item.category).theme.badge}">
+                    ${escapeHTML(item.category)}
+                  </span>
+                  <span class="text-xs font-bold text-indigo-600 dark:text-indigo-400">
+                    ${formatTargetBadge(item)}
+                  </span>
+                  ${forceBadge}
                 </div>
-                <div class="flex items-center gap-1">
-                  <button onclick="openAddEditModal('${item.id}', false)" class="p-1.5 text-slate-400 hover:text-blue-500" title="แก้ไข"><i class="fa-solid fa-pen text-xs"></i></button>
-                  <button onclick="openAddEditModal('${item.id}', true)" class="p-1.5 text-slate-400 hover:text-emerald-500" title="Clone"><i class="fa-solid fa-copy text-xs"></i></button>
-                  <button onclick="confirmDeleteItem('${item.id}')" class="p-1.5 text-slate-400 hover:text-red-500" title="ลบ"><i class="fa-solid fa-trash-can text-xs"></i></button>
+                <div class="flex items-center gap-1 shrink-0">
+                  <button onclick="openAddEditModal('${item.id}', false)" class="w-7 h-7 rounded-lg bg-slate-100 dark:bg-slate-700/80 text-slate-600 dark:text-slate-300 hover:text-blue-500 flex items-center justify-center">
+                    <i class="fa-solid fa-pen text-xs"></i>
+                  </button>
+                  <button onclick="openAddEditModal('${item.id}', true)" class="w-7 h-7 rounded-lg bg-slate-100 dark:bg-slate-700/80 text-slate-600 dark:text-slate-300 hover:text-emerald-500 flex items-center justify-center">
+                    <i class="fa-solid fa-copy text-xs"></i>
+                  </button>
+                  <button onclick="confirmDeleteItem('${item.id}')" class="w-7 h-7 rounded-lg bg-red-50 dark:bg-red-950/40 text-red-500 flex items-center justify-center">
+                    <i class="fa-solid fa-trash-can text-xs"></i>
+                  </button>
                 </div>
               </div>
-              <div class="flex items-center justify-between text-xs font-mono text-slate-400">
-                <span>ราคา: ฿${item.price || 0}</span>
-                <span>น้ำหนัก: ${item.weight || 10}</span>
-              </div>
-              <div class="grid grid-cols-2 gap-2 text-[11px] bg-slate-50 dark:bg-slate-900/60 p-2 rounded-lg font-mono">
+
+              <h4 class="font-bold text-sm text-slate-900 dark:text-white leading-snug">
+                ${escapeHTML(item.title)}
+              </h4>
+
+              <div class="grid grid-cols-4 gap-1.5 py-1.5 px-2 bg-slate-50 dark:bg-slate-900/60 rounded-xl text-center font-mono">
                 <div>
-                  <span class="text-slate-400 block text-[9px] uppercase font-bold">ใช้:</span>
-                  <span class="text-red-500"><i class="fa-solid fa-heart"></i> ${costH}</span> |
-                  <span class="text-slate-500"><i class="fa-solid fa-clock"></i> ${costT}</span> |
-                  <span class="text-purple-500"><i class="fa-solid fa-book"></i> ${costK}</span>
+                  <span class="text-[9px] text-slate-400 block font-sans">PV</span>
+                  <span class="text-xs font-bold text-blue-500">${(item.pv || 0).toLocaleString()}</span>
                 </div>
                 <div>
-                  <span class="text-slate-400 block text-[9px] uppercase font-bold">ได้:</span>
-                  <span class="text-red-500 font-bold">+${rewardH}</span> |
-                  <span class="text-slate-500 font-bold">+${rewardT}</span> |
+                  <span class="text-[9px] text-slate-400 block font-sans">ราคา</span>
+                  <span class="text-xs font-bold text-red-500">฿${(item.price || 0).toLocaleString()}</span>
+                </div>
+                <div>
+                  <span class="text-[9px] text-slate-400 block font-sans">Active</span>
+                  <span class="text-xs font-bold text-green-500">฿${(item.activeIncome || 0).toLocaleString()}</span>
+                </div>
+                <div>
+                  <span class="text-[9px] text-slate-400 block font-sans">Passive</span>
+                  <span class="text-xs font-bold text-emerald-500">฿${(item.passiveIncome || 0).toLocaleString()}</span>
+                </div>
+              </div>
+
+              <div class="grid grid-cols-2 gap-2 text-[11px] font-mono border-t border-slate-100 dark:border-slate-700/60 pt-2 text-slate-500 dark:text-slate-400">
+                <div class="flex items-center gap-1.5">
+                  <span class="text-[9px] uppercase font-bold text-slate-400 font-sans">ใช้:</span>
+                  <span class="text-red-500"><i class="fa-solid fa-heart text-[10px]"></i> ${costH}</span>
+                  <span class="text-blue-500"><i class="fa-solid fa-clock text-[10px]"></i> ${costT}</span>
+                  <span class="text-purple-500"><i class="fa-solid fa-book text-[10px]"></i> ${costK}</span>
+                </div>
+                <div class="flex items-center justify-end gap-1.5">
+                  <span class="text-[9px] uppercase font-bold text-slate-400 font-sans">ได้:</span>
+                  <span class="text-red-500 font-bold">+${rewardH}</span>
+                  <span class="text-blue-500 font-bold">+${rewardT}</span>
                   <span class="text-purple-500 font-bold">+${rewardK}</span>
                 </div>
               </div>
@@ -2127,7 +2251,8 @@
           items[idx] = {
             ...items[idx],
             title, targetType, targetLeg, category, pv, price, weight,
-            activeIncome, passiveIncome, description, forceAccept, cost, reward
+            activeIncome, passiveIncome, description, forceAccept, cost, reward,
+            syncStatus: "local_only" // เปลี่ยนเป็นค้างในเครื่องก่อน
           };
           showToast(`บันทึกการแก้ไขการ์ด "${title}" เรียบร้อย`, 'success');
         }
@@ -2136,7 +2261,8 @@
           id: `c-${Date.now().toString().slice(-4)}`,
           title, targetType, targetLeg, category, pv, price, weight,
           activeIncome, passiveIncome, description, forceAccept,
-          cost, reward
+          cost, reward,
+          syncStatus: "local_only" // การ์ดใหม่เป็น local_only จนกว่าจะ sync สำเร็จ
         };
         items.unshift(newCard);
         showToast(isClone ? `โคลนการ์ดใบใหม่ "${title}" เรียบร้อยแล้ว! 🎉` : `สร้างการ์ดใหม่เรียบร้อยแล้ว`, 'success');
@@ -2243,6 +2369,7 @@
 
       pushToGoogleSheets();
       updateCategoryDropdowns();
+      renderCategoryModalList();
       renderCategoryHomeCards();
       showToast(`เพิ่มหมวดหมู่ "${name}" สำเร็จ`, 'success');
     }
@@ -2393,7 +2520,7 @@
       closeIconPicker();
     }
 
-    /* === ส่งออกข้อมูลเป็น CSV สำหรับเปิดใน Google Sheets / Excel (เพิ่มคอลัมน์ PV) === */
+    /* === ส่งออกข้อมูลเป็น CSV สำหรับเปิดใน Google Sheets / Excel === */
     function exportDatabaseToCSV() {
       if (!items || items.length === 0) {
         showToast('ไม่มีข้อมูลการ์ดในระบบสำหรับส่งออก', 'warning');
