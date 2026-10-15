@@ -220,8 +220,6 @@
       
       <!-- แถบแสดงสถานะผู้เล่น: ซ่อนเมื่อยังไม่ Login -->
       <div id="homeProfileDashboard" class="hidden py-2 px-1 border-b border-slate-200/80 dark:border-slate-800 space-y-2 text-xs">
-        
-        <!-- แถวบน: ข้อมูลบัญชี, อาชีพ, และสเตตัส 3 ด้าน -->
         <div class="flex flex-wrap items-center justify-between gap-3 text-slate-700 dark:text-slate-300">
           <div class="flex items-center gap-3 flex-wrap">
             <span class="font-bold flex items-center gap-1.5 text-slate-900 dark:text-white">
@@ -235,7 +233,7 @@
             </span>
           </div>
 
-          <!-- ทรัพยากร 3 ด้าน (ไอคอน + ตัวเลข) -->
+          <!-- ทรัพยากร 3 ด้าน -->
           <div class="flex items-center gap-4 font-mono font-bold">
             <span class="flex items-center gap-1 text-red-500" title="สุขภาพ (หัวใจ)">
               <i class="fa-solid fa-heart"></i>
@@ -255,7 +253,6 @@
           </div>
         </div>
 
-        <!-- แถวล่าง: ตัวเลขการเงินกระชับ -->
         <div class="flex flex-wrap items-center gap-x-4 gap-y-1 font-mono text-[11px] text-slate-500 dark:text-slate-400">
           <span class="flex items-center gap-1 font-bold">
             <i class="fa-solid fa-wallet text-amber-500"></i> เงินสด:
@@ -426,7 +423,7 @@
   </nav>
 
   <!-- ============================================================ -->
-  <!-- POP-UP RESULT MODAL: ผลการสุ่ม + Pop-up ย่อยข้อมูลผู้เล่น -->
+  <!-- POP-UP RESULT MODAL: ผลการสุ่ม + จำลองผลลัพธ์ Before/After -->
   <!-- ============================================================ -->
   <div id="resultModal" class="hidden fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-md flex items-center justify-center p-3 sm:p-4 overflow-y-auto">
     <div class="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-3xl max-w-2xl w-full p-4 sm:p-7 shadow-2xl relative my-auto animate-pop-in space-y-4">
@@ -446,10 +443,10 @@
         </div>
 
         <div class="flex items-center gap-1.5">
-          <!-- ปุ่มเปิด Pop-up เล็กดูข้อมูลผู้เล่น -->
-          <button type="button" onclick="togglePlayerMiniModal()" id="playerInfoBadgeBtn" class="px-2.5 py-1.5 rounded-xl bg-slate-100 dark:bg-slate-700 hover:bg-slate-200 dark:hover:bg-slate-600 text-slate-700 dark:text-slate-200 text-xs font-bold transition flex items-center gap-1.5 shadow-sm border border-slate-200 dark:border-slate-600" title="ดูข้อมูลของผู้เล่นปัจจุบัน">
-            <i class="fa-solid fa-id-card text-blue-500"></i>
-            <span class="hidden sm:inline">ข้อมูลผู้เล่น</span>
+          <!-- ปุ่มเปิด Pop-up เล็กจำลองข้อมูลผู้เล่น -->
+          <button type="button" onclick="togglePlayerMiniModal()" id="playerInfoBadgeBtn" class="px-2.5 py-1.5 rounded-xl bg-blue-50 dark:bg-blue-950/50 hover:bg-blue-100 text-blue-600 dark:text-blue-300 text-xs font-bold transition flex items-center gap-1.5 shadow-sm border border-blue-200 dark:border-blue-800" title="ดูผลจำลองสถานะของผู้เล่นถ้ากดรับการ์ดนี้">
+            <i class="fa-solid fa-chart-line text-blue-500"></i>
+            <span>จำลองผลกระทบ</span>
           </button>
 
           <button id="popupCloseXBtn" onclick="handleRejectCard()" title="ปิดหน้าต่าง" class="w-8 h-8 rounded-lg text-slate-400 hover:text-slate-700 dark:hover:text-white flex items-center justify-center">
@@ -459,58 +456,116 @@
       </div>
 
       <!-- ======================================================== -->
-      <!-- MINI POP-UP: แสดงข้อมูลของผู้เล่น ซ้อนอยู่ในการ์ดสุ่ม -->
+      <!-- MINI POP-UP: แสดงผลจำลองสถานะผู้เล่น ก่อน/หลัง รับการ์ด -->
       <!-- ======================================================== -->
-      <div id="playerMiniModal" class="hidden rounded-2xl p-3.5 sm:p-4 bg-slate-100 dark:bg-slate-900/95 border-2 border-blue-500/40 shadow-xl space-y-2.5 text-xs animate-pop-in relative">
-        <div class="flex items-center justify-between border-b border-slate-200 dark:border-slate-700 pb-2">
+      <div id="playerMiniModal" class="hidden rounded-2xl p-4 bg-gradient-to-br from-slate-50 to-indigo-50/40 dark:from-slate-900 dark:to-indigo-950/40 border-2 border-indigo-400/50 dark:border-indigo-600/50 shadow-2xl space-y-3 text-xs animate-pop-in relative">
+        <div class="flex items-center justify-between border-b border-indigo-100 dark:border-indigo-900/60 pb-2">
           <div class="flex items-center gap-2">
-            <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
-            <span class="font-extrabold text-slate-900 dark:text-white flex items-center gap-1.5">
-              <i class="fa-solid fa-user-check text-blue-500"></i>
-              <span id="miniPlayerName">ผู้เล่น</span>
+            <span class="w-2.5 h-2.5 rounded-full bg-indigo-500 animate-pulse"></span>
+            <span class="font-extrabold text-sm text-slate-900 dark:text-white flex items-center gap-1.5">
+              <i class="fa-solid fa-calculator text-indigo-500"></i>
+              <span>จำลองสถานะ: ถ้ากดรับการ์ดใบนี้</span>
             </span>
-            <span class="text-slate-300 dark:text-slate-700">|</span>
-            <span id="miniPlayerCareer" class="text-slate-600 dark:text-slate-400 font-medium">-</span>
           </div>
           <button type="button" onclick="togglePlayerMiniModal()" class="w-6 h-6 rounded-lg text-slate-400 hover:text-slate-700 dark:hover:text-white flex items-center justify-center">
             <i class="fa-solid fa-xmark text-sm"></i>
           </button>
         </div>
 
-        <!-- ตัวเลขการเงินของผู้เล่น -->
-        <div class="grid grid-cols-2 sm:grid-cols-3 gap-2 font-mono text-[11px]">
-          <div class="p-1.5 rounded-lg bg-white dark:bg-slate-800 border border-slate-200/60 dark:border-slate-700/60">
-            <span class="text-slate-400 block text-[9px] uppercase font-bold">เงินสด</span>
-            <span id="miniPlayerCash" class="text-amber-500 font-black">฿0</span>
+        <!-- กล่องข้อมูลการเงิน Before -> After (หักเงินสดที่นี่) -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5 font-mono">
+          <!-- 1. เงินสดติดตัว (หักราคาการ์ด) -->
+          <div class="p-2.5 rounded-xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 flex items-center justify-between">
+            <div>
+              <span class="text-slate-400 block text-[10px] uppercase font-bold flex items-center gap-1">
+                <i class="fa-solid fa-wallet text-amber-500"></i> เงินสดติดตัว
+              </span>
+              <div class="flex items-baseline gap-1 mt-0.5">
+                <span id="simCashBefore" class="text-xs text-slate-400 line-through">฿0</span>
+                <i class="fa-solid fa-arrow-right text-[10px] text-slate-400 mx-0.5"></i>
+                <span id="simCashAfter" class="text-sm font-black text-amber-500">฿0</span>
+              </div>
+            </div>
+            <span id="simCashDiffBadge" class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-red-100 text-red-600 dark:bg-red-950 dark:text-red-400">-฿0</span>
           </div>
-          <div class="p-1.5 rounded-lg bg-white dark:bg-slate-800 border border-slate-200/60 dark:border-slate-700">
-            <span class="text-slate-400 block text-[9px] uppercase font-bold">คงเหลือ/ด.</span>
-            <span id="miniPlayerNetSurplus" class="text-indigo-500 font-black">฿0</span>
+
+          <!-- 2. เงินคงเหลือต่อเดือน (Net Surplus ใหม่) -->
+          <div class="p-2.5 rounded-xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 flex items-center justify-between">
+            <div>
+              <span class="text-slate-400 block text-[10px] uppercase font-bold flex items-center gap-1">
+                <i class="fa-solid fa-coins text-indigo-500"></i> คงเหลือ/ด.
+              </span>
+              <div class="flex items-baseline gap-1 mt-0.5">
+                <span id="simNetBefore" class="text-xs text-slate-400 line-through">฿0</span>
+                <i class="fa-solid fa-arrow-right text-[10px] text-slate-400 mx-0.5"></i>
+                <span id="simNetAfter" class="text-sm font-black text-indigo-500">฿0</span>
+              </div>
+            </div>
+            <span id="simNetDiffBadge" class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-600 dark:bg-emerald-950 dark:text-emerald-400">+฿0</span>
           </div>
-          <div class="p-1.5 rounded-lg bg-white dark:bg-slate-800 border border-slate-200/60 dark:border-slate-700">
-            <span class="text-slate-400 block text-[9px] uppercase font-bold">เงินเดือน</span>
-            <span id="miniPlayerSalary" class="text-slate-700 dark:text-slate-300 font-bold">฿0</span>
+
+          <!-- 3. Active Income -->
+          <div class="p-2.5 rounded-xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 flex items-center justify-between">
+            <div>
+              <span class="text-slate-400 block text-[10px] uppercase font-bold flex items-center gap-1">
+                <i class="fa-solid fa-hand-holding-dollar text-green-500"></i> Active Income
+              </span>
+              <div class="flex items-baseline gap-1 mt-0.5">
+                <span id="simActiveBefore" class="text-xs text-slate-400">฿0</span>
+                <i class="fa-solid fa-arrow-right text-[10px] text-slate-400 mx-0.5"></i>
+                <span id="simActiveAfter" class="text-sm font-bold text-green-500">฿0</span>
+              </div>
+            </div>
+            <span id="simActiveDiffBadge" class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-green-100 text-green-600 dark:bg-green-950 dark:text-green-400">+฿0</span>
           </div>
-          <div class="p-1.5 rounded-lg bg-white dark:bg-slate-800 border border-slate-200/60 dark:border-slate-700">
-            <span class="text-slate-400 block text-[9px] uppercase font-bold">Active รวม</span>
-            <span id="miniPlayerActive" class="text-emerald-500 font-bold">฿0</span>
-          </div>
-          <div class="p-1.5 rounded-lg bg-white dark:bg-slate-800 border border-slate-200/60 dark:border-slate-700">
-            <span class="text-slate-400 block text-[9px] uppercase font-bold">Passive รวม</span>
-            <span id="miniPlayerPassive" class="text-teal-500 font-bold">฿0</span>
-          </div>
-          <div class="p-1.5 rounded-lg bg-white dark:bg-slate-800 border border-slate-200/60 dark:border-slate-700">
-            <span class="text-slate-400 block text-[9px] uppercase font-bold">รายจ่ายประจำ</span>
-            <span id="miniPlayerExpense" class="text-red-500 font-bold">฿0</span>
+
+          <!-- 4. Passive Income -->
+          <div class="p-2.5 rounded-xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 flex items-center justify-between">
+            <div>
+              <span class="text-slate-400 block text-[10px] uppercase font-bold flex items-center gap-1">
+                <i class="fa-solid fa-seedling text-teal-500"></i> Passive Income
+              </span>
+              <div class="flex items-baseline gap-1 mt-0.5">
+                <span id="simPassiveBefore" class="text-xs text-slate-400">฿0</span>
+                <i class="fa-solid fa-arrow-right text-[10px] text-slate-400 mx-0.5"></i>
+                <span id="simPassiveAfter" class="text-sm font-bold text-teal-500">฿0</span>
+              </div>
+            </div>
+            <span id="simPassiveDiffBadge" class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-teal-100 text-teal-600 dark:bg-teal-950 dark:text-teal-400">+฿0</span>
           </div>
         </div>
 
-        <!-- พลังทรัพยากร 3 ด้านของผู้เล่น -->
-        <div class="flex items-center justify-around p-1.5 rounded-xl bg-white dark:bg-slate-800 border border-slate-200/60 dark:border-slate-700/60 font-mono font-bold text-xs">
-          <span class="text-red-500 flex items-center gap-1.5"><i class="fa-solid fa-heart"></i> <strong id="miniPlayerHeart">0</strong>/10</span>
-          <span class="text-blue-500 flex items-center gap-1.5"><i class="fa-solid fa-clock"></i> <strong id="miniPlayerTime">0</strong>/10</span>
-          <span class="text-purple-500 flex items-center gap-1.5"><i class="fa-solid fa-book"></i> <strong id="miniPlayerKnowledge">0</strong>/10</span>
+        <!-- จำลองสเตตัส 3 ด้าน (สุทธิ 0-10) -->
+        <div class="p-2.5 rounded-xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 flex items-center justify-around font-mono font-bold text-xs">
+          <!-- หัวใจ -->
+          <div class="flex flex-col items-center">
+            <span class="text-slate-400 text-[9px] uppercase font-bold mb-0.5">สุขภาพ</span>
+            <span class="flex items-center gap-1 text-red-500">
+              <i class="fa-solid fa-heart"></i>
+              <span id="simHeartBefore">0</span> ➔ <strong id="simHeartAfter" class="text-sm">0</strong>
+            </span>
+          </div>
+          <!-- เวลา -->
+          <div class="flex flex-col items-center">
+            <span class="text-slate-400 text-[9px] uppercase font-bold mb-0.5">เวลาว่าง</span>
+            <span class="flex items-center gap-1 text-blue-500">
+              <i class="fa-solid fa-clock"></i>
+              <span id="simTimeBefore">0</span> ➔ <strong id="simTimeAfter" class="text-sm">0</strong>
+            </span>
+          </div>
+          <!-- ความรู้ -->
+          <div class="flex flex-col items-center">
+            <span class="text-slate-400 text-[9px] uppercase font-bold mb-0.5">ทักษะ</span>
+            <span class="flex items-center gap-1 text-purple-500">
+              <i class="fa-solid fa-book"></i>
+              <span id="simKnowledgeBefore">0</span> ➔ <strong id="simKnowledgeAfter" class="text-sm">0</strong>
+            </span>
+          </div>
         </div>
+
+        <p id="simCashWarningMsg" class="hidden text-[11px] font-bold text-red-500 text-center">
+          ⚠️ เงินสดติดตัวของคุณไม่เพียงพอสำหรับซื้อการ์ดใบนี้!
+        </p>
       </div>
 
       <!-- Pop-up Content -->
@@ -532,7 +587,7 @@
         <!-- กล่องข้อมูลการเงินของการ์ด -->
         <div class="grid grid-cols-3 gap-2.5 p-3 rounded-2xl bg-slate-50 dark:bg-slate-900/60 border border-slate-200 dark:border-slate-700/80 text-center font-mono">
           <div class="p-2 rounded-xl bg-white dark:bg-slate-800 border border-slate-200/60 dark:border-slate-700">
-            <span class="text-[10px] font-bold text-slate-400 block uppercase">ราคา (Price)</span>
+            <span class="text-[10px] font-bold text-slate-400 block uppercase">ราคา (หักเงินสด)</span>
             <span id="popupPrice" class="text-sm sm:text-base font-black text-red-600 dark:text-red-400">฿0</span>
           </div>
           <div class="p-2 rounded-xl bg-white dark:bg-slate-800 border border-slate-200/60 dark:border-slate-700">
@@ -717,7 +772,7 @@
           <input type="checkbox" id="formForceAccept" class="w-5 h-5 rounded text-red-600 focus:ring-red-500 accent-red-600 cursor-pointer shrink-0">
         </div>
 
-        <!-- ส่วนกำหนด: สิ่งที่ต้องใช้ & สิ่งที่ได้รับ -->
+        <!-- สิ่งที่ต้องใช้ & สิ่งที่ได้รับ -->
         <div class="p-3.5 bg-slate-50 dark:bg-slate-900/80 rounded-2xl border border-slate-200 dark:border-slate-700 space-y-3">
           <div class="flex items-center justify-between">
             <span class="text-xs font-bold text-slate-700 dark:text-slate-200 uppercase">เงื่อนไขทรัพยากร (0 - 10)</span>
@@ -898,12 +953,10 @@
             <i class="fa-solid fa-file-excel text-base text-emerald-600"></i>
             <span>Sheets (.CSV)</span>
           </button>
-
           <button onclick="exportDatabase()" class="w-full py-2.5 px-2 rounded-xl bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-600 hover:border-slate-400 text-slate-700 dark:text-slate-200 text-xs font-bold flex flex-col items-center justify-center gap-1 shadow-sm transition" title="สำรองข้อมูลทั้งระบบเพื่อนำกลับมา Import">
             <i class="fa-solid fa-download text-base text-blue-500"></i>
             <span>Backup (.JSON)</span>
           </button>
-
           <button onclick="triggerImportDatabase()" class="w-full py-2.5 px-2 rounded-xl bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-600 hover:border-blue-500 text-slate-700 dark:text-slate-200 text-xs font-bold flex flex-col items-center justify-center gap-1 shadow-sm transition" title="นำเข้าไฟล์สำรองเพื่อกู้คืนข้อมูล">
             <i class="fa-solid fa-upload text-base text-purple-500"></i>
             <span>Import</span>
@@ -1051,22 +1104,13 @@
     });
 
     /* ==========================================================================
-       ฟังก์ชันดึงข้อมูลโปรไฟล์ผู้เล่น (อัปเดตทั้งหน้าแรก และ Mini Pop-up ในการ์ดสุ่ม)
+       ฟังก์ชันดึงข้อมูลโปรไฟล์ผู้เล่น และระบบจำลองสถานะ ก่อน/หลัง รับการ์ด
        ========================================================================== */
-    function loadProfileSummary() {
-      const dashboard = document.getElementById('homeProfileDashboard');
-
+    function getPlayerCurrentProfile() {
       try {
         const savedSession = localStorage.getItem('game_auth_session');
         let currentAccount = null;
         if (savedSession) currentAccount = JSON.parse(savedSession);
-
-        const isLoggedIn = (currentAccount && currentAccount.id && currentAccount.id !== 'guest_default');
-
-        if (dashboard) {
-          if (!isLoggedIn) dashboard.classList.add('hidden');
-          else dashboard.classList.remove('hidden');
-        }
 
         const profileKey = currentAccount ? `game_user_profile_${currentAccount.id}` : 'game_user_profile_guest_default';
         const rawProfile = localStorage.getItem(profileKey);
@@ -1076,23 +1120,9 @@
         const careersDB = savedCareers ? JSON.parse(savedCareers) : [];
         const careerObj = careersDB.find(c => c.id === profile.careerId);
 
-        // 1. ข้อมูลผู้เล่น & อาชีพ
-        const playerName = profile.fullName || currentAccount?.name || 'ผู้เล่น';
-        const careerName = careerObj?.name || (profile.careerId ? profile.careerId : 'ยังไม่ระบุอาชีพ');
-
-        if (document.getElementById('homeProfileName')) document.getElementById('homeProfileName').innerText = playerName;
-        if (document.getElementById('homeProfileCareer')) document.getElementById('homeProfileCareer').innerText = careerName;
-        if (document.getElementById('miniPlayerName')) document.getElementById('miniPlayerName').innerText = playerName;
-        if (document.getElementById('miniPlayerCareer')) document.getElementById('miniPlayerCareer').innerText = careerName;
-
-        // 2. เงินสดติดตัว
-        const cashVal = parseFloat(profile.cash) || (careerObj?.cash || 0);
-        if (document.getElementById('homeProfileCash')) document.getElementById('homeProfileCash').innerText = `฿${cashVal.toLocaleString()}`;
-        if (document.getElementById('miniPlayerCash')) document.getElementById('miniPlayerCash').innerText = `฿${cashVal.toLocaleString()}`;
-
-        // 3. รายรับ-รายจ่าย & เงินคงเหลือต่อเดือน
         const salary = parseFloat(profile.salary) || (careerObj?.salary || 0);
         const expense = parseFloat(profile.expense) || (careerObj?.expense || 0);
+        const cash = parseFloat(profile.cash) || (careerObj?.cash || 0);
 
         let totalActive = parseFloat(profile.personalAmway?.active) || 0;
         let totalPassive = parseFloat(profile.personalAmway?.passive) || 0;
@@ -1106,43 +1136,131 @@
 
         const netSurplus = (salary + totalActive + totalPassive) - expense;
 
-        if (document.getElementById('homeProfileSalary')) document.getElementById('homeProfileSalary').innerText = `฿${salary.toLocaleString()}`;
-        if (document.getElementById('homeProfileActive')) document.getElementById('homeProfileActive').innerText = `฿${totalActive.toLocaleString()}`;
-        if (document.getElementById('homeProfilePassive')) document.getElementById('homeProfilePassive').innerText = `฿${totalPassive.toLocaleString()}`;
-        if (document.getElementById('homeProfileExpense')) document.getElementById('homeProfileExpense').innerText = `฿${expense.toLocaleString()}`;
-        if (document.getElementById('homeProfileNetSurplus')) document.getElementById('homeProfileNetSurplus').innerText = `฿${netSurplus.toLocaleString()}`;
+        const heart = profile.stats?.heart ?? (careerObj?.heart ?? 5);
+        const time = profile.stats?.time ?? (careerObj?.time ?? 5);
+        const knowledge = profile.stats?.knowledge ?? (careerObj?.knowledge ?? 5);
 
-        if (document.getElementById('miniPlayerSalary')) document.getElementById('miniPlayerSalary').innerText = `฿${salary.toLocaleString()}`;
-        if (document.getElementById('miniPlayerActive')) document.getElementById('miniPlayerActive').innerText = `฿${totalActive.toLocaleString()}`;
-        if (document.getElementById('miniPlayerPassive')) document.getElementById('miniPlayerPassive').innerText = `฿${totalPassive.toLocaleString()}`;
-        if (document.getElementById('miniPlayerExpense')) document.getElementById('miniPlayerExpense').innerText = `฿${expense.toLocaleString()}`;
-        if (document.getElementById('miniPlayerNetSurplus')) document.getElementById('miniPlayerNetSurplus').innerText = `฿${netSurplus.toLocaleString()}`;
-
-        // 4. สเตตัส 3 ด้าน
-        const heartVal = profile.stats?.heart ?? (careerObj?.heart ?? 5);
-        const timeVal = profile.stats?.time ?? (careerObj?.time ?? 5);
-        const knowledgeVal = profile.stats?.knowledge ?? (careerObj?.knowledge ?? 5);
-
-        if (document.getElementById('homeStatHeart')) document.getElementById('homeStatHeart').innerText = heartVal;
-        if (document.getElementById('homeStatTime')) document.getElementById('homeStatTime').innerText = timeVal;
-        if (document.getElementById('homeStatKnowledge')) document.getElementById('homeStatKnowledge').innerText = knowledgeVal;
-
-        if (document.getElementById('miniPlayerHeart')) document.getElementById('miniPlayerHeart').innerText = heartVal;
-        if (document.getElementById('miniPlayerTime')) document.getElementById('miniPlayerTime').innerText = timeVal;
-        if (document.getElementById('miniPlayerKnowledge')) document.getElementById('miniPlayerKnowledge').innerText = knowledgeVal;
-
+        return {
+          currentAccount,
+          profileKey,
+          profile,
+          careerObj,
+          playerName: profile.fullName || currentAccount?.name || 'ผู้เล่น',
+          careerName: careerObj?.name || (profile.careerId ? profile.careerId : 'ยังไม่ระบุอาชีพ'),
+          cash,
+          salary,
+          expense,
+          totalActive,
+          totalPassive,
+          netSurplus,
+          heart,
+          time,
+          knowledge
+        };
       } catch (e) {
-        if (dashboard) dashboard.classList.add('hidden');
+        return null;
       }
     }
 
-    // ฟังก์ชันเปิด/ปิด Pop-up เล็กแสดงข้อมูลผู้เล่นในการ์ดสุ่ม
+    function loadProfileSummary() {
+      const dashboard = document.getElementById('homeProfileDashboard');
+      const p = getPlayerCurrentProfile();
+      if (!p) return;
+
+      const isLoggedIn = (p.currentAccount && p.currentAccount.id && p.currentAccount.id !== 'guest_default');
+
+      if (dashboard) {
+        if (!isLoggedIn) dashboard.classList.add('hidden');
+        else dashboard.classList.remove('hidden');
+      }
+
+      if (document.getElementById('homeProfileName')) document.getElementById('homeProfileName').innerText = p.playerName;
+      if (document.getElementById('homeProfileCareer')) document.getElementById('homeProfileCareer').innerText = p.careerName;
+      if (document.getElementById('homeProfileCash')) document.getElementById('homeProfileCash').innerText = `฿${p.cash.toLocaleString()}`;
+      if (document.getElementById('homeProfileSalary')) document.getElementById('homeProfileSalary').innerText = `฿${p.salary.toLocaleString()}`;
+      if (document.getElementById('homeProfileActive')) document.getElementById('homeProfileActive').innerText = `฿${p.totalActive.toLocaleString()}`;
+      if (document.getElementById('homeProfilePassive')) document.getElementById('homeProfilePassive').innerText = `฿${p.totalPassive.toLocaleString()}`;
+      if (document.getElementById('homeProfileExpense')) document.getElementById('homeProfileExpense').innerText = `฿${p.expense.toLocaleString()}`;
+      if (document.getElementById('homeProfileNetSurplus')) document.getElementById('homeProfileNetSurplus').innerText = `฿${p.netSurplus.toLocaleString()}`;
+
+      if (document.getElementById('homeStatHeart')) document.getElementById('homeStatHeart').innerText = p.heart;
+      if (document.getElementById('homeStatTime')) document.getElementById('homeStatTime').innerText = p.time;
+      if (document.getElementById('homeStatKnowledge')) document.getElementById('homeStatKnowledge').innerText = p.knowledge;
+    }
+
+    // ฟังก์ชันคำนวณและแสดงผลจำลองสถานะใน Mini Pop-up
+    function updatePlayerMiniSimulation() {
+      const p = getPlayerCurrentProfile();
+      if (!p || !currentItem) return;
+
+      const cardPrice = Number(currentItem.price) || 0;
+      const cardActive = Number(currentItem.activeIncome) || 0;
+      const cardPassive = Number(currentItem.passiveIncome) || 0;
+
+      // 1. จำลองเงินสด (หักราคาการ์ดที่เงินสด)
+      const newCash = p.cash - cardPrice;
+      document.getElementById('simCashBefore').innerText = `฿${p.cash.toLocaleString()}`;
+      document.getElementById('simCashAfter').innerText = `฿${newCash.toLocaleString()}`;
+      document.getElementById('simCashDiffBadge').innerText = cardPrice > 0 ? `-฿${cardPrice.toLocaleString()}` : `คงเดิม`;
+
+      const warningMsg = document.getElementById('simCashWarningMsg');
+      if (newCash < 0) {
+        warningMsg.classList.remove('hidden');
+        document.getElementById('simCashAfter').classList.add('text-red-500');
+        document.getElementById('simCashAfter').classList.remove('text-amber-500');
+      } else {
+        warningMsg.classList.add('hidden');
+        document.getElementById('simCashAfter').classList.remove('text-red-500');
+        document.getElementById('simCashAfter').classList.add('text-amber-500');
+      }
+
+      // 2. จำลอง Active & Passive
+      const newActive = p.totalActive + cardActive;
+      const newPassive = p.totalPassive + cardPassive;
+      document.getElementById('simActiveBefore').innerText = `฿${p.totalActive.toLocaleString()}`;
+      document.getElementById('simActiveAfter').innerText = `฿${newActive.toLocaleString()}`;
+      document.getElementById('simActiveDiffBadge').innerText = `+฿${cardActive.toLocaleString()}`;
+
+      document.getElementById('simPassiveBefore').innerText = `฿${p.totalPassive.toLocaleString()}`;
+      document.getElementById('simPassiveAfter').innerText = `฿${newPassive.toLocaleString()}`;
+      document.getElementById('simPassiveDiffBadge').innerText = `+฿${cardPassive.toLocaleString()}`;
+
+      // 3. จำลอง เงินคงเหลือต่อเดือน (Net Surplus)
+      const newNetSurplus = (p.salary + newActive + newPassive) - p.expense;
+      const netDiff = newNetSurplus - p.netSurplus;
+      document.getElementById('simNetBefore').innerText = `฿${p.netSurplus.toLocaleString()}`;
+      document.getElementById('simNetAfter').innerText = `฿${newNetSurplus.toLocaleString()}`;
+      document.getElementById('simNetDiffBadge').innerText = `+฿${netDiff.toLocaleString()}`;
+
+      // 4. จำลองค่าพลัง 3 ด้าน (ค่าเดิม - สิ่งที่ต้องใช้ + สิ่งที่ได้รับ, จำกัด 0-10)
+      const costH = Number(currentItem.cost?.heart) || 0;
+      const rewardH = Number(currentItem.reward?.heart) || 0;
+      const newH = Math.max(0, Math.min(10, p.heart - costH + rewardH));
+
+      const costT = Number(currentItem.cost?.time) || 0;
+      const rewardT = Number(currentItem.reward?.time) || 0;
+      const newT = Math.max(0, Math.min(10, p.time - costT + rewardT));
+
+      const costK = Number(currentItem.cost?.knowledge) || 0;
+      const rewardK = Number(currentItem.reward?.knowledge) || 0;
+      const newK = Math.max(0, Math.min(10, p.knowledge - costK + rewardK));
+
+      document.getElementById('simHeartBefore').innerText = p.heart;
+      document.getElementById('simHeartAfter').innerText = newH;
+
+      document.getElementById('simTimeBefore').innerText = p.time;
+      document.getElementById('simTimeAfter').innerText = newT;
+
+      document.getElementById('simKnowledgeBefore').innerText = p.knowledge;
+      document.getElementById('simKnowledgeAfter').innerText = newK;
+    }
+
     function togglePlayerMiniModal() {
       const modal = document.getElementById('playerMiniModal');
       if (!modal) return;
       const isHidden = modal.classList.contains('hidden');
       if (isHidden) {
-        loadProfileSummary();
+        updatePlayerMiniSimulation();
         modal.classList.remove('hidden');
       } else {
         modal.classList.add('hidden');
@@ -1236,9 +1354,6 @@
       }
     }
 
-    /* ==========================================================================
-       PUSH TO GOOGLE SHEETS
-       ========================================================================== */
     async function pushToGoogleSheets() {
       saveLocalCache();
       if (!GOOGLE_SHEET_API_URL || GOOGLE_SHEET_API_URL.includes("PLACEHOLDER")) return;
@@ -1418,19 +1533,14 @@
       }, 70);
     }
 
-    /* ==========================================================================
-       แสดงผล Pop-up สุ่มการ์ด
-       ========================================================================== */
     function displayResultPopup(item) {
       if (!item) return;
       currentItem = item;
       const meta = getCategoryMeta(item.category);
 
-      // ซ่อน Pop-up เล็กของผู้เล่นไว้ก่อนเมื่อเปิดการ์ดใบใหม่
       const miniModal = document.getElementById('playerMiniModal');
       if (miniModal) miniModal.classList.add('hidden');
 
-      // 1. หัวข้อ, หมวดหมู่, และ ID
       document.getElementById('popupTitle').innerText = item.title || 'ไม่มีชื่อการ์ด';
       document.getElementById('popupSubtitle').innerText = (item.targetType === 'leg' || item.targetLeg) ? `สายงาน ${item.targetLeg || 'A'}` : 'ข้อมูลส่วนตัว';
       document.getElementById('popupDescription').innerText = item.description || 'ไม่มีรายละเอียดเพิ่มเติม';
@@ -1438,12 +1548,10 @@
       document.getElementById('popupCategoryIcon').className = `fa-solid ${meta.icon} text-[10px]`;
       document.getElementById('popupIndexBadge').innerText = `#${item.id || 'CARD'}`;
 
-      // 2. ตัวเลขการเงินของการ์ด
       document.getElementById('popupPrice').innerText = `฿${(Number(item.price) || 0).toLocaleString()}`;
       document.getElementById('popupActive').innerText = `+฿${(Number(item.activeIncome) || 0).toLocaleString()}`;
       document.getElementById('popupPassive').innerText = `+฿${(Number(item.passiveIncome) || 0).toLocaleString()}`;
 
-      // 3. ทรัพยากร สิ่งที่ต้องใช้ (Cost)
       const costH = Number(item.cost?.heart) || 0;
       const costT = Number(item.cost?.time) || 0;
       const costK = Number(item.cost?.knowledge) || 0;
@@ -1451,7 +1559,6 @@
       document.getElementById('popup-cost-time-val').innerText = `${costT}/10`;
       document.getElementById('popup-cost-knowledge-val').innerText = `${costK}/10`;
 
-      // 4. ทรัพยากร สิ่งที่ได้รับ (Reward)
       const rewardH = Number(item.reward?.heart) || 0;
       const rewardT = Number(item.reward?.time) || 0;
       const rewardK = Number(item.reward?.knowledge) || 0;
@@ -1459,7 +1566,6 @@
       document.getElementById('popup-reward-time-val').innerText = `+${rewardT}/10`;
       document.getElementById('popup-reward-knowledge-val').innerText = `+${rewardK}/10`;
 
-      // 5. ตรวจสอบสถานะ บังคับรับการ์ด
       const isForceAccept = !!item.forceAccept;
       const rejectBtn = document.getElementById('popupRejectBtn');
       const closeXBtn = document.getElementById('popupCloseXBtn');
@@ -1482,12 +1588,64 @@
       document.getElementById('resultModal').classList.add('hidden');
     }
 
+    /* ==========================================================================
+       กดยืนยันรับการ์ด: หักเงินสด และเพิ่มรายรับ/ค่าพลังลงโปรไฟล์ผู้เล่นจริง
+       ========================================================================== */
     function handleAcceptCard() {
       if (!currentItem) return;
+      const p = getPlayerCurrentProfile();
+
+      if (p) {
+        const cardPrice = Number(currentItem.price) || 0;
+        const newCash = p.cash - cardPrice;
+
+        // คำนวณค่าพลังสุทธิ (0-10)
+        const costH = Number(currentItem.cost?.heart) || 0;
+        const rewardH = Number(currentItem.reward?.heart) || 0;
+        const newHeart = Math.max(0, Math.min(10, p.heart - costH + rewardH));
+
+        const costT = Number(currentItem.cost?.time) || 0;
+        const rewardT = Number(currentItem.reward?.time) || 0;
+        const newTime = Math.max(0, Math.min(10, p.time - costT + rewardT));
+
+        const costK = Number(currentItem.cost?.knowledge) || 0;
+        const rewardK = Number(currentItem.reward?.knowledge) || 0;
+        const newKnowledge = Math.max(0, Math.min(10, p.knowledge - costK + rewardK));
+
+        // อัปเดตข้อมูลลงโปรไฟล์ผู้เล่นใน localStorage
+        const updatedProfile = {
+          ...p.profile,
+          cash: newCash,
+          stats: {
+            heart: newHeart,
+            time: newTime,
+            knowledge: newKnowledge
+          }
+        };
+
+        // หากเป็นการ์ดสายงานหรือส่วนตัว เพิ่ม Active/Passive Income
+        const cardActive = Number(currentItem.activeIncome) || 0;
+        const cardPassive = Number(currentItem.passiveIncome) || 0;
+
+        if (currentItem.targetType === 'leg' && currentItem.targetLeg) {
+          const legKey = currentItem.targetLeg;
+          if (!updatedProfile.legs) updatedProfile.legs = {};
+          if (!updatedProfile.legs[legKey]) updatedProfile.legs[legKey] = { pv: 0, active: 0, passive: 0 };
+          updatedProfile.legs[legKey].active = (parseFloat(updatedProfile.legs[legKey].active) || 0) + cardActive;
+          updatedProfile.legs[legKey].passive = (parseFloat(updatedProfile.legs[legKey].passive) || 0) + cardPassive;
+        } else {
+          if (!updatedProfile.personalAmway) updatedProfile.personalAmway = { pv: 0, active: 0, passive: 0 };
+          updatedProfile.personalAmway.active = (parseFloat(updatedProfile.personalAmway.active) || 0) + cardActive;
+          updatedProfile.personalAmway.passive = (parseFloat(updatedProfile.personalAmway.passive) || 0) + cardPassive;
+        }
+
+        localStorage.setItem(p.profileKey, JSON.stringify(updatedProfile));
+      }
+
       syncDrawnResultToProfile(currentItem);
       logHistory(currentItem);
       closeResultModal();
-      showToast(`รับการ์ด "${currentItem.title}" เรียบร้อยแล้ว! 🎉`, 'success');
+      showToast(`รับการ์ด "${currentItem.title}" และหักเงินสด ฿${(Number(currentItem.price)||0).toLocaleString()} เรียบร้อยแล้ว! 🎉`, 'success');
       loadProfileSummary();
     }
 
@@ -1928,7 +2086,6 @@
 
       pushToGoogleSheets();
       updateCategoryDropdowns();
-      renderCategoryModalList();
       renderCategoryHomeCards();
       showToast(`เพิ่มหมวดหมู่ "${name}" สำเร็จ`, 'success');
     }
