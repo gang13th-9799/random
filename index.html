@@ -218,10 +218,8 @@
     <!-- VIEW 1: หน้าแรก -->
     <section id="view-categories" class="space-y-5 animate-pop-in">
       
-      <!-- แถบแสดงสถานะผู้เล่น: ซ่อนเมื่อยังไม่ Login / เปลี่ยนไอคอนคงเหลือ/ด. เป็น fa-coins -->
+      <!-- แถบแสดงสถานะผู้เล่น -->
       <div id="homeProfileDashboard" class="hidden py-2 px-1 border-b border-slate-200/80 dark:border-slate-800 space-y-2 text-xs">
-        
-        <!-- แถวบน: ข้อมูลบัญชี, อาชีพ, และสเตตัส 3 ด้าน -->
         <div class="flex flex-wrap items-center justify-between gap-3 text-slate-700 dark:text-slate-300">
           <div class="flex items-center gap-3 flex-wrap">
             <span class="font-bold flex items-center gap-1.5 text-slate-900 dark:text-white">
@@ -235,7 +233,6 @@
             </span>
           </div>
 
-          <!-- ทรัพยากร 3 ด้าน (ไอคอน + ตัวเลข) -->
           <div class="flex items-center gap-4 font-mono font-bold">
             <span class="flex items-center gap-1 text-red-500" title="สุขภาพ (หัวใจ)">
               <i class="fa-solid fa-heart"></i>
@@ -255,7 +252,6 @@
           </div>
         </div>
 
-        <!-- แถวล่าง: ตัวเลขการเงินกระชับ (เงินสด -> คงเหลือ/ด. [ไอคอนเหรียญ] -> เงินเดือน -> Active -> Passive -> รายจ่าย) -->
         <div class="flex flex-wrap items-center gap-x-4 gap-y-1 font-mono text-[11px] text-slate-500 dark:text-slate-400">
           <span class="flex items-center gap-1 font-bold">
             <i class="fa-solid fa-wallet text-amber-500"></i> เงินสด:
@@ -282,7 +278,6 @@
             <strong id="homeProfileExpense" class="text-red-600 dark:text-red-400">฿0</strong>
           </span>
         </div>
-
       </div>
 
       <!-- รายการหมวดหมู่การ์ด -->
@@ -426,9 +421,13 @@
     <a href="profile.html" class="flex flex-col items-center gap-1 text-slate-400 hover:text-red-600 font-medium"><i class="fa-solid fa-id-card text-lg text-red-500"></i><span class="text-[10px]">โปรไฟล์</span></a>
   </nav>
 
-  <!-- POP-UP RESULT MODAL -->
+  <!-- ============================================================ -->
+  <!-- POP-UP RESULT MODAL: แสดงข้อมูลการ์ดครบถ้วน 100% -->
+  <!-- ============================================================ -->
   <div id="resultModal" class="hidden fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-md flex items-center justify-center p-3 sm:p-4 overflow-y-auto">
     <div class="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-3xl max-w-2xl w-full p-4 sm:p-7 shadow-2xl relative my-auto animate-pop-in space-y-4">
+      
+      <!-- Pop-up Header -->
       <div class="flex items-center justify-between gap-2 border-b border-slate-100 dark:border-slate-700 pb-3">
         <div class="flex items-center gap-2">
           <span id="popupCategoryBadge" class="px-3.5 py-1.5 rounded-full text-xs font-bold tracking-wide uppercase border flex items-center gap-1.5 shadow-sm">
@@ -446,9 +445,12 @@
         </button>
       </div>
 
+      <!-- Pop-up Content -->
       <div class="space-y-4 max-h-[70vh] overflow-y-auto pr-1">
+        
+        <!-- ชื่อการ์ด & เป้าหมายการใช้งาน -->
         <div class="space-y-1.5">
-          <h2 id="popupTitle" class="app-title-text font-extrabold text-slate-900 dark:text-white tracking-normal"></h2>
+          <h2 id="popupTitle" class="app-title-text font-extrabold text-slate-900 dark:text-white tracking-normal leading-snug"></h2>
           <div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-xl bg-indigo-50 dark:bg-indigo-950/40 border border-indigo-200 dark:border-indigo-800 text-indigo-600 dark:text-indigo-300 text-xs font-bold">
             <i class="fa-solid fa-bullseye text-[11px]"></i>
             <span class="text-slate-400 font-medium">การ์ดใบนี้ใช้กับ:</span>
@@ -456,12 +458,31 @@
           </div>
         </div>
 
-        <p id="popupDescription" class="app-desc-text text-slate-600 dark:text-slate-300 whitespace-pre-line font-normal"></p>
+        <!-- รายละเอียดข้อความการ์ด -->
+        <p id="popupDescription" class="app-desc-text text-slate-600 dark:text-slate-300 whitespace-pre-line font-normal leading-relaxed"></p>
 
-        <!-- Condition Stats -->
-        <div class="pt-2">
+        <!-- กล่องข้อมูลการเงินของการ์ด (ราคา, Active, Passive) -->
+        <div class="grid grid-cols-3 gap-2.5 p-3 rounded-2xl bg-slate-50 dark:bg-slate-900/60 border border-slate-200 dark:border-slate-700/80 text-center font-mono">
+          <div class="p-2 rounded-xl bg-white dark:bg-slate-800 border border-slate-200/60 dark:border-slate-700">
+            <span class="text-[10px] font-bold text-slate-400 block uppercase">ราคา (Price)</span>
+            <span id="popupPrice" class="text-sm sm:text-base font-black text-red-600 dark:text-red-400">฿0</span>
+          </div>
+          <div class="p-2 rounded-xl bg-white dark:bg-slate-800 border border-slate-200/60 dark:border-slate-700">
+            <span class="text-[10px] font-bold text-slate-400 block uppercase">Active Income</span>
+            <span id="popupActive" class="text-sm sm:text-base font-black text-green-500">฿0</span>
+          </div>
+          <div class="p-2 rounded-xl bg-white dark:bg-slate-800 border border-slate-200/60 dark:border-slate-700">
+            <span class="text-[10px] font-bold text-slate-400 block uppercase">Passive Income</span>
+            <span id="popupPassive" class="text-sm sm:text-base font-black text-emerald-500">฿0</span>
+          </div>
+        </div>
+
+        <!-- Condition Stats: สิ่งที่ต้องใช้ & สิ่งที่ได้รับ -->
+        <div class="pt-1">
           <div class="grid grid-cols-1 sm:grid-cols-2 gap-3.5 sm:gap-4">
-            <div class="bg-gradient-to-br from-red-50/80 via-slate-50 to-white dark:from-red-950/25 dark:via-slate-800 rounded-2xl p-4 border-2 border-red-500 shadow-lg space-y-3">
+            
+            <!-- สิ่งที่ต้องใช้ -->
+            <div class="bg-gradient-to-br from-red-50/80 via-slate-50 to-white dark:from-red-950/25 dark:via-slate-800 rounded-2xl p-4 border-2 border-red-500 shadow-sm space-y-3">
               <div class="flex items-center justify-between border-b border-red-200 dark:border-red-900/60 pb-2">
                 <span class="text-sm font-extrabold text-red-600 flex items-center gap-2">
                   <i class="fa-solid fa-hand-holding-dollar text-base"></i>
@@ -469,23 +490,24 @@
                 </span>
                 <span class="text-[11px] bg-red-100 dark:bg-red-950 text-red-700 dark:text-red-300 px-2.5 py-0.5 rounded-full font-mono font-bold">COST</span>
               </div>
-              <div id="popup-cost-items-container" class="space-y-2.5">
-                <div id="cost-row-heart" class="flex items-center justify-between text-base py-0.5">
-                  <span class="flex items-center gap-2 font-medium text-slate-700 dark:text-slate-300"><i class="fa-solid fa-heart text-red-600 text-xl w-6 text-center"></i> หัวใจ</span>
-                  <span id="popup-cost-heart-val" class="font-mono font-black text-lg text-red-600">0/10</span>
+              <div class="space-y-2">
+                <div class="flex items-center justify-between text-sm py-0.5">
+                  <span class="flex items-center gap-2 font-medium text-slate-700 dark:text-slate-300"><i class="fa-solid fa-heart text-red-500 w-5 text-center"></i> หัวใจ</span>
+                  <span id="popup-cost-heart-val" class="font-mono font-black text-base text-red-600 dark:text-red-400">0/10</span>
                 </div>
-                <div id="cost-row-time" class="flex items-center justify-between text-base py-0.5">
-                  <span class="flex items-center gap-2 font-medium text-slate-700 dark:text-slate-300"><i class="fa-solid fa-clock text-slate-500 text-xl w-6 text-center"></i> เวลา</span>
-                  <span id="popup-cost-time-val" class="font-mono font-black text-lg text-slate-600 dark:text-slate-400">0/10</span>
+                <div class="flex items-center justify-between text-sm py-0.5">
+                  <span class="flex items-center gap-2 font-medium text-slate-700 dark:text-slate-300"><i class="fa-solid fa-clock text-blue-500 w-5 text-center"></i> เวลา</span>
+                  <span id="popup-cost-time-val" class="font-mono font-black text-base text-slate-700 dark:text-slate-300">0/10</span>
                 </div>
-                <div id="cost-row-knowledge" class="flex items-center justify-between text-base py-0.5">
-                  <span class="flex items-center gap-2 font-medium text-slate-700 dark:text-slate-300"><i class="fa-solid fa-book text-purple-600 text-xl w-6 text-center"></i> ความรู้</span>
-                  <span id="popup-cost-knowledge-val" class="font-mono font-black text-lg text-purple-600">0/10</span>
+                <div class="flex items-center justify-between text-sm py-0.5">
+                  <span class="flex items-center gap-2 font-medium text-slate-700 dark:text-slate-300"><i class="fa-solid fa-book text-purple-500 w-5 text-center"></i> ความรู้</span>
+                  <span id="popup-cost-knowledge-val" class="font-mono font-black text-base text-purple-600 dark:text-purple-400">0/10</span>
                 </div>
               </div>
             </div>
 
-            <div class="bg-gradient-to-br from-emerald-50/80 via-slate-50 to-white dark:from-emerald-950/25 dark:via-slate-800 rounded-2xl p-4 border-2 border-emerald-500 shadow-lg space-y-3">
+            <!-- สิ่งที่ได้รับ -->
+            <div class="bg-gradient-to-br from-emerald-50/80 via-slate-50 to-white dark:from-emerald-950/25 dark:via-slate-800 rounded-2xl p-4 border-2 border-emerald-500 shadow-sm space-y-3">
               <div class="flex items-center justify-between border-b border-emerald-200 dark:border-emerald-900/60 pb-2">
                 <span class="text-sm font-extrabold text-emerald-600 dark:text-emerald-400 flex items-center gap-2">
                   <i class="fa-solid fa-gift text-base"></i>
@@ -493,25 +515,28 @@
                 </span>
                 <span class="text-[11px] bg-emerald-100 dark:bg-emerald-950 text-emerald-700 dark:text-emerald-300 px-2.5 py-0.5 rounded-full font-mono font-bold">REWARD</span>
               </div>
-              <div id="popup-reward-items-container" class="space-y-2.5">
-                <div id="reward-row-heart" class="flex items-center justify-between text-base py-0.5">
-                  <span class="flex items-center gap-2 font-medium text-slate-700 dark:text-slate-300"><i class="fa-solid fa-heart text-red-600 text-xl w-6 text-center"></i> หัวใจ</span>
-                  <span id="popup-reward-heart-val" class="font-mono font-black text-lg text-red-600">+0/10</span>
+              <div class="space-y-2">
+                <div class="flex items-center justify-between text-sm py-0.5">
+                  <span class="flex items-center gap-2 font-medium text-slate-700 dark:text-slate-300"><i class="fa-solid fa-heart text-red-500 w-5 text-center"></i> หัวใจ</span>
+                  <span id="popup-reward-heart-val" class="font-mono font-black text-base text-red-600 dark:text-red-400">+0/10</span>
                 </div>
-                <div id="reward-row-time" class="flex items-center justify-between text-base py-0.5">
-                  <span class="flex items-center gap-2 font-medium text-slate-700 dark:text-slate-300"><i class="fa-solid fa-clock text-slate-500 text-xl w-6 text-center"></i> เวลา</span>
-                  <span id="popup-reward-time-val" class="font-mono font-black text-lg text-slate-700 dark:text-slate-300">+0/10</span>
+                <div class="flex items-center justify-between text-sm py-0.5">
+                  <span class="flex items-center gap-2 font-medium text-slate-700 dark:text-slate-300"><i class="fa-solid fa-clock text-blue-500 w-5 text-center"></i> เวลา</span>
+                  <span id="popup-reward-time-val" class="font-mono font-black text-base text-slate-700 dark:text-slate-300">+0/10</span>
                 </div>
-                <div id="reward-row-knowledge" class="flex items-center justify-between text-base py-0.5">
-                  <span class="flex items-center gap-2 font-medium text-slate-700 dark:text-slate-300"><i class="fa-solid fa-book text-purple-600 text-xl w-6 text-center"></i> ความรู้</span>
-                  <span id="popup-reward-knowledge-val" class="font-mono font-black text-lg text-purple-600">+0/10</span>
+                <div class="flex items-center justify-between text-sm py-0.5">
+                  <span class="flex items-center gap-2 font-medium text-slate-700 dark:text-slate-300"><i class="fa-solid fa-book text-purple-500 w-5 text-center"></i> ความรู้</span>
+                  <span id="popup-reward-knowledge-val" class="font-mono font-black text-base text-purple-600 dark:text-purple-400">+0/10</span>
                 </div>
               </div>
             </div>
+
           </div>
         </div>
+
       </div>
 
+      <!-- Pop-up Footer: ปุ่ม รับ/ไม่รับ การ์ด -->
       <div class="pt-3 border-t border-slate-100 dark:border-slate-700 flex flex-wrap items-center justify-between gap-3">
         <button onclick="triggerRandomDraw()" class="px-4 py-2.5 rounded-xl border border-slate-300 dark:border-slate-600 text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700 text-xs sm:text-sm font-bold transition flex items-center gap-1.5">
           <i class="fa-solid fa-dice-five"></i>
@@ -530,10 +555,11 @@
           </button>
         </div>
       </div>
+
     </div>
   </div>
 
-  <!-- MODAL: จัดการการ์ด -->
+  <!-- MODAL: จัดการการ์ด (สร้างใหม่ / แก้ไข / โคลน) -->
   <div id="itemModal" class="hidden fixed inset-0 z-50 bg-slate-950/70 backdrop-blur-sm flex items-center justify-center p-3 sm:p-4 overflow-y-auto">
     <div class="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-3xl max-w-xl w-full p-5 sm:p-6 shadow-2xl relative my-auto animate-pop-in">
       <div class="flex items-center justify-between pb-3 border-b border-slate-100 dark:border-slate-700">
@@ -623,7 +649,7 @@
           <input type="checkbox" id="formForceAccept" class="w-5 h-5 rounded text-red-600 focus:ring-red-500 accent-red-600 cursor-pointer shrink-0">
         </div>
 
-        <!-- ส่วนกำหนด: สิ่งที่ต้องใช้ & สิ่งที่ได้รับ -->
+        <!-- สิ่งที่ต้องใช้ & สิ่งที่ได้รับ (Sliders 0-10) -->
         <div class="p-3.5 bg-slate-50 dark:bg-slate-900/80 rounded-2xl border border-slate-200 dark:border-slate-700 space-y-3">
           <div class="flex items-center justify-between">
             <span class="text-xs font-bold text-slate-700 dark:text-slate-200 uppercase">เงื่อนไขทรัพยากร (0 - 10)</span>
@@ -1295,26 +1321,44 @@
       }, 70);
     }
 
+    /* ==========================================================================
+       แสดงผล Pop-up สุ่มการ์ด (แก้ไขแสดงข้อมูลครบถ้วน: ราคา, Active, Passive, สเตตัส)
+       ========================================================================== */
     function displayResultPopup(item) {
       if (!item) return;
       currentItem = item;
       const meta = getCategoryMeta(item.category);
 
-      document.getElementById('popupTitle').innerText = item.title;
+      // 1. หัวข้อ, หมวดหมู่, และ ID
+      document.getElementById('popupTitle').innerText = item.title || 'ไม่มีชื่อการ์ด';
       document.getElementById('popupSubtitle').innerText = (item.targetType === 'leg' || item.targetLeg) ? `สายงาน ${item.targetLeg || 'A'}` : 'ข้อมูลส่วนตัว';
       document.getElementById('popupDescription').innerText = item.description || 'ไม่มีรายละเอียดเพิ่มเติม';
-      document.getElementById('popupCategoryName').innerText = item.category;
+      document.getElementById('popupCategoryName').innerText = item.category || 'ทั่วไป';
       document.getElementById('popupCategoryIcon').className = `fa-solid ${meta.icon} text-[10px]`;
-      document.getElementById('popupIndexBadge').innerText = `#${item.id}`;
+      document.getElementById('popupIndexBadge').innerText = `#${item.id || 'CARD'}`;
 
-      document.getElementById('popup-cost-heart-val').innerText = `${item.cost?.heart || 0}/10`;
-      document.getElementById('popup-cost-time-val').innerText = `${item.cost?.time || 0}/10`;
-      document.getElementById('popup-cost-knowledge-val').innerText = `${item.cost?.knowledge || 0}/10`;
+      // 2. ตัวเลขการเงินของการ์ด (ราคา, Active Income, Passive Income)
+      document.getElementById('popupPrice').innerText = `฿${(Number(item.price) || 0).toLocaleString()}`;
+      document.getElementById('popupActive').innerText = `+฿${(Number(item.activeIncome) || 0).toLocaleString()}`;
+      document.getElementById('popupPassive').innerText = `+฿${(Number(item.passiveIncome) || 0).toLocaleString()}`;
 
-      document.getElementById('popup-reward-heart-val').innerText = `+${item.reward?.heart || 0}/10`;
-      document.getElementById('popup-reward-time-val').innerText = `+${item.reward?.time || 0}/10`;
-      document.getElementById('popup-reward-knowledge-val').innerText = `+${item.reward?.knowledge || 0}/10`;
+      // 3. ทรัพยากร สิ่งที่ต้องใช้ (Cost)
+      const costH = Number(item.cost?.heart) || 0;
+      const costT = Number(item.cost?.time) || 0;
+      const costK = Number(item.cost?.knowledge) || 0;
+      document.getElementById('popup-cost-heart-val').innerText = `${costH}/10`;
+      document.getElementById('popup-cost-time-val').innerText = `${costT}/10`;
+      document.getElementById('popup-cost-knowledge-val').innerText = `${costK}/10`;
 
+      // 4. ทรัพยากร สิ่งที่ได้รับ (Reward)
+      const rewardH = Number(item.reward?.heart) || 0;
+      const rewardT = Number(item.reward?.time) || 0;
+      const rewardK = Number(item.reward?.knowledge) || 0;
+      document.getElementById('popup-reward-heart-val').innerText = `+${rewardH}/10`;
+      document.getElementById('popup-reward-time-val').innerText = `+${rewardT}/10`;
+      document.getElementById('popup-reward-knowledge-val').innerText = `+${rewardK}/10`;
+
+      // 5. ตรวจสอบสถานะ บังคับรับการ์ด
       const isForceAccept = !!item.forceAccept;
       const rejectBtn = document.getElementById('popupRejectBtn');
       const closeXBtn = document.getElementById('popupCloseXBtn');
@@ -1783,7 +1827,6 @@
 
       pushToGoogleSheets();
       updateCategoryDropdowns();
-      renderCategoryModalList();
       renderCategoryHomeCards();
       showToast(`เพิ่มหมวดหมู่ "${name}" สำเร็จ`, 'success');
     }
