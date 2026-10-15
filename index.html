@@ -218,7 +218,7 @@
     <!-- VIEW 1: หน้าแรก -->
     <section id="view-categories" class="space-y-5 animate-pop-in">
       
-      <!-- แถบแสดงสถานะผู้เล่น: ซ่อนเมื่อยังไม่ Login -->
+      <!-- แถบแสดงสถานะผู้เล่น -->
       <div id="homeProfileDashboard" class="hidden py-2 px-1 border-b border-slate-200/80 dark:border-slate-800 space-y-2 text-xs">
         <div class="flex flex-wrap items-center justify-between gap-3 text-slate-700 dark:text-slate-300">
           <div class="flex items-center gap-3 flex-wrap">
@@ -233,7 +233,6 @@
             </span>
           </div>
 
-          <!-- ทรัพยากร 3 ด้าน -->
           <div class="flex items-center gap-4 font-mono font-bold">
             <span class="flex items-center gap-1 text-red-500" title="สุขภาพ (หัวใจ)">
               <i class="fa-solid fa-heart"></i>
@@ -423,7 +422,7 @@
   </nav>
 
   <!-- ============================================================ -->
-  <!-- POP-UP RESULT MODAL: ผลการสุ่ม + จำลองผลลัพธ์ Before/After -->
+  <!-- POP-UP RESULT MODAL: ผลการสุ่ม + ตรวจสอบความพร้อมการรับการ์ด -->
   <!-- ============================================================ -->
   <div id="resultModal" class="hidden fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-md flex items-center justify-center p-3 sm:p-4 overflow-y-auto">
     <div class="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-3xl max-w-2xl w-full p-4 sm:p-7 shadow-2xl relative my-auto animate-pop-in space-y-4">
@@ -535,7 +534,7 @@
           </div>
         </div>
 
-        <!-- จำลองสเตตัส 3 ด้าน (สุทธิ 0-10) -->
+        <!-- จำลองสเตตัส 3 ด้าน -->
         <div class="p-2.5 rounded-xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 flex items-center justify-around font-mono font-bold text-xs">
           <!-- หัวใจ -->
           <div class="flex flex-col items-center">
@@ -564,7 +563,7 @@
         </div>
 
         <p id="simCashWarningMsg" class="hidden text-[11px] font-bold text-red-500 text-center">
-          ⚠️ เงินสดติดตัวของคุณไม่เพียงพอสำหรับซื้อการ์ดใบนี้!
+          ⚠️ เงินสดหรือทรัพยากรของคุณไม่เพียงพอสำหรับซื้อการ์ดใบนี้!
         </p>
       </div>
 
@@ -657,6 +656,12 @@
           </div>
         </div>
 
+        <!-- ข้อความแจ้งเตือนข้อผิดพลาดถ้าไม่ผ่านเงื่อนไข -->
+        <div id="unaffordableAlertBox" class="hidden p-3 rounded-2xl bg-red-100 dark:bg-red-950/80 border border-red-300 dark:border-red-800 text-red-700 dark:text-red-300 text-xs font-bold flex items-center gap-2">
+          <i class="fa-solid fa-circle-exclamation text-base shrink-0"></i>
+          <span id="unaffordableAlertText">ไม่สามารถรับการ์ดได้เนื่องจากทรัพยากรหรือเงินสดไม่เพียงพอ</span>
+        </div>
+
       </div>
 
       <!-- Pop-up Footer: ปุ่ม รับ/ไม่รับ การ์ด -->
@@ -672,9 +677,10 @@
             <span>ไม่รับการ์ด</span>
           </button>
 
-          <button type="button" onclick="handleAcceptCard()" class="px-5 sm:px-6 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-xs sm:text-sm font-black transition flex items-center gap-1.5 shadow-lg hover:scale-105 active:scale-95">
-            <i class="fa-solid fa-circle-check"></i>
-            <span>รับการ์ด</span>
+          <!-- ปุ่มรับการ์ด (จะเปลี่ยนเป็นสีเทาและกดไม่ได้เมื่อไม่ผ่านเงื่อนไข) -->
+          <button type="button" id="popupAcceptBtn" onclick="handleAcceptCard()" class="px-5 sm:px-6 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-xs sm:text-sm font-black transition flex items-center gap-1.5 shadow-lg hover:scale-105 active:scale-95">
+            <i id="popupAcceptBtnIcon" class="fa-solid fa-circle-check"></i>
+            <span id="popupAcceptBtnText">รับการ์ด</span>
           </button>
         </div>
       </div>
@@ -953,10 +959,12 @@
             <i class="fa-solid fa-file-excel text-base text-emerald-600"></i>
             <span>Sheets (.CSV)</span>
           </button>
+
           <button onclick="exportDatabase()" class="w-full py-2.5 px-2 rounded-xl bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-600 hover:border-slate-400 text-slate-700 dark:text-slate-200 text-xs font-bold flex flex-col items-center justify-center gap-1 shadow-sm transition" title="สำรองข้อมูลทั้งระบบเพื่อนำกลับมา Import">
             <i class="fa-solid fa-download text-base text-blue-500"></i>
             <span>Backup (.JSON)</span>
           </button>
+
           <button onclick="triggerImportDatabase()" class="w-full py-2.5 px-2 rounded-xl bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-600 hover:border-blue-500 text-slate-700 dark:text-slate-200 text-xs font-bold flex flex-col items-center justify-center gap-1 shadow-sm transition" title="นำเข้าไฟล์สำรองเพื่อกู้คืนข้อมูล">
             <i class="fa-solid fa-upload text-base text-purple-500"></i>
             <span>Import</span>
@@ -1188,7 +1196,47 @@
       if (document.getElementById('homeStatKnowledge')) document.getElementById('homeStatKnowledge').innerText = p.knowledge;
     }
 
-    // ฟังก์ชันคำนวณและแสดงผลจำลองสถานะใน Mini Pop-up
+    /* ==========================================================================
+       คำนวณและตรวจสอบเงื่อนไขความพร้อม: หากเงินสดหรือทรัพยากรติดลบ ปิดปุ่มรับการ์ด
+       ========================================================================== */
+    function checkAffordabilityAndValidate(p, item) {
+      if (!p || !item) return { isAffordable: true, reasons: [] };
+
+      const cardPrice = Number(item.price) || 0;
+      const costH = Number(item.cost?.heart) || 0;
+      const costT = Number(item.cost?.time) || 0;
+      const costK = Number(item.cost?.knowledge) || 0;
+
+      const remainingCash = p.cash - cardPrice;
+      const remainingHeart = p.heart - costH;
+      const remainingTime = p.time - costT;
+      const remainingKnowledge = p.knowledge - costK;
+
+      const reasons = [];
+
+      if (remainingCash < 0) {
+        reasons.push(`เงินสดไม่เพียงพอ (ขาด ฿${Math.abs(remainingCash).toLocaleString()})`);
+      }
+      if (remainingHeart < 0) {
+        reasons.push(`สุขภาพ (หัวใจ) ไม่พอจ่าย (ขาด ${Math.abs(remainingHeart)} แต้ม)`);
+      }
+      if (remainingTime < 0) {
+        reasons.push(`เวลาว่างไม่พอจ่าย (ขาด ${Math.abs(remainingTime)} แต้ม)`);
+      }
+      if (remainingKnowledge < 0) {
+        reasons.push(`ทักษะ (ความรู้) ไม่พอจ่าย (ขาด ${Math.abs(remainingKnowledge)} แต้ม)`);
+      }
+
+      return {
+        isAffordable: reasons.length === 0,
+        reasons: reasons,
+        remainingCash,
+        remainingHeart,
+        remainingTime,
+        remainingKnowledge
+      };
+    }
+
     function updatePlayerMiniSimulation() {
       const p = getPlayerCurrentProfile();
       if (!p || !currentItem) return;
@@ -1197,19 +1245,18 @@
       const cardActive = Number(currentItem.activeIncome) || 0;
       const cardPassive = Number(currentItem.passiveIncome) || 0;
 
-      // 1. จำลองเงินสด (หักราคาการ์ดที่เงินสด)
+      const check = checkAffordabilityAndValidate(p, currentItem);
+
+      // 1. จำลองเงินสด
       const newCash = p.cash - cardPrice;
       document.getElementById('simCashBefore').innerText = `฿${p.cash.toLocaleString()}`;
       document.getElementById('simCashAfter').innerText = `฿${newCash.toLocaleString()}`;
       document.getElementById('simCashDiffBadge').innerText = cardPrice > 0 ? `-฿${cardPrice.toLocaleString()}` : `คงเดิม`;
 
-      const warningMsg = document.getElementById('simCashWarningMsg');
       if (newCash < 0) {
-        warningMsg.classList.remove('hidden');
         document.getElementById('simCashAfter').classList.add('text-red-500');
         document.getElementById('simCashAfter').classList.remove('text-amber-500');
       } else {
-        warningMsg.classList.add('hidden');
         document.getElementById('simCashAfter').classList.remove('text-red-500');
         document.getElementById('simCashAfter').classList.add('text-amber-500');
       }
@@ -1225,34 +1272,60 @@
       document.getElementById('simPassiveAfter').innerText = `฿${newPassive.toLocaleString()}`;
       document.getElementById('simPassiveDiffBadge').innerText = `+฿${cardPassive.toLocaleString()}`;
 
-      // 3. จำลอง เงินคงเหลือต่อเดือน (Net Surplus)
+      // 3. จำลอง เงินคงเหลือต่อเดือน
       const newNetSurplus = (p.salary + newActive + newPassive) - p.expense;
       const netDiff = newNetSurplus - p.netSurplus;
       document.getElementById('simNetBefore').innerText = `฿${p.netSurplus.toLocaleString()}`;
       document.getElementById('simNetAfter').innerText = `฿${newNetSurplus.toLocaleString()}`;
       document.getElementById('simNetDiffBadge').innerText = `+฿${netDiff.toLocaleString()}`;
 
-      // 4. จำลองค่าพลัง 3 ด้าน (ค่าเดิม - สิ่งที่ต้องใช้ + สิ่งที่ได้รับ, จำกัด 0-10)
+      // 4. จำลองสเตตัส 3 ด้าน (สุทธิ: เดิม - ใช้ + ได้, เพดาน 0-10)
       const costH = Number(currentItem.cost?.heart) || 0;
       const rewardH = Number(currentItem.reward?.heart) || 0;
-      const newH = Math.max(0, Math.min(10, p.heart - costH + rewardH));
+      const rawNetH = p.heart - costH + rewardH;
+      const finalH = Math.max(0, Math.min(10, rawNetH));
 
       const costT = Number(currentItem.cost?.time) || 0;
       const rewardT = Number(currentItem.reward?.time) || 0;
-      const newT = Math.max(0, Math.min(10, p.time - costT + rewardT));
+      const rawNetT = p.time - costT + rewardT;
+      const finalT = Math.max(0, Math.min(10, rawNetT));
 
       const costK = Number(currentItem.cost?.knowledge) || 0;
       const rewardK = Number(currentItem.reward?.knowledge) || 0;
-      const newK = Math.max(0, Math.min(10, p.knowledge - costK + rewardK));
+      const rawNetK = p.knowledge - costK + rewardK;
+      const finalK = Math.max(0, Math.min(10, rawNetK));
 
       document.getElementById('simHeartBefore').innerText = p.heart;
-      document.getElementById('simHeartAfter').innerText = newH;
+      document.getElementById('simHeartAfter').innerText = finalH;
+      if (p.heart - costH < 0) {
+        document.getElementById('simHeartAfter').classList.add('text-red-500');
+      } else {
+        document.getElementById('simHeartAfter').classList.remove('text-red-500');
+      }
 
       document.getElementById('simTimeBefore').innerText = p.time;
-      document.getElementById('simTimeAfter').innerText = newT;
+      document.getElementById('simTimeAfter').innerText = finalT;
+      if (p.time - costT < 0) {
+        document.getElementById('simTimeAfter').classList.add('text-red-500');
+      } else {
+        document.getElementById('simTimeAfter').classList.remove('text-red-500');
+      }
 
       document.getElementById('simKnowledgeBefore').innerText = p.knowledge;
-      document.getElementById('simKnowledgeAfter').innerText = newK;
+      document.getElementById('simKnowledgeAfter').innerText = finalK;
+      if (p.knowledge - costK < 0) {
+        document.getElementById('simKnowledgeAfter').classList.add('text-red-500');
+      } else {
+        document.getElementById('simKnowledgeAfter').classList.remove('text-red-500');
+      }
+
+      const warningMsg = document.getElementById('simCashWarningMsg');
+      if (!check.isAffordable) {
+        warningMsg.innerText = `⚠️ ไม่ผ่านเงื่อนไข: ${check.reasons.join(', ')}`;
+        warningMsg.classList.remove('hidden');
+      } else {
+        warningMsg.classList.add('hidden');
+      }
     }
 
     function togglePlayerMiniModal() {
@@ -1354,6 +1427,9 @@
       }
     }
 
+    /* ==========================================================================
+       PUSH TO GOOGLE SHEETS
+       ========================================================================== */
     async function pushToGoogleSheets() {
       saveLocalCache();
       if (!GOOGLE_SHEET_API_URL || GOOGLE_SHEET_API_URL.includes("PLACEHOLDER")) return;
@@ -1533,6 +1609,9 @@
       }, 70);
     }
 
+    /* ==========================================================================
+       แสดงผล Pop-up สุ่มการ์ด: พร้อมตรวจสอบเงื่อนไขความพร้อมและปรับสถานะปุ่ม
+       ========================================================================== */
     function displayResultPopup(item) {
       if (!item) return;
       currentItem = item;
@@ -1541,6 +1620,7 @@
       const miniModal = document.getElementById('playerMiniModal');
       if (miniModal) miniModal.classList.add('hidden');
 
+      // 1. หัวข้อ, หมวดหมู่, และ ID
       document.getElementById('popupTitle').innerText = item.title || 'ไม่มีชื่อการ์ด';
       document.getElementById('popupSubtitle').innerText = (item.targetType === 'leg' || item.targetLeg) ? `สายงาน ${item.targetLeg || 'A'}` : 'ข้อมูลส่วนตัว';
       document.getElementById('popupDescription').innerText = item.description || 'ไม่มีรายละเอียดเพิ่มเติม';
@@ -1548,10 +1628,12 @@
       document.getElementById('popupCategoryIcon').className = `fa-solid ${meta.icon} text-[10px]`;
       document.getElementById('popupIndexBadge').innerText = `#${item.id || 'CARD'}`;
 
+      // 2. ตัวเลขการเงินของการ์ด
       document.getElementById('popupPrice').innerText = `฿${(Number(item.price) || 0).toLocaleString()}`;
       document.getElementById('popupActive').innerText = `+฿${(Number(item.activeIncome) || 0).toLocaleString()}`;
       document.getElementById('popupPassive').innerText = `+฿${(Number(item.passiveIncome) || 0).toLocaleString()}`;
 
+      // 3. ทรัพยากร สิ่งที่ต้องใช้ (Cost)
       const costH = Number(item.cost?.heart) || 0;
       const costT = Number(item.cost?.time) || 0;
       const costK = Number(item.cost?.knowledge) || 0;
@@ -1559,6 +1641,7 @@
       document.getElementById('popup-cost-time-val').innerText = `${costT}/10`;
       document.getElementById('popup-cost-knowledge-val').innerText = `${costK}/10`;
 
+      // 4. ทรัพยากร สิ่งที่ได้รับ (Reward)
       const rewardH = Number(item.reward?.heart) || 0;
       const rewardT = Number(item.reward?.time) || 0;
       const rewardK = Number(item.reward?.knowledge) || 0;
@@ -1566,6 +1649,7 @@
       document.getElementById('popup-reward-time-val').innerText = `+${rewardT}/10`;
       document.getElementById('popup-reward-knowledge-val').innerText = `+${rewardK}/10`;
 
+      // 5. ตรวจสอบสถานะ บังคับรับการ์ด
       const isForceAccept = !!item.forceAccept;
       const rejectBtn = document.getElementById('popupRejectBtn');
       const closeXBtn = document.getElementById('popupCloseXBtn');
@@ -1579,6 +1663,36 @@
         rejectBtn.classList.remove('hidden');
         closeXBtn.classList.remove('hidden');
         forceBadge.classList.add('hidden');
+      }
+
+      // =================================================================
+      // 6. ตรวจสอบเงื่อนไขความพร้อม: หากเงินสดหรือทรัพยากรไม่พอ ให้ปุ่มรับการ์ดกดไม่ได้และเป็นสีเทา
+      // =================================================================
+      const p = getPlayerCurrentProfile();
+      const check = checkAffordabilityAndValidate(p, item);
+      const acceptBtn = document.getElementById('popupAcceptBtn');
+      const acceptBtnText = document.getElementById('popupAcceptBtnText');
+      const acceptBtnIcon = document.getElementById('popupAcceptBtnIcon');
+      const alertBox = document.getElementById('unaffordableAlertBox');
+      const alertText = document.getElementById('unaffordableAlertText');
+
+      if (!check.isAffordable) {
+        // เงื่อนไขไม่ผ่าน: เปลี่ยนปุ่มเป็นสีเทา กดไม่ได้ (Disabled)
+        acceptBtn.disabled = true;
+        acceptBtn.className = "px-5 sm:px-6 py-2.5 rounded-xl bg-slate-300 dark:bg-slate-700 text-slate-400 dark:text-slate-500 text-xs sm:text-sm font-black transition flex items-center gap-1.5 shadow-none cursor-not-allowed border border-slate-300 dark:border-slate-600";
+        acceptBtnText.innerText = "ไม่ผ่านเงื่อนไข";
+        acceptBtnIcon.className = "fa-solid fa-ban text-xs";
+
+        // แสดงกล่องแจ้งเตือนสาเหตุ
+        alertText.innerText = `ไม่สามารถรับการ์ดได้: ${check.reasons.join(', ')}`;
+        alertBox.classList.remove('hidden');
+      } else {
+        // เงื่อนไขผ่าน: ปุ่มสีเขียวตามปกติ
+        acceptBtn.disabled = false;
+        acceptBtn.className = "px-5 sm:px-6 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-xs sm:text-sm font-black transition flex items-center gap-1.5 shadow-lg hover:scale-105 active:scale-95";
+        acceptBtnText.innerText = "รับการ์ด";
+        acceptBtnIcon.className = "fa-solid fa-circle-check text-xs";
+        alertBox.classList.add('hidden');
       }
 
       document.getElementById('resultModal').classList.remove('hidden');
@@ -1595,11 +1709,17 @@
       if (!currentItem) return;
       const p = getPlayerCurrentProfile();
 
+      // ตรวจสอบความปลอดภัยซ้ำอีกครั้งก่อนหักเงิน
+      const check = checkAffordabilityAndValidate(p, currentItem);
+      if (!check.isAffordable) {
+        showToast(`ไม่สามารถรับได้: ${check.reasons.join(', ')}`, 'warning');
+        return;
+      }
+
       if (p) {
         const cardPrice = Number(currentItem.price) || 0;
         const newCash = p.cash - cardPrice;
 
-        // คำนวณค่าพลังสุทธิ (0-10)
         const costH = Number(currentItem.cost?.heart) || 0;
         const rewardH = Number(currentItem.reward?.heart) || 0;
         const newHeart = Math.max(0, Math.min(10, p.heart - costH + rewardH));
@@ -1612,7 +1732,6 @@
         const rewardK = Number(currentItem.reward?.knowledge) || 0;
         const newKnowledge = Math.max(0, Math.min(10, p.knowledge - costK + rewardK));
 
-        // อัปเดตข้อมูลลงโปรไฟล์ผู้เล่นใน localStorage
         const updatedProfile = {
           ...p.profile,
           cash: newCash,
@@ -1623,7 +1742,6 @@
           }
         };
 
-        // หากเป็นการ์ดสายงานหรือส่วนตัว เพิ่ม Active/Passive Income
         const cardActive = Number(currentItem.activeIncome) || 0;
         const cardPassive = Number(currentItem.passiveIncome) || 0;
 
