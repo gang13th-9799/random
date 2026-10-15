@@ -195,7 +195,7 @@
 
       <!-- Sync Button & Settings -->
       <div class="flex items-center space-x-2">
-        <button onclick="forceSyncFromCloud()" title="ดึงข้อมูลจาก Google Sheets มาแสดงผลและแทนที่ข้อมูลในเครื่อง" class="px-2.5 py-1.5 rounded-lg border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-200 hover:bg-slate-50 text-xs font-bold transition flex items-center gap-1.5 shadow-sm">
+        <button onclick="forceSyncFromCloud()" title="ดึงข้อมูลล่าสุดจาก Google Sheets มาแทนที่ข้อมูลในเครื่อง" class="px-2.5 py-1.5 rounded-lg border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-200 hover:bg-slate-50 text-xs font-bold transition flex items-center gap-1.5 shadow-sm">
           <i id="syncIcon" class="fa-solid fa-rotate text-xs"></i>
           <span class="hidden sm:inline">Sync Cloud</span>
         </button>
@@ -217,8 +217,6 @@
     
     <!-- VIEW 1: หน้าแรก -->
     <section id="view-categories" class="space-y-5 animate-pop-in">
-      
-      <!-- แถบแสดงสถานะผู้เล่น -->
       <div id="homeProfileDashboard" class="hidden py-2 px-1 border-b border-slate-200/80 dark:border-slate-800 space-y-2 text-xs">
         <div class="flex flex-wrap items-center justify-between gap-3 text-slate-700 dark:text-slate-300">
           <div class="flex items-center gap-3 flex-wrap">
@@ -233,7 +231,6 @@
             </span>
           </div>
 
-          <!-- ทรัพยากร 3 ด้าน -->
           <div class="flex items-center gap-4 font-mono font-bold">
             <span class="flex items-center gap-1 text-red-500" title="สุขภาพ (หัวใจ)">
               <i class="fa-solid fa-heart"></i>
@@ -281,7 +278,6 @@
         </div>
       </div>
 
-      <!-- รายการหมวดหมู่การ์ด -->
       <div class="space-y-3 pt-1">
         <div class="flex items-center justify-between">
           <h2 class="text-base font-bold text-slate-800 dark:text-white flex items-center gap-2">
@@ -342,8 +338,6 @@
 
     <!-- VIEW 3: คลังข้อมูลการ์ด -->
     <section id="view-data" class="hidden space-y-4 animate-pop-in">
-      
-      <!-- กล่องแจ้งเตือนรายการที่ค้างเฉพาะในเครื่อง -->
       <div id="localOnlyAlertBanner" class="hidden p-3.5 rounded-2xl bg-amber-50 dark:bg-amber-950/40 border border-amber-300 dark:border-amber-700/60 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 shadow-sm">
         <div class="flex items-center gap-2.5 text-amber-800 dark:text-amber-300 text-xs font-bold">
           <i class="fa-solid fa-circle-exclamation text-base text-amber-500 shrink-0"></i>
@@ -355,7 +349,6 @@
         </button>
       </div>
 
-      <!-- แถบค้นหาและปุ่มจัดการ -->
       <div class="bg-white/80 dark:bg-slate-800/80 backdrop-blur border border-slate-200 dark:border-slate-700 rounded-2xl p-4 shadow-sm flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3">
         <div class="flex flex-wrap items-center gap-2 flex-1">
           <div class="relative flex-1 min-w-[180px]">
@@ -380,7 +373,6 @@
         </div>
       </div>
 
-      <!-- ตารางแสดงผลตามขนาดจอ -->
       <div class="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-2xl shadow-sm overflow-hidden">
         <div class="hidden sm:block overflow-x-auto">
           <table class="w-full text-left text-xs sm:text-sm text-slate-600 dark:text-slate-300 border-collapse">
@@ -446,8 +438,6 @@
   <!-- POP-UP RESULT MODAL -->
   <div id="resultModal" class="hidden fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-md flex items-center justify-center p-3 sm:p-4 overflow-y-auto">
     <div class="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-3xl max-w-2xl w-full p-4 sm:p-7 shadow-2xl relative my-auto animate-pop-in space-y-4">
-      
-      <!-- Pop-up Header -->
       <div class="flex items-center justify-between gap-2 border-b border-slate-100 dark:border-slate-700 pb-3">
         <div class="flex items-center gap-2">
           <span id="popupCategoryBadge" class="px-3.5 py-1.5 rounded-full text-xs font-bold tracking-wide uppercase border flex items-center gap-1.5 shadow-sm">
@@ -473,7 +463,7 @@
         </div>
       </div>
 
-      <!-- MINI POP-UP: แสดงผลจำลองสถานะผู้เล่น ก่อน/หลัง รับการ์ด -->
+      <!-- MINI POP-UP -->
       <div id="playerMiniModal" class="hidden rounded-2xl p-4 bg-gradient-to-br from-slate-50 to-indigo-50/40 dark:from-slate-900 dark:to-indigo-950/40 border-2 border-indigo-400/50 dark:border-indigo-600/50 shadow-2xl space-y-3 text-xs animate-pop-in relative">
         <div class="flex items-center justify-between border-b border-indigo-100 dark:border-indigo-900/60 pb-2">
           <div class="flex items-center gap-2">
@@ -489,7 +479,6 @@
         </div>
 
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5 font-mono">
-          <!-- 1. เงินสดติดตัว -->
           <div class="p-2.5 rounded-xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 flex items-center justify-between">
             <div>
               <span class="text-slate-400 block text-[10px] uppercase font-bold flex items-center gap-1">
@@ -504,7 +493,6 @@
             <span id="simCashDiffBadge" class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-red-100 text-red-600 dark:bg-red-950 dark:text-red-400">-฿0</span>
           </div>
 
-          <!-- 2. เงินคงเหลือต่อเดือน -->
           <div class="p-2.5 rounded-xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 flex items-center justify-between">
             <div>
               <span class="text-slate-400 block text-[10px] uppercase font-bold flex items-center gap-1">
@@ -519,7 +507,6 @@
             <span id="simNetDiffBadge" class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-600 dark:bg-emerald-950 dark:text-emerald-400">+฿0</span>
           </div>
 
-          <!-- 3. Active Income -->
           <div class="p-2.5 rounded-xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 flex items-center justify-between">
             <div>
               <span class="text-slate-400 block text-[10px] uppercase font-bold flex items-center gap-1">
@@ -534,7 +521,6 @@
             <span id="simActiveDiffBadge" class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-green-100 text-green-600 dark:bg-green-950 dark:text-green-400">+฿0</span>
           </div>
 
-          <!-- 4. Passive Income -->
           <div class="p-2.5 rounded-xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 flex items-center justify-between">
             <div>
               <span class="text-slate-400 block text-[10px] uppercase font-bold flex items-center gap-1">
@@ -549,7 +535,6 @@
             <span id="simPassiveDiffBadge" class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-teal-100 text-teal-600 dark:bg-teal-950 dark:text-teal-400">+฿0</span>
           </div>
 
-          <!-- 5. กล่องจำลอง PV -->
           <div id="simPvImpactWrapper" class="col-span-1 sm:col-span-2 p-2.5 rounded-xl bg-blue-50/70 dark:bg-blue-950/30 border border-blue-200 dark:border-blue-800 flex items-center justify-between">
             <div>
               <span id="simPvImpactTitle" class="text-blue-500 dark:text-blue-400 block text-[10px] uppercase font-bold flex items-center gap-1">
@@ -565,7 +550,6 @@
           </div>
         </div>
 
-        <!-- จำลองสเตตัส 3 ด้าน -->
         <div class="p-2.5 rounded-xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 flex items-center justify-around font-mono font-bold text-xs">
           <div class="flex flex-col items-center">
             <span class="text-slate-400 text-[9px] uppercase font-bold mb-0.5">สุขภาพ</span>
@@ -597,8 +581,6 @@
 
       <!-- Pop-up Content -->
       <div class="space-y-4 max-h-[70vh] overflow-y-auto pr-1">
-        
-        <!-- ชื่อการ์ด, เป้าหมายการใช้งาน และ PV ด้านขวา -->
         <div class="space-y-2">
           <h2 id="popupTitle" class="app-title-text font-extrabold text-slate-900 dark:text-white tracking-normal leading-snug"></h2>
           
@@ -617,10 +599,8 @@
           </div>
         </div>
 
-        <!-- รายละเอียดข้อความการ์ด -->
         <p id="popupDescription" class="app-desc-text text-slate-600 dark:text-slate-300 whitespace-pre-line font-normal leading-relaxed"></p>
 
-        <!-- กล่องข้อมูลการเงินของการ์ด -->
         <div class="grid grid-cols-3 gap-2.5 p-3 rounded-2xl bg-slate-50 dark:bg-slate-900/60 border border-slate-200 dark:border-slate-700/80 text-center font-mono">
           <div class="p-2 rounded-xl bg-white dark:bg-slate-800 border border-slate-200/60 dark:border-slate-700">
             <span class="text-[10px] font-bold text-slate-400 block uppercase">ราคา (หักเงินสด)</span>
@@ -636,11 +616,8 @@
           </div>
         </div>
 
-        <!-- Condition Stats: สิ่งที่ต้องใช้ & สิ่งที่ได้รับ -->
         <div class="pt-1">
           <div class="grid grid-cols-1 sm:grid-cols-2 gap-3.5 sm:gap-4">
-            
-            <!-- สิ่งที่ต้องใช้ -->
             <div class="bg-gradient-to-br from-red-50/80 via-slate-50 to-white dark:from-red-950/25 dark:via-slate-800 rounded-2xl p-4 border-2 border-red-500 shadow-sm space-y-3">
               <div class="flex items-center justify-between border-b border-red-200 dark:border-red-900/60 pb-2">
                 <span class="text-sm font-extrabold text-red-600 flex items-center gap-2">
@@ -665,7 +642,6 @@
               </div>
             </div>
 
-            <!-- สิ่งที่ได้รับ -->
             <div class="bg-gradient-to-br from-emerald-50/80 via-slate-50 to-white dark:from-emerald-950/25 dark:via-slate-800 rounded-2xl p-4 border-2 border-emerald-500 shadow-sm space-y-3">
               <div class="flex items-center justify-between border-b border-emerald-200 dark:border-emerald-900/60 pb-2">
                 <span class="text-sm font-extrabold text-emerald-600 dark:text-emerald-400 flex items-center gap-2">
@@ -689,7 +665,6 @@
                 </div>
               </div>
             </div>
-
           </div>
         </div>
 
@@ -697,10 +672,9 @@
           <i class="fa-solid fa-circle-exclamation text-base shrink-0"></i>
           <span id="unaffordableAlertText">ไม่สามารถรับการ์ดได้เนื่องจากทรัพยากรหรือเงินสดไม่เพียงพอ</span>
         </div>
-
       </div>
 
-      <!-- Pop-up Footer: ปุ่ม รับ/ไม่รับ การ์ด -->
+      <!-- Pop-up Footer -->
       <div class="pt-3 border-t border-slate-100 dark:border-slate-700 flex flex-wrap items-center justify-between gap-3">
         <button onclick="triggerRandomDraw()" class="px-4 py-2.5 rounded-xl border border-slate-300 dark:border-slate-600 text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700 text-xs sm:text-sm font-bold transition flex items-center gap-1.5">
           <i class="fa-solid fa-dice-five"></i>
@@ -950,7 +924,7 @@
   </div>
 
   <!-- ============================================================ -->
-  <!-- SETTING MODAL: เพิ่ม Label แสดงชื่อฐานข้อมูล / แหล่งข้อมูล -->
+  <!-- SETTING MODAL: แสดงชื่อฐานข้อมูล, เลขเวอร์ชัน, และปุ่มล้างแคช -->
   <!-- ============================================================ -->
   <div id="settingModal" class="hidden fixed inset-0 z-50 bg-slate-950/70 backdrop-blur-sm flex items-center justify-center p-4">
     <div class="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-3xl max-w-md w-full p-5 sm:p-6 shadow-2xl relative animate-pop-in space-y-4">
@@ -963,7 +937,7 @@
           </div>
           <div>
             <h3 class="font-bold text-base text-slate-900 dark:text-white">การตั้งค่าระบบ</h3>
-            <p class="text-xs text-slate-400">ข้อมูลระบบและสำรองข้อมูล</p>
+            <p class="text-xs text-slate-400">ข้อมูลฐานข้อมูลและเวอร์ชัน</p>
           </div>
         </div>
         <button onclick="closeSettingModal()" class="w-8 h-8 rounded-lg text-slate-400 hover:text-slate-700 flex items-center justify-center">
@@ -971,25 +945,48 @@
         </button>
       </div>
 
-      <!-- 1. LABEL แสดงชื่อฐานข้อมูล / แหล่งข้อมูล -->
-      <div class="p-3.5 bg-slate-50 dark:bg-slate-900/60 rounded-2xl border border-slate-200 dark:border-slate-700/80 flex items-center justify-between gap-3">
-        <div class="flex items-center gap-3 min-w-0">
-          <div class="w-9 h-9 rounded-xl bg-blue-500/10 text-blue-500 flex items-center justify-center text-sm shrink-0">
-            <i class="fa-solid fa-server"></i>
+      <!-- CARD 1: ข้อมูลฐานข้อมูลและเลขเวอร์ชัน (Database Info & Version) -->
+      <div class="p-3.5 bg-slate-50 dark:bg-slate-900/60 rounded-2xl border border-slate-200 dark:border-slate-700/80 space-y-2.5">
+        <div class="flex items-center justify-between">
+          <div class="flex items-center gap-2">
+            <i class="fa-solid fa-server text-blue-500 text-sm"></i>
+            <span class="text-xs font-bold text-slate-800 dark:text-white">สถานะฐานข้อมูลชีต</span>
           </div>
-          <div class="min-w-0">
-            <span class="text-[10px] font-bold uppercase tracking-wider text-slate-400 block">ฐานข้อมูลปัจจุบัน (Database)</span>
-            <span id="settingDatabaseName" class="text-xs sm:text-sm font-bold text-slate-800 dark:text-white truncate block">
-              Google Sheets: DataHub / CardList
+          <span id="settingDatabaseBadge" class="text-[10px] font-mono font-bold px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-700 dark:bg-emerald-950/80 dark:text-emerald-300 border border-emerald-300 dark:border-emerald-800">
+            CONNECTED
+          </span>
+        </div>
+
+        <div class="text-[11px] font-mono text-slate-600 dark:text-slate-400 space-y-1 bg-white dark:bg-slate-800 p-2.5 rounded-xl border border-slate-200/60 dark:border-slate-700/60">
+          <div class="flex justify-between items-center">
+            <span class="text-slate-400">แหล่งข้อมูล:</span>
+            <span id="settingDatabaseName" class="font-bold text-slate-800 dark:text-slate-200">Google Sheets DataHub</span>
+          </div>
+          <div class="flex justify-between items-center">
+            <span class="text-slate-400">เวอร์ชันฐานข้อมูล:</span>
+            <span id="settingDatabaseVersion" class="font-bold text-indigo-500 font-mono">v1.0 (ตรวจนับอยู่...)</span>
+          </div>
+          <div class="flex justify-between items-center">
+            <span class="text-slate-400">ซิงก์ล่าสุด:</span>
+            <span id="settingDatabaseLastSync" class="text-slate-500 dark:text-slate-400">-</span>
+          </div>
+          <div class="flex justify-between items-center border-t border-slate-100 dark:border-slate-700 pt-1 mt-1">
+            <span class="text-slate-400">จำนวนการ์ด:</span>
+            <span>
+              <strong id="settingCardCountCloud" class="text-emerald-500">ชีต: -</strong> | 
+              <strong id="settingCardCountLocal" class="text-slate-700 dark:text-slate-300">เครื่องนี้: 0</strong>
             </span>
           </div>
         </div>
-        <span id="settingDatabaseBadge" class="text-[10px] font-mono font-bold px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-700 dark:bg-emerald-950/80 dark:text-emerald-300 border border-emerald-300 dark:border-emerald-800 shrink-0">
-          ONLINE
-        </span>
+
+        <!-- ปุ่มบังคับล้างแคชเครื่องและดึงจากชีตใหม่ -->
+        <button type="button" onclick="hardResetLocalFromCloud()" class="w-full py-2 px-3 rounded-xl bg-indigo-50 dark:bg-indigo-950/50 hover:bg-indigo-100 text-indigo-700 dark:text-indigo-300 text-xs font-bold transition flex items-center justify-center gap-1.5 border border-indigo-200 dark:border-indigo-800">
+          <i class="fa-solid fa-arrows-rotate text-xs"></i>
+          <span>ล้างแคชเครื่องนี้และโหลดใหม่จากชีต (แก้ข้อมูลไม่เท่ากัน)</span>
+        </button>
       </div>
 
-      <!-- 2. โหมดสว่าง / มืด -->
+      <!-- CARD 2: สลับโหมด สว่าง / มืด -->
       <div class="p-3 bg-slate-50 dark:bg-slate-900/60 rounded-2xl border border-slate-200 dark:border-slate-700/80 flex items-center justify-between">
         <div class="flex items-center gap-3">
           <div class="w-8 h-8 rounded-xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 flex items-center justify-center text-sm shadow-sm">
@@ -1005,7 +1002,7 @@
         </button>
       </div>
 
-      <!-- 3. สำรองและส่งออกฐานข้อมูล -->
+      <!-- CARD 3: สำรองและส่งออกฐานข้อมูล -->
       <div class="p-3.5 bg-slate-50 dark:bg-slate-900/60 rounded-2xl border border-slate-200 dark:border-slate-700/80 space-y-3">
         <div class="flex items-center gap-2">
           <i class="fa-solid fa-database text-xs text-amber-500"></i>
@@ -1118,6 +1115,11 @@
     let currentItem = null;
     let isDrawing = false;
     let soundEnabled = true;
+
+    // ข้อมูลเวอร์ชันและการซิงก์
+    let currentDbVersion = 1;
+    let lastCloudSyncedTime = null;
+    let lastCloudCardCount = 0;
 
     const COLOR_PALETTES = {
       red: { id: "red", name: "1. แดงทับทิม", hex: "#EF4444", gradient: "linear-gradient(135deg, #EF4444 0%, #DC2626 50%, #991B1B 100%)", badge: "bg-red-100 text-red-800 dark:bg-red-950/80 dark:text-red-300" },
@@ -1427,6 +1429,9 @@
 
         const cHist = localStorage.getItem('rnd_cache_history');
         historyLog = cHist ? JSON.parse(cHist) : [];
+
+        currentDbVersion = parseInt(localStorage.getItem('rnd_db_version') || '1', 10);
+        lastCloudSyncedTime = localStorage.getItem('rnd_last_sync_time') || null;
       } catch (e) {
         items = [...DEFAULT_INITIAL_ITEMS];
         categories = [...DEFAULT_INITIAL_CATEGORIES];
@@ -1445,11 +1450,16 @@
         localStorage.setItem('rnd_cache_items', JSON.stringify(items));
         localStorage.setItem('rnd_cache_categories', JSON.stringify(categories));
         localStorage.setItem('rnd_cache_history', JSON.stringify(historyLog));
+        localStorage.setItem('rnd_db_version', currentDbVersion.toString());
+        if (lastCloudSyncedTime) localStorage.setItem('rnd_last_sync_time', lastCloudSyncedTime);
       } catch (e) {}
       updateTotalBadgeCount();
       renderCategoryHomeCards();
     }
 
+    /* ==========================================================================
+       FETCH FROM GOOGLE SHEETS (พร้อมอ่านเลขเวอร์ชันและเวลาอัปเดต)
+       ========================================================================== */
     async function fetchFromGoogleSheets(isManual = false) {
       if (!GOOGLE_SHEET_API_URL || GOOGLE_SHEET_API_URL.includes("PLACEHOLDER")) {
         setCloudStatus('ใช้งานแบบออฟไลน์', 'text-slate-400');
@@ -1468,9 +1478,11 @@
           let updated = false;
 
           if (Array.isArray(data.items) && data.items.length > 0) {
+            lastCloudCardCount = data.items.length;
             const cloudItems = data.items.map(it => ({ ...it, syncStatus: "synced" }));
             const cloudIds = new Set(cloudItems.map(i => i.id));
 
+            // นำการ์ดที่ค้างในเครื่องมารวม
             const pendingLocalItems = items.filter(i => i.syncStatus === 'local_only' && !cloudIds.has(i.id));
             items = [...cloudItems, ...pendingLocalItems];
             updated = true;
@@ -1485,12 +1497,16 @@
             historyLog = data.historyLog;
           }
 
+          // อัปเดตเวอร์ชันและเวลา
+          if (data.dbVersion) currentDbVersion = parseInt(data.dbVersion, 10);
+          lastCloudSyncedTime = new Date().toLocaleTimeString('th-TH', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+
           if (updated) {
             saveLocalCache();
-            setCloudStatus('ออนไลน์ (ซิงก์แล้ว)', 'text-emerald-500');
-            if (isManual) showToast(`ดึงข้อมูลล่าสุดจาก Google Sheets มาแสดงผลแล้ว (${items.length} รายการ) ☁️`, 'success');
+            setCloudStatus(`ออนไลน์ (v${currentDbVersion} | ${items.length} ใบ)`, 'text-emerald-500');
+            if (isManual) showToast(`ซิงก์สำเร็จ! ได้รับข้อมูลเวอร์ชัน v${currentDbVersion} (${items.length} รายการ) ☁️`, 'success');
           } else {
-            setCloudStatus('พร้อมใช้งาน (แคชในเครื่อง)', 'text-emerald-500');
+            setCloudStatus(`พร้อมใช้งาน (v${currentDbVersion})`, 'text-emerald-500');
             if (isManual) showToast('ข้อมูลเป็นปัจจุบันแล้ว', 'info');
           }
         }
@@ -1502,15 +1518,30 @@
         resetPool();
         renderDataTable();
         renderHistoryList();
+        updateSettingModalUI();
         if (syncIcon) syncIcon.classList.remove('animate-spin');
       }
     }
 
+    /* บังคับดึงข้อมูลจาก Cloud มาเขียนทับข้อมูลในเครื่อง 100% */
     async function forceSyncFromCloud() {
       if (!confirm("คุณต้องการดึงข้อมูลล่าสุดจาก Google Sheets มาแทนที่ข้อมูลในเครื่องนี้ใช่หรือไม่?")) return;
       await fetchFromGoogleSheets(true);
     }
 
+    /* ล้างแคชในเครื่องทิ้งทั้งหมด และโหลดชุดข้อมูลบริสุทธิ์จากชีต */
+    async function hardResetLocalFromCloud() {
+      if (!confirm("⚠️ ต้องการล้างแคชการ์ดในเครื่องนี้ทิ้งทั้งหมด แล้วดาวน์โหลดจาก Google Sheets ใหม่ใช่หรือไม่?\n(เหมาะสำหรับแก้ปัญหาจำนวนการ์ด 2 เครื่องไม่เท่ากัน)")) return;
+      
+      localStorage.removeItem('rnd_cache_items');
+      localStorage.removeItem('rnd_cache_categories');
+      items = [];
+      showToast('กำลังล้างแคชและดาวน์โหลดใหม่...', 'info');
+      await fetchFromGoogleSheets(true);
+      closeSettingModal();
+    }
+
+    /* บังคับส่งข้อมูลทั้งเครื่องขึ้นไปเขียนทับบน Google Sheets */
     async function forcePushToCloud() {
       if (!confirm(`ต้องการส่งข้อมูลทั้ง ${items.length} รายการจากเครื่องนี้ขึ้นไปแทนที่บน Google Sheets ใช่หรือไม่?`)) return;
       await pushToGoogleSheets();
@@ -1520,13 +1551,16 @@
       saveLocalCache();
       if (!GOOGLE_SHEET_API_URL || GOOGLE_SHEET_API_URL.includes("PLACEHOLDER")) return;
 
+      currentDbVersion++; // เพิ่มเลขเวอร์ชันเมื่อมีการอัปโหลด
       setCloudStatus('กำลังบันทึกลงชีต...', 'text-amber-500');
       try {
         const payload = {
           action: 'saveData',
           items: items.map(it => ({ ...it, syncStatus: "synced" })),
           categories: categories,
-          historyLog: historyLog
+          historyLog: historyLog,
+          dbVersion: currentDbVersion,
+          lastUpdated: new Date().toISOString()
         };
 
         await fetch(GOOGLE_SHEET_API_URL, {
@@ -1537,11 +1571,13 @@
         });
 
         items.forEach(it => it.syncStatus = "synced");
+        lastCloudSyncedTime = new Date().toLocaleTimeString('th-TH', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
         saveLocalCache();
         renderDataTable();
+        updateSettingModalUI();
 
-        setCloudStatus('บันทึกออนไลน์สำเร็จ', 'text-emerald-500');
-        showToast('ข้อมูลทั้งหมดซิงก์ขึ้น Google Sheets เรียบร้อยแล้ว ☁️', 'success');
+        setCloudStatus(`บันทึกสำเร็จ (v${currentDbVersion})`, 'text-emerald-500');
+        showToast(`บันทึกข้อมูล v${currentDbVersion} ขึ้น Google Sheets เรียบร้อยแล้ว ☁️`, 'success');
       } catch (e) {
         console.error("Push to Google Sheets error:", e);
         setCloudStatus('บันทึกไม่สำเร็จ (ค้างในเครื่อง)', 'text-red-500');
@@ -2280,7 +2316,6 @@
       }
     }
 
-    /* === จัดการหมวดหมู่การ์ด === */
     function openCategoryModal() {
       newCategorySelectedIcon = "fa-folder";
       newCategorySelectedColor = "red";
@@ -2586,6 +2621,7 @@
       const dbPayload = {
         app: "RandomDataCardHub",
         version: "1.0",
+        dbVersion: currentDbVersion,
         exportDate: new Date().toISOString(),
         categories: categories,
         items: items,
@@ -2595,7 +2631,7 @@
       const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(dbPayload, null, 2));
       const downloadAnchor = document.createElement('a');
       downloadAnchor.setAttribute("href", dataStr);
-      downloadAnchor.setAttribute("download", `database_backup_${new Date().toISOString().slice(0,10)}.json`);
+      downloadAnchor.setAttribute("download", `database_backup_v${currentDbVersion}_${new Date().toISOString().slice(0,10)}.json`);
       document.body.appendChild(downloadAnchor);
       downloadAnchor.click();
       downloadAnchor.remove();
@@ -2629,6 +2665,9 @@
             if (Array.isArray(importedData.historyLog)) {
               historyLog = importedData.historyLog;
             }
+            if (importedData.dbVersion) {
+              currentDbVersion = importedData.dbVersion;
+            }
 
             saveLocalCache();
             pushToGoogleSheets();
@@ -2659,7 +2698,7 @@
       document.getElementById('settingModal').classList.add('hidden');
     }
 
-    /* อัปเดต Label แสดงชื่อฐานข้อมูลใน Setting */
+    /* อัปเดต Label แสดงชื่อฐานข้อมูลและเลขเวอร์ชันใน Setting */
     function updateSettingModalUI() {
       const isDark = document.documentElement.classList.contains('dark');
       const icon = document.getElementById('settingThemeIcon');
@@ -2669,19 +2708,36 @@
         text.innerText = isDark ? "Night Mode (โหมดมืด)" : "Light Mode (โหมดสว่าง)";
       }
 
-      // แสดงชื่อฐานข้อมูลปัจจุบัน
       const dbNameEl = document.getElementById('settingDatabaseName');
       const dbBadgeEl = document.getElementById('settingDatabaseBadge');
+      const dbVerEl = document.getElementById('settingDatabaseVersion');
+      const dbSyncEl = document.getElementById('settingDatabaseLastSync');
+      const cloudCountEl = document.getElementById('settingCardCountCloud');
+      const localCountEl = document.getElementById('settingCardCountLocal');
+
       if (dbNameEl && dbBadgeEl) {
         if (!GOOGLE_SHEET_API_URL || GOOGLE_SHEET_API_URL.includes("PLACEHOLDER")) {
-          dbNameEl.innerText = "Local Storage (ออฟไลน์ในเครื่อง)";
+          dbNameEl.innerText = "Local Storage (ออฟไลน์)";
           dbBadgeEl.innerText = "OFFLINE";
-          dbBadgeEl.className = "text-[10px] font-mono font-bold px-2 py-0.5 rounded-full bg-slate-200 text-slate-600 dark:bg-slate-700 dark:text-slate-300 shrink-0";
+          dbBadgeEl.className = "text-[10px] font-mono font-bold px-2 py-0.5 rounded-full bg-slate-200 text-slate-600 dark:bg-slate-700 dark:text-slate-300";
+          if (dbVerEl) dbVerEl.innerText = `v${currentDbVersion} (Local)`;
         } else {
-          dbNameEl.innerText = "Google Sheets: DataHub / CardList";
+          dbNameEl.innerText = "Google Sheets: DataHub";
           dbBadgeEl.innerText = "CONNECTED";
-          dbBadgeEl.className = "text-[10px] font-mono font-bold px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-700 dark:bg-emerald-950/80 dark:text-emerald-300 border border-emerald-300 dark:border-emerald-800 shrink-0";
+          dbBadgeEl.className = "text-[10px] font-mono font-bold px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-700 dark:bg-emerald-950/80 dark:text-emerald-300 border border-emerald-300 dark:border-emerald-800";
+          if (dbVerEl) dbVerEl.innerText = `v${currentDbVersion} (ชีตออนไลน์)`;
         }
+      }
+
+      if (dbSyncEl) {
+        dbSyncEl.innerText = lastCloudSyncedTime || "ยังไม่ได้ซิงก์ในรอบนี้";
+      }
+
+      if (cloudCountEl) {
+        cloudCountEl.innerText = `ชีต: ${lastCloudCardCount > 0 ? lastCloudCardCount : 'ตรวจนับอยู่...'}`;
+      }
+      if (localCountEl) {
+        localCountEl.innerText = `เครื่องนี้: ${items.length}`;
       }
     }
 
