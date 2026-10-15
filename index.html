@@ -218,8 +218,10 @@
     <!-- VIEW 1: หน้าแรก -->
     <section id="view-categories" class="space-y-5 animate-pop-in">
       
-      <!-- แถบแสดงสถานะผู้เล่น -->
+      <!-- แถบแสดงสถานะผู้เล่น: ซ่อนเมื่อยังไม่ Login -->
       <div id="homeProfileDashboard" class="hidden py-2 px-1 border-b border-slate-200/80 dark:border-slate-800 space-y-2 text-xs">
+        
+        <!-- แถวบน: ข้อมูลบัญชี, อาชีพ, และสเตตัส 3 ด้าน -->
         <div class="flex flex-wrap items-center justify-between gap-3 text-slate-700 dark:text-slate-300">
           <div class="flex items-center gap-3 flex-wrap">
             <span class="font-bold flex items-center gap-1.5 text-slate-900 dark:text-white">
@@ -233,6 +235,7 @@
             </span>
           </div>
 
+          <!-- ทรัพยากร 3 ด้าน (ไอคอน + ตัวเลข) -->
           <div class="flex items-center gap-4 font-mono font-bold">
             <span class="flex items-center gap-1 text-red-500" title="สุขภาพ (หัวใจ)">
               <i class="fa-solid fa-heart"></i>
@@ -252,6 +255,7 @@
           </div>
         </div>
 
+        <!-- แถวล่าง: ตัวเลขการเงินกระชับ -->
         <div class="flex flex-wrap items-center gap-x-4 gap-y-1 font-mono text-[11px] text-slate-500 dark:text-slate-400">
           <span class="flex items-center gap-1 font-bold">
             <i class="fa-solid fa-wallet text-amber-500"></i> เงินสด:
@@ -422,7 +426,7 @@
   </nav>
 
   <!-- ============================================================ -->
-  <!-- POP-UP RESULT MODAL: แสดงข้อมูลการ์ดครบถ้วน 100% -->
+  <!-- POP-UP RESULT MODAL: ผลการสุ่ม + Pop-up ย่อยข้อมูลผู้เล่น -->
   <!-- ============================================================ -->
   <div id="resultModal" class="hidden fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-md flex items-center justify-center p-3 sm:p-4 overflow-y-auto">
     <div class="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-3xl max-w-2xl w-full p-4 sm:p-7 shadow-2xl relative my-auto animate-pop-in space-y-4">
@@ -440,9 +444,73 @@
             <i class="fa-solid fa-lock text-[9px] mr-1"></i>บังคับรับ
           </span>
         </div>
-        <button id="popupCloseXBtn" onclick="handleRejectCard()" title="ปิดหน้าต่าง" class="w-8 h-8 rounded-lg text-slate-400 hover:text-slate-700 dark:hover:text-white flex items-center justify-center">
-          <i class="fa-solid fa-xmark text-lg"></i>
-        </button>
+
+        <div class="flex items-center gap-1.5">
+          <!-- ปุ่มเปิด Pop-up เล็กดูข้อมูลผู้เล่น -->
+          <button type="button" onclick="togglePlayerMiniModal()" id="playerInfoBadgeBtn" class="px-2.5 py-1.5 rounded-xl bg-slate-100 dark:bg-slate-700 hover:bg-slate-200 dark:hover:bg-slate-600 text-slate-700 dark:text-slate-200 text-xs font-bold transition flex items-center gap-1.5 shadow-sm border border-slate-200 dark:border-slate-600" title="ดูข้อมูลของผู้เล่นปัจจุบัน">
+            <i class="fa-solid fa-id-card text-blue-500"></i>
+            <span class="hidden sm:inline">ข้อมูลผู้เล่น</span>
+          </button>
+
+          <button id="popupCloseXBtn" onclick="handleRejectCard()" title="ปิดหน้าต่าง" class="w-8 h-8 rounded-lg text-slate-400 hover:text-slate-700 dark:hover:text-white flex items-center justify-center">
+            <i class="fa-solid fa-xmark text-lg"></i>
+          </button>
+        </div>
+      </div>
+
+      <!-- ======================================================== -->
+      <!-- MINI POP-UP: แสดงข้อมูลของผู้เล่น ซ้อนอยู่ในการ์ดสุ่ม -->
+      <!-- ======================================================== -->
+      <div id="playerMiniModal" class="hidden rounded-2xl p-3.5 sm:p-4 bg-slate-100 dark:bg-slate-900/95 border-2 border-blue-500/40 shadow-xl space-y-2.5 text-xs animate-pop-in relative">
+        <div class="flex items-center justify-between border-b border-slate-200 dark:border-slate-700 pb-2">
+          <div class="flex items-center gap-2">
+            <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
+            <span class="font-extrabold text-slate-900 dark:text-white flex items-center gap-1.5">
+              <i class="fa-solid fa-user-check text-blue-500"></i>
+              <span id="miniPlayerName">ผู้เล่น</span>
+            </span>
+            <span class="text-slate-300 dark:text-slate-700">|</span>
+            <span id="miniPlayerCareer" class="text-slate-600 dark:text-slate-400 font-medium">-</span>
+          </div>
+          <button type="button" onclick="togglePlayerMiniModal()" class="w-6 h-6 rounded-lg text-slate-400 hover:text-slate-700 dark:hover:text-white flex items-center justify-center">
+            <i class="fa-solid fa-xmark text-sm"></i>
+          </button>
+        </div>
+
+        <!-- ตัวเลขการเงินของผู้เล่น -->
+        <div class="grid grid-cols-2 sm:grid-cols-3 gap-2 font-mono text-[11px]">
+          <div class="p-1.5 rounded-lg bg-white dark:bg-slate-800 border border-slate-200/60 dark:border-slate-700/60">
+            <span class="text-slate-400 block text-[9px] uppercase font-bold">เงินสด</span>
+            <span id="miniPlayerCash" class="text-amber-500 font-black">฿0</span>
+          </div>
+          <div class="p-1.5 rounded-lg bg-white dark:bg-slate-800 border border-slate-200/60 dark:border-slate-700">
+            <span class="text-slate-400 block text-[9px] uppercase font-bold">คงเหลือ/ด.</span>
+            <span id="miniPlayerNetSurplus" class="text-indigo-500 font-black">฿0</span>
+          </div>
+          <div class="p-1.5 rounded-lg bg-white dark:bg-slate-800 border border-slate-200/60 dark:border-slate-700">
+            <span class="text-slate-400 block text-[9px] uppercase font-bold">เงินเดือน</span>
+            <span id="miniPlayerSalary" class="text-slate-700 dark:text-slate-300 font-bold">฿0</span>
+          </div>
+          <div class="p-1.5 rounded-lg bg-white dark:bg-slate-800 border border-slate-200/60 dark:border-slate-700">
+            <span class="text-slate-400 block text-[9px] uppercase font-bold">Active รวม</span>
+            <span id="miniPlayerActive" class="text-emerald-500 font-bold">฿0</span>
+          </div>
+          <div class="p-1.5 rounded-lg bg-white dark:bg-slate-800 border border-slate-200/60 dark:border-slate-700">
+            <span class="text-slate-400 block text-[9px] uppercase font-bold">Passive รวม</span>
+            <span id="miniPlayerPassive" class="text-teal-500 font-bold">฿0</span>
+          </div>
+          <div class="p-1.5 rounded-lg bg-white dark:bg-slate-800 border border-slate-200/60 dark:border-slate-700">
+            <span class="text-slate-400 block text-[9px] uppercase font-bold">รายจ่ายประจำ</span>
+            <span id="miniPlayerExpense" class="text-red-500 font-bold">฿0</span>
+          </div>
+        </div>
+
+        <!-- พลังทรัพยากร 3 ด้านของผู้เล่น -->
+        <div class="flex items-center justify-around p-1.5 rounded-xl bg-white dark:bg-slate-800 border border-slate-200/60 dark:border-slate-700/60 font-mono font-bold text-xs">
+          <span class="text-red-500 flex items-center gap-1.5"><i class="fa-solid fa-heart"></i> <strong id="miniPlayerHeart">0</strong>/10</span>
+          <span class="text-blue-500 flex items-center gap-1.5"><i class="fa-solid fa-clock"></i> <strong id="miniPlayerTime">0</strong>/10</span>
+          <span class="text-purple-500 flex items-center gap-1.5"><i class="fa-solid fa-book"></i> <strong id="miniPlayerKnowledge">0</strong>/10</span>
+        </div>
       </div>
 
       <!-- Pop-up Content -->
@@ -461,7 +529,7 @@
         <!-- รายละเอียดข้อความการ์ด -->
         <p id="popupDescription" class="app-desc-text text-slate-600 dark:text-slate-300 whitespace-pre-line font-normal leading-relaxed"></p>
 
-        <!-- กล่องข้อมูลการเงินของการ์ด (ราคา, Active, Passive) -->
+        <!-- กล่องข้อมูลการเงินของการ์ด -->
         <div class="grid grid-cols-3 gap-2.5 p-3 rounded-2xl bg-slate-50 dark:bg-slate-900/60 border border-slate-200 dark:border-slate-700/80 text-center font-mono">
           <div class="p-2 rounded-xl bg-white dark:bg-slate-800 border border-slate-200/60 dark:border-slate-700">
             <span class="text-[10px] font-bold text-slate-400 block uppercase">ราคา (Price)</span>
@@ -649,7 +717,7 @@
           <input type="checkbox" id="formForceAccept" class="w-5 h-5 rounded text-red-600 focus:ring-red-500 accent-red-600 cursor-pointer shrink-0">
         </div>
 
-        <!-- สิ่งที่ต้องใช้ & สิ่งที่ได้รับ (Sliders 0-10) -->
+        <!-- ส่วนกำหนด: สิ่งที่ต้องใช้ & สิ่งที่ได้รับ -->
         <div class="p-3.5 bg-slate-50 dark:bg-slate-900/80 rounded-2xl border border-slate-200 dark:border-slate-700 space-y-3">
           <div class="flex items-center justify-between">
             <span class="text-xs font-bold text-slate-700 dark:text-slate-200 uppercase">เงื่อนไขทรัพยากร (0 - 10)</span>
@@ -982,9 +1050,11 @@
       fetchFromGoogleSheets(false);
     });
 
+    /* ==========================================================================
+       ฟังก์ชันดึงข้อมูลโปรไฟล์ผู้เล่น (อัปเดตทั้งหน้าแรก และ Mini Pop-up ในการ์ดสุ่ม)
+       ========================================================================== */
     function loadProfileSummary() {
       const dashboard = document.getElementById('homeProfileDashboard');
-      if (!dashboard) return;
 
       try {
         const savedSession = localStorage.getItem('game_auth_session');
@@ -993,14 +1063,12 @@
 
         const isLoggedIn = (currentAccount && currentAccount.id && currentAccount.id !== 'guest_default');
 
-        if (!isLoggedIn) {
-          dashboard.classList.add('hidden');
-          return;
+        if (dashboard) {
+          if (!isLoggedIn) dashboard.classList.add('hidden');
+          else dashboard.classList.remove('hidden');
         }
 
-        dashboard.classList.remove('hidden');
-
-        const profileKey = `game_user_profile_${currentAccount.id}`;
+        const profileKey = currentAccount ? `game_user_profile_${currentAccount.id}` : 'game_user_profile_guest_default';
         const rawProfile = localStorage.getItem(profileKey);
         let profile = rawProfile ? JSON.parse(rawProfile) : {};
 
@@ -1008,15 +1076,21 @@
         const careersDB = savedCareers ? JSON.parse(savedCareers) : [];
         const careerObj = careersDB.find(c => c.id === profile.careerId);
 
-        // 1. ข้อมูลผู้เล่น
-        document.getElementById('homeProfileName').innerText = profile.fullName || currentAccount.name || 'ผู้เล่น';
-        document.getElementById('homeProfileCareer').innerText = careerObj?.name || (profile.careerId ? profile.careerId : 'ยังไม่ระบุอาชีพ');
+        // 1. ข้อมูลผู้เล่น & อาชีพ
+        const playerName = profile.fullName || currentAccount?.name || 'ผู้เล่น';
+        const careerName = careerObj?.name || (profile.careerId ? profile.careerId : 'ยังไม่ระบุอาชีพ');
+
+        if (document.getElementById('homeProfileName')) document.getElementById('homeProfileName').innerText = playerName;
+        if (document.getElementById('homeProfileCareer')) document.getElementById('homeProfileCareer').innerText = careerName;
+        if (document.getElementById('miniPlayerName')) document.getElementById('miniPlayerName').innerText = playerName;
+        if (document.getElementById('miniPlayerCareer')) document.getElementById('miniPlayerCareer').innerText = careerName;
 
         // 2. เงินสดติดตัว
         const cashVal = parseFloat(profile.cash) || (careerObj?.cash || 0);
-        document.getElementById('homeProfileCash').innerText = `฿${cashVal.toLocaleString()}`;
+        if (document.getElementById('homeProfileCash')) document.getElementById('homeProfileCash').innerText = `฿${cashVal.toLocaleString()}`;
+        if (document.getElementById('miniPlayerCash')) document.getElementById('miniPlayerCash').innerText = `฿${cashVal.toLocaleString()}`;
 
-        // 3. รายรับ-รายจ่าย
+        // 3. รายรับ-รายจ่าย & เงินคงเหลือต่อเดือน
         const salary = parseFloat(profile.salary) || (careerObj?.salary || 0);
         const expense = parseFloat(profile.expense) || (careerObj?.expense || 0);
 
@@ -1032,23 +1106,46 @@
 
         const netSurplus = (salary + totalActive + totalPassive) - expense;
 
-        document.getElementById('homeProfileSalary').innerText = `฿${salary.toLocaleString()}`;
-        document.getElementById('homeProfileActive').innerText = `฿${totalActive.toLocaleString()}`;
-        document.getElementById('homeProfilePassive').innerText = `฿${totalPassive.toLocaleString()}`;
-        document.getElementById('homeProfileExpense').innerText = `฿${expense.toLocaleString()}`;
-        document.getElementById('homeProfileNetSurplus').innerText = `฿${netSurplus.toLocaleString()}`;
+        if (document.getElementById('homeProfileSalary')) document.getElementById('homeProfileSalary').innerText = `฿${salary.toLocaleString()}`;
+        if (document.getElementById('homeProfileActive')) document.getElementById('homeProfileActive').innerText = `฿${totalActive.toLocaleString()}`;
+        if (document.getElementById('homeProfilePassive')) document.getElementById('homeProfilePassive').innerText = `฿${totalPassive.toLocaleString()}`;
+        if (document.getElementById('homeProfileExpense')) document.getElementById('homeProfileExpense').innerText = `฿${expense.toLocaleString()}`;
+        if (document.getElementById('homeProfileNetSurplus')) document.getElementById('homeProfileNetSurplus').innerText = `฿${netSurplus.toLocaleString()}`;
+
+        if (document.getElementById('miniPlayerSalary')) document.getElementById('miniPlayerSalary').innerText = `฿${salary.toLocaleString()}`;
+        if (document.getElementById('miniPlayerActive')) document.getElementById('miniPlayerActive').innerText = `฿${totalActive.toLocaleString()}`;
+        if (document.getElementById('miniPlayerPassive')) document.getElementById('miniPlayerPassive').innerText = `฿${totalPassive.toLocaleString()}`;
+        if (document.getElementById('miniPlayerExpense')) document.getElementById('miniPlayerExpense').innerText = `฿${expense.toLocaleString()}`;
+        if (document.getElementById('miniPlayerNetSurplus')) document.getElementById('miniPlayerNetSurplus').innerText = `฿${netSurplus.toLocaleString()}`;
 
         // 4. สเตตัส 3 ด้าน
         const heartVal = profile.stats?.heart ?? (careerObj?.heart ?? 5);
         const timeVal = profile.stats?.time ?? (careerObj?.time ?? 5);
         const knowledgeVal = profile.stats?.knowledge ?? (careerObj?.knowledge ?? 5);
 
-        document.getElementById('homeStatHeart').innerText = heartVal;
-        document.getElementById('homeStatTime').innerText = timeVal;
-        document.getElementById('homeStatKnowledge').innerText = knowledgeVal;
+        if (document.getElementById('homeStatHeart')) document.getElementById('homeStatHeart').innerText = heartVal;
+        if (document.getElementById('homeStatTime')) document.getElementById('homeStatTime').innerText = timeVal;
+        if (document.getElementById('homeStatKnowledge')) document.getElementById('homeStatKnowledge').innerText = knowledgeVal;
+
+        if (document.getElementById('miniPlayerHeart')) document.getElementById('miniPlayerHeart').innerText = heartVal;
+        if (document.getElementById('miniPlayerTime')) document.getElementById('miniPlayerTime').innerText = timeVal;
+        if (document.getElementById('miniPlayerKnowledge')) document.getElementById('miniPlayerKnowledge').innerText = knowledgeVal;
 
       } catch (e) {
-        dashboard.classList.add('hidden');
+        if (dashboard) dashboard.classList.add('hidden');
+      }
+    }
+
+    // ฟังก์ชันเปิด/ปิด Pop-up เล็กแสดงข้อมูลผู้เล่นในการ์ดสุ่ม
+    function togglePlayerMiniModal() {
+      const modal = document.getElementById('playerMiniModal');
+      if (!modal) return;
+      const isHidden = modal.classList.contains('hidden');
+      if (isHidden) {
+        loadProfileSummary();
+        modal.classList.remove('hidden');
+      } else {
+        modal.classList.add('hidden');
       }
     }
 
@@ -1140,7 +1237,7 @@
     }
 
     /* ==========================================================================
-       PUSH TO GOOGLE SHEETS: แก้ไข CORS & Payload ให้บันทึกเข้า Google Cloud ได้ 100%
+       PUSH TO GOOGLE SHEETS
        ========================================================================== */
     async function pushToGoogleSheets() {
       saveLocalCache();
@@ -1322,12 +1419,16 @@
     }
 
     /* ==========================================================================
-       แสดงผล Pop-up สุ่มการ์ด (แก้ไขแสดงข้อมูลครบถ้วน: ราคา, Active, Passive, สเตตัส)
+       แสดงผล Pop-up สุ่มการ์ด
        ========================================================================== */
     function displayResultPopup(item) {
       if (!item) return;
       currentItem = item;
       const meta = getCategoryMeta(item.category);
+
+      // ซ่อน Pop-up เล็กของผู้เล่นไว้ก่อนเมื่อเปิดการ์ดใบใหม่
+      const miniModal = document.getElementById('playerMiniModal');
+      if (miniModal) miniModal.classList.add('hidden');
 
       // 1. หัวข้อ, หมวดหมู่, และ ID
       document.getElementById('popupTitle').innerText = item.title || 'ไม่มีชื่อการ์ด';
@@ -1337,7 +1438,7 @@
       document.getElementById('popupCategoryIcon').className = `fa-solid ${meta.icon} text-[10px]`;
       document.getElementById('popupIndexBadge').innerText = `#${item.id || 'CARD'}`;
 
-      // 2. ตัวเลขการเงินของการ์ด (ราคา, Active Income, Passive Income)
+      // 2. ตัวเลขการเงินของการ์ด
       document.getElementById('popupPrice').innerText = `฿${(Number(item.price) || 0).toLocaleString()}`;
       document.getElementById('popupActive').innerText = `+฿${(Number(item.activeIncome) || 0).toLocaleString()}`;
       document.getElementById('popupPassive').innerText = `+฿${(Number(item.passiveIncome) || 0).toLocaleString()}`;
@@ -1827,6 +1928,7 @@
 
       pushToGoogleSheets();
       updateCategoryDropdowns();
+      renderCategoryModalList();
       renderCategoryHomeCards();
       showToast(`เพิ่มหมวดหมู่ "${name}" สำเร็จ`, 'success');
     }
