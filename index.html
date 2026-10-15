@@ -233,6 +233,7 @@
             </span>
           </div>
 
+          <!-- ทรัพยากร 3 ด้าน -->
           <div class="flex items-center gap-4 font-mono font-bold">
             <span class="flex items-center gap-1 text-red-500" title="สุขภาพ (หัวใจ)">
               <i class="fa-solid fa-heart"></i>
@@ -370,6 +371,7 @@
                 <th class="py-3 px-4 w-12 text-center">#</th>
                 <th class="py-3 px-4">ชื่อการ์ด (Card Title)</th>
                 <th class="py-3 px-4 w-36 text-indigo-500">การ์ดใบนี้ใช้กับ</th>
+                <th class="py-3 px-4 w-24 text-blue-500">PV ของการ์ด</th>
                 <th class="py-3 px-4 w-24 text-amber-500">โอกาสสุ่ม</th>
                 <th class="py-3 px-4 w-24 text-red-600">ราคา</th>
                 <th class="py-3 px-4 w-24 text-green-500">Active</th>
@@ -422,7 +424,7 @@
   </nav>
 
   <!-- ============================================================ -->
-  <!-- POP-UP RESULT MODAL: ผลการสุ่ม + ตรวจสอบความพร้อมการรับการ์ด -->
+  <!-- POP-UP RESULT MODAL: ผลการสุ่ม + PV Badge + จำลอง PV ส่วนตัว -->
   <!-- ============================================================ -->
   <div id="resultModal" class="hidden fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-md flex items-center justify-center p-3 sm:p-4 overflow-y-auto">
     <div class="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-3xl max-w-2xl w-full p-4 sm:p-7 shadow-2xl relative my-auto animate-pop-in space-y-4">
@@ -442,7 +444,6 @@
         </div>
 
         <div class="flex items-center gap-1.5">
-          <!-- ปุ่มเปิด Pop-up เล็กจำลองข้อมูลผู้เล่น -->
           <button type="button" onclick="togglePlayerMiniModal()" id="playerInfoBadgeBtn" class="px-2.5 py-1.5 rounded-xl bg-blue-50 dark:bg-blue-950/50 hover:bg-blue-100 text-blue-600 dark:text-blue-300 text-xs font-bold transition flex items-center gap-1.5 shadow-sm border border-blue-200 dark:border-blue-800" title="ดูผลจำลองสถานะของผู้เล่นถ้ากดรับการ์ดนี้">
             <i class="fa-solid fa-chart-line text-blue-500"></i>
             <span>จำลองผลกระทบ</span>
@@ -454,9 +455,7 @@
         </div>
       </div>
 
-      <!-- ======================================================== -->
-      <!-- MINI POP-UP: แสดงผลจำลองสถานะผู้เล่น ก่อน/หลัง รับการ์ด -->
-      <!-- ======================================================== -->
+      <!-- MINI POP-UP: แสดงผลจำลองสถานะผู้เล่น ก่อน/หลัง รับการ์ด (รวมจำลอง PV ส่วนตัว) -->
       <div id="playerMiniModal" class="hidden rounded-2xl p-4 bg-gradient-to-br from-slate-50 to-indigo-50/40 dark:from-slate-900 dark:to-indigo-950/40 border-2 border-indigo-400/50 dark:border-indigo-600/50 shadow-2xl space-y-3 text-xs animate-pop-in relative">
         <div class="flex items-center justify-between border-b border-indigo-100 dark:border-indigo-900/60 pb-2">
           <div class="flex items-center gap-2">
@@ -471,7 +470,6 @@
           </button>
         </div>
 
-        <!-- กล่องข้อมูลการเงิน Before -> After (หักเงินสดที่นี่) -->
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5 font-mono">
           <!-- 1. เงินสดติดตัว (หักราคาการ์ด) -->
           <div class="p-2.5 rounded-xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 flex items-center justify-between">
@@ -532,11 +530,25 @@
             </div>
             <span id="simPassiveDiffBadge" class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-teal-100 text-teal-600 dark:bg-teal-950 dark:text-teal-400">+฿0</span>
           </div>
+
+          <!-- 5. จำลอง PV ส่วนตัว (แสดงเฉพาะเมื่อเป็นการ์ดใช้กับส่วนตัว) -->
+          <div id="simPersonalPvWrapper" class="col-span-1 sm:col-span-2 p-2.5 rounded-xl bg-blue-50/70 dark:bg-blue-950/30 border border-blue-200 dark:border-blue-800 flex items-center justify-between">
+            <div>
+              <span class="text-blue-500 dark:text-blue-400 block text-[10px] uppercase font-bold flex items-center gap-1">
+                <i class="fa-solid fa-award"></i> PV รวมส่วนบุคคล (Personal PV)
+              </span>
+              <div class="flex items-baseline gap-1 mt-0.5">
+                <span id="simPvBefore" class="text-xs text-slate-400">0 PV</span>
+                <i class="fa-solid fa-arrow-right text-[10px] text-slate-400 mx-0.5"></i>
+                <span id="simPvAfter" class="text-sm font-black text-blue-600 dark:text-blue-300">0 PV</span>
+              </div>
+            </div>
+            <span id="simPvDiffBadge" class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-blue-100 text-blue-600 dark:bg-blue-900/60 dark:text-blue-300">+0 PV</span>
+          </div>
         </div>
 
         <!-- จำลองสเตตัส 3 ด้าน -->
         <div class="p-2.5 rounded-xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 flex items-center justify-around font-mono font-bold text-xs">
-          <!-- หัวใจ -->
           <div class="flex flex-col items-center">
             <span class="text-slate-400 text-[9px] uppercase font-bold mb-0.5">สุขภาพ</span>
             <span class="flex items-center gap-1 text-red-500">
@@ -544,7 +556,6 @@
               <span id="simHeartBefore">0</span> ➔ <strong id="simHeartAfter" class="text-sm">0</strong>
             </span>
           </div>
-          <!-- เวลา -->
           <div class="flex flex-col items-center">
             <span class="text-slate-400 text-[9px] uppercase font-bold mb-0.5">เวลาว่าง</span>
             <span class="flex items-center gap-1 text-blue-500">
@@ -552,7 +563,6 @@
               <span id="simTimeBefore">0</span> ➔ <strong id="simTimeAfter" class="text-sm">0</strong>
             </span>
           </div>
-          <!-- ความรู้ -->
           <div class="flex flex-col items-center">
             <span class="text-slate-400 text-[9px] uppercase font-bold mb-0.5">ทักษะ</span>
             <span class="flex items-center gap-1 text-purple-500">
@@ -570,13 +580,24 @@
       <!-- Pop-up Content -->
       <div class="space-y-4 max-h-[70vh] overflow-y-auto pr-1">
         
-        <!-- ชื่อการ์ด & เป้าหมายการใช้งาน -->
-        <div class="space-y-1.5">
+        <!-- ชื่อการ์ด, เป้าหมายการใช้งาน และ PV ด้านขวา -->
+        <div class="space-y-2">
           <h2 id="popupTitle" class="app-title-text font-extrabold text-slate-900 dark:text-white tracking-normal leading-snug"></h2>
-          <div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-xl bg-indigo-50 dark:bg-indigo-950/40 border border-indigo-200 dark:border-indigo-800 text-indigo-600 dark:text-indigo-300 text-xs font-bold">
-            <i class="fa-solid fa-bullseye text-[11px]"></i>
-            <span class="text-slate-400 font-medium">การ์ดใบนี้ใช้กับ:</span>
-            <span id="popupSubtitle">ข้อมูลส่วนตัว</span>
+          
+          <div class="flex flex-wrap items-center gap-2">
+            <!-- ป้าย: การ์ดใบนี้ใช้กับ -->
+            <div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-xl bg-indigo-50 dark:bg-indigo-950/40 border border-indigo-200 dark:border-indigo-800 text-indigo-600 dark:text-indigo-300 text-xs font-bold">
+              <i class="fa-solid fa-bullseye text-[11px]"></i>
+              <span class="text-slate-400 font-medium">การ์ดใบนี้ใช้กับ:</span>
+              <span id="popupSubtitle">ข้อมูลส่วนตัว</span>
+            </div>
+
+            <!-- ป้าย: แสดง PV ของการ์ด ต่อจากด้านขวา -->
+            <div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-xl bg-blue-50 dark:bg-blue-950/40 border border-blue-200 dark:border-blue-800 text-blue-600 dark:text-blue-300 text-xs font-mono font-bold shadow-sm">
+              <i class="fa-solid fa-award text-[11px] text-blue-500"></i>
+              <span class="text-slate-400 font-medium">PV:</span>
+              <span id="popupCardPv">0 PV</span>
+            </div>
           </div>
         </div>
 
@@ -656,7 +677,6 @@
           </div>
         </div>
 
-        <!-- ข้อความแจ้งเตือนข้อผิดพลาดถ้าไม่ผ่านเงื่อนไข -->
         <div id="unaffordableAlertBox" class="hidden p-3 rounded-2xl bg-red-100 dark:bg-red-950/80 border border-red-300 dark:border-red-800 text-red-700 dark:text-red-300 text-xs font-bold flex items-center gap-2">
           <i class="fa-solid fa-circle-exclamation text-base shrink-0"></i>
           <span id="unaffordableAlertText">ไม่สามารถรับการ์ดได้เนื่องจากทรัพยากรหรือเงินสดไม่เพียงพอ</span>
@@ -677,7 +697,6 @@
             <span>ไม่รับการ์ด</span>
           </button>
 
-          <!-- ปุ่มรับการ์ด (จะเปลี่ยนเป็นสีเทาและกดไม่ได้เมื่อไม่ผ่านเงื่อนไข) -->
           <button type="button" id="popupAcceptBtn" onclick="handleAcceptCard()" class="px-5 sm:px-6 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-xs sm:text-sm font-black transition flex items-center gap-1.5 shadow-lg hover:scale-105 active:scale-95">
             <i id="popupAcceptBtnIcon" class="fa-solid fa-circle-check"></i>
             <span id="popupAcceptBtnText">รับการ์ด</span>
@@ -688,7 +707,7 @@
     </div>
   </div>
 
-  <!-- MODAL: จัดการการ์ด (สร้างใหม่ / แก้ไข / โคลน) -->
+  <!-- MODAL: จัดการการ์ด (เพิ่มช่อง PV ของการ์ด) -->
   <div id="itemModal" class="hidden fixed inset-0 z-50 bg-slate-950/70 backdrop-blur-sm flex items-center justify-center p-3 sm:p-4 overflow-y-auto">
     <div class="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-3xl max-w-xl w-full p-5 sm:p-6 shadow-2xl relative my-auto animate-pop-in">
       <div class="flex items-center justify-between pb-3 border-b border-slate-100 dark:border-slate-700">
@@ -735,17 +754,22 @@
           </div>
         </div>
         
-        <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+        <!-- หมวดหมู่, ราคา, น้ำหนัก, และเพิ่มช่อง PV ของการ์ด -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
           <div>
             <label class="block text-xs font-bold uppercase text-slate-600 dark:text-slate-300 mb-1">หมวดหมู่ <span class="text-rose-500">*</span></label>
             <select id="formCategory" required class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded-xl px-3 py-2 text-sm focus:ring-2 focus:ring-red-600"></select>
+          </div>
+          <div>
+            <label class="block text-xs font-bold uppercase text-blue-500 mb-1">PV ของการ์ด</label>
+            <input type="number" id="formPv" min="0" placeholder="0" class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded-xl px-3 py-2 text-sm font-mono font-bold text-blue-500 focus:ring-2 focus:ring-blue-600">
           </div>
           <div>
             <label class="block text-xs font-bold uppercase text-slate-600 dark:text-slate-300 mb-1">ราคา (บาท / ฿)</label>
             <input type="number" id="formPrice" min="0" placeholder="0" class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded-xl px-3 py-2 text-sm focus:ring-2 focus:ring-red-600">
           </div>
           <div>
-            <label class="block text-xs font-bold uppercase text-amber-500 mb-1">น้ำหนักโอกาส (Weight)</label>
+            <label class="block text-xs font-bold uppercase text-amber-500 mb-1">น้ำหนัก (Weight)</label>
             <input type="number" id="formWeight" min="1" value="10" class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded-xl px-3 py-2 text-sm font-mono font-bold">
           </div>
         </div>
@@ -1005,6 +1029,7 @@
         targetLeg: "",
         category: "การทำงาน",
         price: 350,
+        pv: 500,
         weight: 70,
         activeIncome: 15000,
         passiveIncome: 0,
@@ -1020,6 +1045,7 @@
         targetLeg: "",
         category: "สุขภาพ",
         price: 0,
+        pv: 0,
         weight: 20,
         activeIncome: 0,
         passiveIncome: 500,
@@ -1035,6 +1061,7 @@
         targetLeg: "A",
         category: "การเงิน",
         price: 5000,
+        pv: 2500,
         weight: 10,
         activeIncome: 0,
         passiveIncome: 3500,
@@ -1132,6 +1159,7 @@
         const expense = parseFloat(profile.expense) || (careerObj?.expense || 0);
         const cash = parseFloat(profile.cash) || (careerObj?.cash || 0);
 
+        const personalPv = parseFloat(profile.personalAmway?.pv) || 0;
         let totalActive = parseFloat(profile.personalAmway?.active) || 0;
         let totalPassive = parseFloat(profile.personalAmway?.passive) || 0;
 
@@ -1156,6 +1184,7 @@
           playerName: profile.fullName || currentAccount?.name || 'ผู้เล่น',
           careerName: careerObj?.name || (profile.careerId ? profile.careerId : 'ยังไม่ระบุอาชีพ'),
           cash,
+          personalPv,
           salary,
           expense,
           totalActive,
@@ -1196,9 +1225,6 @@
       if (document.getElementById('homeStatKnowledge')) document.getElementById('homeStatKnowledge').innerText = p.knowledge;
     }
 
-    /* ==========================================================================
-       คำนวณและตรวจสอบเงื่อนไขความพร้อม: หากเงินสดหรือทรัพยากรติดลบ ปิดปุ่มรับการ์ด
-       ========================================================================== */
     function checkAffordabilityAndValidate(p, item) {
       if (!p || !item) return { isAffordable: true, reasons: [] };
 
@@ -1237,6 +1263,7 @@
       };
     }
 
+    // ฟังก์ชันคำนวณและแสดงผลจำลองสถานะใน Mini Pop-up (รวมจำลอง PV ส่วนตัว)
     function updatePlayerMiniSimulation() {
       const p = getPlayerCurrentProfile();
       if (!p || !currentItem) return;
@@ -1244,6 +1271,7 @@
       const cardPrice = Number(currentItem.price) || 0;
       const cardActive = Number(currentItem.activeIncome) || 0;
       const cardPassive = Number(currentItem.passiveIncome) || 0;
+      const cardPv = Number(currentItem.pv) || 0;
 
       const check = checkAffordabilityAndValidate(p, currentItem);
 
@@ -1279,7 +1307,20 @@
       document.getElementById('simNetAfter').innerText = `฿${newNetSurplus.toLocaleString()}`;
       document.getElementById('simNetDiffBadge').innerText = `+฿${netDiff.toLocaleString()}`;
 
-      // 4. จำลองสเตตัส 3 ด้าน (สุทธิ: เดิม - ใช้ + ได้, เพดาน 0-10)
+      // 4. จำลอง PV ส่วนบุคคล (ถ้าเป็นการ์ดใช้กับส่วนบุคคล ให้แสดงผลจำลอง)
+      const isPersonal = (currentItem.targetType === 'personal' || !currentItem.targetLeg);
+      const pvWrapper = document.getElementById('simPersonalPvWrapper');
+      if (isPersonal) {
+        pvWrapper.classList.remove('hidden');
+        const newPv = p.personalPv + cardPv;
+        document.getElementById('simPvBefore').innerText = `${p.personalPv.toLocaleString()} PV`;
+        document.getElementById('simPvAfter').innerText = `${newPv.toLocaleString()} PV`;
+        document.getElementById('simPvDiffBadge').innerText = `+${cardPv.toLocaleString()} PV`;
+      } else {
+        pvWrapper.classList.add('hidden');
+      }
+
+      // 5. จำลองสเตตัส 3 ด้าน
       const costH = Number(currentItem.cost?.heart) || 0;
       const rewardH = Number(currentItem.reward?.heart) || 0;
       const rawNetH = p.heart - costH + rewardH;
@@ -1297,27 +1338,18 @@
 
       document.getElementById('simHeartBefore').innerText = p.heart;
       document.getElementById('simHeartAfter').innerText = finalH;
-      if (p.heart - costH < 0) {
-        document.getElementById('simHeartAfter').classList.add('text-red-500');
-      } else {
-        document.getElementById('simHeartAfter').classList.remove('text-red-500');
-      }
+      if (p.heart - costH < 0) document.getElementById('simHeartAfter').classList.add('text-red-500');
+      else document.getElementById('simHeartAfter').classList.remove('text-red-500');
 
       document.getElementById('simTimeBefore').innerText = p.time;
       document.getElementById('simTimeAfter').innerText = finalT;
-      if (p.time - costT < 0) {
-        document.getElementById('simTimeAfter').classList.add('text-red-500');
-      } else {
-        document.getElementById('simTimeAfter').classList.remove('text-red-500');
-      }
+      if (p.time - costT < 0) document.getElementById('simTimeAfter').classList.add('text-red-500');
+      else document.getElementById('simTimeAfter').classList.remove('text-red-500');
 
       document.getElementById('simKnowledgeBefore').innerText = p.knowledge;
       document.getElementById('simKnowledgeAfter').innerText = finalK;
-      if (p.knowledge - costK < 0) {
-        document.getElementById('simKnowledgeAfter').classList.add('text-red-500');
-      } else {
-        document.getElementById('simKnowledgeAfter').classList.remove('text-red-500');
-      }
+      if (p.knowledge - costK < 0) document.getElementById('simKnowledgeAfter').classList.add('text-red-500');
+      else document.getElementById('simKnowledgeAfter').classList.remove('text-red-500');
 
       const warningMsg = document.getElementById('simCashWarningMsg');
       if (!check.isAffordable) {
@@ -1427,9 +1459,6 @@
       }
     }
 
-    /* ==========================================================================
-       PUSH TO GOOGLE SHEETS
-       ========================================================================== */
     async function pushToGoogleSheets() {
       saveLocalCache();
       if (!GOOGLE_SHEET_API_URL || GOOGLE_SHEET_API_URL.includes("PLACEHOLDER")) return;
@@ -1610,7 +1639,7 @@
     }
 
     /* ==========================================================================
-       แสดงผล Pop-up สุ่มการ์ด: พร้อมตรวจสอบเงื่อนไขความพร้อมและปรับสถานะปุ่ม
+       แสดงผล Pop-up สุ่มการ์ด (แสดง PV ต่อจาก การ์ดใบนี้ใช้กับ)
        ========================================================================== */
     function displayResultPopup(item) {
       if (!item) return;
@@ -1620,9 +1649,10 @@
       const miniModal = document.getElementById('playerMiniModal');
       if (miniModal) miniModal.classList.add('hidden');
 
-      // 1. หัวข้อ, หมวดหมู่, และ ID
+      // 1. หัวข้อ, หมวดหมู่, เป้าหมาย และ PV ของการ์ด
       document.getElementById('popupTitle').innerText = item.title || 'ไม่มีชื่อการ์ด';
       document.getElementById('popupSubtitle').innerText = (item.targetType === 'leg' || item.targetLeg) ? `สายงาน ${item.targetLeg || 'A'}` : 'ข้อมูลส่วนตัว';
+      document.getElementById('popupCardPv').innerText = `${(Number(item.pv) || 0).toLocaleString()} PV`;
       document.getElementById('popupDescription').innerText = item.description || 'ไม่มีรายละเอียดเพิ่มเติม';
       document.getElementById('popupCategoryName').innerText = item.category || 'ทั่วไป';
       document.getElementById('popupCategoryIcon').className = `fa-solid ${meta.icon} text-[10px]`;
@@ -1665,9 +1695,7 @@
         forceBadge.classList.add('hidden');
       }
 
-      // =================================================================
-      // 6. ตรวจสอบเงื่อนไขความพร้อม: หากเงินสดหรือทรัพยากรไม่พอ ให้ปุ่มรับการ์ดกดไม่ได้และเป็นสีเทา
-      // =================================================================
+      // 6. ตรวจสอบเงื่อนไขความพร้อม (เงินสด และ ทรัพยากร)
       const p = getPlayerCurrentProfile();
       const check = checkAffordabilityAndValidate(p, item);
       const acceptBtn = document.getElementById('popupAcceptBtn');
@@ -1677,17 +1705,14 @@
       const alertText = document.getElementById('unaffordableAlertText');
 
       if (!check.isAffordable) {
-        // เงื่อนไขไม่ผ่าน: เปลี่ยนปุ่มเป็นสีเทา กดไม่ได้ (Disabled)
         acceptBtn.disabled = true;
         acceptBtn.className = "px-5 sm:px-6 py-2.5 rounded-xl bg-slate-300 dark:bg-slate-700 text-slate-400 dark:text-slate-500 text-xs sm:text-sm font-black transition flex items-center gap-1.5 shadow-none cursor-not-allowed border border-slate-300 dark:border-slate-600";
         acceptBtnText.innerText = "ไม่ผ่านเงื่อนไข";
         acceptBtnIcon.className = "fa-solid fa-ban text-xs";
 
-        // แสดงกล่องแจ้งเตือนสาเหตุ
         alertText.innerText = `ไม่สามารถรับการ์ดได้: ${check.reasons.join(', ')}`;
         alertBox.classList.remove('hidden');
       } else {
-        // เงื่อนไขผ่าน: ปุ่มสีเขียวตามปกติ
         acceptBtn.disabled = false;
         acceptBtn.className = "px-5 sm:px-6 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-xs sm:text-sm font-black transition flex items-center gap-1.5 shadow-lg hover:scale-105 active:scale-95";
         acceptBtnText.innerText = "รับการ์ด";
@@ -1703,13 +1728,12 @@
     }
 
     /* ==========================================================================
-       กดยืนยันรับการ์ด: หักเงินสด และเพิ่มรายรับ/ค่าพลังลงโปรไฟล์ผู้เล่นจริง
+       กดยืนยันรับการ์ด: หักเงินสด เพิ่มรายได้ ค่าพลัง และบวก PV เข้าส่วนตัว/สายงาน
        ========================================================================== */
     function handleAcceptCard() {
       if (!currentItem) return;
       const p = getPlayerCurrentProfile();
 
-      // ตรวจสอบความปลอดภัยซ้ำอีกครั้งก่อนหักเงิน
       const check = checkAffordabilityAndValidate(p, currentItem);
       if (!check.isAffordable) {
         showToast(`ไม่สามารถรับได้: ${check.reasons.join(', ')}`, 'warning');
@@ -1744,15 +1768,23 @@
 
         const cardActive = Number(currentItem.activeIncome) || 0;
         const cardPassive = Number(currentItem.passiveIncome) || 0;
+        const cardPv = Number(currentItem.pv) || 0;
 
+        // แยกการบันทึก PV และรายได้ตามเป้าหมาย (สายงาน vs ส่วนตัว)
         if (currentItem.targetType === 'leg' && currentItem.targetLeg) {
           const legKey = currentItem.targetLeg;
           if (!updatedProfile.legs) updatedProfile.legs = {};
           if (!updatedProfile.legs[legKey]) updatedProfile.legs[legKey] = { pv: 0, active: 0, passive: 0 };
+          
+          // บวก PV และรายได้เข้าไปที่สายงานนั้น
+          updatedProfile.legs[legKey].pv = (parseFloat(updatedProfile.legs[legKey].pv) || 0) + cardPv;
           updatedProfile.legs[legKey].active = (parseFloat(updatedProfile.legs[legKey].active) || 0) + cardActive;
           updatedProfile.legs[legKey].passive = (parseFloat(updatedProfile.legs[legKey].passive) || 0) + cardPassive;
         } else {
           if (!updatedProfile.personalAmway) updatedProfile.personalAmway = { pv: 0, active: 0, passive: 0 };
+          
+          // บวก PV และรายได้เข้าไปที่ส่วนตัว
+          updatedProfile.personalAmway.pv = (parseFloat(updatedProfile.personalAmway.pv) || 0) + cardPv;
           updatedProfile.personalAmway.active = (parseFloat(updatedProfile.personalAmway.active) || 0) + cardActive;
           updatedProfile.personalAmway.passive = (parseFloat(updatedProfile.personalAmway.passive) || 0) + cardPassive;
         }
@@ -1763,7 +1795,7 @@
       syncDrawnResultToProfile(currentItem);
       logHistory(currentItem);
       closeResultModal();
-      showToast(`รับการ์ด "${currentItem.title}" และหักเงินสด ฿${(Number(currentItem.price)||0).toLocaleString()} เรียบร้อยแล้ว! 🎉`, 'success');
+      showToast(`รับการ์ด "${currentItem.title}" (+${(Number(currentItem.pv)||0).toLocaleString()} PV) เรียบร้อยแล้ว! 🎉`, 'success');
       loadProfileSummary();
     }
 
@@ -1783,6 +1815,7 @@
           title: card.title,
           targetType: card.targetType || 'personal',
           targetLeg: card.targetLeg || '',
+          pv: card.pv || 0,
           activeIncome: card.activeIncome || 0,
           passiveIncome: card.passiveIncome || 0,
           cost: card.cost || {},
@@ -1842,6 +1875,7 @@
                 ${forceIcon}
               </td>
               <td class="py-3 px-4 font-medium text-slate-700 dark:text-slate-300">${formatTargetBadge(item)}</td>
+              <td class="py-3 px-4 font-mono font-bold text-xs text-blue-500">${(item.pv || 0).toLocaleString()}</td>
               <td class="py-3 px-4 font-mono font-bold text-xs text-amber-500">${item.weight || 10}</td>
               <td class="py-3 px-4 font-mono font-bold text-xs text-red-600">฿${(item.price || 0).toLocaleString()}</td>
               <td class="py-3 px-4 font-mono font-bold text-xs text-green-500">฿${(item.activeIncome || 0).toLocaleString()}</td>
@@ -1890,6 +1924,7 @@
                   <div class="flex items-center gap-1.5 flex-wrap">
                     <span class="text-[10px] px-2 py-0.5 rounded-full font-semibold border ${getCategoryMeta(item.category).theme.badge}">${escapeHTML(item.category)}</span>
                     <span class="text-xs font-semibold text-slate-600 dark:text-slate-300">ใช้กับ: ${formatTargetBadge(item)}</span>
+                    <span class="text-xs font-mono font-bold text-blue-500">${(item.pv || 0).toLocaleString()} PV</span>
                     ${forceLabel}
                   </div>
                   <h4 class="font-bold text-sm text-slate-800 dark:text-white mt-1">${escapeHTML(item.title)}</h4>
@@ -1900,8 +1935,9 @@
                   <button onclick="confirmDeleteItem('${item.id}')" class="p-1.5 text-slate-400 hover:text-red-500" title="ลบ"><i class="fa-solid fa-trash-can text-xs"></i></button>
                 </div>
               </div>
-              <div class="text-xs font-mono text-slate-400">
-                ราคา: ฿${item.price || 0}
+              <div class="flex items-center justify-between text-xs font-mono text-slate-400">
+                <span>ราคา: ฿${item.price || 0}</span>
+                <span>น้ำหนัก: ${item.weight || 10}</span>
               </div>
               <div class="grid grid-cols-2 gap-2 text-[11px] bg-slate-50 dark:bg-slate-900/60 p-2 rounded-lg font-mono">
                 <div>
@@ -1963,6 +1999,7 @@
         onTargetTypeChange();
 
         document.getElementById('formCategory').value = item.category || categories[0]?.name;
+        document.getElementById('formPv').value = item.pv !== undefined ? item.pv : '';
         document.getElementById('formPrice').value = item.price || '';
         document.getElementById('formWeight').value = item.weight || 10;
         document.getElementById('formActiveIncome').value = item.activeIncome || '';
@@ -2004,6 +2041,7 @@
         document.getElementById('formTargetType').value = 'personal';
         document.getElementById('formTargetLeg').value = 'A';
         document.getElementById('formForceAccept').checked = false;
+        document.getElementById('formPv').value = '';
         onTargetTypeChange();
         randomizeFormSliders();
 
@@ -2027,6 +2065,7 @@
         targetType: document.getElementById('formTargetType').value,
         targetLeg: document.getElementById('formTargetLeg').value,
         category: document.getElementById('formCategory').value,
+        pv: parseFloat(document.getElementById('formPv').value) || 0,
         price: parseFloat(document.getElementById('formPrice').value) || 0,
         weight: parseInt(document.getElementById('formWeight').value, 10) || 10,
         activeIncome: parseFloat(document.getElementById('formActiveIncome').value) || 0,
@@ -2064,6 +2103,7 @@
       const targetType = document.getElementById('formTargetType').value;
       const targetLeg = targetType === 'leg' ? document.getElementById('formTargetLeg').value : '';
       const category = document.getElementById('formCategory').value;
+      const pv = parseFloat(document.getElementById('formPv').value) || 0;
       const price = parseFloat(document.getElementById('formPrice').value) || 0;
       const weight = parseInt(document.getElementById('formWeight').value, 10) || 10;
       const activeIncome = parseFloat(document.getElementById('formActiveIncome').value) || 0;
@@ -2087,7 +2127,7 @@
         if (idx !== -1) {
           items[idx] = {
             ...items[idx],
-            title, targetType, targetLeg, category, price, weight,
+            title, targetType, targetLeg, category, pv, price, weight,
             activeIncome, passiveIncome, description, forceAccept, cost, reward
           };
           showToast(`บันทึกการแก้ไขการ์ด "${title}" เรียบร้อย`, 'success');
@@ -2095,7 +2135,7 @@
       } else {
         const newCard = {
           id: `c-${Date.now().toString().slice(-4)}`,
-          title, targetType, targetLeg, category, price, weight,
+          title, targetType, targetLeg, category, pv, price, weight,
           activeIncome, passiveIncome, description, forceAccept,
           cost, reward
         };
@@ -2204,6 +2244,7 @@
 
       pushToGoogleSheets();
       updateCategoryDropdowns();
+      renderCategoryModalList();
       renderCategoryHomeCards();
       showToast(`เพิ่มหมวดหมู่ "${name}" สำเร็จ`, 'success');
     }
@@ -2354,7 +2395,7 @@
       closeIconPicker();
     }
 
-    /* === ส่งออกข้อมูลเป็น CSV สำหรับเปิดใน Google Sheets / Excel === */
+    /* === ส่งออกข้อมูลเป็น CSV สำหรับเปิดใน Google Sheets / Excel (เพิ่มคอลัมน์ PV) === */
     function exportDatabaseToCSV() {
       if (!items || items.length === 0) {
         showToast('ไม่มีข้อมูลการ์ดในระบบสำหรับส่งออก', 'warning');
@@ -2365,6 +2406,7 @@
         "ID",
         "ชื่อการ์ด (Title)",
         "การ์ดใบนี้ใช้กับ (Target)",
+        "PV ของการ์ด",
         "หมวดหมู่ (Category)",
         "โอกาสสุ่ม (Weight)",
         "ราคา (Price)",
@@ -2389,6 +2431,7 @@
           `"${item.id || ''}"`,
           `"${(item.title || '').replace(/"/g, '""')}"`,
           `"${target}"`,
+          item.pv || 0,
           `"${item.category || ''}"`,
           item.weight || 10,
           item.price || 0,
@@ -2541,7 +2584,10 @@
             <span class="font-bold text-slate-800 dark:text-white">${escapeHTML(h.title)}</span>
             <span class="text-[10px] text-slate-400 ml-2">${new Date(h.timestamp).toLocaleTimeString('th-TH')}</span>
           </div>
-          <span class="font-bold text-emerald-500">+฿${(h.activeIncome || 0).toLocaleString()}</span>
+          <div class="flex items-center gap-2">
+            <span class="font-bold text-blue-500">+${(h.pv || 0).toLocaleString()} PV</span>
+            <span class="font-bold text-emerald-500">+฿${(h.activeIncome || 0).toLocaleString()}</span>
+          </div>
         </li>
       `).join('');
     }
