@@ -340,12 +340,10 @@
       </div>
     </section>
 
-    <!-- ======================================================== -->
-    <!-- VIEW 3: คลังข้อมูลการ์ด (แยกแยะสถานะการซิงก์ Cloud vs Local) -->
-    <!-- ======================================================== -->
+    <!-- VIEW 3: คลังข้อมูลการ์ด -->
     <section id="view-data" class="hidden space-y-4 animate-pop-in">
       
-      <!-- กล่องแจ้งเตือนรายการที่ค้างเฉพาะในเครื่อง (ถ้ามี) -->
+      <!-- กล่องแจ้งเตือนรายการที่ค้างเฉพาะในเครื่อง -->
       <div id="localOnlyAlertBanner" class="hidden p-3.5 rounded-2xl bg-amber-50 dark:bg-amber-950/40 border border-amber-300 dark:border-amber-700/60 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 shadow-sm">
         <div class="flex items-center gap-2.5 text-amber-800 dark:text-amber-300 text-xs font-bold">
           <i class="fa-solid fa-circle-exclamation text-base text-amber-500 shrink-0"></i>
@@ -382,10 +380,8 @@
         </div>
       </div>
 
-      <!-- กล่องแสดงผลตามความละเอียดหน้าจอ (Adaptive Display) -->
+      <!-- ตารางแสดงผลตามขนาดจอ -->
       <div class="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-2xl shadow-sm overflow-hidden">
-        
-        <!-- โหมด Desktop / Tablet (แสดงตารางแนวนอน) -->
         <div class="hidden sm:block overflow-x-auto">
           <table class="w-full text-left text-xs sm:text-sm text-slate-600 dark:text-slate-300 border-collapse">
             <thead class="bg-slate-50 dark:bg-slate-900/60 border-b border-slate-200 dark:border-slate-700 text-[11px] sm:text-xs uppercase font-bold text-slate-500 whitespace-nowrap">
@@ -408,10 +404,8 @@
           </table>
         </div>
 
-        <!-- โหมด Mobile (แสดงเป็นการ์ดคอมแพกต์) -->
         <div id="tableBodyMobile" class="sm:hidden p-3 space-y-3 bg-slate-50/50 dark:bg-slate-900/40"></div>
 
-        <!-- สถานะไม่มีข้อมูล -->
         <div id="emptyDataState" class="hidden p-10 text-center space-y-2">
           <i class="fa-solid fa-inbox text-3xl text-slate-300"></i>
           <p class="text-xs text-slate-500">ไม่พบการ์ดข้อมูลตามเงื่อนไข</p>
@@ -615,7 +609,6 @@
               <span id="popupSubtitle">ข้อมูลส่วนตัว</span>
             </div>
 
-            <!-- ป้าย: แสดง PV ของการ์ด ต่อจากด้านขวา -->
             <div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-xl bg-blue-50 dark:bg-blue-950/40 border border-blue-200 dark:border-blue-800 text-blue-600 dark:text-blue-300 text-xs font-mono font-bold shadow-sm">
               <i class="fa-solid fa-award text-[11px] text-blue-500"></i>
               <span class="text-slate-400 font-medium">PV:</span>
@@ -812,7 +805,6 @@
           <textarea id="formDescription" rows="2" placeholder="ระบุรายละเอียดเพิ่มเติม..." class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded-xl px-3.5 py-2 text-sm focus:ring-2 focus:ring-red-600"></textarea>
         </div>
 
-        <!-- กล่อง Checkbox: บังคับรับการ์ด -->
         <div class="p-3 rounded-2xl bg-red-50/50 dark:bg-red-950/20 border border-red-200 dark:border-red-900/40 flex items-center justify-between">
           <div class="space-y-0.5">
             <label for="formForceAccept" class="text-xs font-black text-red-600 dark:text-red-400 flex items-center gap-1.5 cursor-pointer">
@@ -824,7 +816,6 @@
           <input type="checkbox" id="formForceAccept" class="w-5 h-5 rounded text-red-600 focus:ring-red-500 accent-red-600 cursor-pointer shrink-0">
         </div>
 
-        <!-- สิ่งที่ต้องใช้ & สิ่งที่ได้รับ -->
         <div class="p-3.5 bg-slate-50 dark:bg-slate-900/80 rounded-2xl border border-slate-200 dark:border-slate-700 space-y-3">
           <div class="flex items-center justify-between">
             <span class="text-xs font-bold text-slate-700 dark:text-slate-200 uppercase">เงื่อนไขทรัพยากร (0 - 10)</span>
@@ -958,9 +949,13 @@
     </div>
   </div>
 
-  <!-- SETTING MODAL -->
+  <!-- ============================================================ -->
+  <!-- SETTING MODAL: เพิ่ม Label แสดงชื่อฐานข้อมูล / แหล่งข้อมูล -->
+  <!-- ============================================================ -->
   <div id="settingModal" class="hidden fixed inset-0 z-50 bg-slate-950/70 backdrop-blur-sm flex items-center justify-center p-4">
-    <div class="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-3xl max-w-md w-full p-5 sm:p-6 shadow-2xl relative animate-pop-in space-y-5">
+    <div class="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-3xl max-w-md w-full p-5 sm:p-6 shadow-2xl relative animate-pop-in space-y-4">
+      
+      <!-- Modal Header -->
       <div class="flex items-center justify-between pb-3 border-b border-slate-100 dark:border-slate-700">
         <div class="flex items-center gap-2.5">
           <div class="w-9 h-9 rounded-xl bg-slate-100 dark:bg-slate-700 text-slate-700 dark:text-slate-200 flex items-center justify-center text-lg shadow-sm">
@@ -968,7 +963,7 @@
           </div>
           <div>
             <h3 class="font-bold text-base text-slate-900 dark:text-white">การตั้งค่าระบบ</h3>
-            <p class="text-xs text-slate-400">ปรับแต่งและจัดการสำรองข้อมูล</p>
+            <p class="text-xs text-slate-400">ข้อมูลระบบและสำรองข้อมูล</p>
           </div>
         </div>
         <button onclick="closeSettingModal()" class="w-8 h-8 rounded-lg text-slate-400 hover:text-slate-700 flex items-center justify-center">
@@ -976,6 +971,25 @@
         </button>
       </div>
 
+      <!-- 1. LABEL แสดงชื่อฐานข้อมูล / แหล่งข้อมูล -->
+      <div class="p-3.5 bg-slate-50 dark:bg-slate-900/60 rounded-2xl border border-slate-200 dark:border-slate-700/80 flex items-center justify-between gap-3">
+        <div class="flex items-center gap-3 min-w-0">
+          <div class="w-9 h-9 rounded-xl bg-blue-500/10 text-blue-500 flex items-center justify-center text-sm shrink-0">
+            <i class="fa-solid fa-server"></i>
+          </div>
+          <div class="min-w-0">
+            <span class="text-[10px] font-bold uppercase tracking-wider text-slate-400 block">ฐานข้อมูลปัจจุบัน (Database)</span>
+            <span id="settingDatabaseName" class="text-xs sm:text-sm font-bold text-slate-800 dark:text-white truncate block">
+              Google Sheets: DataHub / CardList
+            </span>
+          </div>
+        </div>
+        <span id="settingDatabaseBadge" class="text-[10px] font-mono font-bold px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-700 dark:bg-emerald-950/80 dark:text-emerald-300 border border-emerald-300 dark:border-emerald-800 shrink-0">
+          ONLINE
+        </span>
+      </div>
+
+      <!-- 2. โหมดสว่าง / มืด -->
       <div class="p-3 bg-slate-50 dark:bg-slate-900/60 rounded-2xl border border-slate-200 dark:border-slate-700/80 flex items-center justify-between">
         <div class="flex items-center gap-3">
           <div class="w-8 h-8 rounded-xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 flex items-center justify-center text-sm shadow-sm">
@@ -991,6 +1005,7 @@
         </button>
       </div>
 
+      <!-- 3. สำรองและส่งออกฐานข้อมูล -->
       <div class="p-3.5 bg-slate-50 dark:bg-slate-900/60 rounded-2xl border border-slate-200 dark:border-slate-700/80 space-y-3">
         <div class="flex items-center gap-2">
           <i class="fa-solid fa-database text-xs text-amber-500"></i>
@@ -1400,9 +1415,6 @@
       }
     }
 
-    /* ==========================================================================
-       LOAD & SAVE LOCAL CACHE (พร้อมระบุ syncStatus)
-       ========================================================================== */
     function loadLocalCache() {
       try {
         const cItems = localStorage.getItem('rnd_cache_items');
@@ -1438,9 +1450,6 @@
       renderCategoryHomeCards();
     }
 
-    /* ==========================================================================
-       SYNC WITH GOOGLE SHEETS
-       ========================================================================== */
     async function fetchFromGoogleSheets(isManual = false) {
       if (!GOOGLE_SHEET_API_URL || GOOGLE_SHEET_API_URL.includes("PLACEHOLDER")) {
         setCloudStatus('ใช้งานแบบออฟไลน์', 'text-slate-400');
@@ -1459,11 +1468,9 @@
           let updated = false;
 
           if (Array.isArray(data.items) && data.items.length > 0) {
-            // มาร์กการ์ดที่มาจากชีตว่าเป็น synced ทั้งหมด
             const cloudItems = data.items.map(it => ({ ...it, syncStatus: "synced" }));
             const cloudIds = new Set(cloudItems.map(i => i.id));
 
-            // หากในเครื่องมีการ์ดที่เพิ่งสร้างใหม่ (local_only) และยังไม่ขึ้นชีต ให้นำมาต่อท้ายไว้ไม่ให้หาย
             const pendingLocalItems = items.filter(i => i.syncStatus === 'local_only' && !cloudIds.has(i.id));
             items = [...cloudItems, ...pendingLocalItems];
             updated = true;
@@ -1499,13 +1506,11 @@
       }
     }
 
-    /* บังคับดึงข้อมูลจาก Cloud มาเขียนทับข้อมูลในเครื่อง 100% */
     async function forceSyncFromCloud() {
       if (!confirm("คุณต้องการดึงข้อมูลล่าสุดจาก Google Sheets มาแทนที่ข้อมูลในเครื่องนี้ใช่หรือไม่?")) return;
       await fetchFromGoogleSheets(true);
     }
 
-    /* บังคับส่งข้อมูลทั้งเครื่องขึ้นไปเขียนทับบน Google Sheets */
     async function forcePushToCloud() {
       if (!confirm(`ต้องการส่งข้อมูลทั้ง ${items.length} รายการจากเครื่องนี้ขึ้นไปแทนที่บน Google Sheets ใช่หรือไม่?`)) return;
       await pushToGoogleSheets();
@@ -1519,7 +1524,6 @@
       try {
         const payload = {
           action: 'saveData',
-          // การ์ดทุกใบที่ส่งขึ้นชีตจะถูกปรับสถานะเป็น synced
           items: items.map(it => ({ ...it, syncStatus: "synced" })),
           categories: categories,
           historyLog: historyLog
@@ -1532,7 +1536,6 @@
           body: JSON.stringify(payload)
         });
 
-        // เปลี่ยนสถานะในเครื่องเป็น synced ทั้งหมด
         items.forEach(it => it.syncStatus = "synced");
         saveLocalCache();
         renderDataTable();
@@ -1877,14 +1880,10 @@
       return 'ข้อมูลส่วนตัว';
     }
 
-    /* ==========================================================================
-       เรนเดอร์ตารางคลังข้อมูล (แสดง Badge แยก: ชีต ☁️ VS เฉพาะเครื่อง 📱)
-       ========================================================================== */
     function renderDataTable() {
       const query = (document.getElementById('searchInput')?.value || '').toLowerCase().trim();
       const filterCat = document.getElementById('tableCategoryFilter')?.value || 'ALL';
 
-      // นับจำนวนการ์ดที่มีเฉพาะในเครื่องนี้
       const localOnlyCount = items.filter(i => i.syncStatus === 'local_only').length;
       const banner = document.getElementById('localOnlyAlertBanner');
       const bannerCount = document.getElementById('localOnlyCountText');
@@ -1918,7 +1917,6 @@
       }
       if (emptyState) emptyState.classList.add('hidden');
 
-      // 1. เรนเดอร์ Desktop / Tablet
       if (desktopTbody) {
         desktopTbody.innerHTML = filtered.map((item, idx) => {
           const costH = Number(item.cost?.heart) || 0;
@@ -1933,7 +1931,6 @@
             ? `<span title="การ์ดใบนี้บังคับรับ" class="ml-1 text-[10px] text-red-500"><i class="fa-solid fa-lock"></i></span>` 
             : '';
 
-          // ตรวจสอบสถานะการซิงก์
           const isSynced = (item.syncStatus === "synced");
           const syncBadge = isSynced 
             ? `<span title="ข้อมูลบันทึกบน Google Sheet เรียบร้อยแล้ว" class="inline-flex items-center gap-1 text-[10px] font-bold text-emerald-600 bg-emerald-50 dark:bg-emerald-950/60 px-2 py-0.5 rounded-full border border-emerald-200 dark:border-emerald-800"><i class="fa-solid fa-cloud text-[9px]"></i> ชีต</span>`
@@ -1993,7 +1990,6 @@
         }).join('');
       }
 
-      // 2. เรนเดอร์ Mobile
       if (mobileList) {
         mobileList.innerHTML = filtered.map(item => {
           const costH = Number(item.cost?.heart) || 0;
@@ -2252,7 +2248,7 @@
             ...items[idx],
             title, targetType, targetLeg, category, pv, price, weight,
             activeIncome, passiveIncome, description, forceAccept, cost, reward,
-            syncStatus: "local_only" // เปลี่ยนเป็นค้างในเครื่องก่อน
+            syncStatus: "local_only"
           };
           showToast(`บันทึกการแก้ไขการ์ด "${title}" เรียบร้อย`, 'success');
         }
@@ -2262,7 +2258,7 @@
           title, targetType, targetLeg, category, pv, price, weight,
           activeIncome, passiveIncome, description, forceAccept,
           cost, reward,
-          syncStatus: "local_only" // การ์ดใหม่เป็น local_only จนกว่าจะ sync สำเร็จ
+          syncStatus: "local_only"
         };
         items.unshift(newCard);
         showToast(isClone ? `โคลนการ์ดใบใหม่ "${title}" เรียบร้อยแล้ว! 🎉` : `สร้างการ์ดใหม่เรียบร้อยแล้ว`, 'success');
@@ -2520,7 +2516,6 @@
       closeIconPicker();
     }
 
-    /* === ส่งออกข้อมูลเป็น CSV สำหรับเปิดใน Google Sheets / Excel === */
     function exportDatabaseToCSV() {
       if (!items || items.length === 0) {
         showToast('ไม่มีข้อมูลการ์ดในระบบสำหรับส่งออก', 'warning');
@@ -2664,6 +2659,7 @@
       document.getElementById('settingModal').classList.add('hidden');
     }
 
+    /* อัปเดต Label แสดงชื่อฐานข้อมูลใน Setting */
     function updateSettingModalUI() {
       const isDark = document.documentElement.classList.contains('dark');
       const icon = document.getElementById('settingThemeIcon');
@@ -2671,6 +2667,21 @@
       if (icon && text) {
         icon.className = isDark ? "fa-solid fa-moon text-red-500" : "fa-solid fa-sun text-amber-500";
         text.innerText = isDark ? "Night Mode (โหมดมืด)" : "Light Mode (โหมดสว่าง)";
+      }
+
+      // แสดงชื่อฐานข้อมูลปัจจุบัน
+      const dbNameEl = document.getElementById('settingDatabaseName');
+      const dbBadgeEl = document.getElementById('settingDatabaseBadge');
+      if (dbNameEl && dbBadgeEl) {
+        if (!GOOGLE_SHEET_API_URL || GOOGLE_SHEET_API_URL.includes("PLACEHOLDER")) {
+          dbNameEl.innerText = "Local Storage (ออฟไลน์ในเครื่อง)";
+          dbBadgeEl.innerText = "OFFLINE";
+          dbBadgeEl.className = "text-[10px] font-mono font-bold px-2 py-0.5 rounded-full bg-slate-200 text-slate-600 dark:bg-slate-700 dark:text-slate-300 shrink-0";
+        } else {
+          dbNameEl.innerText = "Google Sheets: DataHub / CardList";
+          dbBadgeEl.innerText = "CONNECTED";
+          dbBadgeEl.className = "text-[10px] font-mono font-bold px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-700 dark:bg-emerald-950/80 dark:text-emerald-300 border border-emerald-300 dark:border-emerald-800 shrink-0";
+        }
       }
     }
 
