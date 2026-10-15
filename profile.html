@@ -34,6 +34,15 @@
               amber: '#F59E0B',
               purple: '#8B5CF6'
             }
+          },
+          animation: {
+            'pop-in': 'popIn 0.3s cubic-bezier(0.16, 1, 0.3, 1)',
+          },
+          keyframes: {
+            popIn: {
+              '0%': { opacity: '0', transform: 'scale(0.92) translateY(12px)' },
+              '100%': { opacity: '1', transform: 'scale(1) translateY(0)' }
+            }
           }
         }
       }
@@ -108,20 +117,20 @@
     input[type=range]:focus { outline: none; }
     input[type=range]::-webkit-slider-thumb {
       -webkit-appearance: none;
-      height: 24px;
-      width: 24px;
+      height: 22px;
+      width: 22px;
       border-radius: 50%;
       background: #FFFFFF;
       box-shadow: 0 2px 8px rgba(0,0,0,0.3);
       cursor: pointer;
-      margin-top: -9px;
+      margin-top: -8px;
       border: 3.5px solid currentColor;
       transition: transform 0.15s ease;
     }
     input[type=range]::-webkit-slider-thumb:hover { transform: scale(1.15); }
     input[type=range]::-webkit-slider-runnable-track {
       width: 100%;
-      height: 7px;
+      height: 6px;
       border-radius: 9999px;
       background: #E2E8F0;
     }
@@ -172,12 +181,6 @@
           </button>
         </div>
 
-        <!-- ปุ่ม Export เป็น Google Sheets (.CSV) -->
-        <button type="button" onclick="exportProfileToGoogleSheetCSV()" title="ส่งออกข้อมูลโปรไฟล์เป็นไฟล์ Google Sheets (.CSV)" class="px-2.5 sm:px-3 py-2 rounded-xl text-xs sm:text-sm font-bold transition-all flex items-center gap-1.5 border border-emerald-300 dark:border-emerald-700/60 bg-emerald-50 dark:bg-emerald-950/40 text-emerald-700 dark:text-emerald-300 shadow-sm hover:bg-emerald-100">
-          <i class="fa-solid fa-file-excel text-xs text-emerald-600"></i>
-          <span class="hidden md:inline">Export Sheets</span>
-        </button>
-
         <button type="button" onclick="fetchCareersFromCloud(true)" title="ดึงข้อมูลจาก Google Sheets" class="px-2.5 sm:px-3 py-2 rounded-xl text-xs sm:text-sm font-bold transition-all flex items-center gap-1.5 border border-slate-200 dark:border-white/10 bg-white dark:bg-slate-800 shadow-sm hover:border-slate-300">
           <i id="syncCareersIcon" class="fa-solid fa-rotate text-xs text-amber-500"></i>
           <span class="hidden md:inline">Sync ชีต</span>
@@ -188,8 +191,9 @@
           <span id="editText" class="hidden sm:inline">ปลดล็อคแก้ไข</span>
         </button>
 
-        <button type="button" onclick="toggleTheme()" class="w-9 h-9 sm:w-10 sm:h-10 rounded-xl border border-slate-200 dark:border-white/10 bg-white dark:bg-slate-800 text-slate-600 dark:text-slate-300 flex items-center justify-center shadow-sm">
-          <i id="themeIcon" class="fa-solid fa-moon text-sm"></i>
+        <!-- ปุ่ม Setting รูปเฟืองสีแดง ที่มุมขวาบน -->
+        <button type="button" onclick="openSettingModal()" title="การตั้งค่าระบบและสำรองข้อมูล" class="w-9 h-9 sm:w-10 sm:h-10 rounded-xl border border-red-200 dark:border-red-900/50 bg-white dark:bg-slate-800 text-red-500 hover:text-red-600 hover:bg-red-50 dark:hover:bg-red-950/30 flex items-center justify-center shadow-sm transition group">
+          <i class="fa-solid fa-gear text-base sm:text-lg group-hover:rotate-90 transition-transform duration-300"></i>
         </button>
       </div>
 
@@ -308,22 +312,16 @@
             </div>
           </div>
 
-          <!-- SECTION 2: อาชีพในเกม & พลังทรัพยากร (ข้อมูลส่วนตัวของผู้เล่น ไม่เขียนทับ Master Careers) -->
+          <!-- SECTION 2: อาชีพในเกม & พลังทรัพยากร -->
           <div class="glass-card rounded-3xl p-5 sm:p-7 shadow-sm space-y-4">
-            <div class="flex items-center justify-between pb-3 border-b border-slate-100 dark:border-white/5">
-              <div class="flex items-center gap-3">
-                <div class="w-10 h-10 rounded-2xl bg-gradient-to-br from-amber-500 to-orange-600 text-white flex items-center justify-center text-base shadow-sm">
-                  <i class="fa-solid fa-briefcase"></i>
-                </div>
-                <div>
-                  <h2 class="text-lg font-bold text-slate-900 dark:text-white">2. อาชีพในเกม & พลังทรัพยากร (Game Careers & Stats)</h2>
-                  <p class="text-xs text-slate-400">เลือกอาชีพต้นแบบ แล้วปรับแต่งรายได้/ค่าพลังเฉพาะตัวของคุณได้ (ผูกกับบัญชีผู้เล่น ไม่ทับฐานข้อมูลกลาง)</p>
-                </div>
+            <div class="flex items-center gap-3 pb-3 border-b border-slate-100 dark:border-white/5">
+              <div class="w-10 h-10 rounded-2xl bg-gradient-to-br from-amber-500 to-orange-600 text-white flex items-center justify-center text-base shadow-sm">
+                <i class="fa-solid fa-briefcase"></i>
               </div>
-              
-              <button type="button" id="openCareerManagerBtn" onclick="openCareerManagerModal()" title="จัดการฐานข้อมูลอาชีพต้นแบบ (Master DB)" class="w-10 h-10 rounded-xl bg-amber-500/10 hover:bg-amber-500/20 text-amber-600 dark:text-amber-400 border border-amber-500/30 flex items-center justify-center text-sm shadow-sm transition">
-                <i class="fa-solid fa-sliders"></i>
-              </button>
+              <div>
+                <h2 class="text-lg font-bold text-slate-900 dark:text-white">2. อาชีพในเกม & พลังทรัพยากร (Game Careers & Stats)</h2>
+                <p class="text-xs text-slate-400">เลือกอาชีพต้นแบบ แล้วปรับแต่งรายได้/ค่าพลังเฉพาะตัวของคุณได้ (ผูกกับบัญชีผู้เล่น ไม่ทับฐานข้อมูลกลาง)</p>
+              </div>
             </div>
 
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
@@ -360,66 +358,63 @@
               </div>
             </div>
 
-            <!-- ทรัพยากร 3 ด้าน -->
-            <div class="p-4 sm:p-6 rounded-3xl bg-slate-50/90 dark:bg-slate-900/50 border border-slate-200/80 dark:border-white/5 space-y-4">
-              <div class="flex items-center justify-between border-b border-slate-200/60 dark:border-white/5 pb-2.5">
-                <span class="text-sm sm:text-base font-black uppercase tracking-wider text-slate-700 dark:text-slate-200 flex items-center gap-2">
+            <!-- ทรัพยากร 3 ด้าน (เอาข้อความออก เหลือแค่ไอคอน และลดขนาดตัวเลขลง 1 ระดับ) -->
+            <div class="p-4 sm:p-5 rounded-3xl bg-slate-50/90 dark:bg-slate-900/50 border border-slate-200/80 dark:border-white/5 space-y-3.5">
+              <div class="flex items-center justify-between border-b border-slate-200/60 dark:border-white/5 pb-2">
+                <span class="text-xs sm:text-sm font-black uppercase tracking-wider text-slate-700 dark:text-slate-300 flex items-center gap-2">
                   <i class="fa-solid fa-gauge-high text-amber-500"></i>
-                  <span>ค่าพลังทรัพยากรส่วนตัวผู้เล่น (สเกล 0 - 10)</span>
+                  <span>ค่าพลังทรัพยากร (0 - 10)</span>
                 </span>
-                <span class="text-xs font-semibold text-slate-400">บันทึกเฉพาะในบัญชีของคุณ</span>
+                <span class="text-[11px] text-slate-400">บันทึกเฉพาะในบัญชีของคุณ</span>
               </div>
 
-              <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-5">
-                <!-- 1. สุขภาพ (หัวใจ) -->
-                <div class="p-4 sm:p-5 rounded-2xl bg-white dark:bg-slate-800/90 border-2 border-red-500/30 dark:border-red-500/40 shadow-sm space-y-3.5">
+              <div class="grid grid-cols-1 sm:grid-cols-3 gap-3.5 sm:gap-4">
+                <!-- 1. หัวใจ (ไอคอนอย่างเดียว ตัวเลข text-2xl sm:text-3xl) -->
+                <div class="p-3.5 sm:p-4 rounded-2xl bg-white dark:bg-slate-800/90 border-2 border-red-500/30 dark:border-red-500/40 shadow-sm space-y-3">
                   <div class="flex justify-between items-center">
-                    <span class="text-sm sm:text-base font-extrabold text-red-500 flex items-center gap-2">
+                    <span class="text-red-500 flex items-center">
                       <i class="fa-solid fa-heart text-2xl animate-pulse"></i>
-                      <span>สุขภาพ (หัวใจ)</span>
                     </span>
                     <div class="flex items-baseline gap-1 font-mono">
-                      <span id="statHeartVal" class="text-3xl sm:text-4xl font-black text-red-600 dark:text-red-400 leading-none">5</span>
-                      <span class="text-sm text-slate-400 font-bold">/10</span>
+                      <span id="statHeartVal" class="text-2xl sm:text-3xl font-black text-red-600 dark:text-red-400 leading-none">5</span>
+                      <span class="text-xs text-slate-400 font-bold">/10</span>
                     </div>
                   </div>
-                  <div class="w-full bg-slate-100 dark:bg-slate-700/80 h-4 rounded-full overflow-hidden p-0.5 border border-slate-200 dark:border-slate-600/50">
+                  <div class="w-full bg-slate-100 dark:bg-slate-700/80 h-3 rounded-full overflow-hidden p-0.5 border border-slate-200 dark:border-slate-600/50">
                     <div id="barHeart" class="h-full rounded-full bg-gradient-to-r from-red-500 to-rose-600 shadow-sm transition-all duration-300" style="width: 50%;"></div>
                   </div>
                   <input type="range" min="0" max="10" value="5" id="sliderHeart" oninput="updateStatBadge('Heart', this.value)" class="w-full text-red-500">
                 </div>
 
-                <!-- 2. เวลาว่าง (เวลา) -->
-                <div class="p-4 sm:p-5 rounded-2xl bg-white dark:bg-slate-800/90 border-2 border-blue-500/30 dark:border-blue-500/40 shadow-sm space-y-3.5">
+                <!-- 2. เวลา (ไอคอนอย่างเดียว ตัวเลข text-2xl sm:text-3xl) -->
+                <div class="p-3.5 sm:p-4 rounded-2xl bg-white dark:bg-slate-800/90 border-2 border-blue-500/30 dark:border-blue-500/40 shadow-sm space-y-3">
                   <div class="flex justify-between items-center">
-                    <span class="text-sm sm:text-base font-extrabold text-blue-500 flex items-center gap-2">
+                    <span class="text-blue-500 flex items-center">
                       <i class="fa-solid fa-clock text-2xl"></i>
-                      <span>เวลาว่าง (เวลา)</span>
                     </span>
                     <div class="flex items-baseline gap-1 font-mono">
-                      <span id="statTimeVal" class="text-3xl sm:text-4xl font-black text-blue-600 dark:text-blue-400 leading-none">5</span>
-                      <span class="text-sm text-slate-400 font-bold">/10</span>
+                      <span id="statTimeVal" class="text-2xl sm:text-3xl font-black text-blue-600 dark:text-blue-400 leading-none">5</span>
+                      <span class="text-xs text-slate-400 font-bold">/10</span>
                     </div>
                   </div>
-                  <div class="w-full bg-slate-100 dark:bg-slate-700/80 h-4 rounded-full overflow-hidden p-0.5 border border-slate-200 dark:border-slate-600/50">
+                  <div class="w-full bg-slate-100 dark:bg-slate-700/80 h-3 rounded-full overflow-hidden p-0.5 border border-slate-200 dark:border-slate-600/50">
                     <div id="barTime" class="h-full rounded-full bg-gradient-to-r from-sky-400 to-blue-600 shadow-sm transition-all duration-300" style="width: 50%;"></div>
                   </div>
                   <input type="range" min="0" max="10" value="5" id="sliderTime" oninput="updateStatBadge('Time', this.value)" class="w-full text-blue-500">
                 </div>
 
-                <!-- 3. ทักษะ (ความรู้ - fa-book) -->
-                <div class="p-4 sm:p-5 rounded-2xl bg-white dark:bg-slate-800/90 border-2 border-purple-500/30 dark:border-purple-500/40 shadow-sm space-y-3.5">
+                <!-- 3. ความรู้ (ไอคอนอย่างเดียว ตัวเลข text-2xl sm:text-3xl) -->
+                <div class="p-3.5 sm:p-4 rounded-2xl bg-white dark:bg-slate-800/90 border-2 border-purple-500/30 dark:border-purple-500/40 shadow-sm space-y-3">
                   <div class="flex justify-between items-center">
-                    <span class="text-sm sm:text-base font-extrabold text-purple-500 flex items-center gap-2">
+                    <span class="text-purple-500 flex items-center">
                       <i class="fa-solid fa-book text-2xl"></i>
-                      <span>ทักษะ (ความรู้)</span>
                     </span>
                     <div class="flex items-baseline gap-1 font-mono">
-                      <span id="statKnowledgeVal" class="text-3xl sm:text-4xl font-black text-purple-600 dark:text-purple-400 leading-none">5</span>
-                      <span class="text-sm text-slate-400 font-bold">/10</span>
+                      <span id="statKnowledgeVal" class="text-2xl sm:text-3xl font-black text-purple-600 dark:text-purple-400 leading-none">5</span>
+                      <span class="text-xs text-slate-400 font-bold">/10</span>
                     </div>
                   </div>
-                  <div class="w-full bg-slate-100 dark:bg-slate-700/80 h-4 rounded-full overflow-hidden p-0.5 border border-slate-200 dark:border-slate-600/50">
+                  <div class="w-full bg-slate-100 dark:bg-slate-700/80 h-3 rounded-full overflow-hidden p-0.5 border border-slate-200 dark:border-slate-600/50">
                     <div id="barKnowledge" class="h-full rounded-full bg-gradient-to-r from-purple-500 to-indigo-600 shadow-sm transition-all duration-300" style="width: 50%;"></div>
                   </div>
                   <input type="range" min="0" max="10" value="5" id="sliderKnowledge" oninput="updateStatBadge('Knowledge', this.value)" class="w-full text-purple-500">
@@ -513,12 +508,6 @@
               <span>หน้าสุ่มการ์ด</span>
             </a>
 
-            <!-- ปุ่ม Export ใน Floating Dock -->
-            <button type="button" onclick="exportProfileToGoogleSheetCSV()" class="px-3 sm:px-3.5 py-2.5 rounded-xl border border-emerald-300 dark:border-emerald-700/60 bg-emerald-50 dark:bg-emerald-950/40 text-emerald-700 dark:text-emerald-300 hover:bg-emerald-100 text-xs sm:text-sm font-bold transition flex items-center gap-1.5 shadow-sm" title="ส่งออกข้อมูลโปรไฟล์เป็นไฟล์ Google Sheets (.CSV)">
-              <i class="fa-solid fa-file-excel text-xs text-emerald-600"></i>
-              <span class="hidden sm:inline">Export Sheets</span>
-            </button>
-
             <button type="button" id="resetBtn" onclick="confirmResetProfile()" class="px-3 sm:px-3.5 py-2.5 rounded-xl border border-red-200 dark:border-red-500/20 text-red-500 hover:bg-red-50 dark:hover:bg-red-950/30 text-xs sm:text-sm font-bold transition flex items-center gap-1.5">
               <i class="fa-solid fa-trash-can"></i>
               <span class="hidden sm:inline">ล้างข้อมูล</span>
@@ -586,7 +575,101 @@
 
   </main>
 
-  <!-- MODAL: จัดการฐานข้อมูลอาชีพ (Master Careers Database) -->
+  <!-- ============================================================ -->
+  <!-- SETTING MODAL: รวมศูนย์การตั้งค่า, Theme, อาชีพต้นแบบ และ Import/Export -->
+  <!-- ============================================================ -->
+  <div id="settingModal" class="hidden fixed inset-0 z-50 bg-slate-950/75 backdrop-blur-sm flex items-center justify-center p-3 sm:p-4 overflow-y-auto">
+    <div class="bg-white dark:bg-[#111C44] rounded-3xl max-w-md w-full p-5 sm:p-6 shadow-2xl border border-slate-200 dark:border-white/10 space-y-4 my-auto animate-pop-in">
+      
+      <!-- Modal Header -->
+      <div class="flex items-center justify-between pb-3 border-b border-slate-100 dark:border-white/10">
+        <div class="flex items-center gap-2.5">
+          <div class="w-10 h-10 rounded-2xl bg-red-500/10 text-red-500 flex items-center justify-center text-lg">
+            <i class="fa-solid fa-gear"></i>
+          </div>
+          <div>
+            <h3 class="font-bold text-base sm:text-lg text-slate-900 dark:text-white">การตั้งค่าระบบ (Settings)</h3>
+            <p class="text-xs text-slate-400">จัดการหน้าตา, อาชีพ และสำรองข้อมูล</p>
+          </div>
+        </div>
+        <button type="button" onclick="closeSettingModal()" class="w-8 h-8 rounded-xl text-slate-400 hover:text-slate-600 dark:hover:text-white flex items-center justify-center">
+          <i class="fa-solid fa-xmark text-lg"></i>
+        </button>
+      </div>
+
+      <!-- 1. โหมดสว่าง / มืด (Light / Dark Mode) -->
+      <div class="p-3.5 bg-slate-50 dark:bg-slate-900/60 rounded-2xl border border-slate-200 dark:border-white/5 flex items-center justify-between">
+        <div class="flex items-center gap-3">
+          <div class="w-9 h-9 rounded-xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-white/10 flex items-center justify-center text-sm shadow-sm">
+            <i id="settingThemeIcon" class="fa-solid fa-moon text-red-500"></i>
+          </div>
+          <div>
+            <span class="text-xs font-bold text-slate-800 dark:text-white block">โหมดสว่าง / มืด</span>
+            <span id="settingThemeStatusText" class="text-[10px] text-slate-400">Night Mode</span>
+          </div>
+        </div>
+        <button type="button" onclick="toggleTheme()" class="px-3.5 py-1.5 rounded-xl text-xs font-bold border border-slate-300 dark:border-white/10 bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-200 shadow-sm hover:border-red-400">
+          สลับโหมด
+        </button>
+      </div>
+
+      <!-- 2. จัดการอาชีพต้นแบบ (Master Careers) -->
+      <div class="p-3.5 bg-slate-50 dark:bg-slate-900/60 rounded-2xl border border-slate-200 dark:border-white/5 flex items-center justify-between">
+        <div class="flex items-center gap-3">
+          <div class="w-9 h-9 rounded-xl bg-amber-500/10 text-amber-500 flex items-center justify-center text-sm">
+            <i class="fa-solid fa-briefcase"></i>
+          </div>
+          <div>
+            <span class="text-xs font-bold text-slate-800 dark:text-white block">จัดการอาชีพต้นแบบ</span>
+            <span class="text-[10px] text-slate-400">แก้ไขฐานข้อมูลอาชีพกลาง (Master DB)</span>
+          </div>
+        </div>
+        <button type="button" onclick="closeSettingModal(); openCareerManagerModal();" class="px-3.5 py-1.5 rounded-xl text-xs font-bold bg-amber-500 hover:bg-amber-600 text-white shadow-sm flex items-center gap-1.5">
+          <i class="fa-solid fa-sliders text-[11px]"></i>
+          <span>จัดการ</span>
+        </button>
+      </div>
+
+      <!-- 3. สำรองข้อมูลและส่งออกฐานข้อมูล (Import / Export) -->
+      <div class="p-3.5 bg-slate-50 dark:bg-slate-900/60 rounded-2xl border border-slate-200 dark:border-white/5 space-y-3">
+        <div>
+          <span class="text-xs font-bold text-slate-800 dark:text-white block flex items-center gap-1.5">
+            <i class="fa-solid fa-database text-blue-500"></i>
+            <span>สำรองและส่งออกข้อมูล (Backup & Export)</span>
+          </span>
+          <p class="text-[10px] text-slate-400 mt-0.5">ส่งออกไฟล์เพื่อเปิดใน Google Sheets หรือสำรองข้อมูลทั้งระบบ</p>
+        </div>
+
+        <div class="grid grid-cols-3 gap-2 pt-1">
+          <!-- Export Sheets CSV -->
+          <button type="button" onclick="exportProfileToGoogleSheetCSV()" class="py-2.5 px-2 rounded-xl bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-300 dark:border-emerald-700/60 hover:bg-emerald-100 text-emerald-700 dark:text-emerald-300 text-xs font-bold flex flex-col items-center justify-center gap-1 shadow-sm transition" title="ส่งออกข้อมูลเป็นตารางสำหรับเปิดใน Google Sheets">
+            <i class="fa-solid fa-file-excel text-base text-emerald-600"></i>
+            <span>Sheets (.CSV)</span>
+          </button>
+
+          <!-- Backup JSON -->
+          <button type="button" onclick="exportProfileJSONBackup()" class="py-2.5 px-2 rounded-xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-white/10 hover:border-slate-300 text-slate-700 dark:text-slate-200 text-xs font-bold flex flex-col items-center justify-center gap-1 shadow-sm transition" title="ดาวน์โหลดไฟล์สำรองข้อมูล JSON">
+            <i class="fa-solid fa-download text-base text-blue-500"></i>
+            <span>Backup (.JSON)</span>
+          </button>
+
+          <!-- Import JSON -->
+          <button type="button" onclick="triggerImportProfileBackup()" class="py-2.5 px-2 rounded-xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-white/10 hover:border-purple-400 text-slate-700 dark:text-slate-200 text-xs font-bold flex flex-col items-center justify-center gap-1 shadow-sm transition" title="นำเข้าไฟล์สำรองข้อมูล">
+            <i class="fa-solid fa-upload text-base text-purple-500"></i>
+            <span>Import</span>
+          </button>
+          <input type="file" id="profileImportFileInput" accept=".json" onchange="handleImportProfileBackup(event)" class="hidden">
+        </div>
+      </div>
+
+      <div class="pt-2 flex justify-end">
+        <button type="button" onclick="closeSettingModal()" class="px-5 py-2 rounded-xl text-white text-xs font-bold shadow btn-gradient-red">เสร็จสิ้น</button>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- MODAL: จัดการฐานข้อมูลอาชีพต้นแบบ (Master Careers) -->
   <div id="careerManagerModal" class="hidden fixed inset-0 z-50 bg-slate-950/70 backdrop-blur-sm flex items-center justify-center p-3 sm:p-4 overflow-y-auto">
     <div class="bg-white dark:bg-[#111C44] rounded-3xl max-w-lg w-full p-5 sm:p-6 shadow-2xl border border-slate-200 dark:border-white/10 space-y-4 max-h-[92vh] flex flex-col my-auto">
       <div class="flex items-center justify-between pb-3 border-b border-slate-100 dark:border-white/10">
@@ -596,7 +679,7 @@
           </div>
           <div>
             <h3 class="font-bold text-base sm:text-lg text-slate-900 dark:text-white">จัดการฐานข้อมูลอาชีพต้นแบบ (Master Careers)</h3>
-            <p class="text-xs text-slate-400">การแก้ไขที่นี่คือการเปลี่ยนข้อมูลต้นแบบในฐานข้อมูลชีตกลาง</p>
+            <p class="text-xs text-slate-400">กำหนดชื่อ, เงินสดติดตัว, เงินเดือน, รายจ่าย และค่าพลัง (0-10)</p>
           </div>
         </div>
         <button type="button" onclick="closeCareerManagerModal()" class="w-9 h-9 rounded-xl text-slate-400 hover:text-slate-600 dark:hover:text-white flex items-center justify-center">
@@ -653,7 +736,7 @@
           <div class="flex items-center gap-2 text-xs">
             <span class="w-24 font-bold text-purple-500 flex items-center gap-1.5"><i class="fa-solid fa-book"></i> ความรู้:</span>
             <input type="range" min="0" max="10" value="5" id="crudCareerKnowledge" oninput="document.getElementById('crudKnowledgeBadge').innerText = this.value" class="flex-1 text-purple-500">
-            <span id="crudKnowledgeBadge" class="w-7 text-center font-mono font-black text-purple-500 bg-purple-50 dark:bg-purple-950/50 py-0.5 rounded">5</span>
+            <span id="crudKnowledgeBadge" class="w-7 text-center font-mono font-black text-purple-500 bg-purple-100 dark:bg-purple-950/50 py-0.5 rounded">5</span>
           </div>
         </div>
 
@@ -860,7 +943,6 @@
   <script>
     const GOOGLE_SHEET_API_URL = "https://script.google.com/macros/s/AKfycbzq9oD33K3nf_r2JRq5RjCafAQIvt2o9ywvJ1EvXvVg4l9QyUalIuQvxxT7zQ890nR1/exec";
 
-    // ฐานข้อมูลอาชีพต้นแบบ (Master Template DB)
     const DEFAULT_CAREERS = [
       { id: "business_owner", name: "เจ้าของธุรกิจส่วนตัว", cash: 100000, salary: 75000, expense: 45000, heart: 6, time: 4, knowledge: 8 },
       { id: "software_engineer", name: "วิศวกรซอฟต์แวร์ / โปรแกรมเมอร์", cash: 50000, salary: 65000, expense: 32000, heart: 5, time: 3, knowledge: 9 },
@@ -1330,7 +1412,6 @@
 
       const saveBtn = document.getElementById('saveProfileBtn');
       const resetBtn = document.getElementById('resetBtn');
-      const openCareerBtn = document.getElementById('openCareerManagerBtn');
       const openQualBtn = document.getElementById('openQualManagerBtn');
 
       if (saveBtn) {
@@ -1341,10 +1422,6 @@
       if (resetBtn) {
         resetBtn.disabled = !isEditMode;
         resetBtn.classList.toggle('opacity-50', !isEditMode);
-      }
-      if (openCareerBtn) {
-        openCareerBtn.disabled = !isEditMode;
-        openCareerBtn.classList.toggle('opacity-50', !isEditMode);
       }
       if (openQualBtn) {
         openQualBtn.disabled = !isEditMode;
@@ -1534,7 +1611,7 @@
     }
 
     /* ==========================================================================
-       ฐานข้อมูลอาชีพต้นแบบ (Master Careers DB) - แก้ไข CORS & บันทึกลง Cloud สมบูรณ์
+       ฐานข้อมูลอาชีพต้นแบบ (Master Careers DB)
        ========================================================================== */
     async function loadCareersDB() {
       try {
@@ -1587,12 +1664,10 @@
     }
 
     async function saveCareersDB() {
-      // 1. บันทึกในเครื่อง
       localStorage.setItem('game_careers_database', JSON.stringify(careersDB));
       renderCareersDropdown();
       renderCareerListTable();
 
-      // 2. ซิงก์ขึ้น Google Cloud ด้วย text/plain เพื่อให้ Apps Script อ่าน JSON ก้อนเต็มได้
       if (!GOOGLE_SHEET_API_URL || GOOGLE_SHEET_API_URL.includes("PLACEHOLDER")) return;
       setCloudCareersStatus('กำลังบันทึกลงชีต...', 'text-amber-500');
       try {
@@ -1625,10 +1700,6 @@
       }
     }
 
-    /* ==========================================================================
-       เมื่อผู้เล่นเลือกอาชีพ: ดึงค่าต้นแบบมาใส่ในฟอร์มส่วนตัวของผู้เล่น
-       * การเปลี่ยนแปลงหลังจากนี้จะถูกผูกไว้ใน Profile Account ของผู้เล่นเท่านั้น ไม่ทับ Master DB *
-       ========================================================================== */
     function onCareerSelected(careerId) {
       const career = careersDB.find(c => c.id === careerId);
       if (career) {
@@ -1894,9 +1965,94 @@
       showToast('ส่งออก Layout โปรไฟล์สำหรับ Google Sheets สำเร็จ 📊', 'success');
     }
 
+    /* === สำรองข้อมูลทั้งระบบเป็น JSON (Backup & Import) === */
+    function exportProfileJSONBackup() {
+      const backupData = {
+        app: "ProfileHub",
+        version: "1.0",
+        exportDate: new Date().toISOString(),
+        currentAccount: currentAccount,
+        profile: JSON.parse(localStorage.getItem(getProfileStorageKey()) || "{}"),
+        careersDB: careersDB,
+        qualificationsDB: qualificationsDB
+      };
+
+      const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(backupData, null, 2));
+      const a = document.createElement('a');
+      a.setAttribute("href", dataStr);
+      a.setAttribute("download", `Profile_Backup_${new Date().toISOString().slice(0, 10)}.json`);
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      showToast('ส่งออกไฟล์สำรอง JSON สำเร็จ 📥', 'success');
+    }
+
+    function triggerImportProfileBackup() {
+      document.getElementById('profileImportFileInput').click();
+    }
+
+    function handleImportProfileBackup(event) {
+      const file = event.target.files[0];
+      if (!file) return;
+
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        try {
+          const imported = JSON.parse(e.target.result);
+          if (!imported || typeof imported !== 'object') {
+            showToast('ไฟล์สำรองไม่ถูกต้อง', 'warning');
+            return;
+          }
+
+          if (confirm('คุณต้องการนำเข้าและกู้คืนข้อมูลใช่หรือไม่? ข้อมูลปัจจุบันจะถูกแทนที่')) {
+            if (imported.profile) {
+              localStorage.setItem(getProfileStorageKey(), JSON.stringify(imported.profile));
+            }
+            if (Array.isArray(imported.careersDB) && imported.careersDB.length > 0) {
+              careersDB = imported.careersDB;
+              localStorage.setItem('game_careers_database', JSON.stringify(careersDB));
+              renderCareersDropdown();
+              renderCareerListTable();
+            }
+            if (Array.isArray(imported.qualificationsDB) && imported.qualificationsDB.length > 0) {
+              qualificationsDB = imported.qualificationsDB;
+              saveQualificationsDB();
+            }
+
+            loadProfileData();
+            closeSettingModal();
+            showToast('กู้คืนข้อมูลสำเร็จเรียบร้อย 📤✅', 'success');
+          }
+        } catch (err) {
+          showToast('ไม่สามารถอ่านไฟล์ JSON ได้', 'danger');
+        }
+      };
+      reader.readAsText(file);
+      event.target.value = '';
+    }
+
+    /* === ควบคุม Setting Modal === */
+    function openSettingModal() {
+      updateSettingModalUI();
+      document.getElementById('settingModal').classList.remove('hidden');
+    }
+
+    function closeSettingModal() {
+      document.getElementById('settingModal').classList.add('hidden');
+    }
+
+    function updateSettingModalUI() {
+      const isDark = document.documentElement.classList.contains('dark');
+      const icon = document.getElementById('settingThemeIcon');
+      const text = document.getElementById('settingThemeStatusText');
+      if (icon && text) {
+        icon.className = isDark ? "fa-solid fa-moon text-red-500" : "fa-solid fa-sun text-amber-500";
+        text.innerText = isDark ? "Night Mode (โหมดมืด)" : "Light Mode (โหมดสว่าง)";
+      }
+    }
+
     /* ==========================================================================
        บันทึกข้อมูลโปรไฟล์: ผูกข้อมูลไว้เฉพาะใน Account ที่ล็อกอินอยู่
-       * ไม่เขียนทับ Master Careers DB เด็ดขาด *
        ========================================================================== */
     function saveProfileData(isAutoSave = false) {
       const fullNameInput = document.getElementById('userFullName');
@@ -1923,7 +2079,6 @@
         if (cb) checkedQuals[q.id] = cb.checked;
       });
 
-      // ข้อมูลทั้งหมด (รวมถึง cash, salary, expense, stats ที่ถูกแก้ไข) จะเก็บใน profileData ของ Account นี้เท่านั้น
       const profileData = {
         accountId: currentAccount.id,
         accountType: currentAccount.type,
@@ -1956,7 +2111,6 @@
         };
       });
 
-      // บันทึกลง Storage ประจำตัวของ Account นี้
       localStorage.setItem(getProfileStorageKey(), JSON.stringify(profileData));
       registerAccountToDirectory(currentAccount.id, currentAccount.type, profileData.fullName, profileData.phone || profileData.email);
       recordUserActivity(currentAccount.id, "บันทึกข้อมูลโปรไฟล์", `อัปเดตสเตตัส อาชีพ: ${document.getElementById('gameCareerSelect').selectedOptions[0]?.text || ''} (เงินสด: ฿${profileData.cash.toLocaleString()})`);
@@ -2001,13 +2155,11 @@
 
         if (data.careerId) {
           document.getElementById('gameCareerSelect').value = data.careerId;
-          // โหลดค่า cash, salary, expense ที่ผูกกับบัญชีผู้เล่น
           document.getElementById('careerCash').value = data.cash !== undefined ? data.cash : '';
           document.getElementById('careerSalary').value = data.salary !== undefined ? data.salary : '';
           document.getElementById('careerExpense').value = data.expense !== undefined ? data.expense : '';
         }
 
-        // โหลดค่าพลังที่ผูกกับบัญชีผู้เล่น
         if (data.stats) {
           updateStatBadge('Heart', data.stats.heart ?? 5);
           updateStatBadge('Time', data.stats.time ?? 5);
@@ -2102,13 +2254,13 @@
     function toggleTheme() {
       const isDark = document.documentElement.classList.toggle('dark');
       localStorage.setItem('rnd_theme_dark', isDark ? 'true' : 'false');
-      document.getElementById('themeIcon').className = isDark ? 'fa-solid fa-moon text-sm' : 'fa-solid fa-sun text-sm text-amber-500';
+      updateSettingModalUI();
     }
 
     function initTheme() {
       const isDark = localStorage.getItem('rnd_theme_dark') !== 'false';
       document.documentElement.classList.toggle('dark', isDark);
-      document.getElementById('themeIcon').className = isDark ? 'fa-solid fa-moon text-sm' : 'fa-solid fa-sun text-sm text-amber-500';
+      updateSettingModalUI();
     }
 
     function showToast(msg, type = 'info') {
