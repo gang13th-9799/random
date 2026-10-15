@@ -181,6 +181,11 @@
           </button>
         </div>
 
+        <button type="button" onclick="exportProfileToGoogleSheetCSV()" title="ส่งออกข้อมูลโปรไฟล์เป็นไฟล์ Google Sheets (.CSV)" class="px-2.5 sm:px-3 py-2 rounded-xl text-xs sm:text-sm font-bold transition-all flex items-center gap-1.5 border border-emerald-300 dark:border-emerald-700/60 bg-emerald-50 dark:bg-emerald-950/40 text-emerald-700 dark:text-emerald-300 shadow-sm hover:bg-emerald-100">
+          <i class="fa-solid fa-file-excel text-xs text-emerald-600"></i>
+          <span class="hidden md:inline">Export Sheets</span>
+        </button>
+
         <button type="button" onclick="fetchCareersFromCloud(true)" title="ดึงข้อมูลจาก Google Sheets" class="px-2.5 sm:px-3 py-2 rounded-xl text-xs sm:text-sm font-bold transition-all flex items-center gap-1.5 border border-slate-200 dark:border-white/10 bg-white dark:bg-slate-800 shadow-sm hover:border-slate-300">
           <i id="syncCareersIcon" class="fa-solid fa-rotate text-xs text-amber-500"></i>
           <span class="hidden md:inline">Sync ชีต</span>
@@ -191,7 +196,7 @@
           <span id="editText" class="hidden sm:inline">ปลดล็อคแก้ไข</span>
         </button>
 
-        <!-- ปุ่ม Setting รูปเฟืองสีแดง ที่มุมขวาบน -->
+        <!-- ปุ่ม Setting รูปเฟืองสีแดง -->
         <button type="button" onclick="openSettingModal()" title="การตั้งค่าระบบและสำรองข้อมูล" class="w-9 h-9 sm:w-10 sm:h-10 rounded-xl border border-red-200 dark:border-red-900/50 bg-white dark:bg-slate-800 text-red-500 hover:text-red-600 hover:bg-red-50 dark:hover:bg-red-950/30 flex items-center justify-center shadow-sm transition group">
           <i class="fa-solid fa-gear text-base sm:text-lg group-hover:rotate-90 transition-transform duration-300"></i>
         </button>
@@ -358,7 +363,7 @@
               </div>
             </div>
 
-            <!-- ทรัพยากร 3 ด้าน (เอาข้อความออก เหลือแค่ไอคอน และลดขนาดตัวเลขลง 1 ระดับ) -->
+            <!-- ทรัพยากร 3 ด้าน -->
             <div class="p-4 sm:p-5 rounded-3xl bg-slate-50/90 dark:bg-slate-900/50 border border-slate-200/80 dark:border-white/5 space-y-3.5">
               <div class="flex items-center justify-between border-b border-slate-200/60 dark:border-white/5 pb-2">
                 <span class="text-xs sm:text-sm font-black uppercase tracking-wider text-slate-700 dark:text-slate-300 flex items-center gap-2">
@@ -369,7 +374,6 @@
               </div>
 
               <div class="grid grid-cols-1 sm:grid-cols-3 gap-3.5 sm:gap-4">
-                <!-- 1. หัวใจ (ไอคอนอย่างเดียว ตัวเลข text-2xl sm:text-3xl) -->
                 <div class="p-3.5 sm:p-4 rounded-2xl bg-white dark:bg-slate-800/90 border-2 border-red-500/30 dark:border-red-500/40 shadow-sm space-y-3">
                   <div class="flex justify-between items-center">
                     <span class="text-red-500 flex items-center">
@@ -386,7 +390,6 @@
                   <input type="range" min="0" max="10" value="5" id="sliderHeart" oninput="updateStatBadge('Heart', this.value)" class="w-full text-red-500">
                 </div>
 
-                <!-- 2. เวลา (ไอคอนอย่างเดียว ตัวเลข text-2xl sm:text-3xl) -->
                 <div class="p-3.5 sm:p-4 rounded-2xl bg-white dark:bg-slate-800/90 border-2 border-blue-500/30 dark:border-blue-500/40 shadow-sm space-y-3">
                   <div class="flex justify-between items-center">
                     <span class="text-blue-500 flex items-center">
@@ -403,7 +406,6 @@
                   <input type="range" min="0" max="10" value="5" id="sliderTime" oninput="updateStatBadge('Time', this.value)" class="w-full text-blue-500">
                 </div>
 
-                <!-- 3. ความรู้ (ไอคอนอย่างเดียว ตัวเลข text-2xl sm:text-3xl) -->
                 <div class="p-3.5 sm:p-4 rounded-2xl bg-white dark:bg-slate-800/90 border-2 border-purple-500/30 dark:border-purple-500/40 shadow-sm space-y-3">
                   <div class="flex justify-between items-center">
                     <span class="text-purple-500 flex items-center">
@@ -423,7 +425,7 @@
             </div>
           </div>
 
-          <!-- SECTION 3: เช็คลิสต์ คุณสมบัติ -->
+          <!-- SECTION 3: เช็คลิสต์ คุณสมบัติ (ปุ่มจัดการบันทึกเป็นฐานข้อมูลหลัก ส่วนการติ๊กผูกกับ Account) -->
           <div class="glass-card rounded-3xl p-5 sm:p-7 shadow-sm space-y-4">
             <div class="flex items-center justify-between pb-3 border-b border-slate-100 dark:border-white/5">
               <div class="flex items-center gap-3">
@@ -432,11 +434,12 @@
                 </div>
                 <div>
                   <h2 class="text-lg font-bold text-slate-900 dark:text-white">3. เช็คลิสต์คุณสมบัติความก้าวหน้า (Qualifications)</h2>
-                  <p class="text-xs text-slate-400">เมื่อติ๊กเลือกข้อใด แถบพื้นหลังทั้งข้อความจะเปลี่ยนเป็นสีเขียว</p>
+                  <p class="text-xs text-slate-400">การติ๊กถูกจะผูกติดกับบัญชีผู้เล่นของคุณ (ไม่กระทบผู้อื่น)</p>
                 </div>
               </div>
 
-              <button type="button" id="openQualManagerBtn" onclick="openQualManagerModal()" title="จัดการคุณสมบัติ (เพิ่ม/ลบ/แก้ไข หมวดหมู่ & รายละเอียด)" class="w-10 h-10 rounded-xl bg-emerald-500/10 hover:bg-emerald-500/20 text-emerald-600 dark:text-emerald-400 border border-emerald-500/30 flex items-center justify-center text-sm shadow-sm transition">
+              <!-- ปุ่มจัดการคุณสมบัติฐานข้อมูลหลัก (Master Qualifications DB) -->
+              <button type="button" id="openQualManagerBtn" onclick="openQualManagerModal()" title="จัดการคุณสมบัติฐานข้อมูลหลัก (เพิ่ม/ลบ/แก้ไข ข้อกำหนดกลาง)" class="w-10 h-10 rounded-xl bg-emerald-500/10 hover:bg-emerald-500/20 text-emerald-600 dark:text-emerald-400 border border-emerald-500/30 flex items-center justify-center text-sm shadow-sm transition">
                 <i class="fa-solid fa-sliders"></i>
               </button>
             </div>
@@ -508,6 +511,11 @@
               <span>หน้าสุ่มการ์ด</span>
             </a>
 
+            <button type="button" onclick="exportProfileToGoogleSheetCSV()" class="px-3 sm:px-3.5 py-2.5 rounded-xl border border-emerald-300 dark:border-emerald-700/60 bg-emerald-50 dark:bg-emerald-950/40 text-emerald-700 dark:text-emerald-300 hover:bg-emerald-100 text-xs sm:text-sm font-bold transition flex items-center gap-1.5 shadow-sm" title="ส่งออกข้อมูลโปรไฟล์เป็นไฟล์ Google Sheets (.CSV)">
+              <i class="fa-solid fa-file-excel text-xs text-emerald-600"></i>
+              <span class="hidden sm:inline">Export Sheets</span>
+            </button>
+
             <button type="button" id="resetBtn" onclick="confirmResetProfile()" class="px-3 sm:px-3.5 py-2.5 rounded-xl border border-red-200 dark:border-red-500/20 text-red-500 hover:bg-red-50 dark:hover:bg-red-950/30 text-xs sm:text-sm font-bold transition flex items-center gap-1.5">
               <i class="fa-solid fa-trash-can"></i>
               <span class="hidden sm:inline">ล้างข้อมูล</span>
@@ -576,12 +584,11 @@
   </main>
 
   <!-- ============================================================ -->
-  <!-- SETTING MODAL: รวมศูนย์การตั้งค่า, Theme, อาชีพต้นแบบ และ Import/Export -->
+  <!-- SETTING MODAL -->
   <!-- ============================================================ -->
   <div id="settingModal" class="hidden fixed inset-0 z-50 bg-slate-950/75 backdrop-blur-sm flex items-center justify-center p-3 sm:p-4 overflow-y-auto">
     <div class="bg-white dark:bg-[#111C44] rounded-3xl max-w-md w-full p-5 sm:p-6 shadow-2xl border border-slate-200 dark:border-white/10 space-y-4 my-auto animate-pop-in">
       
-      <!-- Modal Header -->
       <div class="flex items-center justify-between pb-3 border-b border-slate-100 dark:border-white/10">
         <div class="flex items-center gap-2.5">
           <div class="w-10 h-10 rounded-2xl bg-red-500/10 text-red-500 flex items-center justify-center text-lg">
@@ -597,7 +604,7 @@
         </button>
       </div>
 
-      <!-- 1. โหมดสว่าง / มืด (Light / Dark Mode) -->
+      <!-- 1. โหมดสว่าง / มืด -->
       <div class="p-3.5 bg-slate-50 dark:bg-slate-900/60 rounded-2xl border border-slate-200 dark:border-white/5 flex items-center justify-between">
         <div class="flex items-center gap-3">
           <div class="w-9 h-9 rounded-xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-white/10 flex items-center justify-center text-sm shadow-sm">
@@ -613,7 +620,7 @@
         </button>
       </div>
 
-      <!-- 2. จัดการอาชีพต้นแบบ (Master Careers) -->
+      <!-- 2. จัดการอาชีพต้นแบบ -->
       <div class="p-3.5 bg-slate-50 dark:bg-slate-900/60 rounded-2xl border border-slate-200 dark:border-white/5 flex items-center justify-between">
         <div class="flex items-center gap-3">
           <div class="w-9 h-9 rounded-xl bg-amber-500/10 text-amber-500 flex items-center justify-center text-sm">
@@ -630,7 +637,7 @@
         </button>
       </div>
 
-      <!-- 3. สำรองข้อมูลและส่งออกฐานข้อมูล (Import / Export) -->
+      <!-- 3. สำรองข้อมูลและส่งออกฐานข้อมูล -->
       <div class="p-3.5 bg-slate-50 dark:bg-slate-900/60 rounded-2xl border border-slate-200 dark:border-white/5 space-y-3">
         <div>
           <span class="text-xs font-bold text-slate-800 dark:text-white block flex items-center gap-1.5">
@@ -641,19 +648,16 @@
         </div>
 
         <div class="grid grid-cols-3 gap-2 pt-1">
-          <!-- Export Sheets CSV -->
           <button type="button" onclick="exportProfileToGoogleSheetCSV()" class="py-2.5 px-2 rounded-xl bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-300 dark:border-emerald-700/60 hover:bg-emerald-100 text-emerald-700 dark:text-emerald-300 text-xs font-bold flex flex-col items-center justify-center gap-1 shadow-sm transition" title="ส่งออกข้อมูลเป็นตารางสำหรับเปิดใน Google Sheets">
             <i class="fa-solid fa-file-excel text-base text-emerald-600"></i>
             <span>Sheets (.CSV)</span>
           </button>
 
-          <!-- Backup JSON -->
           <button type="button" onclick="exportProfileJSONBackup()" class="py-2.5 px-2 rounded-xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-white/10 hover:border-slate-300 text-slate-700 dark:text-slate-200 text-xs font-bold flex flex-col items-center justify-center gap-1 shadow-sm transition" title="ดาวน์โหลดไฟล์สำรองข้อมูล JSON">
             <i class="fa-solid fa-download text-base text-blue-500"></i>
             <span>Backup (.JSON)</span>
           </button>
 
-          <!-- Import JSON -->
           <button type="button" onclick="triggerImportProfileBackup()" class="py-2.5 px-2 rounded-xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-white/10 hover:border-purple-400 text-slate-700 dark:text-slate-200 text-xs font-bold flex flex-col items-center justify-center gap-1 shadow-sm transition" title="นำเข้าไฟล์สำรองข้อมูล">
             <i class="fa-solid fa-upload text-base text-purple-500"></i>
             <span>Import</span>
@@ -736,7 +740,7 @@
           <div class="flex items-center gap-2 text-xs">
             <span class="w-24 font-bold text-purple-500 flex items-center gap-1.5"><i class="fa-solid fa-book"></i> ความรู้:</span>
             <input type="range" min="0" max="10" value="5" id="crudCareerKnowledge" oninput="document.getElementById('crudKnowledgeBadge').innerText = this.value" class="flex-1 text-purple-500">
-            <span id="crudKnowledgeBadge" class="w-7 text-center font-mono font-black text-purple-500 bg-purple-100 dark:bg-purple-950/50 py-0.5 rounded">5</span>
+            <span id="crudKnowledgeBadge" class="w-7 text-center font-mono font-black text-purple-500 bg-purple-50 dark:bg-purple-950/50 py-0.5 rounded">5</span>
           </div>
         </div>
 
@@ -753,7 +757,9 @@
     </div>
   </div>
 
-  <!-- MODAL: จัดการฐานข้อมูลเช็คลิสต์คุณสมบัติ -->
+  <!-- ============================================================ -->
+  <!-- MODAL: จัดการฐานข้อมูลคุณสมบัติหลัก (Master Qualifications DB) -->
+  <!-- ============================================================ -->
   <div id="qualManagerModal" class="hidden fixed inset-0 z-50 bg-slate-950/70 backdrop-blur-sm flex items-center justify-center p-3 sm:p-4 overflow-y-auto">
     <div class="bg-white dark:bg-[#111C44] rounded-3xl max-w-lg w-full p-5 sm:p-6 shadow-2xl border border-slate-200 dark:border-white/10 space-y-4 max-h-[92vh] flex flex-col my-auto animate-pop-in">
       <div class="flex items-center justify-between pb-3 border-b border-slate-100 dark:border-white/10">
@@ -762,8 +768,8 @@
             <i class="fa-solid fa-list-check"></i>
           </div>
           <div>
-            <h3 class="font-bold text-base sm:text-lg text-slate-900 dark:text-white">จัดการเช็คลิสต์คุณสมบัติ</h3>
-            <p class="text-xs text-slate-400">เพิ่ม, แก้ไข, ลบ หมวดหมู่และข้อความคุณสมบัติ</p>
+            <h3 class="font-bold text-base sm:text-lg text-slate-900 dark:text-white">จัดการคุณสมบัติฐานข้อมูลหลัก (Master DB)</h3>
+            <p class="text-xs text-slate-400">การเพิ่ม แก้ไข หรือ ลบที่นี่จะบันทึกเป็นข้อกำหนดคุณสมบัติส่วนกลาง</p>
           </div>
         </div>
         <button type="button" onclick="closeQualManagerModal()" class="w-9 h-9 rounded-xl text-slate-400 hover:text-slate-600 dark:hover:text-white flex items-center justify-center">
@@ -807,8 +813,8 @@
         </div>
 
         <button type="submit" id="crudQualSubmitBtn" class="w-full py-2.5 rounded-xl text-xs sm:text-sm font-black text-white bg-emerald-600 hover:bg-emerald-700 transition shadow-sm flex items-center justify-center gap-1.5">
-          <i class="fa-solid fa-floppy-disk"></i>
-          <span>บันทึกข้อคุณสมบัติ</span>
+          <i class="fa-solid fa-cloud-arrow-up"></i>
+          <span>บันทึกคุณสมบัติลงฐานข้อมูลหลัก</span>
         </button>
       </form>
 
@@ -943,6 +949,7 @@
   <script>
     const GOOGLE_SHEET_API_URL = "https://script.google.com/macros/s/AKfycbzq9oD33K3nf_r2JRq5RjCafAQIvt2o9ywvJ1EvXvVg4l9QyUalIuQvxxT7zQ890nR1/exec";
 
+    // ฐานข้อมูลอาชีพต้นแบบ (Master Template DB)
     const DEFAULT_CAREERS = [
       { id: "business_owner", name: "เจ้าของธุรกิจส่วนตัว", cash: 100000, salary: 75000, expense: 45000, heart: 6, time: 4, knowledge: 8 },
       { id: "software_engineer", name: "วิศวกรซอฟต์แวร์ / โปรแกรมเมอร์", cash: 50000, salary: 65000, expense: 32000, heart: 5, time: 3, knowledge: 9 },
@@ -953,6 +960,7 @@
       { id: "office_worker", name: "พนักงานบริษัททั่วไป", cash: 20000, salary: 30000, expense: 18000, heart: 6, time: 5, knowledge: 5 }
     ];
 
+    // ฐานข้อมูลคุณสมบัติหลัก (Master Qualifications DB)
     const DEFAULT_QUALIFICATIONS = [
       { id: "q_fl_1", category: "FL", color: "red", text: "เงื่อนไข FL ข้อที่ 1" },
       { id: "q_fl_2", category: "FL", color: "red", text: "เงื่อนไข FL ข้อที่ 2" },
@@ -1361,6 +1369,9 @@
       document.getElementById('activityLogModal').classList.add('hidden');
     }
 
+    /* ==========================================================================
+       จัดการการติ๊กถูก: ผูกติดกับ Account Profile เท่านั้น ไม่แตะต้อง Master DB
+       ========================================================================== */
     function syncCheckboxHighlight(checkbox) {
       if (!checkbox) return;
       const row = document.getElementById(`wrap_${checkbox.id}`);
@@ -1373,6 +1384,26 @@
         row.classList.remove('bg-emerald-100', 'border-emerald-500', 'text-emerald-900', 'dark:bg-emerald-950/70', 'dark:border-emerald-500', 'dark:text-emerald-200');
         row.classList.add('bg-white/70', 'dark:bg-slate-800/60', 'border-slate-200/80', 'dark:border-white/5');
       }
+
+      // บันทึกสถานะการติ๊กผูกติดกับบัญชีผู้เล่นทันที
+      if (isEditMode) {
+        savePlayerAccountQualificationState();
+      }
+    }
+
+    function savePlayerAccountQualificationState() {
+      try {
+        const key = getProfileStorageKey();
+        const profile = JSON.parse(localStorage.getItem(key) || "{}");
+        if (!profile.qualificationsChecked) profile.qualificationsChecked = {};
+
+        qualificationsDB.forEach(q => {
+          const cb = document.getElementById(q.id);
+          if (cb) profile.qualificationsChecked[q.id] = cb.checked;
+        });
+
+        localStorage.setItem(key, JSON.stringify(profile));
+      } catch (e) {}
     }
 
     function toggleEditMode() {
@@ -1430,9 +1461,10 @@
     }
 
     /* ==========================================================================
-       ฐานข้อมูลเช็คลิสต์คุณสมบัติ (Qualifications Database)
+       ฐานข้อมูลคุณสมบัติหลัก (Master Qualifications DB)
+       * บันทึก เพิ่ม/แก้ไข/ลบ เข้าสู่ Master DB และซิงก์ขึ้น Google Sheets *
        ========================================================================== */
-    function loadQualificationsDB() {
+    async function loadQualificationsDB() {
       try {
         const saved = localStorage.getItem('game_qualifications_database');
         qualificationsDB = saved ? JSON.parse(saved) : [...DEFAULT_QUALIFICATIONS];
@@ -1441,12 +1473,42 @@
       }
       renderQualificationsDisplay();
       renderQualManagerTable();
+      await fetchQualificationsFromCloud(false);
     }
 
-    function saveQualificationsDB() {
+    async function fetchQualificationsFromCloud(isManual = false) {
+      if (!GOOGLE_SHEET_API_URL || GOOGLE_SHEET_API_URL.includes("PLACEHOLDER")) return;
+      try {
+        const res = await fetch(`${GOOGLE_SHEET_API_URL}?action=getQualifications`);
+        const cloudData = await res.json();
+        if (Array.isArray(cloudData) && cloudData.length > 0) {
+          qualificationsDB = cloudData;
+          localStorage.setItem('game_qualifications_database', JSON.stringify(qualificationsDB));
+          renderQualificationsDisplay();
+          renderQualManagerTable();
+          loadProfileData(); // ดึงสถานะติ๊กถูกของบัญชีผู้เล่นกลับมาแสดง
+        }
+      } catch (e) {}
+    }
+
+    async function saveQualificationsDB() {
+      // 1. บันทึก Master DB ลงในเครื่อง
       localStorage.setItem('game_qualifications_database', JSON.stringify(qualificationsDB));
       renderQualificationsDisplay();
       renderQualManagerTable();
+      loadProfileData(); // เรนเดอร์การติ๊กถูกของบัญชีปัจจุบันกลับคืน
+
+      // 2. ซิงก์ขึ้น Google Cloud ไปยังชีตกลาง
+      if (!GOOGLE_SHEET_API_URL || GOOGLE_SHEET_API_URL.includes("PLACEHOLDER")) return;
+      try {
+        await fetch(GOOGLE_SHEET_API_URL, {
+          method: 'POST',
+          mode: 'no-cors',
+          headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+          body: JSON.stringify({ action: 'saveQualifications', qualifications: qualificationsDB })
+        });
+        showToast('บันทึกฐานข้อมูลคุณสมบัติหลักลงชีตเรียบร้อย ☁️', 'success');
+      } catch (err) {}
     }
 
     function renderQualificationsDisplay() {
@@ -1531,12 +1593,12 @@
       document.getElementById('crudQualText').value = '';
       document.getElementById('crudQualColor').value = 'emerald';
 
-      document.getElementById('crudQualFormTitle').innerHTML = '<i class="fa-solid fa-plus-circle"></i> เพิ่มข้อคุณสมบัติใหม่';
-      document.getElementById('crudQualSubmitBtn').innerHTML = '<i class="fa-solid fa-floppy-disk"></i> บันทึกข้อคุณสมบัติ';
+      document.getElementById('crudQualFormTitle').innerHTML = '<i class="fa-solid fa-plus-circle"></i> เพิ่มข้อคุณสมบัติใหม่ (Master DB)';
+      document.getElementById('crudQualSubmitBtn').innerHTML = '<i class="fa-solid fa-cloud-arrow-up"></i> บันทึกคุณสมบัติลงฐานข้อมูลหลัก';
       document.getElementById('cancelEditQualBtn').classList.add('hidden');
     }
 
-    function handleQualFormSubmit(e) {
+    async function handleQualFormSubmit(e) {
       e.preventDefault();
       const id = document.getElementById('crudQualId').value;
       const category = document.getElementById('crudQualCategory').value.trim();
@@ -1549,16 +1611,15 @@
         const idx = qualificationsDB.findIndex(q => q.id === id);
         if (idx !== -1) {
           qualificationsDB[idx] = { ...qualificationsDB[idx], category, text, color };
-          showToast(`แก้ไขคุณสมบัติสำเร็จ`, 'success');
+          showToast(`แก้ไขคุณสมบัติในฐานข้อมูลหลักสำเร็จ`, 'success');
         }
       } else {
         const newId = `q_${Date.now()}`;
         qualificationsDB.push({ id: newId, category, text, color });
-        showToast(`เพิ่มคุณสมบัติใหม่สำเร็จ`, 'success');
+        showToast(`เพิ่มคุณสมบัติใหม่ในฐานข้อมูลหลักสำเร็จ`, 'success');
       }
 
-      saveQualificationsDB();
-      loadProfileData();
+      await saveQualificationsDB();
       resetQualCrudForm();
     }
 
@@ -1570,17 +1631,16 @@
       document.getElementById('crudQualText').value = it.text;
       document.getElementById('crudQualColor').value = it.color || 'emerald';
 
-      document.getElementById('crudQualFormTitle').innerHTML = '<i class="fa-solid fa-pen"></i> กำลังแก้ไขคุณสมบัติ';
-      document.getElementById('crudQualSubmitBtn').innerHTML = '<i class="fa-solid fa-check"></i> บันทึกการแก้ไข';
+      document.getElementById('crudQualFormTitle').innerHTML = '<i class="fa-solid fa-pen"></i> กำลังแก้ไขคุณสมบัติหลัก';
+      document.getElementById('crudQualSubmitBtn').innerHTML = '<i class="fa-solid fa-check"></i> บันทึกการแก้ไขลงฐานข้อมูลหลัก';
       document.getElementById('cancelEditQualBtn').classList.remove('hidden');
     }
 
-    function deleteQual(id, text) {
-      if (confirm(`คุณต้องการลบข้อคุณสมบัติ "${text}" หรือไม่?`)) {
+    async function deleteQual(id, text) {
+      if (confirm(`คุณต้องการลบข้อคุณสมบัติ "${text}" ออกจากฐานข้อมูลหลักหรือไม่?`)) {
         qualificationsDB = qualificationsDB.filter(q => q.id !== id);
-        saveQualificationsDB();
-        loadProfileData();
-        showToast(`ลบคุณสมบัติเรียบร้อยแล้ว`, 'info');
+        await saveQualificationsDB();
+        showToast(`ลบคุณสมบัติออกจากฐานข้อมูลหลักเรียบร้อยแล้ว`, 'info');
       }
     }
 
@@ -1700,6 +1760,10 @@
       }
     }
 
+    /* ==========================================================================
+       เมื่อเลือกอาชีพ: ดึงค่าต้นแบบเข้าสู่ฟอร์มส่วนตัวของผู้เล่น
+       (การแก้ไขหลังจากนี้จะผูกกับ Account ผู้เล่น ไม่ทับ Master Careers)
+       ========================================================================== */
     function onCareerSelected(careerId) {
       const career = careersDB.find(c => c.id === careerId);
       if (career) {
@@ -1965,7 +2029,6 @@
       showToast('ส่งออก Layout โปรไฟล์สำหรับ Google Sheets สำเร็จ 📊', 'success');
     }
 
-    /* === สำรองข้อมูลทั้งระบบเป็น JSON (Backup & Import) === */
     function exportProfileJSONBackup() {
       const backupData = {
         app: "ProfileHub",
@@ -1996,7 +2059,7 @@
       if (!file) return;
 
       const reader = new FileReader();
-      reader.onload = function(e) {
+      reader.onload = async function(e) {
         try {
           const imported = JSON.parse(e.target.result);
           if (!imported || typeof imported !== 'object') {
@@ -2010,13 +2073,11 @@
             }
             if (Array.isArray(imported.careersDB) && imported.careersDB.length > 0) {
               careersDB = imported.careersDB;
-              localStorage.setItem('game_careers_database', JSON.stringify(careersDB));
-              renderCareersDropdown();
-              renderCareerListTable();
+              await saveCareersDB();
             }
             if (Array.isArray(imported.qualificationsDB) && imported.qualificationsDB.length > 0) {
               qualificationsDB = imported.qualificationsDB;
-              saveQualificationsDB();
+              await saveQualificationsDB();
             }
 
             loadProfileData();
@@ -2031,7 +2092,6 @@
       event.target.value = '';
     }
 
-    /* === ควบคุม Setting Modal === */
     function openSettingModal() {
       updateSettingModalUI();
       document.getElementById('settingModal').classList.remove('hidden');
@@ -2173,6 +2233,7 @@
           }
         }
 
+        // โหลดสถานะติ๊กถูกเฉพาะบัญชีนี้
         if (data.qualificationsChecked) {
           Object.keys(data.qualificationsChecked).forEach(qId => {
             const cb = document.getElementById(qId);
@@ -2260,7 +2321,6 @@
     function initTheme() {
       const isDark = localStorage.getItem('rnd_theme_dark') !== 'false';
       document.documentElement.classList.toggle('dark', isDark);
-      updateSettingModalUI();
     }
 
     function showToast(msg, type = 'info') {
@@ -2272,7 +2332,7 @@
 
     function escapeHTML(str) {
       if (!str) return '';
-      return String(str).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+      return String(str).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#039;');
     }
   </script>
 </body>
