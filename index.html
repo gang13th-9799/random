@@ -40,6 +40,7 @@
             'shimmer': 'shimmer 2.2s infinite linear',
             'pulse-subtle': 'pulseSubtle 2s infinite ease-in-out',
             'pop-in': 'popIn 0.3s cubic-bezier(0.16, 1, 0.3, 1)',
+            'card-flip': 'cardFlip 0.6s cubic-bezier(0.34, 1.56, 0.64, 1)',
           },
           keyframes: {
             shimmer: {
@@ -53,6 +54,10 @@
             popIn: {
               '0%': { opacity: '0', transform: 'scale(0.92) translateY(12px)' },
               '100%': { opacity: '1', transform: 'scale(1) translateY(0)' }
+            },
+            cardFlip: {
+              '0%': { opacity: '0', transform: 'scale(0.8) rotateY(-90deg)' },
+              '100%': { opacity: '1', transform: 'scale(1) rotateY(0deg)' }
             }
           }
         }
@@ -62,15 +67,7 @@
 
   <style>
     :root {
-      --app-content-font-size: 26px;
-      --app-desc-font-size: 22px;
       --theme-btn-gradient: linear-gradient(135deg, #DC2626 0%, #EF4444 50%, #F87171 100%);
-    }
-
-    html {
-      font-size: 16px;
-      line-height: 1.5;
-      -webkit-text-size-adjust: 100%;
     }
 
     body {
@@ -181,6 +178,11 @@
         <button onclick="switchTab('categories')" class="px-3.5 py-2 text-xs font-semibold text-slate-700 dark:text-slate-200 bg-white dark:bg-slate-800 hover:bg-slate-100 rounded-xl transition flex items-center gap-2 border border-slate-200 dark:border-slate-700 shadow-sm">
           <i class="fa-solid fa-arrow-left"></i><span>เปลี่ยนหมวดหมู่การ์ด</span>
         </button>
+        <label class="flex items-center gap-2 cursor-pointer select-none bg-white dark:bg-slate-800 px-3 py-1.5 rounded-xl border border-slate-200 dark:border-slate-700 shadow-sm">
+          <input type="checkbox" id="uniqueDrawToggle" onchange="toggleUniqueDrawMode()" class="sr-only peer">
+          <div class="w-8 h-4 bg-slate-300 rounded-full peer dark:bg-slate-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border after:rounded-full after:h-3 after:w-3 after:transition-all peer-checked:bg-red-600 relative"></div>
+          <span class="text-xs font-semibold text-slate-700 dark:text-slate-300">สุ่มไม่ซ้ำ</span>
+        </label>
       </div>
 
       <div class="relative max-w-xl mx-auto">
@@ -207,7 +209,7 @@
       </div>
     </section>
 
-    <!-- VIEW 3: คลังข้อมูลการ์ด (มีปุ่มแก้ไข ดินสอ, ปุ่มโคลน ก็อปปี้, และปุ่มลบ ครบถ้วน) -->
+    <!-- VIEW 3: คลังข้อมูลการ์ด (แสดงรายการทรัพยากร Cost & Reward ครบถ้วน) -->
     <section id="view-data" class="hidden space-y-4 animate-pop-in">
       <div class="bg-white/80 dark:bg-slate-800/80 backdrop-blur border border-slate-200 dark:border-slate-700 rounded-2xl p-4 shadow-sm flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3">
         <div class="flex flex-wrap items-center gap-2 flex-1">
@@ -236,14 +238,15 @@
               <tr>
                 <th class="py-3 px-3 text-center w-10">#</th>
                 <th class="py-3 px-3 w-16 text-center">สถานะ</th>
-                <th class="py-3 px-4 min-w-[200px]">ชื่อการ์ด</th>
-                <th class="py-3 px-3 text-indigo-500 min-w-[100px]">ใช้กับ</th>
-                <th class="py-3 px-3 text-blue-500 text-right min-w-[80px]">PV</th>
-                <th class="py-3 px-3 text-red-600 text-right min-w-[80px]">ราคา</th>
-                <th class="py-3 px-3 text-green-500 text-right min-w-[90px]">Active</th>
-                <th class="py-3 px-3 text-emerald-500 text-right min-w-[90px]">Passive</th>
+                <th class="py-3 px-4 min-w-[180px]">ชื่อการ์ด</th>
+                <th class="py-3 px-3 text-indigo-500 min-w-[90px]">ใช้กับ</th>
+                <th class="py-3 px-3 text-blue-500 text-right min-w-[70px]">PV</th>
+                <th class="py-3 px-3 text-red-600 text-right min-w-[75px]">ราคา</th>
+                <th class="py-3 px-3 text-green-500 text-right min-w-[85px]">Active</th>
+                <th class="py-3 px-3 text-emerald-500 text-right min-w-[85px]">Passive</th>
+                <th class="py-3 px-3 text-center min-w-[120px]">ทรัพยากร (ใช้/ได้)</th>
                 <th class="py-3 px-3 text-center min-w-[90px]">หมวดหมู่</th>
-                <th class="py-3 px-3 text-center w-32 sticky right-0 bg-slate-50 dark:bg-slate-900 shadow-l">จัดการ</th>
+                <th class="py-3 px-3 text-center w-28 sticky right-0 bg-slate-50 dark:bg-slate-900 shadow-l">จัดการ</th>
               </tr>
             </thead>
             <tbody id="tableBodyDesktop" class="divide-y divide-slate-100 dark:divide-slate-700/60"></tbody>
@@ -265,7 +268,54 @@
     </section>
   </main>
 
-  <!-- Modal ฟอร์ม สร้าง / แก้ไข การ์ด -->
+  <!-- =========================================================================
+       MODAL แสดงการ์ดที่สุ่มได้ (Draw Result Card Modal)
+       ========================================================================= -->
+  <div id="drawResultModal" class="hidden fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-md flex items-center justify-center p-4 overflow-y-auto">
+    <div class="relative max-w-sm w-full bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-3xl p-6 text-center shadow-2xl animate-card-flip space-y-5 my-auto">
+      
+      <!-- หัวการ์ดและหมวดหมู่ -->
+      <div class="flex items-center justify-between border-b pb-3 border-slate-100 dark:border-slate-700">
+        <span id="drawResultCategoryBadge" class="text-xs font-bold px-3 py-1 rounded-full border">หมวดหมู่</span>
+        <span id="drawResultTargetBadge" class="text-xs font-semibold text-indigo-500 bg-indigo-50 dark:bg-indigo-950/60 px-2.5 py-0.5 rounded-lg border border-indigo-200 dark:border-indigo-800">ส่วนตัว</span>
+      </div>
+
+      <!-- ไอคอนและการ์ด -->
+      <div class="space-y-2">
+        <div id="drawResultIconBox" class="w-16 h-16 rounded-2xl mx-auto flex items-center justify-center text-3xl text-white shadow-lg btn-theme-action">
+          <i id="drawResultIcon" class="fa-solid fa-star"></i>
+        </div>
+        <h3 id="drawResultTitle" class="text-xl font-black text-slate-900 dark:text-white leading-tight">ชื่อการ์ด</h3>
+      </div>
+
+      <!-- ค่าตัวเลขการ์ด (PV / ราคา / Active / Passive) -->
+      <div class="grid grid-cols-2 gap-2 bg-slate-50 dark:bg-slate-900/60 p-3 rounded-2xl border border-slate-200 dark:border-slate-700 text-xs font-mono">
+        <div class="text-left">แต้ม PV: <strong id="drawResultPv" class="text-blue-500 text-sm font-bold block">0</strong></div>
+        <div class="text-right">ราคา: <strong id="drawResultPrice" class="text-red-500 text-sm font-bold block">฿0</strong></div>
+        <div class="text-left pt-1 border-t border-slate-200 dark:border-slate-700">Active: <strong id="drawResultActive" class="text-green-500 font-bold block">฿0</strong></div>
+        <div class="text-right pt-1 border-t border-slate-200 dark:border-slate-700">Passive: <strong id="drawResultPassive" class="text-emerald-500 font-bold block">฿0</strong></div>
+      </div>
+
+      <!-- ทรัพยากร Cost & Reward -->
+      <div id="drawResultResourceSection" class="p-3 bg-amber-50/60 dark:bg-amber-950/30 rounded-2xl border border-amber-200 dark:border-amber-800/60 text-xs space-y-1.5 text-left">
+        <div class="flex items-center justify-between font-bold text-slate-700 dark:text-slate-300">
+          <span>ใช้ทรัพยากร:</span>
+          <span id="drawResultCostText" class="font-mono text-rose-500">-</span>
+        </div>
+        <div class="flex items-center justify-between font-bold text-slate-700 dark:text-slate-300">
+          <span>ได้รับรางวัล:</span>
+          <span id="drawResultRewardText" class="font-mono text-emerald-500">-</span>
+        </div>
+      </div>
+
+      <!-- ปุ่มยอมรับการ์ด -->
+      <button type="button" onclick="closeDrawResultModal()" class="w-full py-3.5 rounded-2xl text-white font-extrabold text-base btn-theme-action shadow-lg hover:scale-[1.02] transition">
+        ยอมรับ / ปิดหน้าต่าง
+      </button>
+    </div>
+  </div>
+
+  <!-- Modal ฟอร์ม สร้าง / แก้ไข การ์ด (พร้อมฟิลด์ทรัพยากร) -->
   <div id="cardModal" class="hidden fixed inset-0 z-50 bg-slate-950/75 backdrop-blur-sm flex items-center justify-center p-3 sm:p-4 overflow-y-auto">
     <div class="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-3xl max-w-xl w-full p-5 sm:p-6 shadow-2xl relative space-y-4 my-auto">
       <div class="flex items-center justify-between pb-3 border-b border-slate-100 dark:border-slate-700">
@@ -323,6 +373,29 @@
           </div>
         </div>
 
+        <!-- รายการทรัพยากร (Cost / Reward) -->
+        <div class="p-3 bg-slate-50 dark:bg-slate-900/60 rounded-2xl border border-slate-200 dark:border-slate-700 space-y-2">
+          <span class="text-slate-500 dark:text-slate-400 block font-bold text-[11px] uppercase">จัดการทรัพยากร (Cost & Reward)</span>
+          <div class="grid grid-cols-2 gap-3">
+            <div class="space-y-1">
+              <span class="text-rose-500">ต้องใช้ (Cost)</span>
+              <div class="flex gap-1.5 items-center font-mono text-[11px]">
+                <span>❤️</span><input type="number" id="costHeart" value="0" class="w-12 p-1 border rounded text-right dark:bg-slate-800">
+                <span>⏳</span><input type="number" id="costTime" value="0" class="w-12 p-1 border rounded text-right dark:bg-slate-800">
+                <span>💡</span><input type="number" id="costKnowledge" value="0" class="w-12 p-1 border rounded text-right dark:bg-slate-800">
+              </div>
+            </div>
+            <div class="space-y-1">
+              <span class="text-emerald-500">ได้รับ (Reward)</span>
+              <div class="flex gap-1.5 items-center font-mono text-[11px]">
+                <span>❤️</span><input type="number" id="rewardHeart" value="0" class="w-12 p-1 border rounded text-right dark:bg-slate-800">
+                <span>⏳</span><input type="number" id="rewardTime" value="0" class="w-12 p-1 border rounded text-right dark:bg-slate-800">
+                <span>💡</span><input type="number" id="rewardKnowledge" value="0" class="w-12 p-1 border rounded text-right dark:bg-slate-800">
+              </div>
+            </div>
+          </div>
+        </div>
+
         <div class="flex items-center justify-end gap-2 pt-3 border-t border-slate-100 dark:border-slate-700">
           <button type="button" onclick="closeCardModal()" class="px-4 py-2.5 rounded-xl border border-slate-300 dark:border-slate-600 text-slate-600 dark:text-slate-300 hover:bg-slate-50">ยกเลิก</button>
           <button type="submit" class="px-5 py-2.5 rounded-xl text-white btn-theme-action shadow-md">บันทึกข้อมูลการ์ด</button>
@@ -354,7 +427,7 @@
     </div>
   </div>
 
-  <!-- Setting Modal (Tab General + Data Base) -->
+  <!-- Setting Modal -->
   <div id="settingModal" class="hidden fixed inset-0 z-50 bg-slate-950/75 backdrop-blur-sm flex items-center justify-center p-3 sm:p-4 overflow-y-auto">
     <div class="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-3xl max-w-xl w-full p-5 sm:p-6 shadow-2xl relative space-y-4 my-auto">
       <div class="flex items-center justify-between pb-3 border-b border-slate-100 dark:border-slate-700">
@@ -487,24 +560,40 @@
     ];
 
     const DEFAULT_INITIAL_ITEMS = [
-      { id: "c-1001", title: "วางแผนเป้าหมายประจำสัปดาห์", targetType: "personal", targetLeg: "", category: "การทำงาน", price: 350, pv: 500, weight: 70, activeIncome: 15000, passiveIncome: 0, syncStatus: "synced" }
+      { 
+        id: "c-1001", 
+        title: "วางแผนเป้าหมายประจำสัปดาห์", 
+        targetType: "personal", 
+        targetLeg: "", 
+        category: "การทำงาน", 
+        price: 350, 
+        pv: 500, 
+        weight: 70, 
+        activeIncome: 15000, 
+        passiveIncome: 0, 
+        syncStatus: "synced",
+        cost: { heart: 1, time: 2, knowledge: 0 },
+        reward: { heart: 2, time: 1, knowledge: 3 }
+      }
     ];
 
     let items = [];
     let categories = [];
     let selectedCategory = "ALL";
     let historyLog = [];
+    let drawPool = [];
+    let isUniqueDrawMode = false;
     let currentDbVersion = 1;
     let currentDbVersionName = "v1.0";
     let dbSnapshots = [];
     let isCloudSyncedSession = false;
 
     const COLOR_PALETTES = {
-      red: { id: "red", name: "แดงทับทิม", hex: "#EF4444", gradient: "linear-gradient(135deg, #EF4444 0%, #DC2626 50%, #991B1B 100%)", badge: "bg-red-100 text-red-800 dark:bg-red-950/50 dark:text-red-300" },
-      blue: { id: "blue", name: "น้ำเงินรอยัล", hex: "#2563EB", gradient: "linear-gradient(135deg, #3B82F6 0%, #2563EB 50%, #1E40AF 100%)", badge: "bg-blue-100 text-blue-800 dark:bg-blue-950/50 dark:text-blue-300" },
-      purple: { id: "purple", name: "ม่วงไวโอเล็ต", hex: "#9333EA", gradient: "linear-gradient(135deg, #A855F7 0%, #9333EA 50%, #581C87 100%)", badge: "bg-purple-100 text-purple-800 dark:bg-purple-950/50 dark:text-purple-300" },
-      emerald: { id: "emerald", name: "เขียวมรกต", hex: "#059669", gradient: "linear-gradient(135deg, #10B981 0%, #059669 50%, #064E3B 100%)", badge: "bg-emerald-100 text-emerald-800 dark:bg-emerald-950/50 dark:text-emerald-300" },
-      amber: { id: "amber", name: "ส้มอำพัน", hex: "#D97706", gradient: "linear-gradient(135deg, #F59E0B 0%, #D97706 50%, #78350F 100%)", badge: "bg-amber-100 text-amber-800 dark:bg-amber-950/50 dark:text-amber-300" }
+      red: { id: "red", name: "แดงทับทิม", hex: "#EF4444", gradient: "linear-gradient(135deg, #EF4444 0%, #DC2626 50%, #991B1B 100%)", badge: "bg-red-100 text-red-800 dark:bg-red-950/50 dark:text-red-300 border-red-200 dark:border-red-800" },
+      blue: { id: "blue", name: "น้ำเงินรอยัล", hex: "#2563EB", gradient: "linear-gradient(135deg, #3B82F6 0%, #2563EB 50%, #1E40AF 100%)", badge: "bg-blue-100 text-blue-800 dark:bg-blue-950/50 dark:text-blue-300 border-blue-200 dark:border-blue-800" },
+      purple: { id: "purple", name: "ม่วงไวโอเล็ต", hex: "#9333EA", gradient: "linear-gradient(135deg, #A855F7 0%, #9333EA 50%, #581C87 100%)", badge: "bg-purple-100 text-purple-800 dark:bg-purple-950/50 dark:text-purple-300 border-purple-200 dark:border-purple-800" },
+      emerald: { id: "emerald", name: "เขียวมรกต", hex: "#059669", gradient: "linear-gradient(135deg, #10B981 0%, #059669 50%, #064E3B 100%)", badge: "bg-emerald-100 text-emerald-800 dark:bg-emerald-950/50 dark:text-emerald-300 border-emerald-200 dark:border-emerald-800" },
+      amber: { id: "amber", name: "ส้มอำพัน", hex: "#D97706", gradient: "linear-gradient(135deg, #F59E0B 0%, #D97706 50%, #78350F 100%)", badge: "bg-amber-100 text-amber-800 dark:bg-amber-950/50 dark:text-amber-300 border-amber-200 dark:border-amber-800" }
     };
 
     const ICON_PRESETS = ["fa-folder", "fa-book", "fa-heart", "fa-briefcase", "fa-coins", "fa-dice", "fa-lightbulb", "fa-star"];
@@ -537,6 +626,7 @@
         categories = [...DEFAULT_INITIAL_CATEGORIES];
       }
       renderAllUI();
+      resetDrawPool();
     }
 
     function saveLocalCache() {
@@ -555,6 +645,7 @@
       renderCategoryHomeCards();
       renderDataTable();
       renderCategoryDropdowns();
+      renderHistoryList();
     }
 
     function renderCategoryDropdowns() {
@@ -569,7 +660,7 @@
       const grid = document.getElementById('categoryCardsGrid');
       if (!grid) return;
       let html = `
-        <div onclick="selectCategoryAndDraw('ALL')" class="cursor-pointer rounded-3xl p-6 text-white shadow-lg flex flex-col justify-between" style="background: linear-gradient(135deg, #1E293B 0%, #0F172A 100%);">
+        <div onclick="selectCategoryAndDraw('ALL')" class="cursor-pointer rounded-3xl p-6 text-white shadow-lg flex flex-col justify-between hover:scale-[1.02] transition" style="background: linear-gradient(135deg, #1E293B 0%, #0F172A 100%);">
           <div class="flex items-center justify-between mb-4">
             <div class="w-12 h-12 rounded-2xl bg-white/20 flex items-center justify-center text-xl"><i class="fa-solid fa-dice"></i></div>
             <span class="text-xs font-mono font-black px-3 py-1 rounded-full bg-white/20">${items.length} รายการ</span>
@@ -581,7 +672,7 @@
         const count = items.filter(i => i.category === cat.name).length;
         const meta = getCategoryMeta(cat.name);
         html += `
-          <div onclick="selectCategoryAndDraw('${escapeHTML(cat.name)}')" class="cursor-pointer rounded-3xl p-6 text-white shadow-lg flex flex-col justify-between" style="background: ${meta.theme.gradient};">
+          <div onclick="selectCategoryAndDraw('${escapeHTML(cat.name)}')" class="cursor-pointer rounded-3xl p-6 text-white shadow-lg flex flex-col justify-between hover:scale-[1.02] transition" style="background: ${meta.theme.gradient};">
             <div class="flex items-center justify-between mb-4">
               <div class="w-12 h-12 rounded-2xl bg-white/25 flex items-center justify-center text-xl"><i class="fa-solid ${escapeHTML(meta.icon)}"></i></div>
               <span class="text-xs font-mono font-black px-3 py-1 rounded-full bg-white/25">${count} รายการ</span>
@@ -600,12 +691,41 @@
 
     function selectCategoryAndDraw(catName) {
       selectedCategory = catName;
+      resetDrawPool();
+      updateStageCategoryUI();
       switchTab('draw');
     }
 
+    function updateStageCategoryUI() {
+      const titleEl = document.getElementById('stageCategoryTitle');
+      const iconEl = document.getElementById('stageCategoryIcon');
+      const wrapperEl = document.getElementById('stageCategoryIconWrapper');
+      
+      if (selectedCategory === 'ALL') {
+        if (titleEl) titleEl.innerText = "ทุกหมวดหมู่";
+        if (iconEl) iconEl.className = "fa-solid fa-dice";
+        if (wrapperEl) wrapperEl.style.background = "linear-gradient(135deg, #1E293B 0%, #0F172A 100%)";
+      } else {
+        const meta = getCategoryMeta(selectedCategory);
+        if (titleEl) titleEl.innerText = selectedCategory;
+        if (iconEl) iconEl.className = `fa-solid ${meta.icon}`;
+        if (wrapperEl) wrapperEl.style.background = meta.theme.gradient;
+      }
+      updatePoolBadge();
+    }
+
     /* ==========================================================================
-       ตารางข้อมูลการ์ด (ปุ่มแก้ไข ดินสอ + ปุ่มโคลน ก็อปปี้ + ปุ่มลบ แสดงชัดเจน)
+       ตารางข้อมูลการ์ด (แสดงคอลัมน์ทรัพยากร Cost & Reward และปุ่มจัดการ)
        ========================================================================== */
+    function formatResourceBadge(res) {
+      if (!res) return "-";
+      let parts = [];
+      if (res.heart) parts.push(`❤️${res.heart}`);
+      if (res.time) parts.push(`⏳${res.time}`);
+      if (res.knowledge) parts.push(`💡${res.knowledge}`);
+      return parts.length > 0 ? parts.join(" ") : "-";
+    }
+
     function renderDataTable() {
       const query = (document.getElementById('searchInput')?.value || '').toLowerCase().trim();
       const filterCat = document.getElementById('tableCategoryFilter')?.value || 'ALL';
@@ -631,20 +751,24 @@
             <td class="py-2.5 px-3 font-mono font-bold text-right text-red-600">฿${(item.price || 0).toLocaleString()}</td>
             <td class="py-2.5 px-3 font-mono font-bold text-right text-green-500">฿${(item.activeIncome || 0).toLocaleString()}</td>
             <td class="py-2.5 px-3 font-mono font-bold text-right text-emerald-500">฿${(item.passiveIncome || 0).toLocaleString()}</td>
+            
+            <!-- แสดงรายการทรัพยากร -->
+            <td class="py-2.5 px-3 text-center font-mono text-[11px] whitespace-nowrap">
+              <div class="text-rose-500" title="Cost ที่ต้องใช้">ใช้: ${formatResourceBadge(item.cost)}</div>
+              <div class="text-emerald-500" title="Reward ที่ได้รับ">ได้: ${formatResourceBadge(item.reward)}</div>
+            </td>
+
             <td class="py-2.5 px-3 text-center">
               <span class="text-[10px] px-2 py-0.5 rounded-full font-semibold border ${getCategoryMeta(item.category).theme.badge}">${escapeHTML(item.category)}</span>
             </td>
             <td class="py-2.5 px-3 text-center sticky right-0 bg-white dark:bg-slate-800 shadow-l">
               <div class="flex items-center justify-center gap-1.5">
-                <!-- ปุ่มแก้ไข (ดินสอ) -->
                 <button type="button" onclick="openAddEditModal('${item.id}')" title="แก้ไขการ์ด" class="w-7 h-7 flex items-center justify-center text-slate-500 hover:text-blue-600 hover:bg-blue-50 dark:hover:bg-slate-700 rounded-lg transition border border-transparent hover:border-blue-200">
                   <i class="fa-solid fa-pen text-xs"></i>
                 </button>
-                <!-- ปุ่มโคลนการ์ด (ก็อปปี้) -->
                 <button type="button" onclick="cloneItem('${item.id}')" title="โคลน/คัดลอกการ์ด" class="w-7 h-7 flex items-center justify-center text-slate-500 hover:text-emerald-600 hover:bg-emerald-50 dark:hover:bg-slate-700 rounded-lg transition border border-transparent hover:border-emerald-200">
                   <i class="fa-regular fa-copy text-xs"></i>
                 </button>
-                <!-- ปุ่มลบ -->
                 <button type="button" onclick="confirmDeleteItem('${item.id}')" title="ลบการ์ด" class="w-7 h-7 flex items-center justify-center text-slate-400 hover:text-red-600 hover:bg-red-50 dark:hover:bg-slate-700 rounded-lg transition border border-transparent hover:border-red-200">
                   <i class="fa-solid fa-trash-can text-xs"></i>
                 </button>
@@ -669,6 +793,10 @@
               <div>Active: <strong class="text-green-500">฿${(item.activeIncome || 0).toLocaleString()}</strong></div>
               <div>Passive: <strong class="text-emerald-500">฿${(item.passiveIncome || 0).toLocaleString()}</strong></div>
             </div>
+            <div class="text-[11px] font-mono bg-white dark:bg-slate-800 p-2 rounded-xl border flex justify-between">
+              <span class="text-rose-500">ใช้: ${formatResourceBadge(item.cost)}</span>
+              <span class="text-emerald-500">ได้: ${formatResourceBadge(item.reward)}</span>
+            </div>
             <div class="flex items-center justify-end gap-2 pt-2 border-t border-slate-200 dark:border-slate-800">
               <button type="button" onclick="openAddEditModal('${item.id}')" class="px-2.5 py-1 text-xs rounded-lg bg-blue-50 dark:bg-slate-800 text-blue-600 font-bold border border-blue-200 dark:border-slate-700 flex items-center gap-1">
                 <i class="fa-solid fa-pen text-[10px]"></i> แก้ไข
@@ -686,7 +814,122 @@
     }
 
     /* ==========================================================================
-       ระบบจัดเก็บและดำเนินการ (Modal สร้าง/แก้ไข, โคลนการ์ด, ลบ)
+       ระบบสุ่มการ์ด & แสดงการ์ดที่สุ่มได้ (Random Engine + Card Popup)
+       ========================================================================== */
+    function resetDrawPool() {
+      let pool = (selectedCategory === "ALL") ? [...items] : items.filter(i => i.category === selectedCategory);
+      drawPool = pool.map(i => i.id);
+      updatePoolBadge();
+    }
+
+    function updatePoolBadge() {
+      const badge = document.getElementById('poolRemainingBadge');
+      const total = (selectedCategory === "ALL") ? items.length : items.filter(i => i.category === selectedCategory).length;
+      if (badge) badge.innerText = `${drawPool.length}/${total}`;
+    }
+
+    function toggleUniqueDrawMode() {
+      isUniqueDrawMode = document.getElementById('uniqueDrawToggle')?.checked || false;
+      resetDrawPool();
+    }
+
+    function triggerRandomDraw() {
+      let availableCards = (selectedCategory === "ALL") ? [...items] : items.filter(i => i.category === selectedCategory);
+
+      if (availableCards.length === 0) {
+        showToast("ไม่พบการ์ดในหมวดหมู่นี้");
+        return;
+      }
+
+      if (isUniqueDrawMode) {
+        if (drawPool.length === 0) {
+          showToast("สุ่มการ์ดในกองหมดแล้ว! ทำการรีเซ็ตกองสุ่มใหม่");
+          resetDrawPool();
+        }
+        availableCards = availableCards.filter(c => drawPool.includes(c.id));
+      }
+
+      // สุ่มเลือกการ์ด 1 ใบ
+      const drawnCard = availableCards[Math.floor(Math.random() * availableCards.length)];
+
+      if (isUniqueDrawMode) {
+        drawPool = drawPool.filter(id => id !== drawnCard.id);
+        updatePoolBadge();
+      }
+
+      // บันทึกลง History Log
+      historyLog.unshift({
+        id: `hist-${Date.now()}`,
+        cardTitle: drawnCard.title,
+        category: drawnCard.category,
+        pv: drawnCard.pv || 0,
+        price: drawnCard.price || 0,
+        timestamp: Date.now()
+      });
+      if (historyLog.length > 50) historyLog.pop();
+      saveLocalCache();
+      renderHistoryList();
+
+      // แสดงป๊อปอัปการ์ดที่สุ่มได้
+      showDrawResultModal(drawnCard);
+      confetti({ particleCount: 50, spread: 70, origin: { y: 0.6 } });
+    }
+
+    function showDrawResultModal(card) {
+      const meta = getCategoryMeta(card.category);
+      document.getElementById('drawResultTitle').innerText = card.title;
+      
+      const catBadge = document.getElementById('drawResultCategoryBadge');
+      catBadge.innerText = card.category;
+      catBadge.className = `text-xs font-bold px-3 py-1 rounded-full border ${meta.theme.badge}`;
+
+      document.getElementById('drawResultTargetBadge').innerText = card.targetLeg ? `สายงาน ${card.targetLeg}` : "ส่วนตัว";
+      document.getElementById('drawResultIcon').className = `fa-solid ${meta.icon}`;
+      document.getElementById('drawResultIconBox').style.background = meta.theme.gradient;
+
+      document.getElementById('drawResultPv').innerText = (card.pv || 0).toLocaleString();
+      document.getElementById('drawResultPrice').innerText = `฿${(card.price || 0).toLocaleString()}`;
+      document.getElementById('drawResultActive').innerText = `฿${(card.activeIncome || 0).toLocaleString()}`;
+      document.getElementById('drawResultPassive').innerText = `฿${(card.passiveIncome || 0).toLocaleString()}`;
+
+      document.getElementById('drawResultCostText').innerText = formatResourceBadge(card.cost);
+      document.getElementById('drawResultRewardText').innerText = formatResourceBadge(card.reward);
+
+      document.getElementById('drawResultModal').classList.remove('hidden');
+    }
+
+    function closeDrawResultModal() {
+      document.getElementById('drawResultModal').classList.add('hidden');
+    }
+
+    function renderHistoryList() {
+      const container = document.getElementById('historyListContainer');
+      if (!container) return;
+      if (historyLog.length === 0) {
+        container.innerHTML = `<li class="p-4 text-center text-xs text-slate-400">ยังไม่มีประวัติการสุ่ม</li>`;
+        return;
+      }
+      container.innerHTML = historyLog.map(h => `
+        <li class="p-3 flex items-center justify-between text-xs">
+          <div>
+            <span class="font-bold text-slate-800 dark:text-white">${escapeHTML(h.cardTitle)}</span>
+            <span class="text-[10px] text-slate-400 block">${new Date(h.timestamp).toLocaleTimeString('th-TH')}</span>
+          </div>
+          <span class="px-2 py-0.5 rounded-full text-[10px] font-bold border ${getCategoryMeta(h.category).theme.badge}">${escapeHTML(h.category)}</span>
+        </li>
+      `).join('');
+    }
+
+    function clearHistoryLog() {
+      if (!confirm("ต้องการล้างประวัติการสุ่มทั้งหมดใช่หรือไม่?")) return;
+      historyLog = [];
+      saveLocalCache();
+      renderHistoryList();
+      showToast("ล้างประวัติเรียบร้อยแล้ว");
+    }
+
+    /* ==========================================================================
+       Modal สร้าง/แก้ไขการ์ด พร้อมฟิลด์ทรัพยากร
        ========================================================================== */
     function openAddEditModal(id = null) {
       renderCategoryDropdowns();
@@ -705,6 +948,14 @@
         document.getElementById('cardPriceInput').value = item.price || 0;
         document.getElementById('cardActiveInput').value = item.activeIncome || 0;
         document.getElementById('cardPassiveInput').value = item.passiveIncome || 0;
+
+        document.getElementById('costHeart').value = item.cost?.heart || 0;
+        document.getElementById('costTime').value = item.cost?.time || 0;
+        document.getElementById('costKnowledge').value = item.cost?.knowledge || 0;
+
+        document.getElementById('rewardHeart').value = item.reward?.heart || 0;
+        document.getElementById('rewardTime').value = item.reward?.time || 0;
+        document.getElementById('rewardKnowledge').value = item.reward?.knowledge || 0;
       } else {
         title.innerHTML = `<i class="fa-solid fa-plus text-red-600"></i><span>สร้างการ์ดใหม่</span>`;
         document.getElementById('cardEditId').value = "";
@@ -715,6 +966,14 @@
         document.getElementById('cardPriceInput').value = 0;
         document.getElementById('cardActiveInput').value = 0;
         document.getElementById('cardPassiveInput').value = 0;
+
+        document.getElementById('costHeart').value = 0;
+        document.getElementById('costTime').value = 0;
+        document.getElementById('costKnowledge').value = 0;
+
+        document.getElementById('rewardHeart').value = 0;
+        document.getElementById('rewardTime').value = 0;
+        document.getElementById('rewardKnowledge').value = 0;
       }
       modal.classList.remove('hidden');
     }
@@ -734,6 +993,18 @@
       const activeIncome = parseFloat(document.getElementById('cardActiveInput').value) || 0;
       const passiveIncome = parseFloat(document.getElementById('cardPassiveInput').value) || 0;
 
+      const cost = {
+        heart: parseInt(document.getElementById('costHeart').value) || 0,
+        time: parseInt(document.getElementById('costTime').value) || 0,
+        knowledge: parseInt(document.getElementById('costKnowledge').value) || 0
+      };
+
+      const reward = {
+        heart: parseInt(document.getElementById('rewardHeart').value) || 0,
+        time: parseInt(document.getElementById('rewardTime').value) || 0,
+        knowledge: parseInt(document.getElementById('rewardKnowledge').value) || 0
+      };
+
       const targetType = (targetVal === 'personal') ? 'personal' : 'leg';
       const targetLeg = (targetVal === 'personal') ? '' : targetVal;
 
@@ -743,7 +1014,7 @@
           items[index] = {
             ...items[index],
             title, category, targetType, targetLeg, pv, price, activeIncome, passiveIncome,
-            syncStatus: "synced"
+            cost, reward, syncStatus: "synced"
           };
           showToast(`แก้ไขการ์ด "${title}" เรียบร้อยแล้ว`);
         }
@@ -751,7 +1022,7 @@
         const newCard = {
           id: `c-${Date.now().toString().slice(-6)}`,
           title, category, targetType, targetLeg, pv, price, activeIncome, passiveIncome,
-          syncStatus: "synced"
+          cost, reward, syncStatus: "synced"
         };
         items.unshift(newCard);
         showToast(`สร้างการ์ด "${title}" สำเร็จ`);
@@ -759,6 +1030,7 @@
 
       saveLocalCache();
       renderAllUI();
+      resetDrawPool();
       closeCardModal();
     }
 
@@ -778,6 +1050,7 @@
 
       saveLocalCache();
       renderAllUI();
+      resetDrawPool();
       showToast(`โคลนการ์ด "${clonedCard.title}" เรียบร้อยแล้ว 📋`);
     }
 
@@ -789,6 +1062,7 @@
       items = items.filter(i => i.id !== id);
       saveLocalCache();
       renderAllUI();
+      resetDrawPool();
       showToast('ลบการ์ดเรียบร้อยแล้ว');
     }
 
@@ -823,6 +1097,7 @@
           isCloudSyncedSession = true;
           saveLocalCache();
           renderAllUI();
+          resetDrawPool();
           renderDbSnapshotsTable();
 
           document.getElementById('cloudSyncStatus').innerHTML = `<i class="fa-solid fa-circle text-[8px] text-emerald-500"></i> ออนไลน์ (${currentDbVersionName} | ${items.length} ใบ)`;
@@ -871,7 +1146,6 @@
 
       try {
         updateSyncProgress(25, `กำลังเตรียมข้อมูลการ์ด ${items.length} ใบ...`, 'ขั้นตอน 1/3: แพ็กข้อมูล');
-        
         currentDbVersion++;
         currentDbVersionName = newVerName;
 
@@ -1162,8 +1436,9 @@
             isCloudSyncedSession = true;
             saveLocalCache();
             renderAllUI();
+            resetDrawPool();
             closeSettingModal();
-            showToast('นำเข้าฐานข้อมูลสำเร็จแล้ว! สามารถกดแก้ไขหรือ Push ขึ้น Cloud ได้ทันที 📤✅');
+            showToast('นำเข้าฐานข้อมูลสำเร็จแล้ว! 📤✅');
           }
         } catch (err) {
           showToast('ไม่สามารถอ่านไฟล์ JSON ได้');
@@ -1219,7 +1494,13 @@
     }
 
     function switchTab(t) {
-      ['categories', 'draw', 'data', 'history'].forEach(v => document.getElementById(`view-${v}`).classList.toggle('hidden', v !== t));
+      ['categories', 'draw', 'data', 'history'].forEach(v => {
+        const el = document.getElementById(`view-${v}`);
+        if (el) el.classList.toggle('hidden', v !== t);
+      });
+      if (t === 'draw') {
+        updateStageCategoryUI();
+      }
     }
     function initTheme() {
       const isDark = localStorage.getItem('rnd_theme_dark') !== 'false';
@@ -1228,10 +1509,6 @@
     function toggleTheme() {
       const isDark = document.documentElement.classList.toggle('dark');
       localStorage.setItem('rnd_theme_dark', isDark ? 'true' : 'false');
-    }
-    function triggerRandomDraw() {
-      confetti({ particleCount: 30, spread: 50, origin: { y: 0.7 } });
-      showToast("สุ่มการ์ดเรียบร้อย!");
     }
     function showToast(msg) {
       const t = document.getElementById('toastNotification');
