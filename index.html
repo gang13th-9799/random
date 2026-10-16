@@ -256,30 +256,65 @@
       </div>
     </section>
 
-    <!-- VIEW 3: คลังข้อมูลการ์ด (ซ่อนไว้เป็นค่าเริ่มต้น ไม่ให้แสดงในหน้าแรก) -->
+    <!-- VIEW 3: คลังข้อมูลการ์ด (มีปุ่มสลับโหมด การ์ด vs ตาราง, ราคาแดง, ความรู้, แยก Active/Passive) -->
     <section id="view-data" class="hidden space-y-5 animate-pop-in">
-      <div class="bg-white/90 dark:bg-slate-800/90 backdrop-blur border border-slate-200 dark:border-slate-700 rounded-3xl p-4 sm:p-5 shadow-sm flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3">
+      <div class="bg-white/90 dark:bg-slate-800/90 backdrop-blur border border-slate-200 dark:border-slate-700 rounded-3xl p-4 sm:p-5 shadow-sm flex flex-col lg:flex-row items-stretch lg:items-center justify-between gap-3">
         <div class="flex flex-wrap items-center gap-2.5 flex-1">
-          <div class="relative flex-1 min-w-[200px]">
+          <div class="relative flex-1 min-w-[180px]">
             <input type="text" id="searchInput" oninput="renderDataTable()" placeholder="ค้นหาชื่อการ์ด หรือ ID..." class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-300 dark:border-slate-700 text-sm sm:text-base rounded-2xl pl-11 pr-4 py-2.5 outline-none font-medium text-slate-800 dark:text-white">
             <i class="fa-solid fa-magnifying-glass absolute left-4 top-3.5 text-slate-400 text-base"></i>
           </div>
-          <div class="relative w-full sm:w-52">
+          <div class="relative w-full sm:w-48">
             <select id="tableCategoryFilter" onchange="renderDataTable()" class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-300 dark:border-slate-700 text-sm sm:text-base rounded-2xl px-4 py-2.5 pr-8 outline-none font-bold text-slate-800 dark:text-white"></select>
           </div>
         </div>
-        <div class="flex items-center gap-2 justify-end">
-          <button onclick="openAddEditModal()" class="px-5 py-2.5 text-white font-black text-sm rounded-2xl shadow-md btn-theme-action flex items-center gap-2 hover:scale-105 transition">
+
+        <div class="flex items-center gap-2 justify-between sm:justify-end">
+          <!-- ปุ่มสลับมุมมอง การ์ด vs ตาราง -->
+          <div class="inline-flex p-1 bg-slate-100 dark:bg-slate-900/80 rounded-2xl border border-slate-200 dark:border-slate-700">
+            <button type="button" id="viewModeCardBtn" onclick="setDataViewMode('cards')" class="px-3 py-1.5 rounded-xl text-xs sm:text-sm font-black transition flex items-center gap-1.5 bg-white dark:bg-slate-800 text-rose-500 shadow-xs">
+              <i class="fa-solid fa-table-cells-large"></i><span>การ์ด</span>
+            </button>
+            <button type="button" id="viewModeTableBtn" onclick="setDataViewMode('table')" class="px-3 py-1.5 rounded-xl text-xs sm:text-sm font-black transition flex items-center gap-1.5 text-slate-500 dark:text-slate-400 hover:text-slate-800 dark:hover:text-white">
+              <i class="fa-solid fa-table-list"></i><span>ตาราง</span>
+            </button>
+          </div>
+
+          <button onclick="openAddEditModal()" class="px-4 sm:px-5 py-2.5 text-white font-black text-xs sm:text-sm rounded-2xl shadow-md btn-theme-action flex items-center gap-2 hover:scale-105 transition shrink-0">
             <i class="fa-solid fa-plus-circle text-base"></i><span>สร้างการ์ดใหม่</span>
           </button>
-          <button onclick="forceSyncFromCloud()" class="p-3 bg-slate-100 dark:bg-slate-700 border border-slate-300 dark:border-slate-600 text-sm font-bold rounded-2xl hover:bg-slate-200 transition">
+          <button onclick="forceSyncFromCloud()" class="p-3 bg-slate-100 dark:bg-slate-700 border border-slate-300 dark:border-slate-600 text-sm font-bold rounded-2xl hover:bg-slate-200 transition shrink-0">
             <i class="fa-solid fa-arrows-rotate text-blue-500"></i>
           </button>
         </div>
       </div>
 
-      <!-- Unified Card Grid: ทั้งจอคอมพิวเตอร์และมือถือจัดเรียงแบบการ์ดเหมือนกัน ข้อความขึ้นบรรทัดใหม่ได้ -->
+      <!-- โหมดการ์ด (Card Grid View) -->
       <div id="cardsGridContainer" class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-3.5 sm:gap-4.5"></div>
+
+      <!-- โหมดตารางกระชับ (Compact Table View: แสดงข้อมูลครบ ขึ้นบรรทัดใหม่ได้ ทรัพยากรเป็นไอคอน+ตัวเลข) -->
+      <div id="tableCompactContainer" class="hidden bg-white dark:bg-slate-800/90 border border-slate-200 dark:border-slate-700 rounded-3xl shadow-sm overflow-hidden">
+        <div class="overflow-x-auto">
+          <table class="w-full text-left text-xs sm:text-sm border-collapse">
+            <thead class="bg-slate-50 dark:bg-slate-900 border-b border-slate-200 dark:border-slate-700 text-[11px] uppercase font-black text-slate-400 whitespace-nowrap">
+              <tr>
+                <th class="py-3 px-2.5 text-center w-10">#</th>
+                <th class="py-3 px-2.5 w-24 text-center">ID</th>
+                <th class="py-3 px-3 min-w-[160px]">ชื่อการ์ด</th>
+                <th class="py-3 px-2.5 text-indigo-400 text-center min-w-[90px]">สายงาน</th>
+                <th class="py-3 px-2.5 text-cyan-500 text-right min-w-[70px]">PV</th>
+                <th class="py-3 px-2.5 text-red-500 text-right min-w-[85px]"><i class="fa-solid fa-coins mr-1"></i>ราคา</th>
+                <th class="py-3 px-2.5 text-emerald-500 text-right min-w-[90px]"><i class="fa-solid fa-hand-holding-dollar mr-1"></i>Active</th>
+                <th class="py-3 px-2.5 text-teal-400 text-right min-w-[90px]"><i class="fa-solid fa-seedling mr-1"></i>Passive</th>
+                <th class="py-3 px-3 min-w-[180px]">ทรัพยากร (ใช้ / ได้)</th>
+                <th class="py-3 px-2.5 text-center min-w-[90px]">หมวดหมู่</th>
+                <th class="py-3 px-2.5 text-center w-28 sticky right-0 bg-slate-50 dark:bg-slate-900 shadow-l">จัดการ</th>
+              </tr>
+            </thead>
+            <tbody id="tableBodyCompact" class="divide-y divide-slate-100 dark:divide-slate-700/60 font-medium"></tbody>
+          </table>
+        </div>
+      </div>
     </section>
 
     <!-- VIEW 4: ประวัติการสุ่ม -->
@@ -301,13 +336,13 @@
 
   <!-- Mobile Bottom Nav Bar -->
   <nav class="lg:hidden fixed bottom-0 left-0 right-0 z-40 bg-white/95 dark:bg-slate-900/95 backdrop-blur-md border-t border-slate-200 dark:border-slate-800 px-3 py-2 flex items-center justify-around shadow-lg">
-    <button onclick="switchTab('categories')" id="m-nav-categories" class="flex flex-col items-center gap-1 text-rose-500">
+    <button onclick="switchTab('categories')" id="m-nav-categories" class="flex flex-col items-center gap-1 text-slate-400">
       <i class="fa-solid fa-shapes text-xl"></i><span class="text-[10px] font-black">หมวดหมู่</span>
     </button>
     <button onclick="switchTab('draw')" id="m-nav-draw" class="flex flex-col items-center gap-1 text-slate-400">
       <i class="fa-solid fa-dice-d20 text-xl"></i><span class="text-[10px] font-black">หน้าสุ่ม</span>
     </button>
-    <button onclick="switchTab('data')" id="m-nav-data" class="flex flex-col items-center gap-1 text-slate-400">
+    <button onclick="switchTab('data')" id="m-nav-data" class="flex flex-col items-center gap-1 text-rose-500">
       <i class="fa-solid fa-layer-group text-xl"></i><span class="text-[10px] font-black">คลังข้อมูล</span>
     </button>
     <button onclick="switchTab('history')" id="m-nav-history" class="flex flex-col items-center gap-1 text-slate-400">
@@ -337,8 +372,8 @@
       <div class="grid grid-cols-2 gap-3 bg-slate-50 dark:bg-slate-900/70 p-4 rounded-3xl border border-slate-200 dark:border-slate-700 text-xs sm:text-sm font-mono">
         <div class="text-left">PV: <strong id="drawResultPv" class="text-cyan-400 text-base sm:text-lg font-black block">0</strong></div>
         <div class="text-right flex flex-col items-end">
-          <span class="text-slate-400 text-[11px] font-sans flex items-center gap-1"><i class="fa-solid fa-coins text-amber-400"></i>เงินสด</span>
-          <strong id="drawResultPrice" class="text-amber-400 text-base sm:text-lg font-black block">฿0</strong>
+          <span class="text-red-500 text-[11px] font-sans font-black flex items-center gap-1"><i class="fa-solid fa-coins"></i>ราคา (ต้องจ่าย)</span>
+          <strong id="drawResultPrice" class="text-red-500 text-base sm:text-lg font-black block">฿0</strong>
         </div>
         <div class="text-left pt-2 border-t border-slate-200 dark:border-slate-700">
           <span class="text-slate-400 text-[11px] font-sans flex items-center gap-1"><i class="fa-solid fa-hand-holding-dollar text-emerald-400"></i>Active</span>
@@ -416,8 +451,8 @@
             <input type="number" id="cardPvInput" value="0" class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded-2xl px-3 py-2.5 font-mono text-right outline-none text-slate-800 dark:text-white text-sm sm:text-base">
           </div>
           <div class="space-y-1">
-            <label class="text-amber-500 font-black flex items-center gap-1"><i class="fa-solid fa-coins text-amber-400"></i>เงินสด</label>
-            <input type="number" id="cardPriceInput" value="0" class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded-2xl px-3 py-2.5 font-mono text-right outline-none text-slate-800 dark:text-white text-sm sm:text-base">
+            <label class="text-red-500 font-black flex items-center gap-1"><i class="fa-solid fa-coins text-red-500"></i>ราคา (ต้องจ่าย)</label>
+            <input type="number" id="cardPriceInput" value="0" class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded-2xl px-3 py-2.5 font-mono text-right outline-none text-red-500 font-bold text-sm sm:text-base">
           </div>
           <div class="space-y-1">
             <label class="text-emerald-500 font-black flex items-center gap-1"><i class="fa-solid fa-hand-holding-dollar text-emerald-400"></i>Active</label>
@@ -615,6 +650,7 @@
     let currentDbVersionName = "v8.0.0";
     let dbSnapshots = [];
     let isCloudSyncedSession = false;
+    let dataViewMode = "cards"; // "cards" หรือ "table"
 
     function getNextSemVer(vStr, type = "patch") {
       const clean = String(vStr || "v8.0.0").replace(/^v/i, "");
@@ -635,7 +671,7 @@
       return `v${major}.${minor}.${patch}`;
     }
 
-    // กำหนดสีและพื้นหลังการ์ดใน Light Mode ให้สีเข้มขึ้น ชัดเจนขึ้น และ Dark Mode มีคอนทราสต์คมกริบ
+    // สีและการ์ด: ปรับ Light Mode ให้สีสดและเข้มขึ้น 30-35% เพื่อความชัดเจน
     const COLOR_PALETTES = {
       red: { 
         id: "red", 
@@ -696,7 +732,7 @@
       renderColorPickerGrid();
       renderIconPickerGrid();
       
-      // บังคับแสดงหน้าหมวดหมู่เป็นหน้าแรกเสมอ (ไม่แสดงคลังข้อมูลในตอนโหลดแรก)
+      // บังคับเริ่มที่หน้าหมวดหมู่ ไม่เปิดคลังข้อมูลในหน้าแรก
       switchTab('categories');
 
       // เปิดแถบ Blocking Sync ทันทีเมื่อเข้าเว็บครั้งแรกหรือรีเฟรช ป้องกันการแก้ข้อมูลก่อนซิงก์เสร็จ
@@ -741,6 +777,7 @@
         const cHist = localStorage.getItem('rnd_cache_history');
         historyLog = cHist ? JSON.parse(cHist) : [];
         currentDbVersionName = localStorage.getItem('rnd_db_version_name') || "v8.0.0";
+        dataViewMode = localStorage.getItem('rnd_data_view_mode') || "cards";
       } catch (e) {
         items = [...DEFAULT_INITIAL_ITEMS];
         categories = [...DEFAULT_INITIAL_CATEGORIES];
@@ -755,6 +792,7 @@
         localStorage.setItem('rnd_cache_categories', JSON.stringify(categories));
         localStorage.setItem('rnd_cache_history', JSON.stringify(historyLog));
         localStorage.setItem('rnd_db_version_name', currentDbVersionName);
+        localStorage.setItem('rnd_data_view_mode', dataViewMode);
       } catch (e) {}
     }
 
@@ -849,6 +887,14 @@
       updatePoolBadge();
     }
 
+    // ฟังก์ชันสลับโหมดมุมมองการ์ด หรือ ตาราง
+    function setDataViewMode(mode) {
+      dataViewMode = mode;
+      saveLocalCache();
+      renderDataTable();
+    }
+
+    // ฟังก์ชันสร้างแถบพลังแบบแบ่ง 10 ขีด
     function renderPowerSegmentBar(val, colorClass, emptyClass = "bg-slate-200 dark:bg-slate-700/80") {
       const safeVal = Math.max(0, Math.min(10, parseInt(val) || 0));
       let segments = '';
@@ -889,7 +935,7 @@
           </div>
           <div class="flex items-center justify-between gap-1.5 text-xs">
             <span class="flex items-center gap-1 text-slate-800 dark:text-slate-200 font-bold shrink-0">
-              <i class="fa-solid fa-book-bookmark text-violet-500 text-xs"></i> รู้
+              <i class="fa-solid fa-book-bookmark text-violet-500 text-xs"></i> ความรู้
             </span>
             ${renderPowerSegmentBar(res.knowledge, activeColor)}
           </div>
@@ -897,8 +943,30 @@
       `;
     }
 
+    // ฟังก์ชันสร้างทรัพยากรแบบกระชับ (ไอคอน + ตัวเลข) สำหรับโหมดตาราง
+    function renderResourceCompactInline(cost, reward) {
+      const c = cost || { heart: 0, time: 0, knowledge: 0 };
+      const r = reward || { heart: 0, time: 0, knowledge: 0 };
+      return `
+        <div class="space-y-1 text-xs font-mono">
+          <div class="flex items-center gap-1.5 text-rose-500 font-bold">
+            <span class="text-[10px] uppercase font-sans font-black bg-rose-50 dark:bg-rose-950/60 px-1 rounded">ใช้</span>
+            <span>❤️${c.heart || 0}</span>
+            <span><i class="fa-solid fa-clock text-[10px] text-sky-400"></i>${c.time || 0}</span>
+            <span><i class="fa-solid fa-book-bookmark text-[10px] text-violet-400"></i>${c.knowledge || 0}</span>
+          </div>
+          <div class="flex items-center gap-1.5 text-emerald-500 font-bold">
+            <span class="text-[10px] uppercase font-sans font-black bg-emerald-50 dark:bg-emerald-950/60 px-1 rounded">ได้</span>
+            <span>❤️${r.heart || 0}</span>
+            <span><i class="fa-solid fa-clock text-[10px] text-sky-400"></i>${r.time || 0}</span>
+            <span><i class="fa-solid fa-book-bookmark text-[10px] text-violet-400"></i>${r.knowledge || 0}</span>
+          </div>
+        </div>
+      `;
+    }
+
     /* ------------------------------------------------------------------------
-       เรนเดอร์คลังข้อมูล (UNIFIED CARD GRID: ตัวหนังสือขึ้นบรรทัดใหม่ได้ + สี Light Mode ชัดเข้ม)
+       เรนเดอร์คลังข้อมูล (รองรับทั้งโหมดการ์ดและโหมดตารางกระชับ)
        ------------------------------------------------------------------------ */
     function renderDataTable() {
       const query = (document.getElementById('searchInput')?.value || '').toLowerCase().trim();
@@ -912,89 +980,160 @@
         return matchesQuery && matchesCat;
       });
 
+      // สลับสถานะปุ่ม UI สลับมุมมอง
+      const cardBtn = document.getElementById('viewModeCardBtn');
+      const tableBtn = document.getElementById('viewModeTableBtn');
       const gridContainer = document.getElementById('cardsGridContainer');
-      if (!gridContainer) return;
+      const tableContainer = document.getElementById('tableCompactContainer');
 
-      if (filtered.length === 0) {
-        gridContainer.innerHTML = `
-          <div class="col-span-full py-16 text-center text-slate-400 space-y-2">
-            <i class="fa-solid fa-folder-open text-4xl text-slate-300 dark:text-slate-600"></i>
-            <p class="text-sm font-bold">ไม่พบข้อมูลการ์ดที่ค้นหา</p>
-          </div>
-        `;
-        return;
+      if (dataViewMode === 'cards') {
+        if (cardBtn) cardBtn.className = "px-3 py-1.5 rounded-xl text-xs sm:text-sm font-black transition flex items-center gap-1.5 bg-white dark:bg-slate-800 text-rose-500 shadow-xs";
+        if (tableBtn) tableBtn.className = "px-3 py-1.5 rounded-xl text-xs sm:text-sm font-black transition flex items-center gap-1.5 text-slate-500 dark:text-slate-400 hover:text-slate-800 dark:hover:text-white";
+        if (gridContainer) gridContainer.classList.remove('hidden');
+        if (tableContainer) tableContainer.classList.add('hidden');
+      } else {
+        if (cardBtn) cardBtn.className = "px-3 py-1.5 rounded-xl text-xs sm:text-sm font-black transition flex items-center gap-1.5 text-slate-500 dark:text-slate-400 hover:text-slate-800 dark:hover:text-white";
+        if (tableBtn) tableBtn.className = "px-3 py-1.5 rounded-xl text-xs sm:text-sm font-black transition flex items-center gap-1.5 bg-white dark:bg-slate-800 text-rose-500 shadow-xs";
+        if (gridContainer) gridContainer.classList.add('hidden');
+        if (tableContainer) tableContainer.classList.remove('hidden');
       }
 
-      gridContainer.innerHTML = filtered.map((item, idx) => {
-        const meta = getCategoryMeta(item.category);
-        return `
-          <div class="p-4 sm:p-5 rounded-3xl border transition duration-200 space-y-3.5 shadow-md hover:shadow-xl ${meta.cardBgTint}">
-            
-            <!-- บรรทัดที่ 1: ลำดับ + Card ID + ป้ายหมวดหมู่ -->
-            <div class="flex items-center justify-between gap-2 border-b border-black/5 dark:border-white/5 pb-2">
-              <div class="flex items-center gap-2">
-                <span class="font-mono text-xs font-bold text-slate-500 dark:text-slate-400">#${idx + 1}</span>
-                <span class="font-mono text-xs font-black px-2.5 py-0.5 rounded-lg bg-white/95 dark:bg-slate-900 text-slate-800 dark:text-slate-200 border border-slate-300/80 dark:border-slate-700 shadow-2xs">
-                  ${escapeHTML(item.id)}
-                </span>
+      // 1. เรนเดอร์โหมดการ์ด (Card Grid View: แสดงราคาแดง, ความรู้, แยก Active และ Passive)
+      if (gridContainer) {
+        if (filtered.length === 0) {
+          gridContainer.innerHTML = `
+            <div class="col-span-full py-16 text-center text-slate-400 space-y-2">
+              <i class="fa-solid fa-folder-open text-4xl text-slate-300 dark:text-slate-600"></i>
+              <p class="text-sm font-bold">ไม่พบข้อมูลการ์ดที่ค้นหา</p>
+            </div>
+          `;
+        } else {
+          gridContainer.innerHTML = filtered.map((item, idx) => {
+            const meta = getCategoryMeta(item.category);
+            return `
+              <div class="p-4 sm:p-5 rounded-3xl border transition duration-200 space-y-3.5 shadow-md hover:shadow-xl ${meta.cardBgTint}">
+                <!-- บรรทัดที่ 1: ลำดับ + Card ID + ป้ายหมวดหมู่ -->
+                <div class="flex items-center justify-between gap-2 border-b border-black/5 dark:border-white/5 pb-2">
+                  <div class="flex items-center gap-2">
+                    <span class="font-mono text-xs font-bold text-slate-500 dark:text-slate-400">#${idx + 1}</span>
+                    <span class="font-mono text-xs font-black px-2.5 py-0.5 rounded-lg bg-white/95 dark:bg-slate-900 text-slate-800 dark:text-slate-200 border border-slate-300/80 dark:border-slate-700 shadow-2xs">
+                      ${escapeHTML(item.id)}
+                    </span>
+                  </div>
+                  <span class="text-xs px-2.5 py-0.5 rounded-full font-bold border shrink-0 ${meta.theme.badge}">
+                    ${escapeHTML(item.category)}
+                  </span>
+                </div>
+
+                <!-- บรรทัดที่ 2: ชื่อการ์ด (ขึ้นบรรทัดใหม่ได้เต็มที่) -->
+                <div class="py-0.5">
+                  <h4 class="font-black text-slate-950 dark:text-white text-base sm:text-lg leading-relaxed break-words whitespace-normal">
+                    ${escapeHTML(item.title)}
+                  </h4>
+                </div>
+
+                <!-- บรรทัดที่ 3: สายงาน + สรุปตัวเลขทางการเงิน 4 ช่อง (ราคาแดงสด, แยก Active และ Passive) -->
+                <div class="grid grid-cols-4 gap-2 text-center font-mono bg-white/95 dark:bg-slate-900/95 p-3 rounded-2xl border border-slate-300/80 dark:border-slate-800 text-xs shadow-xs">
+                  <div class="overflow-hidden">
+                    <span class="text-[10px] text-slate-500 dark:text-slate-400 font-sans font-bold block">สายงาน</span>
+                    <strong class="text-indigo-600 dark:text-indigo-400 font-black break-words block text-xs leading-tight">
+                      ${escapeHTML(item.targetLeg ? 'สาย ' + item.targetLeg : 'ส่วนตัว')}
+                    </strong>
+                  </div>
+                  <div>
+                    <span class="text-[10px] text-slate-500 dark:text-slate-400 font-sans font-bold block">PV</span>
+                    <strong class="text-cyan-600 dark:text-cyan-400 font-black text-xs sm:text-sm">${(item.pv || 0).toLocaleString()}</strong>
+                  </div>
+                  <div>
+                    <span class="text-[10px] text-red-500 font-sans font-black block">ราคา</span>
+                    <strong class="text-red-500 font-black text-xs sm:text-sm">฿${(item.price || 0).toLocaleString()}</strong>
+                  </div>
+                  <div class="space-y-0.5">
+                    <div>
+                      <span class="text-[9px] text-emerald-500 font-sans font-bold">Active:</span>
+                      <strong class="text-emerald-600 dark:text-emerald-400 font-black text-xs">฿${(item.activeIncome || 0).toLocaleString()}</strong>
+                    </div>
+                    <div>
+                      <span class="text-[9px] text-teal-500 font-sans font-bold">Passive:</span>
+                      <strong class="text-teal-600 dark:text-teal-400 font-black text-xs">฿${(item.passiveIncome || 0).toLocaleString()}</strong>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- บรรทัดที่ 4: แถบขีดพลัง 0-10 (ใช้คำว่า ความรู้) -->
+                <div class="grid grid-cols-2 gap-2 bg-white/95 dark:bg-slate-900/95 p-3 rounded-2xl border border-slate-300/80 dark:border-slate-800 shadow-xs">
+                  <div>${renderResourceMeterGroup(item.cost, true)}</div>
+                  <div class="border-l border-slate-200 dark:border-slate-800 pl-2.5">${renderResourceMeterGroup(item.reward, false)}</div>
+                </div>
+
+                <!-- บรรทัดที่ 5: แถบปุ่มจัดการ -->
+                <div class="flex items-center justify-end gap-2 pt-1 border-t border-black/5 dark:border-white/5">
+                  <button type="button" onclick="openAddEditModal('${item.id}')" class="px-3.5 py-1.5 text-xs font-black rounded-xl bg-white hover:bg-blue-50 dark:bg-slate-800 dark:hover:bg-slate-700 text-blue-600 dark:text-blue-400 border border-slate-300 dark:border-slate-700 flex items-center gap-1.5 active:scale-95 transition shadow-2xs">
+                    <i class="fa-solid fa-pen text-[10px]"></i> แก้ไข
+                  </button>
+                  <button type="button" onclick="cloneItem('${item.id}')" class="px-3.5 py-1.5 text-xs font-black rounded-xl bg-white hover:bg-emerald-50 dark:bg-slate-800 dark:hover:bg-slate-700 text-emerald-600 dark:text-emerald-400 border border-slate-300 dark:border-slate-700 flex items-center gap-1.5 active:scale-95 transition shadow-2xs">
+                    <i class="fa-regular fa-copy text-[10px]"></i> โคลน
+                  </button>
+                  <button type="button" onclick="confirmDeleteItem('${item.id}')" class="px-3.5 py-1.5 text-xs font-black rounded-xl bg-white hover:bg-rose-50 dark:bg-slate-800 dark:hover:bg-slate-700 text-rose-600 dark:text-rose-400 border border-slate-300 dark:border-slate-700 flex items-center gap-1.5 active:scale-95 transition shadow-2xs">
+                    <i class="fa-solid fa-trash text-[10px]"></i> ลบ
+                  </button>
+                </div>
               </div>
-              <span class="text-xs px-2.5 py-0.5 rounded-full font-bold border shrink-0 ${meta.theme.badge}">
+            `;
+          }).join('');
+        }
+      }
+
+      // 2. เรนเดอร์โหมดตารางกระชับ (Compact Table View: ขึ้นบรรทัดใหม่ได้ ทรัพยากรเป็นไอคอน+ตัวเลข)
+      const compactTbody = document.getElementById('tableBodyCompact');
+      if (compactTbody) {
+        compactTbody.innerHTML = filtered.map((item, idx) => `
+          <tr class="hover:bg-slate-50 dark:hover:bg-slate-700/40 transition">
+            <td class="py-3 px-2.5 text-center font-mono text-xs text-slate-400 font-bold">${idx + 1}</td>
+            <td class="py-3 px-2.5 text-center">
+              <span class="font-mono text-xs font-black px-2 py-0.5 rounded-lg bg-slate-100 dark:bg-slate-900 text-slate-700 dark:text-slate-200 border border-slate-200 dark:border-slate-700">
+                ${escapeHTML(item.id)}
+              </span>
+            </td>
+            <td class="py-3 px-3 font-black text-slate-900 dark:text-white break-words whitespace-normal text-sm leading-relaxed">
+              ${escapeHTML(item.title)}
+            </td>
+            <td class="py-3 px-2.5 text-center">
+              <span class="px-2 py-0.5 rounded-lg bg-indigo-50 dark:bg-indigo-950/50 text-indigo-500 font-bold text-xs border border-indigo-200 dark:border-indigo-800">
+                ${escapeHTML(item.targetLeg ? 'สาย ' + item.targetLeg : 'ส่วนตัว')}
+              </span>
+            </td>
+            <td class="py-3 px-2.5 font-mono font-black text-right text-cyan-500">${(item.pv || 0).toLocaleString()}</td>
+            <!-- ราคา สีแดงสด -->
+            <td class="py-3 px-2.5 font-mono font-black text-right text-red-500">฿${(item.price || 0).toLocaleString()}</td>
+            <!-- แยก Active และ Passive -->
+            <td class="py-3 px-2.5 font-mono font-bold text-right text-emerald-500">฿${(item.activeIncome || 0).toLocaleString()}</td>
+            <td class="py-3 px-2.5 font-mono font-bold text-right text-teal-400">฿${(item.passiveIncome || 0).toLocaleString()}</td>
+            <!-- ทรัพยากรแบบกระชับ (ไอคอน+ตัวเลข) -->
+            <td class="py-3 px-3 whitespace-nowrap">
+              ${renderResourceCompactInline(item.cost, item.reward)}
+            </td>
+            <td class="py-3 px-2.5 text-center">
+              <span class="text-xs px-2.5 py-0.5 rounded-full font-bold border ${getCategoryMeta(item.category).theme.badge}">
                 ${escapeHTML(item.category)}
               </span>
-            </div>
-
-            <!-- บรรทัดที่ 2: ชื่อการ์ด (ขึ้นบรรทัดใหม่ได้เต็มที่ ไม่ตัดคำ ไม่ truncate) -->
-            <div class="py-0.5">
-              <h4 class="font-black text-slate-950 dark:text-white text-base sm:text-lg leading-relaxed break-words whitespace-normal">
-                ${escapeHTML(item.title)}
-              </h4>
-            </div>
-
-            <!-- บรรทัดที่ 3: สายงาน + สรุปตัวเลขทางการเงิน 4 ช่อง (Glassmorphism ตัดกับสีการ์ดเข้มชัด) -->
-            <div class="grid grid-cols-4 gap-2 text-center font-mono bg-white/95 dark:bg-slate-900/95 p-3 rounded-2xl border border-slate-300/80 dark:border-slate-800 text-xs shadow-xs">
-              <div class="overflow-hidden">
-                <span class="text-[10px] text-slate-500 dark:text-slate-400 font-sans font-bold block">สายงาน</span>
-                <strong class="text-indigo-600 dark:text-indigo-400 font-black break-words block text-xs leading-tight">
-                  ${escapeHTML(item.targetLeg ? 'สาย ' + item.targetLeg : 'ส่วนตัว')}
-                </strong>
+            </td>
+            <td class="py-3 px-2.5 text-center sticky right-0 bg-white dark:bg-slate-800 shadow-l">
+              <div class="flex items-center justify-center gap-1">
+                <button type="button" onclick="openAddEditModal('${item.id}')" title="แก้ไขการ์ด" class="w-7 h-7 flex items-center justify-center text-slate-500 hover:text-blue-500 hover:bg-blue-50 dark:hover:bg-slate-700 rounded-lg transition">
+                  <i class="fa-solid fa-pen text-xs"></i>
+                </button>
+                <button type="button" onclick="cloneItem('${item.id}')" title="โคลนการ์ด" class="w-7 h-7 flex items-center justify-center text-slate-500 hover:text-emerald-500 hover:bg-emerald-50 dark:hover:bg-slate-700 rounded-lg transition">
+                  <i class="fa-regular fa-copy text-xs"></i>
+                </button>
+                <button type="button" onclick="confirmDeleteItem('${item.id}')" title="ลบการ์ด" class="w-7 h-7 flex items-center justify-center text-slate-400 hover:text-rose-500 hover:bg-rose-50 dark:hover:bg-slate-700 rounded-lg transition">
+                  <i class="fa-solid fa-trash-can text-xs"></i>
+                </button>
               </div>
-              <div>
-                <span class="text-[10px] text-slate-500 dark:text-slate-400 font-sans font-bold block">PV</span>
-                <strong class="text-cyan-600 dark:text-cyan-400 font-black text-xs sm:text-sm">${(item.pv || 0).toLocaleString()}</strong>
-              </div>
-              <div>
-                <span class="text-[10px] text-slate-500 dark:text-slate-400 font-sans font-bold block">ราคา</span>
-                <strong class="text-amber-600 dark:text-amber-400 font-black text-xs sm:text-sm">฿${(item.price || 0).toLocaleString()}</strong>
-              </div>
-              <div>
-                <span class="text-[10px] text-slate-500 dark:text-slate-400 font-sans font-bold block">Active/Pass</span>
-                <strong class="text-emerald-600 dark:text-emerald-400 font-black text-[11px] sm:text-xs">
-                  ${item.activeIncome || 0}/${item.passiveIncome || 0}
-                </strong>
-              </div>
-            </div>
-
-            <!-- บรรทัดที่ 4: แถบขีดพลัง 0-10 แบ่ง Cost (ซ้าย) / Reward (ขวา) ชัดเจน -->
-            <div class="grid grid-cols-2 gap-2 bg-white/95 dark:bg-slate-900/95 p-3 rounded-2xl border border-slate-300/80 dark:border-slate-800 shadow-xs">
-              <div>${renderResourceMeterGroup(item.cost, true)}</div>
-              <div class="border-l border-slate-200 dark:border-slate-800 pl-2.5">${renderResourceMeterGroup(item.reward, false)}</div>
-            </div>
-
-            <!-- บรรทัดที่ 5: แถบปุ่มจัดการ (แก้ไข / โคลน / ลบ) -->
-            <div class="flex items-center justify-end gap-2 pt-1 border-t border-black/5 dark:border-white/5">
-              <button type="button" onclick="openAddEditModal('${item.id}')" class="px-3.5 py-1.5 text-xs font-black rounded-xl bg-white hover:bg-blue-50 dark:bg-slate-800 dark:hover:bg-slate-700 text-blue-600 dark:text-blue-400 border border-slate-300 dark:border-slate-700 flex items-center gap-1.5 active:scale-95 transition shadow-2xs">
-                <i class="fa-solid fa-pen text-[10px]"></i> แก้ไข
-              </button>
-              <button type="button" onclick="cloneItem('${item.id}')" class="px-3.5 py-1.5 text-xs font-black rounded-xl bg-white hover:bg-emerald-50 dark:bg-slate-800 dark:hover:bg-slate-700 text-emerald-600 dark:text-emerald-400 border border-slate-300 dark:border-slate-700 flex items-center gap-1.5 active:scale-95 transition shadow-2xs">
-                <i class="fa-regular fa-copy text-[10px]"></i> โคลน
-              </button>
-              <button type="button" onclick="confirmDeleteItem('${item.id}')" class="px-3.5 py-1.5 text-xs font-black rounded-xl bg-white hover:bg-rose-50 dark:bg-slate-800 dark:hover:bg-slate-700 text-rose-600 dark:text-rose-400 border border-slate-300 dark:border-slate-700 flex items-center gap-1.5 active:scale-95 transition shadow-2xs">
-                <i class="fa-solid fa-trash text-[10px]"></i> ลบ
-              </button>
-            </div>
-          </div>
-        `;
-      }).join('');
+            </td>
+          </tr>
+        `).join('');
+      }
     }
 
     function resetDrawPool() {
