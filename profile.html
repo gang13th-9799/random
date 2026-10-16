@@ -143,6 +143,7 @@
         <button id="nav-btn-profile" onclick="switchProfileTab('profile')" class="px-4 py-2 rounded-xl text-sm font-bold transition-all flex items-center space-x-2.5 bg-white dark:bg-slate-700 shadow text-rose-500 dark:text-white">
           <i class="fa-solid fa-id-card text-base text-rose-500 icon-vibrant"></i><span>ข้อมูลตัวละคร</span>
         </button>
+        <!-- ปุ่มจัดการอาชีพ & คุณสมบัติ (เฉพาะ Admin เท่านั้น) -->
         <button id="nav-btn-careers" onclick="switchProfileTab('careers')" class="hidden px-4 py-2 rounded-xl text-sm font-bold transition-all flex items-center space-x-2.5 text-slate-600 dark:text-slate-300 hover:text-rose-500">
           <i class="fa-solid fa-user-tie text-base text-purple-500 icon-vibrant"></i><span>จัดการอาชีพ (Admin)</span>
         </button>
@@ -230,7 +231,7 @@
         <span>คุณยังไม่ได้เลือกอาชีพ! ข้อมูลธุรกิจ ทรัพยากร และสายงานทั้งหมดจะแสดงเป็น 0 จนกว่าคุณจะกด <strong>"เลือกอาชีพ"</strong></span>
       </div>
 
-      <!-- แถบข้อมูลธุรกิจส่วนตัว (เงินเดือน, รายจ่ายประจำ, เงินคงเหลือ, เงินสด, PV, Active, Passive) -->
+      <!-- แถบข้อมูลธุรกิจส่วนตัว -->
       <div class="space-y-3">
         <div class="flex items-center justify-between">
           <h3 class="font-black text-base sm:text-lg text-slate-900 dark:text-white flex items-center gap-2">
@@ -241,46 +242,33 @@
         </div>
 
         <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-7 gap-3">
-          <!-- 1. เงินเดือน -->
           <div class="bg-white dark:bg-slate-800 p-3.5 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm space-y-1">
             <span class="text-[11px] text-slate-400 font-bold block">เงินเดือน (Salary)</span>
             <div class="text-base sm:text-lg font-black text-blue-500 font-mono" id="statSalary">฿0</div>
           </div>
-
-          <!-- 2. รายจ่ายประจำ -->
           <div class="bg-white dark:bg-slate-800 p-3.5 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm space-y-1">
             <span class="text-[11px] text-slate-400 font-bold block">รายจ่ายประจำ</span>
             <div class="text-base sm:text-lg font-black text-rose-500 font-mono" id="statExpenses">฿0</div>
           </div>
-
-          <!-- 3. เงินคงเหลือต่อเดือน -->
           <div class="bg-white dark:bg-slate-800 p-3.5 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm space-y-1">
             <span class="text-[11px] text-slate-400 font-bold block" title="(Active + Passive + เงินเดือน) - รายจ่าย">เงินเหลือ/เดือน</span>
             <div class="text-base sm:text-lg font-black text-emerald-400 font-mono" id="statNetMonthly">฿0</div>
           </div>
-
-          <!-- 4. เงินสด -->
           <div class="bg-white dark:bg-slate-800 p-3.5 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm space-y-1">
             <span class="text-[11px] text-slate-400 font-bold block">เงินสดคงเหลือ</span>
             <div class="text-base sm:text-lg font-black text-amber-500 font-mono" id="statCash">฿0</div>
             <input type="number" id="inputCash" onchange="updatePlayerFinance()" value="0" class="w-full text-[11px] font-mono bg-slate-50 dark:bg-slate-900 border rounded-lg p-1 outline-none dark:border-slate-700">
           </div>
-
-          <!-- 5. PV ส่วนตัว -->
           <div class="bg-white dark:bg-slate-800 p-3.5 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm space-y-1">
             <span class="text-[11px] text-cyan-400 font-black block">PV ส่วนตัว</span>
             <div class="text-base sm:text-lg font-black text-cyan-400 font-mono" id="statPersonalPv">0</div>
             <input type="number" id="inputPersonalPv" onchange="updatePlayerFinance()" value="0" class="w-full text-[11px] font-mono bg-slate-50 dark:bg-slate-900 border rounded-lg p-1 outline-none dark:border-slate-700">
           </div>
-
-          <!-- 6. Active Income -->
           <div class="bg-white dark:bg-slate-800 p-3.5 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm space-y-1">
             <span class="text-[11px] text-emerald-500 font-bold block">Active Income</span>
             <div class="text-base sm:text-lg font-black text-emerald-500 font-mono" id="statActiveIncome">฿0</div>
             <input type="number" id="inputActiveIncome" onchange="updatePlayerFinance()" value="0" class="w-full text-[11px] font-mono bg-slate-50 dark:bg-slate-900 border rounded-lg p-1 outline-none dark:border-slate-700">
           </div>
-
-          <!-- 7. Passive Income -->
           <div class="bg-white dark:bg-slate-800 p-3.5 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm space-y-1 col-span-2 sm:col-span-1">
             <span class="text-[11px] text-teal-400 font-bold block">Passive Income</span>
             <div class="text-base sm:text-lg font-black text-teal-400 font-mono" id="statPassiveIncome">฿0</div>
@@ -289,7 +277,7 @@
         </div>
       </div>
 
-      <!-- คลังทรัพยากรตัวละคร: สุขภาพ, เวลา, ความรู้ (แสดงแบบค่าพลัง 1-10) -->
+      <!-- คลังทรัพยากรตัวละคร -->
       <div class="bg-white dark:bg-slate-800 p-5 sm:p-6 rounded-3xl border border-slate-200 dark:border-slate-700 shadow-sm space-y-4">
         <h3 class="font-black text-base sm:text-lg text-slate-900 dark:text-white flex items-center gap-2">
           <i class="fa-solid fa-battery-three-quarters text-emerald-500 text-xl"></i><span>คลังทรัพยากรตัวละคร (ค่าพลัง 1 - 10)</span>
@@ -297,7 +285,7 @@
         <div class="grid grid-cols-1 sm:grid-cols-3 gap-4" id="dashboardResourcesContainer"></div>
       </div>
 
-      <!-- ผังสายงาน A-F (PV, ระดับ %, Active income, Passive income) -->
+      <!-- ผังสายงาน A-F -->
       <div class="bg-white dark:bg-slate-800 p-5 sm:p-6 rounded-3xl border border-slate-200 dark:border-slate-700 shadow-sm space-y-4">
         <div class="flex items-center justify-between">
           <div>
@@ -311,15 +299,15 @@
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6 gap-3.5" id="legsGridContainer"></div>
       </div>
 
-      <!-- เกณฑ์คุณสมบัติ (Checkbox) -->
+      <!-- เกณฑ์คุณสมบัติ (แยกหมวดหมู่ + Checkbox) -->
       <div class="bg-white dark:bg-slate-800 p-5 sm:p-6 rounded-3xl border border-slate-200 dark:border-slate-700 shadow-sm space-y-4">
         <div>
           <h3 class="font-black text-base sm:text-lg text-slate-900 dark:text-white flex items-center gap-2">
             <i class="fa-solid fa-certificate text-emerald-500 text-xl"></i><span>เกณฑ์คุณสมบัติ & ความสำเร็จของผู้เล่น</span>
           </h3>
-          <p class="text-xs text-slate-500 dark:text-slate-400 pt-0.5">ดึงเกณฑ์จากฐานข้อมูลหลัก แสดงทันทีและมี Checkbox เพื่อบันทึกสถานะ</p>
+          <p class="text-xs text-slate-500 dark:text-slate-400 pt-0.5">แบ่งตามหมวดหมู่ พร้อม Checkbox บันทึกสถานะส่วนตัว</p>
         </div>
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-3.5" id="playerDashboardQualificationsGrid"></div>
+        <div class="space-y-5" id="playerDashboardQualificationsContainer"></div>
       </div>
 
     </section>
@@ -331,7 +319,7 @@
           <h3 class="font-black text-lg text-slate-900 dark:text-white flex items-center gap-2">
             <i class="fa-solid fa-user-tie text-purple-500 text-xl"></i><span>ฐานข้อมูลอาชีพหลัก (Master Careers)</span>
           </h3>
-          <p class="text-xs text-slate-400 font-medium">เฉพาะ Admin ที่สามารถเพิ่ม ลบ หรือแก้ไขชื่ออาชีพ เงินเดือน รายจ่ายประจำ และทรัพยากรเริ่มต้นได้</p>
+          <p class="text-xs text-slate-400 font-medium">เฉพาะ Admin ที่สามารถจัดการฐานข้อมูลหลักนี้ได้</p>
         </div>
         <button id="addCareerBtn" onclick="openAddCareerModal()" class="px-5 py-2.5 rounded-2xl text-white font-black text-xs sm:text-sm btn-theme-action shadow hover:scale-105 transition flex items-center gap-1.5">
           <i class="fa-solid fa-plus-circle"></i><span>เพิ่มอาชีพหลัก</span>
@@ -340,20 +328,26 @@
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4" id="careersListContainer"></div>
     </section>
 
-    <!-- VIEW 3: คุณสมบัติ (เฉพาะ ADMIN) -->
-    <section id="view-qualifications" class="hidden space-y-4 animate-pop-in">
+    <!-- VIEW 3: คุณสมบัติ (เฉพาะ ADMIN - รองรับหมวดหมู่และรหัส ID) -->
+    <section id="view-qualifications" class="hidden space-y-5 animate-pop-in">
       <div class="bg-white/90 dark:bg-slate-800/90 backdrop-blur border border-slate-200 dark:border-slate-700 rounded-3xl p-5 shadow-sm flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
         <div>
           <h3 class="font-black text-lg text-slate-900 dark:text-white flex items-center gap-2">
-            <i class="fa-solid fa-certificate text-emerald-500 text-xl"></i><span>ฐานข้อมูลคุณสมบัติหลัก (Master Qualifications)</span>
+            <i class="fa-solid fa-certificate text-emerald-500 text-xl"></i><span>ฐานข้อมูลคุณสมบัติหลัก & หมวดหมู่</span>
           </h3>
-          <p class="text-xs text-slate-400 font-medium">เฉพาะ Admin ที่สามารถจัดการเกณฑ์หลักนี้ได้</p>
+          <p class="text-xs text-slate-400 font-medium">เฉพาะ Admin สามารถจัดการหมวดหมู่, เพิ่ม/ลบ/แก้ไขเกณฑ์ และดูรหัส ID กำกับได้</p>
         </div>
-        <button id="addQualificationBtn" onclick="openAddQualificationModal()" class="px-5 py-2.5 rounded-2xl text-white font-black text-xs sm:text-sm btn-theme-action shadow hover:scale-105 transition flex items-center gap-1.5">
-          <i class="fa-solid fa-plus-circle"></i><span>เพิ่มเกณฑ์คุณสมบัติ</span>
-        </button>
+        <div class="flex items-center gap-2">
+          <button onclick="openAddCategoryModal()" class="px-4 py-2 rounded-2xl bg-indigo-600 hover:bg-indigo-700 text-white font-black text-xs sm:text-sm shadow transition flex items-center gap-1.5">
+            <i class="fa-solid fa-folder-plus"></i><span>จัดการหมวดหมู่คุณสมบัติ</span>
+          </button>
+          <button id="addQualificationBtn" onclick="openAddQualificationModal()" class="px-4 py-2 rounded-2xl text-white font-black text-xs sm:text-sm btn-theme-action shadow hover:scale-105 transition flex items-center gap-1.5">
+            <i class="fa-solid fa-plus-circle"></i><span>เพิ่มเกณฑ์คุณสมบัติ</span>
+          </button>
+        </div>
       </div>
-      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4" id="qualificationsListContainer"></div>
+
+      <div class="space-y-6" id="adminQualificationsContainer"></div>
     </section>
 
     <!-- VIEW 4: ADMIN DASHBOARD (เฉพาะ ADMIN) -->
@@ -419,7 +413,7 @@
     </div>
   </div>
 
-  <!-- CAREER MODAL (Admin เพิ่ม/แก้ไขอาชีพหลัก พร้อม เงินเดือน รายจ่าย เงินสด ทรัพยากร) -->
+  <!-- CAREER MODAL (Admin เพิ่ม/แก้ไขอาชีพหลัก) -->
   <div id="careerModal" class="hidden fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-md flex items-center justify-center p-4 overflow-y-auto">
     <div class="relative max-w-md w-full bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl p-6 shadow-2xl space-y-4 my-auto">
       <div class="flex items-center justify-between border-b pb-3">
@@ -439,11 +433,11 @@
         <div class="grid grid-cols-2 gap-2">
           <div>
             <label class="text-blue-500">เงินเดือน (Salary)</label>
-            <input type="number" id="careerSalaryInput" value="20000" class="w-full mt-1 p-2 rounded-xl border font-mono dark:bg-slate-800">
+            <input type="number" id="careerSalaryInput" value="25000" class="w-full mt-1 p-2 rounded-xl border font-mono dark:bg-slate-800">
           </div>
           <div>
             <label class="text-rose-500">รายจ่ายประจำ</label>
-            <input type="number" id="careerExpensesInput" value="10000" class="w-full mt-1 p-2 rounded-xl border font-mono dark:bg-slate-800">
+            <input type="number" id="careerExpensesInput" value="12000" class="w-full mt-1 p-2 rounded-xl border font-mono dark:bg-slate-800">
           </div>
         </div>
         <div class="grid grid-cols-2 gap-2">
@@ -478,6 +472,70 @@
           <button type="submit" class="px-5 py-2 rounded-xl text-white font-black btn-theme-action shadow">บันทึกอาชีพหลัก</button>
         </div>
       </form>
+    </div>
+  </div>
+
+  <!-- QUALIFICATION MODAL (Admin เพิ่ม/แก้ไขคุณสมบัติหลัก พร้อมเลือกหมวดหมู่และรหัส ID) -->
+  <div id="qualificationModal" class="hidden fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-md flex items-center justify-center p-4 overflow-y-auto">
+    <div class="relative max-w-md w-full bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl p-6 shadow-2xl space-y-4 my-auto">
+      <div class="flex items-center justify-between border-b pb-3">
+        <h3 id="qualificationModalTitle" class="font-black text-base text-slate-900 dark:text-white flex items-center gap-2">
+          <i class="fa-solid fa-certificate text-emerald-500"></i>
+          <span>จัดการเกณฑ์คุณสมบัติหลัก</span>
+        </h3>
+        <button type="button" onclick="closeQualificationModal()" class="w-8 h-8 rounded-xl text-slate-400 hover:text-slate-600"><i class="fa-solid fa-xmark text-lg"></i></button>
+      </div>
+
+      <form id="qualificationForm" onsubmit="handleSaveQualification(event)" class="space-y-3 text-xs font-bold">
+        <input type="hidden" id="qualEditId">
+        <div class="grid grid-cols-2 gap-2">
+          <div>
+            <label class="text-slate-500">รหัส ID (เฉพาะ Admin)</label>
+            <input type="text" id="qualCodeInput" required placeholder="เช่น Q-001" class="w-full mt-1 p-2 rounded-xl border font-mono dark:bg-slate-800">
+          </div>
+          <div>
+            <label class="text-slate-500">หมวดหมู่</label>
+            <select id="qualCategorySelect" class="w-full mt-1 p-2 rounded-xl border dark:bg-slate-800"></select>
+          </div>
+        </div>
+        <div>
+          <label class="text-slate-500">ชื่อเกณฑ์คุณสมบัติ</label>
+          <input type="text" id="qualTitleInput" required placeholder="เช่น เข็มทอง 21%" class="w-full mt-1 p-2 rounded-xl border dark:bg-slate-800">
+        </div>
+        <div class="grid grid-cols-2 gap-2">
+          <div>
+            <label class="text-cyan-400">PV ส่วนตัวขั้นต่ำ</label>
+            <input type="number" id="qualPersonalPvInput" value="0" class="w-full mt-1 p-2 rounded-xl border font-mono dark:bg-slate-800">
+          </div>
+          <div>
+            <label class="text-indigo-400">จำนวนสายงานที่ผ่านเกณฑ์</label>
+            <input type="number" id="qualLegsCountInput" value="0" class="w-full mt-1 p-2 rounded-xl border font-mono dark:bg-slate-800">
+          </div>
+        </div>
+        <div>
+          <label class="text-amber-500">โบนัสพิเศษ (฿)</label>
+          <input type="number" id="qualBonusInput" value="0" class="w-full mt-1 p-2 rounded-xl border font-mono dark:bg-slate-800">
+        </div>
+        <div class="flex justify-end gap-2 pt-2 border-t">
+          <button type="button" onclick="closeQualificationModal()" class="px-4 py-2 rounded-xl border text-slate-500">ยกเลิก</button>
+          <button type="submit" class="px-5 py-2 rounded-xl text-white font-black btn-theme-action shadow">บันทึกคุณสมบัติ</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- CATEGORY MODAL (Admin จัดการหมวดหมู่คุณสมบัติ) -->
+  <div id="categoryQualModal" class="hidden fixed inset-0 z-50 bg-slate-950/70 backdrop-blur-sm flex items-center justify-center p-4 overflow-y-auto">
+    <div class="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-3xl max-w-md w-full p-6 space-y-4">
+      <div class="flex justify-between items-center border-b pb-3">
+        <h3 class="font-black text-base text-slate-900 dark:text-white flex items-center gap-2"><i class="fa-solid fa-folder-open text-indigo-500"></i><span>จัดการหมวดหมู่คุณสมบัติ</span></h3>
+        <button onclick="closeCategoryQualModal()"><i class="fa-solid fa-xmark text-lg text-slate-400"></i></button>
+      </div>
+      <div class="flex gap-2">
+        <input type="text" id="newQualCategoryInput" placeholder="ชื่อหมวดหมู่ใหม่..." class="flex-1 border rounded-2xl px-3.5 py-2 text-xs font-bold dark:bg-slate-900 outline-none">
+        <button onclick="handleAddQualCategory()" class="px-4 py-2 text-white rounded-2xl text-xs font-black btn-theme-action shrink-0">เพิ่ม</button>
+      </div>
+      <div id="qualCategoryListContainer" class="divide-y max-h-56 overflow-y-auto pr-1"></div>
     </div>
   </div>
 
@@ -574,45 +632,6 @@
     </div>
   </div>
 
-  <!-- QUALIFICATION MODAL (Admin เพิ่ม/แก้ไขคุณสมบัติ) -->
-  <div id="qualificationModal" class="hidden fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-md flex items-center justify-center p-4 overflow-y-auto">
-    <div class="relative max-w-md w-full bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl p-6 shadow-2xl space-y-4 my-auto">
-      <div class="flex items-center justify-between border-b pb-3">
-        <h3 id="qualificationModalTitle" class="font-black text-base text-slate-900 dark:text-white flex items-center gap-2">
-          <i class="fa-solid fa-certificate text-emerald-500"></i>
-          <span>จัดการเกณฑ์คุณสมบัติหลัก</span>
-        </h3>
-        <button type="button" onclick="closeQualificationModal()" class="w-8 h-8 rounded-xl text-slate-400 hover:text-slate-600"><i class="fa-solid fa-xmark text-lg"></i></button>
-      </div>
-
-      <form id="qualificationForm" onsubmit="handleSaveQualification(event)" class="space-y-3 text-xs font-bold">
-        <input type="hidden" id="qualEditId">
-        <div>
-          <label class="text-slate-500">ชื่อเกณฑ์ / เข็มเกียรติยศ</label>
-          <input type="text" id="qualTitleInput" required placeholder="เช่น เข็มทอง 21%" class="w-full mt-1 p-2 rounded-xl border dark:bg-slate-800">
-        </div>
-        <div class="grid grid-cols-2 gap-2">
-          <div>
-            <label class="text-cyan-400">PV ส่วนตัวขั้นต่ำ</label>
-            <input type="number" id="qualPersonalPvInput" value="0" class="w-full mt-1 p-2 rounded-xl border font-mono dark:bg-slate-800">
-          </div>
-          <div>
-            <label class="text-indigo-400">จำนวนสายงานที่ผ่านเกณฑ์</label>
-            <input type="number" id="qualLegsCountInput" value="0" class="w-full mt-1 p-2 rounded-xl border font-mono dark:bg-slate-800">
-          </div>
-        </div>
-        <div>
-          <label class="text-amber-500">โบนัสพิเศษ (฿)</label>
-          <input type="number" id="qualBonusInput" value="0" class="w-full mt-1 p-2 rounded-xl border font-mono dark:bg-slate-800">
-        </div>
-        <div class="flex justify-end gap-2 pt-2 border-t">
-          <button type="button" onclick="closeQualificationModal()" class="px-4 py-2 rounded-xl border text-slate-500">ยกเลิก</button>
-          <button type="submit" class="px-5 py-2 rounded-xl text-white font-black btn-theme-action shadow">บันทึกคุณสมบัติ</button>
-        </div>
-      </form>
-    </div>
-  </div>
-
   <!-- Toast Notification -->
   <div id="toastNotification" class="fixed top-20 right-4 z-50 transform translate-x-full opacity-0 transition-all duration-300 bg-slate-900 text-white px-5 py-3 rounded-2xl shadow-2xl flex items-center gap-3 text-xs sm:text-sm font-black pointer-events-none">
     <i class="fa-solid fa-circle-check text-emerald-400 text-lg"></i>
@@ -644,17 +663,18 @@
       { id: "F", name: "สายงาน F", pv: 0, level: "0%", activeIncome: 0, passiveIncome: 0 }
     ];
 
-    // ฐานข้อมูลหลักของอาชีพ (ชื่ออาชีพ, เงินเดือน, รายจ่ายประจำ, เงินสด, ทรัพยากร)
     const DEFAULT_CAREERS = [
       { id: "car-1", title: "พนักงานประจำ", salary: 25000, expenses: 12000, cash: 40000, minPv: 0, activeIncome: 15000, passiveIncome: 0, resources: { heart: 8, time: 6, knowledge: 7 }, icon: "fa-briefcase" },
       { id: "car-2", title: "เจ้าของธุรกิจ", salary: 45000, expenses: 25000, cash: 80000, minPv: 150000, activeIncome: 35000, passiveIncome: 5000, resources: { heart: 6, time: 5, knowledge: 9 }, icon: "fa-store" },
       { id: "car-3", title: "นักลงทุนอิสระ", salary: 70000, expenses: 40000, cash: 150000, minPv: 450000, activeIncome: 75000, passiveIncome: 25000, resources: { heart: 9, time: 8, knowledge: 10 }, icon: "fa-chart-line" }
     ];
 
+    const DEFAULT_QUAL_CATEGORIES = ["พื้นฐานธุรกิจ", "การสร้างเครือข่าย", "ความเป็นผู้นำ"];
+
     const DEFAULT_QUALIFICATIONS = [
-      { id: "qual-1", title: "เกณฑ์ 15% (Bronze)", personalPv: 3000, legsCount: 2, bonus: 5000 },
-      { id: "qual-2", title: "เกณฑ์ 21% (Silver)", personalPv: 5000, legsCount: 3, bonus: 15000 },
-      { id: "qual-3", title: "Platinum Qualifier", personalPv: 10000, legsCount: 3, bonus: 35000 }
+      { id: "qual-1", code: "Q-001", category: "พื้นฐานธุรกิจ", title: "เกณฑ์ 15% (Bronze)", personalPv: 3000, legsCount: 2, bonus: 5000 },
+      { id: "qual-2", code: "Q-002", category: "การสร้างเครือข่าย", title: "เกณฑ์ 21% (Silver)", personalPv: 5000, legsCount: 3, bonus: 15000 },
+      { id: "qual-3", code: "Q-003", category: "ความเป็นผู้นำ", title: "Platinum Qualifier", personalPv: 10000, legsCount: 3, bonus: 35000 }
     ];
 
     let currentAuth = {
@@ -669,8 +689,8 @@
     let allPlayersDatabase = {};
     let careersList = [...DEFAULT_CAREERS];
     let qualificationsList = [...DEFAULT_QUALIFICATIONS];
+    let qualificationCategories = [...DEFAULT_QUAL_CATEGORIES];
 
-    // สร้างข้อมูลเริ่มต้น (ถ้ายังไม่ได้เลือกอาชีพ ค่าจะเป็น 0 ทั้งหมด)
     function createDefaultPlayerProfile(name, accId) {
       return {
         accountId: accId,
@@ -823,6 +843,9 @@
         const rawQuals = localStorage.getItem('rnd_cache_qualifications');
         if (rawQuals) qualificationsList = JSON.parse(rawQuals);
 
+        const rawQualCats = localStorage.getItem('rnd_cache_qual_categories');
+        if (rawQualCats) qualificationCategories = JSON.parse(rawQualCats);
+
         if (currentAuth.accountType !== "admin" && allPlayersDatabase[currentAuth.accountId]) {
           profileData = allPlayersDatabase[currentAuth.accountId];
         } else {
@@ -841,10 +864,11 @@
         localStorage.setItem('rnd_cache_player_profile', JSON.stringify(profileData));
         localStorage.setItem('rnd_cache_careers', JSON.stringify(careersList));
         localStorage.setItem('rnd_cache_qualifications', JSON.stringify(qualificationsList));
+        localStorage.setItem('rnd_cache_qual_categories', JSON.stringify(qualificationCategories));
       } catch (e) {}
     }
 
-    /* ผู้เล่นเลือกอาชีพ (Decoupled Clone จากฐานข้อมูลหลัก) */
+    /* ผู้เล่นเลือกอาชีพ (Decoupled Clone) */
     function openPlayerCareerSelectModal() {
       const modal = document.getElementById('playerCareerSelectModal');
       const grid = document.getElementById('playerCareerModalGrid');
@@ -869,18 +893,14 @@
       modal.classList.remove('hidden');
     }
 
-    function closePlayerCareerSelectModal() {
-      document.getElementById('playerCareerSelectModal').classList.add('hidden');
-    }
+    function closePlayerCareerSelectModal() { document.getElementById('playerCareerSelectModal').classList.add('hidden'); }
 
     function selectPlayerCareerClone(careerId) {
       const targetMaster = careersList.find(c => c.id === careerId);
       if (!targetMaster) return;
 
-      // คัดลอกข้อมูลอาชีพมาเป็นของบัญชีนี้ (ไม่กระทบฐานข้อมูลหลัก)
       profileData.careerId = targetMaster.id;
       profileData.career = JSON.parse(JSON.stringify(targetMaster));
-      
       profileData.cash = targetMaster.cash || 0;
       profileData.activeIncome = targetMaster.activeIncome || 15000;
       profileData.passiveIncome = targetMaster.passiveIncome || 0;
@@ -962,14 +982,10 @@
       const careerTitle = hasCareer ? profileData.career.title : "ยังไม่ได้เลือกอาชีพ (ค่าเป็น 0)";
       document.getElementById('currentCareerDisplay').innerText = careerTitle;
 
-      // ถ้ายังไม่เลือกอาชีพ ให้ค่าเป็น 0 ทั้งหมด
       const salaryVal = hasCareer ? (profileData.career.salary || 0) : 0;
       const expensesVal = hasCareer ? (profileData.career.expenses || 0) : 0;
       const activeIncVal = hasCareer ? (profileData.activeIncome || 0) : 0;
       const passiveIncVal = hasCareer ? (profileData.passiveIncome || 0) : 0;
-      
-      // เงินคงเหลือต่อเดือน = (Active Income + Passive Income + เงินเดือน) - รายจ่ายประจำ
-      // (หมายเหตุ: เงินคงเหลือจะได้รับเมื่อเปิดเจอการ์ดเงินเดือน แต่สามารถแสดงยอดสุทธิเตรียมไว้ได้)
       const netMonthly = (activeIncVal + passiveIncVal + salaryVal) - expensesVal;
 
       const cashVal = hasCareer ? (profileData.cash || 0) : 0;
@@ -998,11 +1014,11 @@
       if (isAdmin) {
         renderCareersCards();
         renderQualificationsCards();
+        renderAdminQualificationsTab();
         renderAdminPlayersTable();
       }
     }
 
-    // ทรัพยากร 1-10 ขีด
     function renderDashboardResources(hasCareer) {
       const container = document.getElementById('dashboardResourcesContainer');
       if (!container) return;
@@ -1054,7 +1070,6 @@
       `;
     }
 
-    // สายงาน A-F (PV, ระดับ %, Active income, Passive income)
     function renderLegsCards(hasCareer) {
       const container = document.getElementById('legsGridContainer');
       if (!container) return;
@@ -1098,32 +1113,47 @@
       }).join('');
     }
 
+    // เรนเดอร์คุณสมบัติในหน้า Dashboard ผู้เล่น (จัดกลุ่มตามหมวดหมู่ พร้อม Checkbox)
     function renderPlayerDashboardQualifications() {
       const container = document.getElementById('playerDashboardQualificationsGrid');
       if (!container) return;
 
       if (!profileData.unlockedQualifications) profileData.unlockedQualifications = {};
 
-      container.innerHTML = qualificationsList.map(qual => {
-        const isChecked = profileData.unlockedQualifications[qual.id] === true;
+      container.innerHTML = qualificationCategories.map(cat => {
+        const catQuals = qualificationsList.filter(q => (q.category || "ทั่วไป") === cat);
+        if (catQuals.length === 0) return '';
+
         return `
-          <div class="p-4 rounded-2xl border ${isChecked ? 'bg-emerald-50/60 dark:bg-emerald-950/30 border-emerald-300 dark:border-emerald-800/80' : 'bg-slate-50 dark:bg-slate-900/50 border-slate-200 dark:border-slate-700/70'} flex items-start gap-3 transition">
-            <div class="pt-0.5">
-              <input type="checkbox" id="chk_qual_${qual.id}" onchange="togglePlayerQualification('${qual.id}', this.checked)" ${isChecked ? 'checked' : ''} class="w-5 h-5 rounded-lg text-emerald-500 cursor-pointer accent-emerald-500">
-            </div>
-            <div class="flex-1 space-y-1">
-              <div class="flex items-center justify-between gap-2">
-                <label for="chk_qual_${qual.id}" class="font-black text-sm text-slate-900 dark:text-white cursor-pointer select-none">
-                  ${escapeHTML(qual.title)}
-                </label>
-                <span class="text-xs font-mono font-bold text-amber-500 bg-amber-50 dark:bg-amber-950/60 px-2 py-0.5 rounded-lg border border-amber-200 dark:border-amber-800/60 shrink-0">
-                  +฿${(qual.bonus || 0).toLocaleString()}
-                </span>
-              </div>
-              <div class="flex items-center gap-3 text-xs font-mono text-slate-500 dark:text-slate-400">
-                <span>PV ส่วนตัว: <strong class="text-cyan-500 font-bold">${(qual.personalPv || 0).toLocaleString()}</strong></span>
-                <span>สายงาน: <strong class="text-indigo-400 font-bold">${qual.legsCount || 0} สาย</strong></span>
-              </div>
+          <div class="p-4 rounded-2xl bg-slate-50 dark:bg-slate-900/50 border border-slate-200 dark:border-slate-700 space-y-3">
+            <h4 class="font-black text-sm text-indigo-400 border-b border-slate-200 dark:border-slate-800 pb-2 flex items-center gap-2">
+              <i class="fa-solid fa-folder-open"></i><span>${escapeHTML(cat)}</span>
+            </h4>
+            <div class="space-y-2.5">
+              ${catQuals.map(qual => {
+                const isChecked = profileData.unlockedQualifications[qual.id] === true;
+                return `
+                  <div class="p-3 rounded-xl border ${isChecked ? 'bg-emerald-50/60 dark:bg-emerald-950/30 border-emerald-300 dark:border-emerald-800/80' : 'bg-white dark:bg-slate-800/80 border-slate-200 dark:border-slate-700'} flex items-start gap-3 transition">
+                    <div class="pt-0.5">
+                      <input type="checkbox" id="chk_qual_${qual.id}" onchange="togglePlayerQualification('${qual.id}', this.checked)" ${isChecked ? 'checked' : ''} class="w-5 h-5 rounded-lg text-emerald-500 cursor-pointer accent-emerald-500">
+                    </div>
+                    <div class="flex-1 space-y-0.5">
+                      <div class="flex items-center justify-between gap-2">
+                        <label for="chk_qual_${qual.id}" class="font-black text-xs sm:text-sm text-slate-900 dark:text-white cursor-pointer select-none">
+                          ${escapeHTML(qual.title)}
+                        </label>
+                        <span class="text-[11px] font-mono font-bold text-amber-500 bg-amber-50 dark:bg-amber-950/60 px-2 py-0.5 rounded-lg border border-amber-200 dark:border-amber-800/60 shrink-0">
+                          +฿${(qual.bonus || 0).toLocaleString()}
+                        </span>
+                      </div>
+                      <div class="flex items-center gap-3 text-[11px] font-mono text-slate-500 dark:text-slate-400">
+                        <span>PV: <strong class="text-cyan-500 font-bold">${(qual.personalPv || 0).toLocaleString()}</strong></span>
+                        <span>สายงาน: <strong class="text-indigo-400 font-bold">${qual.legsCount || 0} สาย</strong></span>
+                      </div>
+                    </div>
+                  </div>
+                `;
+              }).join('')}
             </div>
           </div>
         `;
@@ -1136,7 +1166,7 @@
       saveProfileLocalCache();
       renderPlayerDashboardQualifications();
       saveAllToCloud(false);
-      showToast(checked ? "บันทึกสำเร็จคุณสมบัติแล้ว! 🎉" : "ยกเลิกสถานะคุณสมบัติแล้ว");
+      showToast(checked ? "บันทึกสถานะคุณสมบัติแล้ว! 🎉" : "ยกเลิกสถานะคุณสมบัติแล้ว");
     }
 
     function renderCareersCards() {
@@ -1169,34 +1199,50 @@
       `).join('');
     }
 
-    function renderQualificationsCards() {
-      const container = document.getElementById('qualificationsListContainer');
+    // เรนเดอร์หน้า Admin จัดการคุณสมบัติ (แสดงรหัส ID เฉพาะ Admin + หมวดหมู่)
+    function renderAdminQualificationsTab() {
+      const container = document.getElementById('adminQualificationsContainer');
       if (!container) return;
-      const isAdmin = currentAuth.accountType === "admin";
 
-      container.innerHTML = qualificationsList.map(qual => `
-        <div class="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-3xl p-5 shadow-sm space-y-3 relative overflow-hidden">
-          <div class="flex items-center justify-between">
-            <div class="w-12 h-12 rounded-2xl bg-emerald-500/15 text-emerald-500 flex items-center justify-center text-2xl icon-vibrant">
-              <i class="fa-solid fa-certificate"></i>
+      container.innerHTML = qualificationCategories.map(cat => {
+        const catQuals = qualificationsList.filter(q => (q.category || "ทั่วไป") === cat);
+
+        return `
+          <div class="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-3xl p-5 shadow-sm space-y-3">
+            <div class="flex items-center justify-between border-b pb-2.5">
+              <h4 class="font-black text-base text-indigo-400 flex items-center gap-2">
+                <i class="fa-solid fa-folder-open"></i><span>${escapeHTML(cat)}</span>
+              </h4>
+              <span class="text-xs font-mono text-slate-400">จำนวนเกณฑ์: ${catQuals.length} ข้อ</span>
             </div>
-            ${isAdmin ? `
-              <div class="flex items-center gap-1.5">
-                <button onclick="openEditQualificationModal('${qual.id}')" class="p-1.5 rounded-lg text-slate-400 hover:text-cyan-400 transition" title="แก้ไขคุณสมบัติ"><i class="fa-solid fa-pen text-xs"></i></button>
-                <button onclick="deleteQualification('${qual.id}')" class="p-1.5 rounded-lg text-slate-400 hover:text-rose-500 transition" title="ลบคุณสมบัติ"><i class="fa-solid fa-trash-can text-xs"></i></button>
-              </div>
-            ` : ''}
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+              ${catQuals.length === 0 ? '<p class="text-xs text-slate-400 italic py-2">ยังไม่มีเกณฑ์คุณสมบัติในหมวดนี้</p>' : catQuals.map(qual => `
+                <div class="p-3.5 rounded-2xl bg-slate-50 dark:bg-slate-900/60 border border-slate-200 dark:border-slate-700/80 space-y-2">
+                  <div class="flex items-center justify-between">
+                    <!-- แสดงรหัส ID เฉพาะ Admin -->
+                    <span class="font-mono text-xs font-black px-2 py-0.5 rounded bg-indigo-50 dark:bg-indigo-950/60 text-indigo-400 border border-indigo-200 dark:border-indigo-800">
+                      ${escapeHTML(qual.code || 'Q-000')}
+                    </span>
+                    <div class="flex items-center gap-1">
+                      <button onclick="openEditQualificationModal('${qual.id}')" class="p-1 text-slate-400 hover:text-cyan-400 transition" title="แก้ไข"><i class="fa-solid fa-pen text-xs"></i></button>
+                      <button onclick="deleteQualification('${qual.id}')" class="p-1 text-slate-400 hover:text-rose-500 transition" title="ลบ"><i class="fa-solid fa-trash-can text-xs"></i></button>
+                    </div>
+                  </div>
+                  <div>
+                    <h5 class="font-black text-slate-900 dark:text-white text-sm">${escapeHTML(qual.title)}</h5>
+                    <span class="text-xs font-mono text-amber-500 font-bold">โบนัส: ฿${(qual.bonus || 0).toLocaleString()}</span>
+                  </div>
+                  <div class="grid grid-cols-2 gap-2 text-xs font-mono pt-2 border-t border-slate-200 dark:border-slate-800">
+                    <div>PV ขั้นต่ำ: <strong class="text-cyan-400">${(qual.personalPv || 0).toLocaleString()}</strong></div>
+                    <div>สายงาน: <strong class="text-indigo-400">${qual.legsCount || 0} สาย</strong></div>
+                  </div>
+                </div>
+              `).join('')}
+            </div>
           </div>
-          <div>
-            <h4 class="font-black text-lg text-slate-900 dark:text-white">${escapeHTML(qual.title)}</h4>
-            <span class="text-xs text-slate-400 font-mono">โบนัสพิเศษ: ฿${(qual.bonus || 0).toLocaleString()}</span>
-          </div>
-          <div class="grid grid-cols-2 gap-2 text-xs font-mono pt-2 border-t border-slate-100 dark:border-slate-700">
-            <div>PV ส่วนตัว: <strong class="text-cyan-400 block font-bold">${(qual.personalPv || 0).toLocaleString()}</strong></div>
-            <div>สายงานที่ผ่าน: <strong class="text-indigo-400 block font-bold">${qual.legsCount || 0} สาย</strong></div>
-          </div>
-        </div>
-      `).join('');
+        `;
+      }).join('');
     }
 
     function updatePlayerProfile() {
@@ -1258,7 +1304,57 @@
       showToast("รีเซ็ตสถานะเรียบร้อยแล้ว (เลือกอาชีพใหม่เพื่อเริ่มเล่น)");
     }
 
-    /* ADMIN CRUD: Master Careers */
+    /* Admin CRUD: Careers & Qualifications & Categories */
+    function openAddCategoryModal() {
+      if (currentAuth.accountType !== "admin") return;
+      renderQualCategoryModalList();
+      document.getElementById('categoryQualModal').classList.remove('hidden');
+    }
+
+    function closeCategoryQualModal() { document.getElementById('categoryQualModal').classList.add('hidden'); }
+
+    function renderQualCategoryModalList() {
+      const container = document.getElementById('qualCategoryListContainer');
+      if (!container) return;
+      container.innerHTML = qualificationCategories.map((cat, idx) => `
+        <div class="py-2.5 flex items-center justify-between text-xs font-black">
+          <span>${escapeHTML(cat)}</span>
+          <button onclick="deleteQualCategory(${idx})" class="text-rose-500 hover:underline"><i class="fa-solid fa-trash-can"></i> ลบ</button>
+        </div>
+      `).join('');
+    }
+
+    function handleAddQualCategory() {
+      const val = document.getElementById('newQualCategoryInput').value.trim();
+      if (!val) return;
+      if (qualificationCategories.includes(val)) {
+        showToast("มีหมวดหมู่นี้อยู่แล้ว");
+        return;
+      }
+      qualificationCategories.push(val);
+      document.getElementById('newQualCategoryInput').value = '';
+      saveProfileLocalCache();
+      renderQualCategoryModalList();
+      renderAdminQualificationsTab();
+      renderPlayerDashboardQualifications();
+      showToast(`เพิ่มหมวดหมู่ "${val}" สำเร็จ`);
+    }
+
+    function deleteQualCategory(idx) {
+      if (qualificationCategories.length <= 1) {
+        showToast("ต้องมีหมวดหมู่อย่างน้อย 1 หมวด");
+        return;
+      }
+      const catName = qualificationCategories[idx];
+      if (!confirm(`ต้องการลบหมวดหมู่ "${catName}" ใช่หรือไม่?`)) return;
+      qualificationCategories.splice(idx, 1);
+      saveProfileLocalCache();
+      renderQualCategoryModalList();
+      renderAdminQualificationsTab();
+      renderPlayerDashboardQualifications();
+      showToast("ลบหมวดหมู่เรียบร้อยแล้ว");
+    }
+
     function openAddCareerModal() {
       if (currentAuth.accountType !== "admin") return;
       document.getElementById('careerModalTitle').innerHTML = `<i class="fa-solid fa-plus-circle text-purple-500"></i><span>เพิ่มอาชีพหลัก</span>`;
@@ -1268,9 +1364,6 @@
       document.getElementById('careerExpensesInput').value = 12000;
       document.getElementById('careerCashInput').value = 50000;
       document.getElementById('careerMinPvInput').value = 0;
-      document.getElementById('careerHeartInput').value = 10;
-      document.getElementById('careerTimeInput').value = 10;
-      document.getElementById('careerKnowledgeInput').value = 10;
       document.getElementById('careerModal').classList.remove('hidden');
     }
 
@@ -1285,9 +1378,6 @@
       document.getElementById('careerExpensesInput').value = c.expenses || 0;
       document.getElementById('careerCashInput').value = c.cash || 0;
       document.getElementById('careerMinPvInput').value = c.minPv || 0;
-      document.getElementById('careerHeartInput').value = c.resources?.heart || 10;
-      document.getElementById('careerTimeInput').value = c.resources?.time || 10;
-      document.getElementById('careerKnowledgeInput').value = c.resources?.knowledge || 10;
       document.getElementById('careerModal').classList.remove('hidden');
     }
 
@@ -1303,22 +1393,17 @@
       const expenses = parseFloat(document.getElementById('careerExpensesInput').value) || 0;
       const cash = parseFloat(document.getElementById('careerCashInput').value) || 0;
       const minPv = parseFloat(document.getElementById('careerMinPvInput').value) || 0;
-      const resources = {
-        heart: parseInt(document.getElementById('careerHeartInput').value) || 10,
-        time: parseInt(document.getElementById('careerTimeInput').value) || 10,
-        knowledge: parseInt(document.getElementById('careerKnowledgeInput').value) || 10
-      };
 
       if (id) {
         const idx = careersList.findIndex(c => c.id === id);
         if (idx !== -1) {
-          careersList[idx] = { ...careersList[idx], title, salary, expenses, cash, minPv, resources };
+          careersList[idx] = { ...careersList[idx], title, salary, expenses, cash, minPv };
           showToast(`แก้ไขอาชีพ "${title}" สำเร็จ`);
         }
       } else {
         careersList.push({
           id: `car-${Date.now().toString().slice(-5)}`,
-          title, salary, expenses, cash, minPv, activeIncome: 15000, passiveIncome: 0, resources, icon: "fa-award"
+          title, salary, expenses, cash, minPv, activeIncome: 15000, passiveIncome: 0, icon: "fa-award"
         });
         showToast(`เพิ่มอาชีพ "${title}" สำเร็จ`);
       }
@@ -1344,8 +1429,10 @@
 
     function openAddQualificationModal() {
       if (currentAuth.accountType !== "admin") return;
+      renderQualCategorySelectOptions();
       document.getElementById('qualificationModalTitle').innerHTML = `<i class="fa-solid fa-plus-circle text-emerald-500"></i><span>เพิ่มเกณฑ์คุณสมบัติหลัก</span>`;
       document.getElementById('qualEditId').value = "";
+      document.getElementById('qualCodeInput').value = `Q-${Math.floor(100 + Math.random() * 900)}`;
       document.getElementById('qualTitleInput').value = "";
       document.getElementById('qualPersonalPvInput').value = 0;
       document.getElementById('qualLegsCountInput').value = 0;
@@ -1355,10 +1442,13 @@
 
     function openEditQualificationModal(id) {
       if (currentAuth.accountType !== "admin") return;
+      renderQualCategorySelectOptions();
       const q = qualificationsList.find(item => item.id === id);
       if (!q) return;
       document.getElementById('qualificationModalTitle').innerHTML = `<i class="fa-solid fa-pen text-emerald-500"></i><span>แก้ไขเกณฑ์คุณสมบัติหลัก</span>`;
       document.getElementById('qualEditId').value = q.id;
+      document.getElementById('qualCodeInput').value = q.code || "Q-001";
+      document.getElementById('qualCategorySelect').value = q.category || qualificationCategories[0];
       document.getElementById('qualTitleInput').value = q.title;
       document.getElementById('qualPersonalPvInput').value = q.personalPv || 0;
       document.getElementById('qualLegsCountInput').value = q.legsCount || 0;
@@ -1368,11 +1458,19 @@
 
     function closeQualificationModal() { document.getElementById('qualificationModal').classList.add('hidden'); }
 
+    function renderQualCategorySelectOptions() {
+      const sel = document.getElementById('qualCategorySelect');
+      if (!sel) return;
+      sel.innerHTML = qualificationCategories.map(cat => `<option value="${escapeHTML(cat)}">${escapeHTML(cat)}</option>`).join('');
+    }
+
     function handleSaveQualification(e) {
       e.preventDefault();
       if (currentAuth.accountType !== "admin") return;
 
       const id = document.getElementById('qualEditId').value;
+      const code = document.getElementById('qualCodeInput').value.trim();
+      const category = document.getElementById('qualCategorySelect').value;
       const title = document.getElementById('qualTitleInput').value.trim();
       const personalPv = parseFloat(document.getElementById('qualPersonalPvInput').value) || 0;
       const legsCount = parseInt(document.getElementById('qualLegsCountInput').value) || 0;
@@ -1381,19 +1479,19 @@
       if (id) {
         const idx = qualificationsList.findIndex(q => q.id === id);
         if (idx !== -1) {
-          qualificationsList[idx] = { ...qualificationsList[idx], title, personalPv, legsCount, bonus };
+          qualificationsList[idx] = { ...qualificationsList[idx], code, category, title, personalPv, legsCount, bonus };
           showToast(`แก้ไขเกณฑ์ "${title}" สำเร็จ`);
         }
       } else {
         qualificationsList.push({
           id: `qual-${Date.now().toString().slice(-5)}`,
-          title, personalPv, legsCount, bonus
+          code, category, title, personalPv, legsCount, bonus
         });
         showToast(`เพิ่มเกณฑ์ "${title}" สำเร็จ`);
       }
 
       saveProfileLocalCache();
-      renderQualificationsCards();
+      renderAdminQualificationsTab();
       renderPlayerDashboardQualifications();
       closeQualificationModal();
       saveAllToCloud(false);
@@ -1407,7 +1505,7 @@
 
       qualificationsList = qualificationsList.filter(item => item.id !== id);
       saveProfileLocalCache();
-      renderQualificationsCards();
+      renderAdminQualificationsTab();
       renderPlayerDashboardQualifications();
       saveAllToCloud(false);
       showToast("ลบเกณฑ์คุณสมบัติเรียบร้อยแล้ว");
@@ -1469,14 +1567,12 @@
     function adminOpenEditPlayer(accId) {
       const p = allPlayersDatabase[accId];
       if (!p) return;
-
       document.getElementById('editPlayerAccountId').value = accId;
       document.getElementById('editPlayerName').value = p.name || '';
       document.getElementById('editPlayerCash').value = p.cash || 0;
       document.getElementById('editPlayerPersonalPv').value = p.personalPv || 0;
       document.getElementById('editPlayerActive').value = p.activeIncome || 0;
       document.getElementById('editPlayerPassive').value = p.passiveIncome || 0;
-
       document.getElementById('adminEditModal').classList.remove('hidden');
     }
 
@@ -1522,6 +1618,7 @@
         if (data) {
           if (Array.isArray(data.careers) && data.careers.length > 0) careersList = data.careers;
           if (Array.isArray(data.qualifications) && data.qualifications.length > 0) qualificationsList = data.qualifications;
+          if (Array.isArray(data.qualificationCategories) && data.qualificationCategories.length > 0) qualificationCategories = data.qualificationCategories;
           if (data.allPlayers) {
             allPlayersDatabase = data.allPlayers;
             localStorage.setItem('rnd_all_players_db', JSON.stringify(allPlayersDatabase));
@@ -1567,6 +1664,7 @@
           action: "saveCareers",
           careers: careersList,
           qualifications: qualificationsList,
+          qualificationCategories: qualificationCategories,
           profile: profileData,
           allPlayers: allPlayersDatabase,
           timestamp: Date.now()
@@ -1614,6 +1712,7 @@
         }
       });
       if (tab === 'admin') renderAdminPlayersTable();
+      if (tab === 'qualifications') renderAdminQualificationsTab();
     }
 
     function initTheme() {
