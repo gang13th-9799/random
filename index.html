@@ -136,16 +136,16 @@
           <div id="syncBannerProgressBar" class="h-full rounded-full bg-gradient-to-r from-rose-500 via-amber-400 to-emerald-400 transition-all duration-300" style="width: 20%;"></div>
         </div>
         <div class="flex items-center justify-between text-xs sm:text-sm font-mono font-bold text-slate-400 px-1">
-          <span id="syncBannerStepText">ขั้นตอน: ตรวจสอบความถูกต้อง</span>
+          <span id="syncBannerStepText">ขั้นตอน: ตรวจสอบสถานะคิว</span>
           <span id="syncBannerPercentText" class="text-rose-500 dark:text-rose-400 font-black">20%</span>
         </div>
       </div>
       <div class="inline-flex items-center gap-2 px-3.5 py-2 rounded-xl bg-amber-50 dark:bg-amber-950/50 border border-amber-300 dark:border-amber-700 text-amber-800 dark:text-amber-200 text-xs font-bold">
-        <i class="fa-solid fa-bolt-lightning text-amber-500 text-sm"></i>
-        <span>ระบบถูกล็อกชั่วคราว ห้ามปิดหรือรีเฟรชหน้านี้</span>
+        <i class="fa-solid fa-shield-halved text-amber-500 text-sm"></i>
+        <span>ระบบป้องกัน Concurrency & Semantic Versioning กำลังทำงาน</span>
       </div>
       <button type="button" id="syncBannerErrorBtn" onclick="hideSyncBanner()" class="hidden w-full py-3 rounded-2xl text-sm font-black bg-rose-600 hover:bg-rose-700 text-white transition shadow-lg">
-        ปิดหน้าต่างนี้ (กรณีติด Error)
+        ปิดหน้าต่างนี้
       </button>
     </div>
   </div>
@@ -160,7 +160,7 @@
         <div>
           <div class="flex items-center space-x-2">
             <span class="font-black text-xl sm:text-2xl tracking-tight text-slate-900 dark:text-white">RANDOM HUB</span>
-            <span class="text-[11px] font-black px-2 py-0.5 rounded-full text-white uppercase tracking-wider btn-theme-action shadow-sm">PRO</span>
+            <span id="brandPillBadge" class="text-[11px] font-black px-2 py-0.5 rounded-full text-white uppercase tracking-wider btn-theme-action shadow-sm">v8.0.0</span>
           </div>
           <p id="cloudSyncStatus" class="text-xs text-slate-500 dark:text-slate-400 font-semibold flex items-center gap-1.5 pt-0.5">
             <i class="fa-solid fa-circle text-[9px] text-emerald-400 shadow-[0_0_8px_rgba(52,211,153,0.8)]"></i> ออนไลน์พร้อมใช้งาน
@@ -187,7 +187,7 @@
       </nav>
 
       <div class="flex items-center space-x-2 shrink-0">
-        <button onclick="forceSyncFromCloud()" title="ดึงข้อมูลจาก Cloud มาแทนที่ในเครื่อง 100%" class="px-3.5 py-2.5 rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-200 hover:bg-slate-50 text-xs sm:text-sm font-black transition flex items-center gap-2 shadow-sm">
+        <button onclick="forceSyncFromCloud()" title="ดึงข้อมูลล่าสุดจาก Cloud 100%" class="px-3.5 py-2.5 rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-200 hover:bg-slate-50 text-xs sm:text-sm font-black transition flex items-center gap-2 shadow-sm">
           <i id="syncIcon" class="fa-solid fa-cloud-arrow-down text-blue-500 text-sm sm:text-base"></i><span class="hidden sm:inline">Sync Cloud</span>
         </button>
         <button onclick="openSettingModal()" class="w-10 h-10 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:text-rose-500 flex items-center justify-center transition shadow-sm">
@@ -208,7 +208,7 @@
             <i class="fa-solid fa-shapes text-rose-500 text-2xl icon-vibrant"></i>
             <span>หมวดหมู่การ์ดกิจกรรม</span>
           </h2>
-          <p class="text-xs sm:text-sm text-slate-500 dark:text-slate-400 pt-1 font-medium">เลือกหมวดหมู่ที่ต้องการเพื่อเริ่มสุ่มข้อมูล หรือปรับแต่งหมวดหมู่ใหม่</p>
+          <p class="text-xs sm:text-sm text-slate-500 dark:text-slate-400 pt-1 font-medium">ระบบเวอร์ชัน vMajor.Minor.Patch (อัปเดตการ์ด: จุดที่ 3, อัปเดตชีต: จุดที่ 2)</p>
         </div>
         <button onclick="openCategoryModal()" class="w-full sm:w-auto text-xs sm:text-sm font-black flex items-center justify-center gap-2 px-5 py-3 rounded-2xl bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-700 text-slate-800 dark:text-white shadow hover:scale-105 transition">
           <i class="fa-solid fa-sliders text-rose-500 text-base"></i> จัดการหมวดหมู่
@@ -256,7 +256,7 @@
       </div>
     </section>
 
-    <!-- VIEW 3: คลังข้อมูลการ์ด (แสดงสายงานบนมือถือ + แถบพลังทรัพยากร 0-10) -->
+    <!-- VIEW 3: คลังข้อมูลการ์ด (แสดงสายงานบนมือถือ + แถบพลัง 0-10) -->
     <section id="view-data" class="hidden space-y-4 animate-pop-in">
       <div class="bg-white/90 dark:bg-slate-800/90 backdrop-blur border border-slate-200 dark:border-slate-700 rounded-3xl p-4 sm:p-5 shadow-sm flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3">
         <div class="flex flex-wrap items-center gap-2.5 flex-1">
@@ -287,7 +287,7 @@
                 <th class="py-4 px-3 text-center w-12">#</th>
                 <th class="py-4 px-3 w-20 text-center">สถานะ</th>
                 <th class="py-4 px-4 min-w-[200px]">ชื่อการ์ด</th>
-                <th class="py-4 px-3 text-indigo-400 min-w-[100px]">ใช้กับ</th>
+                <th class="py-4 px-3 text-indigo-400 min-w-[100px] text-center">ใช้กับ</th>
                 <th class="py-4 px-3 text-cyan-400 text-right min-w-[80px]">PV</th>
                 <th class="py-4 px-3 text-amber-400 text-right min-w-[90px]"><i class="fa-solid fa-coins mr-1 text-amber-400"></i>เงินสด</th>
                 <th class="py-4 px-3 text-emerald-400 text-right min-w-[100px]"><i class="fa-solid fa-hand-holding-dollar mr-1 text-emerald-400"></i>Active</th>
@@ -301,7 +301,7 @@
           </table>
         </div>
 
-        <!-- Mobile & Tablet View: Cards (แสดงสายงานชัดเจน + ขีดพลังทรัพยากร 0-10) -->
+        <!-- Mobile & Tablet View: Cards -->
         <div id="tableBodyMobile" class="lg:hidden p-3.5 space-y-4"></div>
       </div>
     </section>
@@ -371,7 +371,6 @@
         </div>
       </div>
       
-      <!-- ขีดพลังทรัพยากรบน Modal ผลสุ่ม -->
       <div id="drawResultResourceSection" class="p-4 bg-slate-50 dark:bg-slate-900/60 rounded-3xl border border-slate-200 dark:border-slate-700 space-y-3 text-left">
         <div class="space-y-1.5">
           <div class="flex items-center justify-between text-xs font-black text-rose-500">
@@ -537,7 +536,7 @@
             <thead class="bg-white dark:bg-slate-800 border-b text-slate-400 font-bold sticky top-0">
               <tr>
                 <th class="py-3 px-3">ชื่อฐานข้อมูล</th>
-                <th class="py-3 px-2 text-center w-16">Ver</th>
+                <th class="py-3 px-2 text-center w-24">Version</th>
                 <th class="py-3 px-2 text-center w-28">วันเวลา</th>
                 <th class="py-3 px-2 text-right w-16">จำนวน</th>
                 <th class="py-3 px-3 text-center w-28">จัดการ</th>
@@ -598,7 +597,7 @@
     <span id="toastMessage">แจ้งเตือน</span>
   </div>
 
-  <!-- JavaScript Engine (Multi-Device Mutation Safe + Segmented Power Bars) -->
+  <!-- JavaScript Engine (Semantic Versioning vMajor.Minor.Patch) -->
   <script>
     const GOOGLE_SHEET_API_URL = "https://script.google.com/macros/s/AKfycbzq9oD33K3nf_r2JRq5RjCafAQIvt2o9ywvJ1EvXvVg4l9QyUalIuQvxxT7zQ890nR1/exec";
 
@@ -634,10 +633,29 @@
     let historyLog = [];
     let drawPool = [];
     let isUniqueDrawMode = false;
-    let currentDbVersion = 1;
-    let currentDbVersionName = "v1.0";
+    let currentDbVersionName = "v8.0.0";
     let dbSnapshots = [];
     let isCloudSyncedSession = false;
+
+    // ฟังก์ชันคำนวณเวอร์ชัน SemVer (Major.Minor.Patch)
+    function getNextSemVer(vStr, type = "patch") {
+      const clean = String(vStr || "v8.0.0").replace(/^v/i, "");
+      const parts = clean.split(".").map(n => parseInt(n, 10) || 0);
+      while (parts.length < 3) parts.push(0);
+      let [major, minor, patch] = parts;
+
+      if (type === "patch") {
+        patch += 1; // จุดที่ 3: เพิ่ม/แก้ไขการ์ด
+      } else if (type === "minor") {
+        minor += 1; // จุดที่ 2: อัปเดตชีต / Push Master
+        patch = 0;
+      } else if (type === "major") {
+        major += 1;
+        minor = 0;
+        patch = 0;
+      }
+      return `v${major}.${minor}.${patch}`;
+    }
 
     const COLOR_PALETTES = {
       red: { id: "red", name: "ชมพู-แดงนีออน", hex: "#FF3366", gradient: "linear-gradient(135deg, #FF3366 0%, #FF5E62 50%, #FF9966 100%)", badge: "bg-rose-100 text-rose-800 dark:bg-rose-950/60 dark:text-rose-300 border-rose-300 dark:border-rose-800" },
@@ -703,8 +721,7 @@
         categories = cCats ? JSON.parse(cCats) : [...DEFAULT_INITIAL_CATEGORIES];
         const cHist = localStorage.getItem('rnd_cache_history');
         historyLog = cHist ? JSON.parse(cHist) : [];
-        currentDbVersion = parseInt(localStorage.getItem('rnd_db_version') || '1', 10);
-        currentDbVersionName = localStorage.getItem('rnd_db_version_name') || `v${currentDbVersion}.0`;
+        currentDbVersionName = localStorage.getItem('rnd_db_version_name') || "v8.0.0";
       } catch (e) {
         items = [...DEFAULT_INITIAL_ITEMS];
         categories = [...DEFAULT_INITIAL_CATEGORIES];
@@ -718,7 +735,6 @@
         localStorage.setItem('rnd_cache_items', JSON.stringify(items));
         localStorage.setItem('rnd_cache_categories', JSON.stringify(categories));
         localStorage.setItem('rnd_cache_history', JSON.stringify(historyLog));
-        localStorage.setItem('rnd_db_version', currentDbVersion.toString());
         localStorage.setItem('rnd_db_version_name', currentDbVersionName);
       } catch (e) {}
     }
@@ -726,6 +742,9 @@
     function renderAllUI() {
       const elCount = document.getElementById('total-badge-count');
       if (elCount) elCount.innerText = items.length;
+      const elVer = document.getElementById('brandPillBadge');
+      if (elVer) elVer.innerText = currentDbVersionName;
+
       renderCategoryHomeCards();
       renderDataTable();
       renderCategoryDropdowns();
@@ -806,9 +825,7 @@
       updatePoolBadge();
     }
 
-    /* ------------------------------------------------------------------------
-       ฟังก์ชันสร้างแถบพลังแบบแบ่ง 10 ขีด (Segmented Power Bars 0-10)
-       ------------------------------------------------------------------------ */
+    // ฟังก์ชันสร้างแถบพลังแบบแบ่ง 10 ขีด (Segmented Power Bars 0-10)
     function renderPowerSegmentBar(val, colorClass, emptyClass = "bg-slate-200 dark:bg-slate-700/80") {
       const safeVal = Math.max(0, Math.min(10, parseInt(val) || 0));
       let segments = '';
@@ -835,21 +852,18 @@
           <div class="flex items-center justify-between text-xs font-black ${titleColor}">
             <span>${badgeTitle}</span>
           </div>
-          <!-- หัวใจ -->
           <div class="flex items-center justify-between gap-2 text-xs sm:text-sm">
             <span class="flex items-center gap-1.5 text-slate-700 dark:text-slate-300 font-bold shrink-0">
               <span class="text-base sm:text-lg">❤️</span> พลังใจ
             </span>
             ${renderPowerSegmentBar(res.heart, activeColor)}
           </div>
-          <!-- เวลา (นาฬิกาฟ้า) -->
           <div class="flex items-center justify-between gap-2 text-xs sm:text-sm">
             <span class="flex items-center gap-1.5 text-slate-700 dark:text-slate-300 font-bold shrink-0">
               <i class="fa-solid fa-clock text-sky-400 text-sm sm:text-base"></i> เวลา
             </span>
             ${renderPowerSegmentBar(res.time, activeColor)}
           </div>
-          <!-- ความรู้ (สมุดม่วง) -->
           <div class="flex items-center justify-between gap-2 text-xs sm:text-sm">
             <span class="flex items-center gap-1.5 text-slate-700 dark:text-slate-300 font-bold shrink-0">
               <i class="fa-solid fa-book-bookmark text-violet-400 text-sm sm:text-base"></i> ความรู้
@@ -860,9 +874,6 @@
       `;
     }
 
-    /* ------------------------------------------------------------------------
-       ตารางข้อมูลการ์ด (Desktop & Mobile ครบทุกฟิลด์ + ขีดพลังทรัพยากร 0-10)
-       ------------------------------------------------------------------------ */
     function renderDataTable() {
       const query = (document.getElementById('searchInput')?.value || '').toLowerCase().trim();
       const filterCat = document.getElementById('tableCategoryFilter')?.value || 'ALL';
@@ -873,7 +884,7 @@
         return matchesQuery && matchesCat;
       });
 
-      // 1. ตารางแสดงผลบนจอคอมพิวเตอร์ (Desktop View)
+      // Desktop Table
       const desktopTbody = document.getElementById('tableBodyDesktop');
       if (desktopTbody) {
         desktopTbody.innerHTML = filtered.map((item, idx) => `
@@ -893,7 +904,6 @@
             <td class="py-3.5 px-3 font-mono font-bold text-right text-emerald-400 text-sm">฿${(item.activeIncome || 0).toLocaleString()}</td>
             <td class="py-3.5 px-3 font-mono font-bold text-right text-teal-400 text-sm">฿${(item.passiveIncome || 0).toLocaleString()}</td>
             
-            <!-- ขีดพลังทรัพยากร 0-10 แบบไม่มีขีดคั่น -->
             <td class="py-3.5 px-3">
               <div class="space-y-2 bg-slate-50/80 dark:bg-slate-900/40 p-2.5 rounded-2xl border border-slate-100 dark:border-slate-700/60">
                 ${renderResourceMeterGroup(item.cost, true)}
@@ -922,19 +932,16 @@
         `).join('');
       }
 
-      // 2. การ์ดแสดงผลบนจอมือถือ (Mobile View: แสดงสายงานครบถ้วน + ขีดพลัง 0-10)
+      // Mobile View: Cards (แสดงสายงานบนมือถือ + ขีดพลัง 0-10)
       const mobileList = document.getElementById('tableBodyMobile');
       if (mobileList) {
         mobileList.innerHTML = filtered.map(item => `
           <div class="p-4 bg-slate-50 dark:bg-slate-900/70 rounded-3xl border border-slate-200 dark:border-slate-700/80 space-y-3.5 shadow-sm">
-            
-            <!-- หัวการ์ด: ชื่อ + หมวดหมู่ + แสดงสายงานชัดเจน -->
             <div class="space-y-1.5">
               <div class="flex items-start justify-between gap-2">
                 <span class="font-black text-slate-900 dark:text-white text-base leading-snug">${escapeHTML(item.title)}</span>
                 <span class="text-xs px-2.5 py-0.5 rounded-full font-bold border shrink-0 ${getCategoryMeta(item.category).theme.badge}">${escapeHTML(item.category)}</span>
               </div>
-              <!-- แสดงสายงานบนมือถือ ไม่ตกหล่น -->
               <div class="flex items-center gap-2">
                 <span class="text-xs font-black px-2.5 py-1 rounded-xl bg-indigo-50 dark:bg-indigo-950/60 text-indigo-500 border border-indigo-200 dark:border-indigo-800 flex items-center gap-1.5">
                   <i class="fa-solid fa-sitemap text-[11px]"></i>
@@ -944,7 +951,6 @@
               </div>
             </div>
             
-            <!-- ตัวเลข PV, เงินสด, Active, Passive -->
             <div class="grid grid-cols-2 gap-2 text-xs sm:text-sm font-mono bg-white dark:bg-slate-800/90 p-3 rounded-2xl border border-slate-100 dark:border-slate-700">
               <div>PV: <strong class="text-cyan-400 font-black text-sm">${(item.pv || 0).toLocaleString()}</strong></div>
               <div><i class="fa-solid fa-coins text-amber-400 mr-1"></i>เงินสด: <strong class="text-amber-400 font-black text-sm">฿${(item.price || 0).toLocaleString()}</strong></div>
@@ -952,14 +958,12 @@
               <div><i class="fa-solid fa-seedling text-teal-400 mr-1"></i>Passive: <strong class="text-teal-400 font-bold">฿${(item.passiveIncome || 0).toLocaleString()}</strong></div>
             </div>
 
-            <!-- ขีดพลังทรัพยากร 0-10 แบบไม่มีขีดคั่น (ไอคอนและฟอนต์ใหญ่ชัดเจน) -->
             <div class="bg-white dark:bg-slate-800/90 p-3.5 rounded-2xl border border-slate-200 dark:border-slate-700 space-y-2.5">
               ${renderResourceMeterGroup(item.cost, true)}
               <div class="border-t border-slate-100 dark:border-slate-700 my-1"></div>
               ${renderResourceMeterGroup(item.reward, false)}
             </div>
 
-            <!-- ปุ่มแก้ไข / โคลน / ลบ -->
             <div class="flex items-center justify-end gap-2 pt-1 border-t border-slate-200 dark:border-slate-800">
               <button type="button" onclick="openAddEditModal('${item.id}')" class="px-3.5 py-2 text-xs font-black rounded-xl bg-blue-50 dark:bg-slate-800 text-blue-500 border border-blue-200 dark:border-slate-700 flex items-center gap-1.5 active:scale-95 transition">
                 <i class="fa-solid fa-pen"></i> แก้ไข
@@ -1049,7 +1053,6 @@
       document.getElementById('drawResultActive').innerText = `฿${(card.activeIncome || 0).toLocaleString()}`;
       document.getElementById('drawResultPassive').innerText = `฿${(card.passiveIncome || 0).toLocaleString()}`;
 
-      // เรนเดอร์ขีดพลังบน Modal ผลสุ่ม
       document.getElementById('drawResultCostBars').innerHTML = renderResourceMeterGroup(card.cost, true);
       document.getElementById('drawResultRewardBars').innerHTML = renderResourceMeterGroup(card.reward, false);
 
@@ -1137,6 +1140,7 @@
       document.getElementById('cardModal').classList.add('hidden');
     }
 
+    // บันทึกการ์ด: เพิ่มเวอร์ชันที่จุดทศนิยมที่ 3 (Patch)
     async function handleSaveCard(e) {
       e.preventDefault();
       const id = document.getElementById('cardEditId').value;
@@ -1175,12 +1179,15 @@
       } else {
         items.unshift(cardObj);
       }
+
+      // คำนวณเลขเวอร์ชันขยับ Patch ล่วงหน้า
+      currentDbVersionName = getNextSemVer(currentDbVersionName, "patch");
       saveLocalCache();
       renderAllUI();
       resetDrawPool();
       closeCardModal();
 
-      showSyncBanner("กำลังซิงก์การ์ดขึ้น Cloud", `กำลังบันทึก "${cardObj.title}"...`, "ขั้นตอน: อัปเดตเฉพาะรายการ", 40);
+      showSyncBanner("กำลังซิงก์การ์ดขึ้น Cloud", `กำลังบันทึก "${cardObj.title}" (${currentDbVersionName})...`, "ขั้นตอน: ปรับเวอร์ชัน Patch", 40);
 
       try {
         const res = await fetch(GOOGLE_SHEET_API_URL, {
@@ -1195,12 +1202,12 @@
 
         const result = await res.json();
         if (result && result.status === "success") {
-          currentDbVersion = result.dbVersion;
           currentDbVersionName = result.dbVersionName;
           saveLocalCache();
-          updateSyncBannerProgress(100, "บันทึกข้อมูลเรียบร้อยโดยไม่ทับซ้อน!", "เสร็จสิ้น");
+          renderAllUI();
+          updateSyncBannerProgress(100, `บันทึกเวอร์ชัน ${currentDbVersionName} เรียบร้อย!`, "เสร็จสิ้น");
           setTimeout(hideSyncBanner, 500);
-          showToast(`บันทึก "${cardObj.title}" ขึ้น Cloud สำเร็จ ☁️`);
+          showToast(`บันทึก "${cardObj.title}" (${currentDbVersionName}) สำเร็จ ☁️`);
         } else {
           throw new Error(result?.message || "บันทึกไม่สำเร็จ");
         }
@@ -1209,6 +1216,7 @@
       }
     }
 
+    // โคลนการ์ด: เพิ่มเวอร์ชันที่จุดทศนิยมที่ 3 (Patch)
     async function cloneItem(id) {
       const original = items.find(i => i.id === id);
       if (!original) return;
@@ -1223,11 +1231,13 @@
 
       const originalIndex = items.findIndex(i => i.id === id);
       items.splice(originalIndex + 1, 0, clonedCard);
+
+      currentDbVersionName = getNextSemVer(currentDbVersionName, "patch");
       saveLocalCache();
       renderAllUI();
       resetDrawPool();
 
-      showSyncBanner("กำลังโคลนการ์ดขึ้น Cloud", `กำลังบันทึก "${clonedCard.title}"...`, "ขั้นตอน: อัปเดตเฉพาะรายการ", 40);
+      showSyncBanner("กำลังโคลนการ์ดขึ้น Cloud", `กำลังบันทึก "${clonedCard.title}" (${currentDbVersionName})...`, "ขั้นตอน: ปรับเวอร์ชัน Patch", 40);
       try {
         const res = await fetch(GOOGLE_SHEET_API_URL, {
           method: "POST",
@@ -1240,10 +1250,10 @@
         });
         const result = await res.json();
         if (result && result.status === "success") {
-          currentDbVersion = result.dbVersion;
           currentDbVersionName = result.dbVersionName;
           saveLocalCache();
-          updateSyncBannerProgress(100, "โคลนการ์ดสำเร็จ!", "เสร็จสิ้น");
+          renderAllUI();
+          updateSyncBannerProgress(100, `โคลนการ์ดสำเร็จ (${currentDbVersionName})!`, "เสร็จสิ้น");
           setTimeout(hideSyncBanner, 500);
           showToast(`โคลน "${clonedCard.title}" เรียบร้อยแล้ว 📋`);
         }
@@ -1252,17 +1262,19 @@
       }
     }
 
+    // ลบการ์ด: เพิ่มเวอร์ชันที่จุดทศนิยมที่ 3 (Patch)
     async function confirmDeleteItem(id) {
       const item = items.find(i => i.id === id);
       if (!item) return;
       if (!confirm(`คุณต้องการลบการ์ด "${item.title}" ใช่หรือไม่?`)) return;
 
       items = items.filter(i => i.id !== id);
+      currentDbVersionName = getNextSemVer(currentDbVersionName, "patch");
       saveLocalCache();
       renderAllUI();
       resetDrawPool();
 
-      showSyncBanner("กำลังลบการ์ดบน Cloud", `กำลังลบ "${item.title}"...`, "ขั้นตอน: ลบเฉพาะรายการ", 40);
+      showSyncBanner("กำลังลบการ์ดบน Cloud", `กำลังลบ "${item.title}"...`, "ขั้นตอน: ปรับเวอร์ชัน Patch", 40);
       try {
         const res = await fetch(GOOGLE_SHEET_API_URL, {
           method: "POST",
@@ -1275,10 +1287,10 @@
         });
         const result = await res.json();
         if (result && result.status === "success") {
-          currentDbVersion = result.dbVersion;
           currentDbVersionName = result.dbVersionName;
           saveLocalCache();
-          updateSyncBannerProgress(100, "ลบข้อมูลสำเร็จ!", "เสร็จสิ้น");
+          renderAllUI();
+          updateSyncBannerProgress(100, `ลบข้อมูลสำเร็จ (${currentDbVersionName})!`, "เสร็จสิ้น");
           setTimeout(hideSyncBanner, 500);
           showToast('ลบการ์ดออกจาก Cloud สำเร็จ');
         }
@@ -1287,6 +1299,7 @@
       }
     }
 
+    // Push Master: เพิ่มเวอร์ชันที่จุดทศนิยมที่ 2 (Minor) เช่น v8.0.2 -> v8.1.0
     async function pushSnapshotToCloudById(snapId) {
       let targetSnap = dbSnapshots.find(s => s.id === snapId);
       if (!targetSnap || snapId === 'cloud_active') {
@@ -1298,10 +1311,8 @@
         };
       }
 
-      const defaultVer = currentDbVersionName.startsWith('v') 
-        ? `v${(parseFloat(currentDbVersionName.replace('v','')) + 0.1).toFixed(1)}` 
-        : `v${currentDbVersion + 1}.0`;
-      
+      // แนะนำเวอร์ชัน Minor ถัดไป
+      const defaultVer = getNextSemVer(currentDbVersionName, "minor");
       const inputVersion = prompt("ระบุชื่อ Version สำหรับอัปโหลดขึ้น Google Sheets:", defaultVer);
       if (!inputVersion || !inputVersion.trim()) return;
 
@@ -1312,7 +1323,7 @@
       const newTitleName = inputTitle.trim();
 
       closeSettingModal();
-      showSyncBanner(`กำลังอัปโหลด ${newVerName} ขึ้น Cloud`, `กำลังตรวจสอบความขัดแย้งของเวอร์ชัน...`, "ขั้นตอน 1/3: ตรวจสอบ Conflict Guard", 20);
+      showSyncBanner(`กำลังอัปโหลด ${newVerName} ขึ้น Cloud`, `กำลังตรวจสอบ Conflict Guard...`, "ขั้นตอน 1/3: ตรวจสอบความถูกต้อง", 20);
 
       try {
         const payload = {
@@ -1321,10 +1332,8 @@
           items: items.map(it => ({ ...it, syncStatus: "synced" })),
           categories: categories,
           historyLog: historyLog.slice(0, 20),
-          dbVersion: currentDbVersion + 1,
           dbVersionName: newVerName,
           dbTitle: newTitleName,
-          expectedDbVersion: currentDbVersion,
           timestamp: Date.now()
         };
 
@@ -1345,8 +1354,9 @@
         }
 
         if (result && result.status === 'success') {
-          currentDbVersion = result.dbVersion;
           currentDbVersionName = result.dbVersionName;
+          saveLocalCache();
+          renderAllUI();
           updateSyncBannerProgress(85, "กำลังตรวจสอบผลลัพธ์และยืนยันข้อมูลจากชีต...", "ขั้นตอน 3/3: ดึงข้อมูลยืนยันผล");
           await fetchFromGoogleSheets(false);
 
@@ -1383,8 +1393,7 @@
         }
 
         if (data && Array.isArray(data.items)) {
-          currentDbVersion = Number(data.dbVersion) || 1;
-          currentDbVersionName = data.dbVersionName || `v${currentDbVersion}.0`;
+          currentDbVersionName = data.dbVersionName || "v8.0.0";
           items = data.items.map(it => ({ ...it, syncStatus: "synced" }));
           if (Array.isArray(data.categories)) categories = data.categories;
 
@@ -1583,7 +1592,7 @@
       const url = URL.createObjectURL(blob);
       const link = document.createElement("a");
       link.setAttribute("href", url);
-      link.setAttribute("download", `Cards_Database_${new Date().toISOString().slice(0, 10)}.csv`);
+      link.setAttribute("download", `Cards_Database_${currentDbVersionName}_${new Date().toISOString().slice(0, 10)}.csv`);
       document.body.appendChild(link);
       link.click();
       document.body.removeChild(link);
@@ -1595,7 +1604,6 @@
       const dbPayload = {
         app: "RandomDataCardHub",
         version: "1.0",
-        dbVersion: currentDbVersion,
         dbVersionName: currentDbVersionName,
         exportDate: new Date().toISOString(),
         categories: categories,
@@ -1637,9 +1645,6 @@
             }
             if (Array.isArray(importedData.historyLog)) {
               historyLog = importedData.historyLog;
-            }
-            if (importedData.dbVersion) {
-              currentDbVersion = importedData.dbVersion;
             }
             if (importedData.dbVersionName) {
               currentDbVersionName = importedData.dbVersionName;
