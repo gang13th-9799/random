@@ -256,8 +256,8 @@
       </div>
     </section>
 
-    <!-- VIEW 3: คลังข้อมูลการ์ด (LAYOUT ใหม่: แสดง Card ID, จอคอมพิวเตอร์/แนวนอนคมชัด, จอมือถือกระชับ) -->
-    <section id="view-data" class="hidden space-y-4 animate-pop-in">
+    <!-- VIEW 3: คลังข้อมูลการ์ด (UNIFIED CARD GRID LAYOUT: ทั้งจอคอมฯ และมือถือจัดแสดงเหมือนกัน + สีพื้นหลังตรงตามหมวดหมู่) -->
+    <section id="view-data" class="space-y-5 animate-pop-in">
       <div class="bg-white/90 dark:bg-slate-800/90 backdrop-blur border border-slate-200 dark:border-slate-700 rounded-3xl p-4 sm:p-5 shadow-sm flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3">
         <div class="flex flex-wrap items-center gap-2.5 flex-1">
           <div class="relative flex-1 min-w-[200px]">
@@ -278,32 +278,8 @@
         </div>
       </div>
 
-      <div class="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-3xl shadow-sm overflow-hidden">
-        <!-- 1. จอคอมพิวเตอร์และจอแนวนอน (Desktop / Landscape Table) -->
-        <div class="hidden lg:block overflow-x-auto">
-          <table class="w-full text-left text-sm text-slate-600 dark:text-slate-300 border-collapse">
-            <thead class="bg-slate-50 dark:bg-slate-900/90 border-b border-slate-200 dark:border-slate-700 text-xs uppercase font-black text-slate-400 whitespace-nowrap">
-              <tr>
-                <th class="py-4 px-3 text-center w-12">#</th>
-                <th class="py-4 px-3 w-28 text-center">Card ID</th>
-                <th class="py-4 px-4 min-w-[220px]">ชื่อการ์ด</th>
-                <th class="py-4 px-3 text-indigo-400 min-w-[100px] text-center">สายงาน</th>
-                <th class="py-4 px-3 text-cyan-400 text-right min-w-[80px]">PV</th>
-                <th class="py-4 px-3 text-amber-400 text-right min-w-[95px]"><i class="fa-solid fa-coins mr-1 text-amber-400"></i>เงินสด</th>
-                <th class="py-4 px-3 text-emerald-400 text-right min-w-[100px]"><i class="fa-solid fa-hand-holding-dollar mr-1 text-emerald-400"></i>Active</th>
-                <th class="py-4 px-3 text-teal-400 text-right min-w-[100px]"><i class="fa-solid fa-seedling mr-1 text-teal-400"></i>Passive</th>
-                <th class="py-4 px-3 text-center min-w-[320px]">ขีดพลังทรัพยากร (0-10)</th>
-                <th class="py-4 px-3 text-center min-w-[110px]">หมวดหมู่</th>
-                <th class="py-4 px-3 text-center w-36 sticky right-0 bg-slate-50 dark:bg-slate-900 shadow-l">จัดการ</th>
-              </tr>
-            </thead>
-            <tbody id="tableBodyDesktop" class="divide-y divide-slate-100 dark:divide-slate-700/60 font-medium"></tbody>
-          </table>
-        </div>
-
-        <!-- 2. จอโทรศัพท์และจอแนวตั้ง (Mobile / Portrait Cards Layout: จัดระเบียบกระชับ ไม่ยืดยาว) -->
-        <div id="tableBodyMobile" class="lg:hidden p-3 sm:p-4 space-y-3"></div>
-      </div>
+      <!-- Unified Card Grid: ในมือถือ 1 คอลัมน์, แท็บเล็ต 2 คอลัมน์, คอมพิวเตอร์/แนวนอน 2-3 คอลัมน์ -->
+      <div id="cardsGridContainer" class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-3.5 sm:gap-4.5"></div>
     </section>
 
     <!-- VIEW 4: ประวัติการสุ่ม -->
@@ -325,13 +301,13 @@
 
   <!-- Mobile Bottom Nav Bar -->
   <nav class="lg:hidden fixed bottom-0 left-0 right-0 z-40 bg-white/95 dark:bg-slate-900/95 backdrop-blur-md border-t border-slate-200 dark:border-slate-800 px-3 py-2 flex items-center justify-around shadow-lg">
-    <button onclick="switchTab('categories')" id="m-nav-categories" class="flex flex-col items-center gap-1 text-rose-500">
+    <button onclick="switchTab('categories')" id="m-nav-categories" class="flex flex-col items-center gap-1 text-slate-400">
       <i class="fa-solid fa-shapes text-xl"></i><span class="text-[10px] font-black">หมวดหมู่</span>
     </button>
     <button onclick="switchTab('draw')" id="m-nav-draw" class="flex flex-col items-center gap-1 text-slate-400">
       <i class="fa-solid fa-dice-d20 text-xl"></i><span class="text-[10px] font-black">หน้าสุ่ม</span>
     </button>
-    <button onclick="switchTab('data')" id="m-nav-data" class="flex flex-col items-center gap-1 text-slate-400">
+    <button onclick="switchTab('data')" id="m-nav-data" class="flex flex-col items-center gap-1 text-rose-500">
       <i class="fa-solid fa-layer-group text-xl"></i><span class="text-[10px] font-black">คลังข้อมูล</span>
     </button>
     <button onclick="switchTab('history')" id="m-nav-history" class="flex flex-col items-center gap-1 text-slate-400">
@@ -600,7 +576,7 @@
     <span id="toastMessage">แจ้งเตือน</span>
   </div>
 
-  <!-- JavaScript Engine (Semantic Versioning + Improved Responsive Layout) -->
+  <!-- JavaScript Engine -->
   <script>
     const GOOGLE_SHEET_API_URL = "https://script.google.com/macros/s/AKfycbzq9oD33K3nf_r2JRq5RjCafAQIvt2o9ywvJ1EvXvVg4l9QyUalIuQvxxT7zQ890nR1/exec";
 
@@ -659,12 +635,48 @@
       return `v${major}.${minor}.${patch}`;
     }
 
+    // กำหนดสีและพื้นหลังการ์ดตามหมวดหมู่ (Vivid Gradient Tints + Border Tints)
     const COLOR_PALETTES = {
-      red: { id: "red", name: "ชมพู-แดงนีออน", hex: "#FF3366", gradient: "linear-gradient(135deg, #FF3366 0%, #FF5E62 50%, #FF9966 100%)", badge: "bg-rose-100 text-rose-800 dark:bg-rose-950/60 dark:text-rose-300 border-rose-300 dark:border-rose-800" },
-      blue: { id: "blue", name: "ฟ้าน้ำทะเลสดใส", hex: "#00C4FF", gradient: "linear-gradient(135deg, #00C4FF 0%, #0072FF 50%, #002288 100%)", badge: "bg-cyan-100 text-cyan-800 dark:bg-cyan-950/60 dark:text-cyan-300 border-cyan-300 dark:border-cyan-800" },
-      purple: { id: "purple", name: "ม่วงไวโอเล็ตนีออน", hex: "#B026FF", gradient: "linear-gradient(135deg, #FF61D2 0%, #B026FF 50%, #581C87 100%)", badge: "bg-purple-100 text-purple-800 dark:bg-purple-950/60 dark:text-purple-300 border-purple-300 dark:border-purple-800" },
-      emerald: { id: "emerald", name: "เขียวมรกตนีออน", hex: "#00E676", gradient: "linear-gradient(135deg, #00E676 0%, #00B0FF 50%, #1DE9B6 100%)", badge: "bg-emerald-100 text-emerald-800 dark:bg-emerald-950/60 dark:text-emerald-300 border-emerald-300 dark:border-emerald-800" },
-      amber: { id: "amber", name: "ส้ม-ทองอำพัน", hex: "#FF9100", gradient: "linear-gradient(135deg, #FFE600 0%, #FF9100 50%, #FF3D00 100%)", badge: "bg-amber-100 text-amber-800 dark:bg-amber-950/60 dark:text-amber-300 border-amber-300 dark:border-amber-800" }
+      red: { 
+        id: "red", 
+        name: "ชมพู-แดงนีออน", 
+        hex: "#FF3366", 
+        gradient: "linear-gradient(135deg, #FF3366 0%, #FF5E62 50%, #FF9966 100%)", 
+        badge: "bg-rose-100 text-rose-800 dark:bg-rose-950/60 dark:text-rose-300 border-rose-300 dark:border-rose-800",
+        cardBgTint: "bg-gradient-to-br from-rose-500/10 via-rose-500/5 to-slate-50/80 dark:from-rose-950/30 dark:via-rose-950/15 dark:to-slate-900/90 border-rose-400/40 dark:border-rose-500/30 hover:border-rose-500"
+      },
+      blue: { 
+        id: "blue", 
+        name: "ฟ้าน้ำทะเลสดใส", 
+        hex: "#00C4FF", 
+        gradient: "linear-gradient(135deg, #00C4FF 0%, #0072FF 50%, #002288 100%)", 
+        badge: "bg-cyan-100 text-cyan-800 dark:bg-cyan-950/60 dark:text-cyan-300 border-cyan-300 dark:border-cyan-800",
+        cardBgTint: "bg-gradient-to-br from-cyan-500/10 via-cyan-500/5 to-slate-50/80 dark:from-cyan-950/30 dark:via-cyan-950/15 dark:to-slate-900/90 border-cyan-400/40 dark:border-cyan-500/30 hover:border-cyan-500"
+      },
+      purple: { 
+        id: "purple", 
+        name: "ม่วงไวโอเล็ตนีออน", 
+        hex: "#B026FF", 
+        gradient: "linear-gradient(135deg, #FF61D2 0%, #B026FF 50%, #581C87 100%)", 
+        badge: "bg-purple-100 text-purple-800 dark:bg-purple-950/60 dark:text-purple-300 border-purple-300 dark:border-purple-800",
+        cardBgTint: "bg-gradient-to-br from-purple-500/10 via-purple-500/5 to-slate-50/80 dark:from-purple-950/30 dark:via-purple-950/15 dark:to-slate-900/90 border-purple-400/40 dark:border-purple-500/30 hover:border-purple-500"
+      },
+      emerald: { 
+        id: "emerald", 
+        name: "เขียวมรกตนีออน", 
+        hex: "#00E676", 
+        gradient: "linear-gradient(135deg, #00E676 0%, #00B0FF 50%, #1DE9B6 100%)", 
+        badge: "bg-emerald-100 text-emerald-800 dark:bg-emerald-950/60 dark:text-emerald-300 border-emerald-300 dark:border-emerald-800",
+        cardBgTint: "bg-gradient-to-br from-emerald-500/10 via-emerald-500/5 to-slate-50/80 dark:from-emerald-950/30 dark:via-emerald-950/15 dark:to-slate-900/90 border-emerald-400/40 dark:border-emerald-500/30 hover:border-emerald-500"
+      },
+      amber: { 
+        id: "amber", 
+        name: "ส้ม-ทองอำพัน", 
+        hex: "#FF9100", 
+        gradient: "linear-gradient(135deg, #FFE600 0%, #FF9100 50%, #FF3D00 100%)", 
+        badge: "bg-amber-100 text-amber-800 dark:bg-amber-950/60 dark:text-amber-300 border-amber-300 dark:border-amber-800",
+        cardBgTint: "bg-gradient-to-br from-amber-500/10 via-amber-500/5 to-slate-50/80 dark:from-amber-950/30 dark:via-amber-950/15 dark:to-slate-900/90 border-amber-400/40 dark:border-amber-500/30 hover:border-amber-500"
+      }
     };
 
     const ICON_PRESETS = [
@@ -799,7 +811,12 @@
 
     function getCategoryMeta(catName) {
       const found = categories.find(c => c.name === catName);
-      return { icon: found?.icon || "fa-shapes", theme: COLOR_PALETTES[found?.color] || COLOR_PALETTES.red };
+      const theme = COLOR_PALETTES[found?.color] || COLOR_PALETTES.red;
+      return { 
+        icon: found?.icon || "fa-shapes", 
+        theme: theme,
+        cardBgTint: theme.cardBgTint
+      };
     }
 
     function selectCategoryAndDraw(catName) {
@@ -877,7 +894,7 @@
     }
 
     /* ------------------------------------------------------------------------
-       เรนเดอร์คลังข้อมูล (Desktop Table แสดง Card ID + Mobile View กระชับ)
+       เรนเดอร์คลังข้อมูล (UNIFIED CARD GRID: จัดแสดงเหมือนโทรศัพท์ทั้งคอมฯ และมือถือ + พื้นหลังตามหมวดหมู่)
        ------------------------------------------------------------------------ */
     function renderDataTable() {
       const query = (document.getElementById('searchInput')?.value || '').toLowerCase().trim();
@@ -891,118 +908,85 @@
         return matchesQuery && matchesCat;
       });
 
-      // 1. ตารางบนเดสก์ท็อปและจอแนวนอน
-      const desktopTbody = document.getElementById('tableBodyDesktop');
-      if (desktopTbody) {
-        desktopTbody.innerHTML = filtered.map((item, idx) => `
-          <tr class="hover:bg-slate-50 dark:hover:bg-slate-700/40 transition">
-            <td class="py-3.5 px-3 text-center font-mono text-xs text-slate-400 font-bold">${idx + 1}</td>
-            <!-- แสดงหมายเลขการ์ด (Card ID) -->
-            <td class="py-3.5 px-3 text-center">
-              <span class="font-mono text-xs font-black px-2.5 py-1 rounded-xl bg-slate-100 dark:bg-slate-900 text-slate-600 dark:text-slate-300 border border-slate-200 dark:border-slate-700 shadow-xs">
-                ${escapeHTML(item.id)}
-              </span>
-            </td>
-            <td class="py-3.5 px-4 font-black text-slate-900 dark:text-white text-base">
-              ${escapeHTML(item.title)}
-            </td>
-            <td class="py-3.5 px-3 font-black text-sm text-indigo-400 text-center">
-              <span class="px-2.5 py-1 rounded-xl bg-indigo-50 dark:bg-indigo-950/50 border border-indigo-200 dark:border-indigo-800">
-                ${escapeHTML(item.targetLeg ? 'สายงาน ' + item.targetLeg : 'ส่วนตัว')}
-              </span>
-            </td>
-            <td class="py-3.5 px-3 font-mono font-black text-right text-cyan-400 text-sm">${(item.pv || 0).toLocaleString()}</td>
-            <td class="py-3.5 px-3 font-mono font-black text-right text-amber-400 text-sm">฿${(item.price || 0).toLocaleString()}</td>
-            <td class="py-3.5 px-3 font-mono font-bold text-right text-emerald-400 text-sm">฿${(item.activeIncome || 0).toLocaleString()}</td>
-            <td class="py-3.5 px-3 font-mono font-bold text-right text-teal-400 text-sm">฿${(item.passiveIncome || 0).toLocaleString()}</td>
-            
-            <!-- ขีดพลังทรัพยากร 0-10 แบบ Inline 2 คอลัมน์ (ประหยัดความสูงของแถว) -->
-            <td class="py-3 px-3">
-              <div class="grid grid-cols-2 gap-2 bg-slate-50/80 dark:bg-slate-900/40 p-2 rounded-2xl border border-slate-100 dark:border-slate-700/60">
-                <div>${renderResourceMeterGroup(item.cost, true)}</div>
-                <div class="border-l border-slate-200 dark:border-slate-800 pl-2">${renderResourceMeterGroup(item.reward, false)}</div>
-              </div>
-            </td>
+      const gridContainer = document.getElementById('cardsGridContainer');
+      if (!gridContainer) return;
 
-            <td class="py-3.5 px-3 text-center">
-              <span class="text-xs px-3 py-1 rounded-full font-bold border ${getCategoryMeta(item.category).theme.badge}">${escapeHTML(item.category)}</span>
-            </td>
-            <td class="py-3.5 px-3 text-center sticky right-0 bg-white dark:bg-slate-800 shadow-l">
-              <div class="flex items-center justify-center gap-1.5">
-                <button type="button" onclick="openAddEditModal('${item.id}')" title="แก้ไขการ์ด" class="w-8 h-8 flex items-center justify-center text-slate-500 hover:text-cyan-400 hover:bg-cyan-50 dark:hover:bg-slate-700 rounded-xl transition border border-transparent">
-                  <i class="fa-solid fa-pen text-sm"></i>
-                </button>
-                <button type="button" onclick="cloneItem('${item.id}')" title="โคลนการ์ด" class="w-8 h-8 flex items-center justify-center text-slate-500 hover:text-emerald-400 hover:bg-emerald-50 dark:hover:bg-slate-700 rounded-xl transition border border-transparent">
-                  <i class="fa-regular fa-copy text-sm"></i>
-                </button>
-                <button type="button" onclick="confirmDeleteItem('${item.id}')" title="ลบการ์ด" class="w-8 h-8 flex items-center justify-center text-slate-400 hover:text-rose-500 hover:bg-rose-50 dark:hover:bg-slate-700 rounded-xl transition border border-transparent">
-                  <i class="fa-solid fa-trash-can text-sm"></i>
-                </button>
-              </div>
-            </td>
-          </tr>
-        `).join('');
+      if (filtered.length === 0) {
+        gridContainer.innerHTML = `
+          <div class="col-span-full py-16 text-center text-slate-400 space-y-2">
+            <i class="fa-solid fa-folder-open text-4xl text-slate-300 dark:text-slate-600"></i>
+            <p class="text-sm font-bold">ไม่พบข้อมูลการ์ดที่ค้นหา</p>
+          </div>
+        `;
+        return;
       }
 
-      // 2. การ์ดมุมมองมือถือและจอแนวตั้ง (Compact Layout: ครบถ้วน กระชับ ไม่ยืดยาว)
-      const mobileList = document.getElementById('tableBodyMobile');
-      if (mobileList) {
-        mobileList.innerHTML = filtered.map((item, idx) => `
-          <div class="p-3.5 bg-slate-50 dark:bg-slate-900/80 rounded-2xl border border-slate-200 dark:border-slate-700/80 space-y-2.5 shadow-xs">
+      gridContainer.innerHTML = filtered.map((item, idx) => {
+        const meta = getCategoryMeta(item.category);
+        return `
+          <div class="p-4 rounded-3xl border transition duration-200 space-y-3 shadow-sm hover:shadow-md ${meta.cardBgTint}">
             
-            <!-- บรรทัดที่ 1: ลำดับ + หมายเลขการ์ด + ชื่อการ์ด -->
-            <div class="flex items-start justify-between gap-2">
-              <div class="flex items-center gap-1.5 flex-1 min-w-0">
-                <span class="font-mono text-xs font-bold text-slate-400">#${idx + 1}</span>
-                <span class="font-mono text-xs font-black px-2 py-0.5 rounded-lg bg-slate-200/70 dark:bg-slate-800 text-slate-700 dark:text-slate-200 shrink-0">
+            <!-- บรรทัดที่ 1: ลำดับ + Card ID + ชื่อการ์ด + ป้ายหมวดหมู่ -->
+            <div class="flex items-start justify-between gap-2.5">
+              <div class="flex items-center gap-2 flex-1 min-w-0">
+                <span class="font-mono text-xs font-bold text-slate-400 shrink-0">#${idx + 1}</span>
+                <span class="font-mono text-xs font-black px-2 py-0.5 rounded-lg bg-white/80 dark:bg-slate-900/80 text-slate-700 dark:text-slate-200 border border-slate-200/80 dark:border-slate-700/80 shrink-0 shadow-2xs">
                   ${escapeHTML(item.id)}
                 </span>
-                <span class="font-black text-slate-900 dark:text-white text-sm sm:text-base truncate leading-tight">${escapeHTML(item.title)}</span>
+                <span class="font-black text-slate-900 dark:text-white text-base truncate leading-snug" title="${escapeHTML(item.title)}">
+                  ${escapeHTML(item.title)}
+                </span>
               </div>
-              <span class="text-[10px] px-2 py-0.5 rounded-full font-bold border shrink-0 ${getCategoryMeta(item.category).theme.badge}">${escapeHTML(item.category)}</span>
+              <span class="text-xs px-2.5 py-0.5 rounded-full font-bold border shrink-0 ${meta.theme.badge}">
+                ${escapeHTML(item.category)}
+              </span>
             </div>
 
-            <!-- บรรทัดที่ 2: สายงาน + สรุปตัวเลขทางการเงิน 4 ช่องแบบกระชับ -->
-            <div class="grid grid-cols-4 gap-1.5 text-center font-mono bg-white dark:bg-slate-800/90 p-2 rounded-xl border border-slate-100 dark:border-slate-700 text-xs">
-              <div>
-                <span class="text-[10px] text-slate-400 font-sans block">เป้าหมาย</span>
-                <strong class="text-indigo-400 font-bold truncate block text-[11px]">${escapeHTML(item.targetLeg ? 'สาย ' + item.targetLeg : 'ส่วนตัว')}</strong>
+            <!-- บรรทัดที่ 2: สายงาน + สรุปตัวเลขทางการเงิน 4 ช่อง (พื้นผิว Glassmorphism คมชัด) -->
+            <div class="grid grid-cols-4 gap-1.5 text-center font-mono bg-white/90 dark:bg-slate-900/90 backdrop-blur-xs p-2.5 rounded-2xl border border-slate-200/70 dark:border-slate-700/70 text-xs shadow-2xs">
+              <div class="overflow-hidden">
+                <span class="text-[10px] text-slate-400 font-sans font-bold block">สายงาน</span>
+                <strong class="text-indigo-500 dark:text-indigo-400 font-black truncate block text-xs" title="${escapeHTML(item.targetLeg ? 'สายงาน ' + item.targetLeg : 'ส่วนตัว')}">
+                  ${escapeHTML(item.targetLeg ? 'สาย ' + item.targetLeg : 'ส่วนตัว')}
+                </strong>
               </div>
               <div>
-                <span class="text-[10px] text-slate-400 font-sans block">PV</span>
-                <strong class="text-cyan-400 font-black">${(item.pv || 0).toLocaleString()}</strong>
+                <span class="text-[10px] text-slate-400 font-sans font-bold block">PV</span>
+                <strong class="text-cyan-500 dark:text-cyan-400 font-black text-xs sm:text-sm">${(item.pv || 0).toLocaleString()}</strong>
               </div>
               <div>
-                <span class="text-[10px] text-slate-400 font-sans block">ราคา</span>
-                <strong class="text-amber-400 font-black">${(item.price || 0).toLocaleString()}</strong>
+                <span class="text-[10px] text-slate-400 font-sans font-bold block">ราคา</span>
+                <strong class="text-amber-500 dark:text-amber-400 font-black text-xs sm:text-sm">฿${(item.price || 0).toLocaleString()}</strong>
               </div>
               <div>
-                <span class="text-[10px] text-slate-400 font-sans block">Active/Pass</span>
-                <strong class="text-emerald-400 font-bold text-[11px]">${item.activeIncome || 0}/${item.passiveIncome || 0}</strong>
+                <span class="text-[10px] text-slate-400 font-sans font-bold block">Active/Pass</span>
+                <strong class="text-emerald-500 dark:text-emerald-400 font-black text-[11px] sm:text-xs">
+                  ${item.activeIncome || 0}/${item.passiveIncome || 0}
+                </strong>
               </div>
             </div>
 
-            <!-- บรรทัดที่ 3: แถบขีดพลัง 0-10 กระชับ แบ่ง Cost (ซ้าย) / Reward (ขวา) -->
-            <div class="grid grid-cols-2 gap-2 bg-white dark:bg-slate-800/90 p-2.5 rounded-xl border border-slate-200 dark:border-slate-700">
+            <!-- บรรทัดที่ 3: แถบขีดพลัง 0-10 แบ่ง Cost (ซ้าย) / Reward (ขวา) ชัดเจน -->
+            <div class="grid grid-cols-2 gap-2 bg-white/90 dark:bg-slate-900/90 backdrop-blur-xs p-3 rounded-2xl border border-slate-200/70 dark:border-slate-700/70 shadow-2xs">
               <div>${renderResourceMeterGroup(item.cost, true)}</div>
-              <div class="border-l border-slate-100 dark:border-slate-700 pl-2">${renderResourceMeterGroup(item.reward, false)}</div>
+              <div class="border-l border-slate-200 dark:border-slate-800 pl-2.5">${renderResourceMeterGroup(item.reward, false)}</div>
             </div>
 
-            <!-- บรรทัดที่ 4: แถบปุ่มจัดการ (แก้ไข / โคลน / ลบ) กะทัดรัด -->
-            <div class="flex items-center justify-end gap-2 pt-1 border-t border-slate-200 dark:border-slate-800">
-              <button type="button" onclick="openAddEditModal('${item.id}')" class="px-3 py-1.5 text-xs font-black rounded-xl bg-blue-50 dark:bg-slate-800 text-blue-500 border border-blue-200 dark:border-slate-700 flex items-center gap-1 active:scale-95 transition">
+            <!-- บรรทัดที่ 4: แถบปุ่มจัดการ (แก้ไข / โคลน / ลบ) -->
+            <div class="flex items-center justify-end gap-2 pt-1 border-t border-slate-200/60 dark:border-slate-800/60">
+              <button type="button" onclick="openAddEditModal('${item.id}')" class="px-3.5 py-1.5 text-xs font-black rounded-xl bg-blue-50 hover:bg-blue-100 dark:bg-slate-800 dark:hover:bg-slate-700 text-blue-600 dark:text-blue-400 border border-blue-200 dark:border-slate-700 flex items-center gap-1.5 active:scale-95 transition">
                 <i class="fa-solid fa-pen text-[10px]"></i> แก้ไข
               </button>
-              <button type="button" onclick="cloneItem('${item.id}')" class="px-3 py-1.5 text-xs font-black rounded-xl bg-emerald-50 dark:bg-slate-800 text-emerald-500 border border-emerald-200 dark:border-slate-700 flex items-center gap-1 active:scale-95 transition">
+              <button type="button" onclick="cloneItem('${item.id}')" class="px-3.5 py-1.5 text-xs font-black rounded-xl bg-emerald-50 hover:bg-emerald-100 dark:bg-slate-800 dark:hover:bg-slate-700 text-emerald-600 dark:text-emerald-400 border border-emerald-200 dark:border-slate-700 flex items-center gap-1.5 active:scale-95 transition">
                 <i class="fa-regular fa-copy text-[10px]"></i> โคลน
               </button>
-              <button type="button" onclick="confirmDeleteItem('${item.id}')" class="px-3 py-1.5 text-xs font-black rounded-xl bg-rose-50 dark:bg-slate-800 text-rose-500 border border-rose-200 dark:border-slate-700 flex items-center gap-1 active:scale-95 transition">
+              <button type="button" onclick="confirmDeleteItem('${item.id}')" class="px-3.5 py-1.5 text-xs font-black rounded-xl bg-rose-50 hover:bg-rose-100 dark:bg-slate-800 dark:hover:bg-slate-700 text-rose-600 dark:text-rose-400 border border-rose-200 dark:border-slate-700 flex items-center gap-1.5 active:scale-95 transition">
                 <i class="fa-solid fa-trash text-[10px]"></i> ลบ
               </button>
             </div>
           </div>
-        `).join('');
-      }
+        `;
+      }).join('');
     }
 
     function resetDrawPool() {
