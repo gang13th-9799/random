@@ -30,15 +30,10 @@
             }
           },
           animation: {
-            'shimmer': 'shimmer 2.2s infinite linear',
             'pulse-subtle': 'pulseSubtle 2s infinite ease-in-out',
             'pop-in': 'popIn 0.3s cubic-bezier(0.16, 1, 0.3, 1)',
           },
           keyframes: {
-            shimmer: {
-              '0%': { backgroundPosition: '-200% 0' },
-              '100%': { backgroundPosition: '200% 0' }
-            },
             pulseSubtle: {
               '0%, 100%': { opacity: '1', transform: 'scale(1)' },
               '50%': { opacity: '0.9', transform: 'scale(0.98)' }
@@ -78,10 +73,6 @@
       word-break: break-word;
       overflow-wrap: break-word;
     }
-    .responsive-title {
-      font-size: var(--fluid-title) !important;
-      line-height: 1.35 !important;
-    }
     .card-vibrant-glow {
       box-shadow: 0 10px 30px -5px rgba(0, 0, 0, 0.08), 0 0 0 1px rgba(226, 232, 240, 0.8);
     }
@@ -100,29 +91,25 @@
 
   <!-- BLOCKING SYNC OVERLAY BANNER -->
   <div id="syncBlockingBanner" class="hidden fixed inset-0 z-50 bg-slate-950/85 backdrop-blur-md flex flex-col items-center justify-center p-4 select-none pointer-events-auto">
-    <div class="relative max-w-md w-full bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-3xl p-6 sm:p-8 text-center shadow-2xl space-y-6">
+    <div class="relative max-w-md w-full bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-3xl p-6 sm:p-8 text-center shadow-2xl space-y-6 animate-pop-in">
       <div class="relative w-24 h-24 mx-auto flex items-center justify-center">
         <div class="absolute inset-0 rounded-3xl bg-amber-400/20 dark:bg-amber-400/10 animate-ping"></div>
-        <div id="syncBannerIconWrapper" class="relative w-20 h-20 rounded-2xl bg-gradient-to-tr from-rose-500 via-amber-500 to-emerald-400 text-white flex items-center justify-center text-4xl shadow-xl icon-vibrant">
+        <div class="relative w-20 h-20 rounded-2xl bg-gradient-to-tr from-rose-500 via-amber-500 to-emerald-400 text-white flex items-center justify-center text-4xl shadow-xl icon-vibrant">
           <i id="syncBannerIcon" class="fa-solid fa-arrows-rotate animate-spin"></i>
         </div>
       </div>
       <div class="space-y-2">
-        <h3 id="syncBannerTitle" class="text-xl sm:text-2xl font-black text-slate-900 dark:text-white tracking-tight">กำลังซิงก์ข้อมูลโปรไฟล์...</h3>
-        <p id="syncBannerDetail" class="text-sm text-slate-500 dark:text-slate-400 font-medium">ระบบกำลังเชื่อมต่อและตรวจสอบข้อมูล กรุณารอสักครู่</p>
+        <h3 id="syncBannerTitle" class="text-xl sm:text-2xl font-black text-slate-900 dark:text-white tracking-tight">กำลังซิงก์ข้อมูล Cloud...</h3>
+        <p id="syncBannerDetail" class="text-sm text-slate-500 dark:text-slate-400 font-medium">กรุณารอสักครู่ ระบบกำลังอัปเดตข้อมูลบัญชี</p>
       </div>
       <div class="space-y-2">
         <div class="w-full bg-slate-100 dark:bg-slate-700 rounded-full h-3.5 p-0.5 overflow-hidden border border-slate-200 dark:border-slate-600">
-          <div id="syncBannerProgressBar" class="h-full rounded-full bg-gradient-to-r from-rose-500 via-amber-400 to-emerald-400 transition-all duration-300" style="width: 20%;"></div>
+          <div id="syncBannerProgressBar" class="h-full rounded-full bg-gradient-to-r from-rose-500 via-amber-400 to-emerald-400 transition-all duration-300" style="width: 30%;"></div>
         </div>
         <div class="flex items-center justify-between text-xs sm:text-sm font-mono font-bold text-slate-400 px-1">
-          <span id="syncBannerStepText">ขั้นตอน: ตรวจสอบความถูกต้อง</span>
-          <span id="syncBannerPercentText" class="text-rose-500 dark:text-rose-400 font-black">20%</span>
+          <span id="syncBannerStepText">ขั้นตอน: ตรวจสอบบัญชี</span>
+          <span id="syncBannerPercentText" class="text-rose-500 dark:text-rose-400 font-black">30%</span>
         </div>
-      </div>
-      <div class="inline-flex items-center gap-2 px-3.5 py-2 rounded-xl bg-amber-50 dark:bg-amber-950/50 border border-amber-300 dark:border-amber-700 text-amber-800 dark:text-amber-200 text-xs font-bold">
-        <i class="fa-solid fa-bolt-lightning text-amber-500 text-sm"></i>
-        <span>ระบบถูกล็อกชั่วคราว ห้ามปิดหรือรีเฟรชหน้านี้</span>
       </div>
       <button type="button" id="syncBannerErrorBtn" onclick="hideSyncBanner()" class="hidden w-full py-3 rounded-2xl text-sm font-black bg-rose-600 hover:bg-rose-700 text-white transition shadow-lg">
         ปิดหน้าต่างนี้
@@ -140,14 +127,15 @@
         <div>
           <div class="flex items-center space-x-2">
             <span class="font-black text-xl sm:text-2xl tracking-tight text-slate-900 dark:text-white">MY PROFILE</span>
-            <span class="text-[11px] font-black px-2 py-0.5 rounded-full text-white uppercase tracking-wider btn-theme-action shadow-sm">HUB</span>
+            <span id="accountTypeBadge" class="text-[11px] font-black px-2 py-0.5 rounded-full text-white uppercase tracking-wider btn-theme-action shadow-sm">GUEST</span>
           </div>
-          <p id="cloudSyncStatus" class="text-xs text-slate-500 dark:text-slate-400 font-semibold flex items-center gap-1.5 pt-0.5">
-            <i class="fa-solid fa-circle text-[9px] text-emerald-400 shadow-[0_0_8px_rgba(52,211,153,0.8)]"></i> ออนไลน์พร้อมใช้งาน
+          <p id="currentUserAccountText" class="text-xs text-slate-500 dark:text-slate-400 font-semibold truncate max-w-[180px] sm:max-w-xs">
+            กำลังโหลดข้อมูล...
           </p>
         </div>
       </div>
 
+      <!-- Navigation Tabs (Desktop & Tablet) -->
       <nav class="hidden lg:flex items-center space-x-1.5 bg-slate-100 dark:bg-slate-800/80 p-1.5 rounded-2xl border border-slate-200 dark:border-slate-700">
         <a href="index.html" class="px-4 py-2 rounded-xl text-sm font-bold transition-all flex items-center space-x-2.5 text-slate-600 dark:text-slate-300 hover:text-rose-500">
           <i class="fa-solid fa-shapes text-base text-amber-500 icon-vibrant"></i><span>หน้าสุ่มการ์ด</span>
@@ -155,21 +143,27 @@
         <button id="nav-btn-profile" onclick="switchProfileTab('profile')" class="px-4 py-2 rounded-xl text-sm font-bold transition-all flex items-center space-x-2.5 bg-white dark:bg-slate-700 shadow text-rose-500 dark:text-white">
           <i class="fa-solid fa-id-card text-base text-rose-500 icon-vibrant"></i><span>ข้อมูลตัวละคร</span>
         </button>
-        <button id="nav-btn-careers" onclick="switchProfileTab('careers')" class="px-4 py-2 rounded-xl text-sm font-bold transition-all flex items-center space-x-2.5 text-slate-600 dark:text-slate-300 hover:text-rose-500">
+        <!-- ซ่อนปุ่มจัดการอาชีพ & คุณสมบัติ สำหรับผู้เล่นทั่วไป (Admin เท่านั้นที่จะมองเห็น) -->
+        <button id="nav-btn-careers" onclick="switchProfileTab('careers')" class="hidden px-4 py-2 rounded-xl text-sm font-bold transition-all flex items-center space-x-2.5 text-slate-600 dark:text-slate-300 hover:text-rose-500">
           <i class="fa-solid fa-user-tie text-base text-purple-500 icon-vibrant"></i><span>จัดการอาชีพ</span>
         </button>
-        <button id="nav-btn-qualifications" onclick="switchProfileTab('qualifications')" class="px-4 py-2 rounded-xl text-sm font-bold transition-all flex items-center space-x-2.5 text-slate-600 dark:text-slate-300 hover:text-rose-500">
+        <button id="nav-btn-qualifications" onclick="switchProfileTab('qualifications')" class="hidden px-4 py-2 rounded-xl text-sm font-bold transition-all flex items-center space-x-2.5 text-slate-600 dark:text-slate-300 hover:text-rose-500">
           <i class="fa-solid fa-certificate text-base text-emerald-500 icon-vibrant"></i><span>คุณสมบัติ</span>
+        </button>
+        <!-- แถบเมนู Admin Dashboard -->
+        <button id="nav-btn-admin" onclick="switchProfileTab('admin')" class="hidden px-4 py-2 rounded-xl text-sm font-bold transition-all flex items-center space-x-2.5 bg-amber-500/10 text-amber-500 border border-amber-500/30">
+          <i class="fa-solid fa-screwdriver-wrench text-base text-amber-500 icon-vibrant"></i><span>Dashboard ผู้เล่น</span>
         </button>
       </nav>
 
+      <!-- Action Buttons -->
       <div class="flex items-center space-x-2 shrink-0">
+        <button onclick="openLoginModal()" id="loginActionBtn" class="px-3.5 py-2.5 rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-800 dark:text-slate-200 hover:bg-slate-50 text-xs sm:text-sm font-black transition flex items-center gap-2 shadow-sm">
+          <i class="fa-solid fa-right-to-bracket text-emerald-500"></i><span>เข้าสู่ระบบ</span>
+        </button>
         <button onclick="saveAllToCloud()" title="บันทึกข้อมูลโปรไฟล์ขึ้น Cloud" class="px-3.5 py-2.5 rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-200 hover:bg-slate-50 text-xs sm:text-sm font-black transition flex items-center gap-2 shadow-sm">
           <i id="syncIcon" class="fa-solid fa-cloud-arrow-up text-blue-500 text-sm sm:text-base"></i><span class="hidden sm:inline">บันทึก Cloud</span>
         </button>
-        <a href="index.html" title="กลับหน้าแรก" class="w-10 h-10 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:text-rose-500 flex items-center justify-center transition shadow-sm">
-          <i class="fa-solid fa-house text-lg text-amber-500"></i>
-        </a>
       </div>
     </div>
   </header>
@@ -182,18 +176,22 @@
     <button onclick="switchProfileTab('profile')" id="m-nav-profile" class="flex flex-col items-center gap-1 text-rose-500">
       <i class="fa-solid fa-id-card text-xl"></i><span class="text-[10px] font-black">โปรไฟล์</span>
     </button>
-    <button onclick="switchProfileTab('careers')" id="m-nav-careers" class="flex flex-col items-center gap-1 text-slate-400">
+    <!-- ซ่อนบนมือถือสำหรับผู้เล่นทั่วไป (Admin เท่านั้นที่จะเห็น) -->
+    <button onclick="switchProfileTab('careers')" id="m-nav-careers" class="hidden flex flex-col items-center gap-1 text-slate-400">
       <i class="fa-solid fa-user-tie text-xl"></i><span class="text-[10px] font-black">อาชีพ</span>
     </button>
-    <button onclick="switchProfileTab('qualifications')" id="m-nav-qualifications" class="flex flex-col items-center gap-1 text-slate-400">
+    <button onclick="switchProfileTab('qualifications')" id="m-nav-qualifications" class="hidden flex flex-col items-center gap-1 text-slate-400">
       <i class="fa-solid fa-certificate text-xl"></i><span class="text-[10px] font-black">คุณสมบัติ</span>
+    </button>
+    <button onclick="switchProfileTab('admin')" id="m-nav-admin" class="hidden flex flex-col items-center gap-1 text-amber-500">
+      <i class="fa-solid fa-screwdriver-wrench text-xl"></i><span class="text-[10px] font-black">Admin</span>
     </button>
   </nav>
 
   <!-- Main Container -->
   <main class="flex-1 max-w-7xl w-full mx-auto px-3 sm:px-6 lg:px-8 py-5">
     
-    <!-- VIEW 1: ข้อมูลตัวละคร & ทรัพยากร & สายงาน -->
+    <!-- VIEW 1: ข้อมูลตัวละคร & ทรัพยากร & สายงาน (ทุกคนมองเห็น) -->
     <section id="view-profile" class="space-y-6 animate-pop-in">
       
       <!-- Player Banner -->
@@ -205,9 +203,11 @@
           <div class="space-y-1">
             <div class="flex items-center gap-2">
               <input type="text" id="playerNameInput" onchange="updatePlayerProfile()" value="ผู้เล่นระดับโปร" class="text-xl sm:text-2xl font-black bg-transparent border-b border-dashed border-slate-400 dark:border-slate-600 outline-none focus:border-rose-500 text-slate-900 dark:text-white">
-              <span class="text-xs font-black px-2.5 py-1 rounded-full bg-rose-500 text-white shadow-sm">Lv.1</span>
+              <span id="playerRoleBadge" class="text-xs font-black px-2.5 py-1 rounded-full bg-rose-500 text-white shadow-sm">PLAYER</span>
             </div>
-            <p class="text-xs sm:text-sm text-slate-500 dark:text-slate-400 font-medium">อาชีพปัจจุบัน: <strong id="currentCareerDisplay" class="text-rose-500 font-black">นักธุรกิจเริ่มต้น</strong></p>
+            <p class="text-xs sm:text-sm text-slate-500 dark:text-slate-400 font-medium">
+              อาชีพปัจจุบัน: <strong id="currentCareerDisplay" class="text-rose-500 font-black">ยังไม่ได้เลือกอาชีพ</strong>
+            </p>
           </div>
         </div>
 
@@ -221,9 +221,8 @@
         </div>
       </div>
 
-      <!-- สรุปสถานะการเงิน (ราคา/เงินสด, PV ไร้ไอคอน, Active แขนยกดอลลาร์, Passive ต้นไม้) -->
+      <!-- สรุปสถานะการเงิน (ราคา/เงินสด, PV, Active, Passive) -->
       <div class="grid grid-cols-2 lg:grid-cols-4 gap-3.5 sm:gap-4">
-        
         <div class="bg-white dark:bg-slate-800 p-5 rounded-3xl border border-slate-200 dark:border-slate-700 shadow-sm space-y-2">
           <div class="flex items-center justify-between text-slate-400">
             <span class="text-xs sm:text-sm font-bold flex items-center gap-1.5 text-amber-500"><i class="fa-solid fa-coins text-amber-400 text-base"></i>เงินสด</span>
@@ -269,17 +268,15 @@
           </div>
           <input type="number" id="inputPassiveIncome" onchange="updatePlayerFinance()" value="0" class="w-full text-xs font-mono bg-slate-50 dark:bg-slate-900 border rounded-xl p-1.5 outline-none dark:border-slate-700">
         </div>
-
       </div>
 
-      <!-- คลังทรัพยากรตัวละคร: สุขภาพ (หัวใจแดง), เวลา (นาฬิกาขาวดำ), ความรู้ (สมุดน้ำเงินขาว) -->
+      <!-- คลังทรัพยากรตัวละคร: สุขภาพ, เวลา, ความรู้ -->
       <div class="bg-white dark:bg-slate-800 p-5 sm:p-6 rounded-3xl border border-slate-200 dark:border-slate-700 shadow-sm space-y-4">
         <h3 class="font-black text-base sm:text-lg text-slate-900 dark:text-white flex items-center gap-2">
           <i class="fa-solid fa-battery-three-quarters text-emerald-500 text-xl"></i><span>คลังทรัพยากรตัวละคร (0 - 10 แต้ม)</span>
         </h3>
         
         <div class="grid grid-cols-1 sm:grid-cols-3 gap-3.5">
-          <!-- สุขภาพ (หัวใจแดง) -->
           <div class="p-4 rounded-2xl bg-rose-50 dark:bg-rose-950/30 border border-rose-200 dark:border-rose-900/50 flex items-center justify-between">
             <div class="flex items-center gap-3">
               <i class="fa-solid fa-heart text-red-500 text-3xl"></i>
@@ -294,7 +291,6 @@
             </div>
           </div>
 
-          <!-- เวลา (นาฬิกาขาวดำ) -->
           <div class="p-4 rounded-2xl bg-slate-100 dark:bg-slate-900/80 border border-slate-300 dark:border-slate-700 flex items-center justify-between">
             <div class="flex items-center gap-3">
               <i class="fa-solid fa-clock text-slate-800 dark:text-white text-3xl"></i>
@@ -309,7 +305,6 @@
             </div>
           </div>
 
-          <!-- ความรู้ (สมุดน้ำเงินขาว) -->
           <div class="p-4 rounded-2xl bg-blue-50 dark:bg-blue-950/30 border border-blue-200 dark:border-blue-900/50 flex items-center justify-between">
             <div class="flex items-center gap-3">
               <i class="fa-solid fa-book-bookmark text-blue-600 dark:text-blue-400 text-3xl"></i>
@@ -332,49 +327,274 @@
           <h3 class="font-black text-base sm:text-lg text-slate-900 dark:text-white flex items-center gap-2">
             <i class="fa-solid fa-sitemap text-indigo-400 text-xl"></i><span>คะแนนองค์กร & สายงาน (Leg A - F)</span>
           </h3>
-          <span class="text-xs font-mono font-bold text-slate-400">อัปเดตอัตโนมัติ</span>
+          <span class="text-xs font-mono font-bold text-slate-400">บันทึกแยกตามบัญชี</span>
         </div>
-
         <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3" id="legsGridContainer"></div>
       </div>
-
     </section>
 
-    <!-- VIEW 2: จัดการอาชีพ -->
+    <!-- VIEW 2: จัดการอาชีพ (เฉพาะ ADMIN เท่านั้นที่จะเข้าถึงและแก้ไขได้) -->
     <section id="view-careers" class="hidden space-y-4 animate-pop-in">
       <div class="bg-white/90 dark:bg-slate-800/90 backdrop-blur border border-slate-200 dark:border-slate-700 rounded-3xl p-5 shadow-sm flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
         <div>
           <h3 class="font-black text-lg text-slate-900 dark:text-white flex items-center gap-2">
-            <i class="fa-solid fa-user-tie text-purple-500 text-xl"></i><span>สายอาชีพในเกม (Career Paths)</span>
+            <i class="fa-solid fa-user-tie text-purple-500 text-xl"></i><span>จัดการสายอาชีพในเกม (Career Paths)</span>
           </h3>
-          <p class="text-xs text-slate-400 font-medium">จัดการคุณสมบัติและผลตอบแทนของแต่ละระดับอาชีพ</p>
+          <p class="text-xs text-slate-400 font-medium">เพิ่ม แก้ไข และกำหนดผลตอบแทนของแต่ละระดับอาชีพ</p>
         </div>
-        <button onclick="openAddCareerModal()" class="px-5 py-2.5 rounded-2xl text-white font-black text-xs sm:text-sm btn-theme-action shadow hover:scale-105 transition">
-          <i class="fa-solid fa-plus-circle mr-1.5"></i>เพิ่มอาชีพใหม่
+        <button id="addCareerBtn" onclick="openAddCareerModal()" class="px-5 py-2.5 rounded-2xl text-white font-black text-xs sm:text-sm btn-theme-action shadow hover:scale-105 transition flex items-center gap-1.5">
+          <i class="fa-solid fa-plus-circle"></i><span>เพิ่มอาชีพใหม่</span>
         </button>
       </div>
-
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4" id="careersListContainer"></div>
     </section>
 
-    <!-- VIEW 3: คุณสมบัติ -->
+    <!-- VIEW 3: คุณสมบัติ (เฉพาะ ADMIN เท่านั้นที่จะเข้าถึงและแก้ไขได้) -->
     <section id="view-qualifications" class="hidden space-y-4 animate-pop-in">
       <div class="bg-white/90 dark:bg-slate-800/90 backdrop-blur border border-slate-200 dark:border-slate-700 rounded-3xl p-5 shadow-sm flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
         <div>
           <h3 class="font-black text-lg text-slate-900 dark:text-white flex items-center gap-2">
-            <i class="fa-solid fa-certificate text-emerald-500 text-xl"></i><span>เกณฑ์คุณสมบัติ & เข็มเกียรติยศ</span>
+            <i class="fa-solid fa-certificate text-emerald-500 text-xl"></i><span>จัดการเกณฑ์คุณสมบัติ & เข็มเกียรติยศ</span>
           </h3>
-          <p class="text-xs text-slate-400 font-medium">เงื่อนไข PV ส่วนตัวและคะแนนสายงานเพื่อเลื่อนขั้น</p>
+          <p class="text-xs text-slate-400 font-medium">กำหนดเงื่อนไข PV ส่วนตัวและคะแนนสายงานเพื่อเลื่อนขั้น</p>
         </div>
-        <button onclick="openAddQualificationModal()" class="px-5 py-2.5 rounded-2xl text-white font-black text-xs sm:text-sm btn-theme-action shadow hover:scale-105 transition">
-          <i class="fa-solid fa-plus-circle mr-1.5"></i>เพิ่มเกณฑ์คุณสมบัติ
+        <button id="addQualificationBtn" onclick="openAddQualificationModal()" class="px-5 py-2.5 rounded-2xl text-white font-black text-xs sm:text-sm btn-theme-action shadow hover:scale-105 transition flex items-center gap-1.5">
+          <i class="fa-solid fa-plus-circle"></i><span>เพิ่มเกณฑ์คุณสมบัติ</span>
         </button>
       </div>
-
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4" id="qualificationsListContainer"></div>
     </section>
 
+    <!-- VIEW 4: ADMIN DASHBOARD (เฉพาะ ADMIN ดู/แก้ไข/ล้างข้อมูลผู้เล่นทุกคน) -->
+    <section id="view-admin" class="hidden space-y-5 animate-pop-in">
+      <div class="bg-gradient-to-r from-amber-500/20 via-orange-500/10 to-transparent p-5 rounded-3xl border border-amber-500/30 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
+        <div>
+          <h3 class="font-black text-xl text-slate-900 dark:text-white flex items-center gap-2.5">
+            <i class="fa-solid fa-screwdriver-wrench text-amber-500"></i>
+            <span>Dashboard ผู้ดูแลระบบ</span>
+          </h3>
+          <p class="text-xs sm:text-sm text-slate-500 dark:text-slate-400 font-medium pt-1">
+            แสดงข้อมูลผู้เล่นทุกคนในระบบ แม้ผู้เล่นจะ Logout ออกไปแล้วก็ตาม สามารถแก้ไขและล้างข้อมูลได้
+          </p>
+        </div>
+        <button onclick="fetchAllPlayersFromCloud()" class="px-4 py-2 rounded-xl bg-amber-500 text-white font-black text-xs sm:text-sm shadow hover:bg-amber-600 transition flex items-center gap-1.5">
+          <i class="fa-solid fa-arrows-rotate"></i><span>รีเฟรชข้อมูลผู้เล่น</span>
+        </button>
+      </div>
+
+      <div class="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-3xl shadow-sm overflow-hidden">
+        <div class="p-4 border-b border-slate-200 dark:border-slate-700 flex justify-between items-center">
+          <span class="font-black text-sm text-slate-800 dark:text-white">รายชื่อบัญชีผู้เล่นทั้งหมด (<span id="totalPlayersCount">0</span>)</span>
+        </div>
+        <div class="overflow-x-auto">
+          <table class="w-full text-left text-xs sm:text-sm border-collapse">
+            <thead class="bg-slate-50 dark:bg-slate-900 border-b border-slate-200 dark:border-slate-700 text-[11px] uppercase font-black text-slate-400 whitespace-nowrap">
+              <tr>
+                <th class="py-3 px-3 text-center">#</th>
+                <th class="py-3 px-3">ผู้เล่น / Account ID</th>
+                <th class="py-3 px-3 text-center">ประเภท</th>
+                <th class="py-3 px-3 text-center">อาชีพ</th>
+                <th class="py-3 px-3 text-right text-amber-500">เงินสด</th>
+                <th class="py-3 px-3 text-right text-cyan-400">PV รวม</th>
+                <th class="py-3 px-3 text-center">ทรัพยากร (❤️/⏳/💡)</th>
+                <th class="py-3 px-3 text-center">การจัดการ</th>
+              </tr>
+            </thead>
+            <tbody id="adminPlayersTableBody" class="divide-y divide-slate-100 dark:divide-slate-700/60 font-medium"></tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
   </main>
+
+  <!-- LOGIN MODAL (Guest, Google Sign-in, Admin Silent Login) -->
+  <div id="loginModal" class="hidden fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-md flex items-center justify-center p-4">
+    <div class="relative max-w-sm w-full bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl p-6 text-center shadow-2xl space-y-5 animate-pop-in">
+      <div class="flex items-center justify-between border-b pb-3 border-slate-100 dark:border-slate-800">
+        <h3 class="font-black text-lg text-slate-900 dark:text-white">เข้าสู่ระบบ</h3>
+        <button type="button" onclick="closeLoginModal()" class="w-8 h-8 rounded-xl text-slate-400 hover:text-slate-600 flex items-center justify-center">
+          <i class="fa-solid fa-xmark text-lg"></i>
+        </button>
+      </div>
+
+      <div class="space-y-3">
+        <button type="button" onclick="loginAsGuest()" class="w-full py-3 px-4 rounded-2xl bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-800 dark:text-slate-100 font-black text-sm flex items-center justify-center gap-2.5 transition shadow-xs">
+          <i class="fa-solid fa-user text-slate-400"></i>
+          <span>เข้าเล่นแบบ Guest</span>
+        </button>
+
+        <button type="button" onclick="loginWithGoogle()" class="w-full py-3 px-4 rounded-2xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 hover:bg-slate-50 text-slate-800 dark:text-slate-100 font-black text-sm flex items-center justify-center gap-2.5 transition shadow-xs">
+          <svg class="w-4 h-4" viewBox="0 0 24 24">
+            <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
+            <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
+            <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z"/>
+            <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z"/>
+          </svg>
+          <span>Sign in with Google</span>
+        </button>
+      </div>
+
+      <div class="relative py-1">
+        <div class="absolute inset-0 flex items-center"><div class="w-full border-t border-slate-200 dark:border-slate-800"></div></div>
+        <div class="relative flex justify-center text-xs uppercase"><span class="bg-white dark:bg-slate-900 px-2 text-slate-400 font-bold">หรือ</span></div>
+      </div>
+
+      <form onsubmit="handleAccountLogin(event)" class="space-y-3 text-left">
+        <div>
+          <label class="text-[11px] font-bold text-slate-500 dark:text-slate-400">ชื่อผู้ใช้งาน</label>
+          <input type="text" id="loginUsernameInput" required placeholder="Username" class="w-full mt-1 p-2.5 rounded-xl border border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-xs font-bold outline-none">
+        </div>
+        <div>
+          <label class="text-[11px] font-bold text-slate-500 dark:text-slate-400">รหัสผ่าน</label>
+          <input type="password" id="loginPasswordInput" required placeholder="••••••••" class="w-full mt-1 p-2.5 rounded-xl border border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-xs font-bold outline-none">
+        </div>
+        <button type="submit" class="w-full py-3 rounded-2xl text-white font-black text-sm btn-theme-action shadow-md hover:scale-[1.02] transition">
+          เข้าสู่ระบบ
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- ADMIN EDIT PLAYER MODAL -->
+  <div id="adminEditModal" class="hidden fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-md flex items-center justify-center p-4 overflow-y-auto">
+    <div class="relative max-w-md w-full bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl p-6 shadow-2xl space-y-4 my-auto">
+      <div class="flex items-center justify-between border-b pb-3">
+        <h3 class="font-black text-base text-slate-900 dark:text-white flex items-center gap-2">
+          <i class="fa-solid fa-user-pen text-amber-500"></i>
+          <span>แก้ไขข้อมูลผู้เล่น</span>
+        </h3>
+        <button type="button" onclick="closeAdminEditModal()" class="w-8 h-8 rounded-xl text-slate-400 hover:text-slate-600"><i class="fa-solid fa-xmark text-lg"></i></button>
+      </div>
+
+      <form id="adminEditForm" onsubmit="handleSaveAdminEdit(event)" class="space-y-3 text-xs font-bold">
+        <input type="hidden" id="editPlayerAccountId">
+        <div>
+          <label class="text-slate-500">ชื่อผู้เล่น</label>
+          <input type="text" id="editPlayerName" class="w-full mt-1 p-2 rounded-xl border dark:bg-slate-800">
+        </div>
+        <div class="grid grid-cols-2 gap-2">
+          <div>
+            <label class="text-amber-500">เงินสด (฿)</label>
+            <input type="number" id="editPlayerCash" class="w-full mt-1 p-2 rounded-xl border font-mono dark:bg-slate-800">
+          </div>
+          <div>
+            <label class="text-cyan-400">PV ส่วนตัว</label>
+            <input type="number" id="editPlayerPersonalPv" class="w-full mt-1 p-2 rounded-xl border font-mono dark:bg-slate-800">
+          </div>
+        </div>
+        <div class="grid grid-cols-2 gap-2">
+          <div>
+            <label class="text-emerald-500">Active Income (฿)</label>
+            <input type="number" id="editPlayerActive" class="w-full mt-1 p-2 rounded-xl border font-mono dark:bg-slate-800">
+          </div>
+          <div>
+            <label class="text-teal-400">Passive Income (฿)</label>
+            <input type="number" id="editPlayerPassive" class="w-full mt-1 p-2 rounded-xl border font-mono dark:bg-slate-800">
+          </div>
+        </div>
+        <div class="p-3 bg-slate-50 dark:bg-slate-800/80 rounded-2xl border space-y-2">
+          <span class="text-slate-400 block font-black text-[11px]">ระดับทรัพยากร (0 - 10)</span>
+          <div class="grid grid-cols-3 gap-2 font-mono">
+            <div>
+              <span class="text-red-500">❤️ สุขภาพ</span>
+              <input type="number" min="0" max="10" id="editPlayerHeart" class="w-full p-1.5 border rounded-lg text-center dark:bg-slate-900">
+            </div>
+            <div>
+              <span class="text-slate-300">⏳ เวลา</span>
+              <input type="number" min="0" max="10" id="editPlayerTime" class="w-full p-1.5 border rounded-lg text-center dark:bg-slate-900">
+            </div>
+            <div>
+              <span class="text-blue-400">💡 ความรู้</span>
+              <input type="number" min="0" max="10" id="editPlayerKnowledge" class="w-full p-1.5 border rounded-lg text-center dark:bg-slate-900">
+            </div>
+          </div>
+        </div>
+        <div class="flex justify-end gap-2 pt-2 border-t">
+          <button type="button" onclick="closeAdminEditModal()" class="px-4 py-2 rounded-xl border text-slate-500">ยกเลิก</button>
+          <button type="submit" class="px-5 py-2 rounded-xl text-white font-black btn-theme-action shadow">บันทึกการแก้ไข</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- CAREER MODAL (Admin เพิ่ม/แก้ไขอาชีพ) -->
+  <div id="careerModal" class="hidden fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-md flex items-center justify-center p-4 overflow-y-auto">
+    <div class="relative max-w-md w-full bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl p-6 shadow-2xl space-y-4 my-auto">
+      <div class="flex items-center justify-between border-b pb-3">
+        <h3 id="careerModalTitle" class="font-black text-base text-slate-900 dark:text-white flex items-center gap-2">
+          <i class="fa-solid fa-briefcase text-purple-500"></i>
+          <span>จัดการข้อมูลอาชีพ</span>
+        </h3>
+        <button type="button" onclick="closeCareerModal()" class="w-8 h-8 rounded-xl text-slate-400 hover:text-slate-600"><i class="fa-solid fa-xmark text-lg"></i></button>
+      </div>
+
+      <form id="careerForm" onsubmit="handleSaveCareer(event)" class="space-y-3 text-xs font-bold">
+        <input type="hidden" id="careerEditId">
+        <div>
+          <label class="text-slate-500">ชื่อตำแหน่ง / อาชีพ</label>
+          <input type="text" id="careerTitleInput" required placeholder="เช่น Emerald Director" class="w-full mt-1 p-2 rounded-xl border dark:bg-slate-800">
+        </div>
+        <div>
+          <label class="text-cyan-400">เกณฑ์ขั้นต่ำ PV</label>
+          <input type="number" id="careerMinPvInput" value="0" class="w-full mt-1 p-2 rounded-xl border font-mono dark:bg-slate-800">
+        </div>
+        <div class="grid grid-cols-2 gap-2">
+          <div>
+            <label class="text-emerald-500">Active Income (฿)</label>
+            <input type="number" id="careerActiveInput" value="0" class="w-full mt-1 p-2 rounded-xl border font-mono dark:bg-slate-800">
+          </div>
+          <div>
+            <label class="text-teal-400">Passive Income (฿)</label>
+            <input type="number" id="careerPassiveInput" value="0" class="w-full mt-1 p-2 rounded-xl border font-mono dark:bg-slate-800">
+          </div>
+        </div>
+        <div class="flex justify-end gap-2 pt-2 border-t">
+          <button type="button" onclick="closeCareerModal()" class="px-4 py-2 rounded-xl border text-slate-500">ยกเลิก</button>
+          <button type="submit" class="px-5 py-2 rounded-xl text-white font-black btn-theme-action shadow">บันทึกอาชีพ</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- QUALIFICATION MODAL (Admin เพิ่ม/แก้ไขคุณสมบัติ) -->
+  <div id="qualificationModal" class="hidden fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-md flex items-center justify-center p-4 overflow-y-auto">
+    <div class="relative max-w-md w-full bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl p-6 shadow-2xl space-y-4 my-auto">
+      <div class="flex items-center justify-between border-b pb-3">
+        <h3 id="qualificationModalTitle" class="font-black text-base text-slate-900 dark:text-white flex items-center gap-2">
+          <i class="fa-solid fa-certificate text-emerald-500"></i>
+          <span>จัดการเกณฑ์คุณสมบัติ</span>
+        </h3>
+        <button type="button" onclick="closeQualificationModal()" class="w-8 h-8 rounded-xl text-slate-400 hover:text-slate-600"><i class="fa-solid fa-xmark text-lg"></i></button>
+      </div>
+
+      <form id="qualificationForm" onsubmit="handleSaveQualification(event)" class="space-y-3 text-xs font-bold">
+        <input type="hidden" id="qualEditId">
+        <div>
+          <label class="text-slate-500">ชื่อเกณฑ์ / เข็มเกียรติยศ</label>
+          <input type="text" id="qualTitleInput" required placeholder="เช่น เข็มทอง 21%" class="w-full mt-1 p-2 rounded-xl border dark:bg-slate-800">
+        </div>
+        <div class="grid grid-cols-2 gap-2">
+          <div>
+            <label class="text-cyan-400">PV ส่วนตัวขั้นต่ำ</label>
+            <input type="number" id="qualPersonalPvInput" value="0" class="w-full mt-1 p-2 rounded-xl border font-mono dark:bg-slate-800">
+          </div>
+          <div>
+            <label class="text-indigo-400">จำนวนสายงานที่ผ่านเกณฑ์</label>
+            <input type="number" id="qualLegsCountInput" value="0" class="w-full mt-1 p-2 rounded-xl border font-mono dark:bg-slate-800">
+          </div>
+        </div>
+        <div>
+          <label class="text-amber-500">โบนัสพิเศษ (฿)</label>
+          <input type="number" id="qualBonusInput" value="0" class="w-full mt-1 p-2 rounded-xl border font-mono dark:bg-slate-800">
+        </div>
+        <div class="flex justify-end gap-2 pt-2 border-t">
+          <button type="button" onclick="closeQualificationModal()" class="px-4 py-2 rounded-xl border text-slate-500">ยกเลิก</button>
+          <button type="submit" class="px-5 py-2 rounded-xl text-white font-black btn-theme-action shadow">บันทึกคุณสมบัติ</button>
+        </div>
+      </form>
+    </div>
+  </div>
 
   <!-- Toast Notification -->
   <div id="toastNotification" class="fixed top-20 right-4 z-50 transform translate-x-full opacity-0 transition-all duration-300 bg-slate-900 text-white px-5 py-3 rounded-2xl shadow-2xl flex items-center gap-3 text-xs sm:text-sm font-black pointer-events-none">
@@ -387,37 +607,56 @@
     const GOOGLE_SHEET_API_URL = "https://script.google.com/macros/s/AKfycbzq9oD33K3nf_r2JRq5RjCafAQIvt2o9ywvJ1EvXvVg4l9QyUalIuQvxxT7zQ890nR1/exec";
 
     const DEFAULT_LEGS = [
-      { id: "A", name: "สายงาน A", pv: 15000, level: "12%" },
-      { id: "B", name: "สายงาน B", pv: 10000, level: "9%" },
-      { id: "C", name: "สายงาน C", pv: 55000, level: "21%" },
+      { id: "A", name: "สายงาน A", pv: 0, level: "0%" },
+      { id: "B", name: "สายงาน B", pv: 0, level: "0%" },
+      { id: "C", name: "สายงาน C", pv: 0, level: "0%" },
       { id: "D", name: "สายงาน D", pv: 0, level: "0%" },
       { id: "E", name: "สายงาน E", pv: 0, level: "0%" },
       { id: "F", name: "สายงาน F", pv: 0, level: "0%" }
     ];
 
     const DEFAULT_CAREERS = [
-      { id: "car-1", title: "นักธุรกิจเริ่มต้น", minPv: 0, activeIncome: 15000, passiveIncome: 0, icon: "fa-seedling", color: "emerald" },
-      { id: "car-2", title: "Silver Producer", minPv: 150000, activeIncome: 35000, passiveIncome: 5000, icon: "fa-award", color: "blue" },
-      { id: "car-3", title: "Platinum Leader", minPv: 450000, activeIncome: 75000, passiveIncome: 25000, icon: "fa-crown", color: "amber" }
+      { id: "car-1", title: "นักธุรกิจเริ่มต้น", minPv: 0, activeIncome: 15000, passiveIncome: 0, icon: "fa-seedling" },
+      { id: "car-2", title: "Silver Producer", minPv: 150000, activeIncome: 35000, passiveIncome: 5000, icon: "fa-award" },
+      { id: "car-3", title: "Platinum Leader", minPv: 450000, activeIncome: 75000, passiveIncome: 25000, icon: "fa-crown" }
     ];
 
-    let profileData = {
-      name: "ผู้เล่นระดับโปร",
-      cash: 50000,
-      personalPv: 3500,
-      activeIncome: 25000,
-      passiveIncome: 0,
-      resources: { heart: 10, time: 10, knowledge: 10 },
-      legs: [...DEFAULT_LEGS],
-      careerId: "car-1"
+    const DEFAULT_QUALIFICATIONS = [
+      { id: "qual-1", title: "เกณฑ์ 15% (Bronze)", personalPv: 3000, legsCount: 2, bonus: 5000 },
+      { id: "qual-2", title: "เกณฑ์ 21% (Silver)", personalPv: 5000, legsCount: 3, bonus: 15000 }
+    ];
+
+    let currentAuth = {
+      isLoggedIn: false,
+      accountType: "guest",
+      accountId: "guest_" + Math.random().toString(36).substring(2, 9),
+      name: "ผู้เล่นทั่วไป",
+      email: ""
     };
 
+    let profileData = createDefaultPlayerProfile("ผู้เล่นทั่วไป", currentAuth.accountId);
+    let allPlayersDatabase = {};
     let careersList = [...DEFAULT_CAREERS];
-    let qualificationsList = [];
+    let qualificationsList = [...DEFAULT_QUALIFICATIONS];
+
+    function createDefaultPlayerProfile(name, accId) {
+      return {
+        accountId: accId,
+        name: name || "ผู้เล่นทั่วไป",
+        cash: 50000,
+        personalPv: 0,
+        activeIncome: 15000,
+        passiveIncome: 0,
+        resources: { heart: 10, time: 10, knowledge: 10 },
+        legs: JSON.parse(JSON.stringify(DEFAULT_LEGS)),
+        careerId: "",
+        historyLog: []
+      };
+    }
 
     window.addEventListener('DOMContentLoaded', () => {
       initTheme();
-      loadProfileLocalCache();
+      loadAuthAndProfile();
       renderAllProfileUI();
       fetchProfileDataFromCloud();
     });
@@ -444,35 +683,206 @@
       document.getElementById('syncBlockingBanner').classList.add('hidden');
     }
 
-    function setSyncBannerError(errMsg) {
-      document.getElementById('syncBannerTitle').innerText = "การซิงก์ไม่สำเร็จ";
-      document.getElementById('syncBannerDetail').innerText = errMsg;
-      document.getElementById('syncBannerIcon').className = "fa-solid fa-circle-xmark text-rose-500 text-4xl";
-      document.getElementById('syncBannerErrorBtn').classList.remove('hidden');
+    /* Authentication & Role Guard */
+    function openLoginModal() {
+      document.getElementById('loginModal').classList.remove('hidden');
     }
 
-    function loadProfileLocalCache() {
+    function closeLoginModal() {
+      document.getElementById('loginModal').classList.add('hidden');
+    }
+
+    function loginAsGuest() {
+      currentAuth = {
+        isLoggedIn: true,
+        accountType: "guest",
+        accountId: "guest_" + Date.now().toString(36),
+        name: "ผู้เล่น Guest",
+        email: ""
+      };
+      finishLogin();
+      showToast("เข้าสู่ระบบแบบ Guest เรียบร้อย 🎮");
+    }
+
+    function loginWithGoogle() {
+      const dummyEmail = prompt("กรุณาระบุ Google Email ของคุณ:", "player@gmail.com");
+      if (!dummyEmail || !dummyEmail.includes("@")) return;
+
+      const userName = dummyEmail.split("@")[0];
+      currentAuth = {
+        isLoggedIn: true,
+        accountType: "google",
+        accountId: "google_" + btoa(dummyEmail).substring(0, 12),
+        name: userName,
+        email: dummyEmail
+      };
+      finishLogin();
+      showToast(`เข้าสู่ระบบด้วย Google (${dummyEmail}) สำเร็จ 🌐`);
+    }
+
+    function handleAccountLogin(e) {
+      e.preventDefault();
+      const user = document.getElementById('loginUsernameInput').value.trim();
+      const pass = document.getElementById('loginPasswordInput').value.trim();
+
+      // Silent Admin Login (username: admin, password: 9799)
+      if (user === "admin" && pass === "9799") {
+        currentAuth = {
+          isLoggedIn: true,
+          accountType: "admin",
+          accountId: "admin_master",
+          name: "ผู้ดูแลระบบ (Admin)",
+          email: "admin@system.local"
+        };
+        finishLogin();
+        showToast("ยินดีต้อนรับผู้ดูแลระบบ 🛡️");
+        return;
+      }
+
+      currentAuth = {
+        isLoggedIn: true,
+        accountType: "custom",
+        accountId: "user_" + btoa(user).substring(0, 10),
+        name: user,
+        email: `${user}@app.local`
+      };
+      finishLogin();
+      showToast(`เข้าสู่ระบบในชื่อ ${user} สำเร็จ`);
+    }
+
+    function finishLogin() {
+      closeLoginModal();
+      saveAuthLocal();
+      
+      if (currentAuth.accountType !== "admin") {
+        if (!allPlayersDatabase[currentAuth.accountId]) {
+          allPlayersDatabase[currentAuth.accountId] = createDefaultPlayerProfile(currentAuth.name, currentAuth.accountId);
+        }
+        profileData = allPlayersDatabase[currentAuth.accountId];
+      }
+
+      saveProfileLocalCache();
+      renderAllProfileUI();
+      saveAllToCloud(false);
+    }
+
+    function logoutUser() {
+      if (!confirm("ต้องการออกจากระบบใช่หรือไม่?")) return;
+      currentAuth = {
+        isLoggedIn: false,
+        accountType: "guest",
+        accountId: "guest_" + Math.random().toString(36).substring(2, 9),
+        name: "ผู้เล่นทั่วไป",
+        email: ""
+      };
+      profileData = createDefaultPlayerProfile(currentAuth.name, currentAuth.accountId);
+      saveAuthLocal();
+      saveProfileLocalCache();
+      renderAllProfileUI();
+      switchProfileTab('profile');
+      showToast("ออกจากระบบเรียบร้อยแล้ว");
+    }
+
+    function saveAuthLocal() {
       try {
-        const cProf = localStorage.getItem('rnd_cache_player_profile');
-        if (cProf) profileData = JSON.parse(cProf);
-        const cCars = localStorage.getItem('rnd_cache_careers');
-        if (cCars) careersList = JSON.parse(cCars);
+        localStorage.setItem('rnd_current_auth', JSON.stringify(currentAuth));
+      } catch (e) {}
+    }
+
+    function loadAuthAndProfile() {
+      try {
+        const rawAuth = localStorage.getItem('rnd_current_auth');
+        if (rawAuth) currentAuth = JSON.parse(rawAuth);
+
+        const rawPlayers = localStorage.getItem('rnd_all_players_db');
+        if (rawPlayers) allPlayersDatabase = JSON.parse(rawPlayers);
+
+        const rawCars = localStorage.getItem('rnd_cache_careers');
+        if (rawCars) careersList = JSON.parse(rawCars);
+
+        const rawQuals = localStorage.getItem('rnd_cache_qualifications');
+        if (rawQuals) qualificationsList = JSON.parse(rawQuals);
+
+        if (currentAuth.accountType !== "admin" && allPlayersDatabase[currentAuth.accountId]) {
+          profileData = allPlayersDatabase[currentAuth.accountId];
+        } else {
+          const rawProf = localStorage.getItem('rnd_cache_player_profile');
+          if (rawProf) profileData = JSON.parse(rawProf);
+        }
       } catch (e) {}
     }
 
     function saveProfileLocalCache() {
       try {
+        if (currentAuth.accountType !== "admin" && currentAuth.accountId) {
+          allPlayersDatabase[currentAuth.accountId] = profileData;
+          localStorage.setItem('rnd_all_players_db', JSON.stringify(allPlayersDatabase));
+        }
         localStorage.setItem('rnd_cache_player_profile', JSON.stringify(profileData));
         localStorage.setItem('rnd_cache_careers', JSON.stringify(careersList));
+        localStorage.setItem('rnd_cache_qualifications', JSON.stringify(qualificationsList));
       } catch (e) {}
     }
 
+    /* ------------------------------------------------------------------------
+       เรนเดอร์ UI พร้อมระบบ Role Guard (Admin Only สำหรับ 2 ปุ่มดังกล่าว)
+       ------------------------------------------------------------------------ */
     function renderAllProfileUI() {
-      document.getElementById('playerNameInput').value = profileData.name;
+      const isAdmin = currentAuth.accountType === "admin";
+
+      // 1. ตรวจสอบและควบคุมการแสดงผลของเมนู "จัดการอาชีพ" และ "คุณสมบัติ"
+      const navCareersBtn = document.getElementById('nav-btn-careers');
+      const navQualBtn = document.getElementById('nav-btn-qualifications');
+      const mNavCareersBtn = document.getElementById('m-nav-careers');
+      const mNavQualBtn = document.getElementById('m-nav-qualifications');
+
+      // บนเดสก์ท็อป: แสดงเฉพาะ Admin
+      if (navCareersBtn) navCareersBtn.classList.toggle('hidden', !isAdmin);
+      if (navQualBtn) navQualBtn.classList.toggle('hidden', !isAdmin);
+
+      // บนมือถือ: แสดงเฉพาะ Admin
+      if (mNavCareersBtn) mNavCareersBtn.classList.toggle('hidden', !isAdmin);
+      if (mNavQualBtn) mNavQualBtn.classList.toggle('hidden', !isAdmin);
+
+      // เมนู Admin Dashboard
+      const navAdminBtn = document.getElementById('nav-btn-admin');
+      const mNavAdminBtn = document.getElementById('m-nav-admin');
+      if (navAdminBtn) navAdminBtn.classList.toggle('hidden', !isAdmin);
+      if (mNavAdminBtn) mNavAdminBtn.classList.toggle('hidden', !isAdmin);
+
+      // ปุ่มเพิ่มอาชีพและปุ่มเพิ่มเกณฑ์คุณสมบัติ (Admin Only)
+      const addCareerBtn = document.getElementById('addCareerBtn');
+      const addQualBtn = document.getElementById('addQualificationBtn');
+      if (addCareerBtn) addCareerBtn.classList.toggle('hidden', !isAdmin);
+      if (addQualBtn) addQualBtn.classList.toggle('hidden', !isAdmin);
+
+      // 2. ข้อมูล Header ผู้ใช้งาน
+      const typeBadge = document.getElementById('accountTypeBadge');
+      const accountText = document.getElementById('currentUserAccountText');
+      const loginBtn = document.getElementById('loginActionBtn');
+      const playerRoleBadge = document.getElementById('playerRoleBadge');
+
+      if (typeBadge) typeBadge.innerText = currentAuth.accountType.toUpperCase();
+      if (accountText) accountText.innerText = `${currentAuth.name} (${currentAuth.accountId})`;
+      if (playerRoleBadge) {
+        playerRoleBadge.innerText = isAdmin ? "ADMIN" : "PLAYER";
+        playerRoleBadge.className = isAdmin ? "text-xs font-black px-2.5 py-1 rounded-full bg-amber-500 text-white shadow-sm" : "text-xs font-black px-2.5 py-1 rounded-full bg-rose-500 text-white shadow-sm";
+      }
+
+      if (currentAuth.isLoggedIn) {
+        loginBtn.innerHTML = `<i class="fa-solid fa-right-from-bracket text-rose-500"></i><span>ออกจากระบบ</span>`;
+        loginBtn.onclick = logoutUser;
+      } else {
+        loginBtn.innerHTML = `<i class="fa-solid fa-right-to-bracket text-emerald-500"></i><span>เข้าสู่ระบบ</span>`;
+        loginBtn.onclick = openLoginModal;
+      }
+
+      // 3. ข้อมูลสถิติผู้เล่น
+      document.getElementById('playerNameInput').value = profileData.name || "ผู้เล่นทั่วไป";
       document.getElementById('statCash').innerText = `฿${(profileData.cash || 0).toLocaleString()}`;
       document.getElementById('inputCash').value = profileData.cash || 0;
 
-      const legsTotalPv = profileData.legs.reduce((acc, l) => acc + (l.pv || 0), 0);
+      const legsTotalPv = (profileData.legs || []).reduce((acc, l) => acc + (l.pv || 0), 0);
       const totalPv = (profileData.personalPv || 0) + legsTotalPv;
       document.getElementById('statTotalPv').innerText = totalPv.toLocaleString();
       document.getElementById('inputPersonalPv').value = profileData.personalPv || 0;
@@ -483,20 +893,24 @@
       document.getElementById('statPassiveIncome').innerText = `฿${(profileData.passiveIncome || 0).toLocaleString()}`;
       document.getElementById('inputPassiveIncome').value = profileData.passiveIncome || 0;
 
-      // ค่าพลังทรัพยากรตัวละคร: สุขภาพ, เวลา, ความรู้
+      // ค่าพลังทรัพยากร: สุขภาพ, เวลา, ความรู้
       document.getElementById('displayResHeart').innerText = profileData.resources?.heart || 0;
       document.getElementById('displayResTime').innerText = profileData.resources?.time || 0;
       document.getElementById('displayResKnowledge').innerText = profileData.resources?.knowledge || 0;
 
+      const currentCareer = careersList.find(c => c.id === profileData.careerId);
+      document.getElementById('currentCareerDisplay').innerText = currentCareer ? currentCareer.title : "ยังไม่ได้เลือกอาชีพ";
+
       renderLegsCards();
       renderCareersCards();
+      renderQualificationsCards();
+      if (isAdmin) renderAdminPlayersTable();
     }
 
     function renderLegsCards() {
       const container = document.getElementById('legsGridContainer');
       if (!container) return;
-
-      container.innerHTML = profileData.legs.map((leg, idx) => `
+      container.innerHTML = (profileData.legs || DEFAULT_LEGS).map(leg => `
         <div class="p-3.5 bg-slate-50 dark:bg-slate-900/60 rounded-2xl border border-slate-200 dark:border-slate-700/80 space-y-2 text-center">
           <div class="flex items-center justify-between">
             <span class="text-xs font-black text-indigo-400">สาย ${leg.id}</span>
@@ -508,9 +922,11 @@
       `).join('');
     }
 
+    // เรนเดอร์การ์ดอาชีพ: ปุ่มแก้ไข/ลบ จะแสดงเฉพาะเมื่อเป็น Admin
     function renderCareersCards() {
       const container = document.getElementById('careersListContainer');
       if (!container) return;
+      const isAdmin = currentAuth.accountType === "admin";
 
       container.innerHTML = careersList.map(car => `
         <div class="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-3xl p-5 shadow-sm space-y-3 relative overflow-hidden">
@@ -518,9 +934,15 @@
             <div class="w-12 h-12 rounded-2xl bg-amber-500/15 text-amber-500 flex items-center justify-center text-2xl icon-vibrant">
               <i class="fa-solid ${car.icon || 'fa-award'}"></i>
             </div>
-            <button onclick="selectCareer('${car.id}')" class="px-3.5 py-1.5 rounded-xl text-xs font-black ${profileData.careerId === car.id ? 'bg-emerald-500 text-white' : 'border hover:bg-slate-50 dark:hover:bg-slate-700'}">
-              ${profileData.careerId === car.id ? 'กำลังใช้อยู่' : 'เลือกใช้'}
-            </button>
+            <div class="flex items-center gap-1.5">
+              ${isAdmin ? `
+                <button onclick="openEditCareerModal('${car.id}')" class="p-1.5 rounded-lg text-slate-400 hover:text-cyan-400 transition" title="แก้ไขอาชีพ"><i class="fa-solid fa-pen text-xs"></i></button>
+                <button onclick="deleteCareer('${car.id}')" class="p-1.5 rounded-lg text-slate-400 hover:text-rose-500 transition" title="ลบอาชีพ"><i class="fa-solid fa-trash-can text-xs"></i></button>
+              ` : ''}
+              <button onclick="selectCareer('${car.id}')" class="px-3.5 py-1.5 rounded-xl text-xs font-black ${profileData.careerId === car.id ? 'bg-emerald-500 text-white' : 'border hover:bg-slate-50 dark:hover:bg-slate-700'}">
+                ${profileData.careerId === car.id ? 'กำลังใช้อยู่' : 'เลือกใช้'}
+              </button>
+            </div>
           </div>
           <div>
             <h4 class="font-black text-lg text-slate-900 dark:text-white">${escapeHTML(car.title)}</h4>
@@ -529,6 +951,37 @@
           <div class="grid grid-cols-2 gap-2 text-xs font-mono pt-2 border-t border-slate-100 dark:border-slate-700">
             <div>Active: <strong class="text-emerald-400 block font-bold">฿${(car.activeIncome || 0).toLocaleString()}</strong></div>
             <div>Passive: <strong class="text-teal-400 block font-bold">฿${(car.passiveIncome || 0).toLocaleString()}</strong></div>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    // เรนเดอร์การ์ดคุณสมบัติ: ปุ่มแก้ไข/ลบ จะแสดงเฉพาะเมื่อเป็น Admin
+    function renderQualificationsCards() {
+      const container = document.getElementById('qualificationsListContainer');
+      if (!container) return;
+      const isAdmin = currentAuth.accountType === "admin";
+
+      container.innerHTML = qualificationsList.map(qual => `
+        <div class="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-3xl p-5 shadow-sm space-y-3 relative overflow-hidden">
+          <div class="flex items-center justify-between">
+            <div class="w-12 h-12 rounded-2xl bg-emerald-500/15 text-emerald-500 flex items-center justify-center text-2xl icon-vibrant">
+              <i class="fa-solid fa-certificate"></i>
+            </div>
+            ${isAdmin ? `
+              <div class="flex items-center gap-1.5">
+                <button onclick="openEditQualificationModal('${qual.id}')" class="p-1.5 rounded-lg text-slate-400 hover:text-cyan-400 transition" title="แก้ไขคุณสมบัติ"><i class="fa-solid fa-pen text-xs"></i></button>
+                <button onclick="deleteQualification('${qual.id}')" class="p-1.5 rounded-lg text-slate-400 hover:text-rose-500 transition" title="ลบคุณสมบัติ"><i class="fa-solid fa-trash-can text-xs"></i></button>
+              </div>
+            ` : ''}
+          </div>
+          <div>
+            <h4 class="font-black text-lg text-slate-900 dark:text-white">${escapeHTML(qual.title)}</h4>
+            <span class="text-xs text-slate-400 font-mono">โบนัสพิเศษ: ฿${(qual.bonus || 0).toLocaleString()}</span>
+          </div>
+          <div class="grid grid-cols-2 gap-2 text-xs font-mono pt-2 border-t border-slate-100 dark:border-slate-700">
+            <div>PV ส่วนตัว: <strong class="text-cyan-400 block font-bold">${(qual.personalPv || 0).toLocaleString()}</strong></div>
+            <div>สายงานที่ผ่าน: <strong class="text-indigo-400 block font-bold">${qual.legsCount || 0} สาย</strong></div>
           </div>
         </div>
       `).join('');
@@ -543,6 +996,7 @@
       }
       saveProfileLocalCache();
       renderAllProfileUI();
+      saveAllToCloud(false);
     }
 
     function updatePlayerProfile() {
@@ -579,42 +1033,337 @@
 
     function resetPlayerStats() {
       if (!confirm("ต้องการรีเซ็ตสถานะตัวละครกลับเป็นค่าเริ่มต้นหรือไม่?")) return;
-      profileData = {
-        name: "ผู้เล่นระดับโปร",
-        cash: 50000,
-        personalPv: 0,
-        activeIncome: 25000,
-        passiveIncome: 0,
-        resources: { heart: 10, time: 10, knowledge: 10 },
-        legs: [...DEFAULT_LEGS],
-        careerId: "car-1"
-      };
+      profileData = createDefaultPlayerProfile(profileData.name, currentAuth.accountId);
       saveProfileLocalCache();
       renderAllProfileUI();
       showToast("รีเซ็ตสถานะเรียบร้อยแล้ว");
     }
 
+    /* ------------------------------------------------------------------------
+       ADMIN CRUD: CAREERS & QUALIFICATIONS
+       ------------------------------------------------------------------------ */
+    function openAddCareerModal() {
+      if (currentAuth.accountType !== "admin") return;
+      document.getElementById('careerModalTitle').innerHTML = `<i class="fa-solid fa-plus-circle text-purple-500"></i><span>เพิ่มอาชีพใหม่</span>`;
+      document.getElementById('careerEditId').value = "";
+      document.getElementById('careerTitleInput').value = "";
+      document.getElementById('careerMinPvInput').value = 0;
+      document.getElementById('careerActiveInput').value = 0;
+      document.getElementById('careerPassiveInput').value = 0;
+      document.getElementById('careerModal').classList.remove('hidden');
+    }
+
+    function openEditCareerModal(id) {
+      if (currentAuth.accountType !== "admin") return;
+      const c = careersList.find(item => item.id === id);
+      if (!c) return;
+      document.getElementById('careerModalTitle').innerHTML = `<i class="fa-solid fa-pen text-purple-500"></i><span>แก้ไขข้อมูลอาชีพ</span>`;
+      document.getElementById('careerEditId').value = c.id;
+      document.getElementById('careerTitleInput').value = c.title;
+      document.getElementById('careerMinPvInput').value = c.minPv || 0;
+      document.getElementById('careerActiveInput').value = c.activeIncome || 0;
+      document.getElementById('careerPassiveInput').value = c.passiveIncome || 0;
+      document.getElementById('careerModal').classList.remove('hidden');
+    }
+
+    function closeCareerModal() {
+      document.getElementById('careerModal').classList.add('hidden');
+    }
+
+    function handleSaveCareer(e) {
+      e.preventDefault();
+      if (currentAuth.accountType !== "admin") return;
+
+      const id = document.getElementById('careerEditId').value;
+      const title = document.getElementById('careerTitleInput').value.trim();
+      const minPv = parseFloat(document.getElementById('careerMinPvInput').value) || 0;
+      const activeIncome = parseFloat(document.getElementById('careerActiveInput').value) || 0;
+      const passiveIncome = parseFloat(document.getElementById('careerPassiveInput').value) || 0;
+
+      if (id) {
+        const idx = careersList.findIndex(c => c.id === id);
+        if (idx !== -1) {
+          careersList[idx] = { ...careersList[idx], title, minPv, activeIncome, passiveIncome };
+          showToast(`แก้ไขอาชีพ "${title}" สำเร็จ`);
+        }
+      } else {
+        const newCareer = {
+          id: `car-${Date.now().toString().slice(-5)}`,
+          title, minPv, activeIncome, passiveIncome, icon: "fa-award"
+        };
+        careersList.push(newCareer);
+        showToast(`เพิ่มอาชีพ "${title}" สำเร็จ`);
+      }
+
+      saveProfileLocalCache();
+      renderCareersCards();
+      closeCareerModal();
+      saveAllToCloud(false);
+    }
+
+    function deleteCareer(id) {
+      if (currentAuth.accountType !== "admin") return;
+      const c = careersList.find(item => item.id === id);
+      if (!c) return;
+      if (!confirm(`คุณต้องการลบอาชีพ "${c.title}" ใช่หรือไม่?`)) return;
+
+      careersList = careersList.filter(item => item.id !== id);
+      if (profileData.careerId === id) profileData.careerId = "";
+
+      saveProfileLocalCache();
+      renderCareersCards();
+      renderAllProfileUI();
+      saveAllToCloud(false);
+      showToast("ลบอาชีพเรียบร้อยแล้ว");
+    }
+
+    function openAddQualificationModal() {
+      if (currentAuth.accountType !== "admin") return;
+      document.getElementById('qualificationModalTitle').innerHTML = `<i class="fa-solid fa-plus-circle text-emerald-500"></i><span>เพิ่มเกณฑ์คุณสมบัติ</span>`;
+      document.getElementById('qualEditId').value = "";
+      document.getElementById('qualTitleInput').value = "";
+      document.getElementById('qualPersonalPvInput').value = 0;
+      document.getElementById('qualLegsCountInput').value = 0;
+      document.getElementById('qualBonusInput').value = 0;
+      document.getElementById('qualificationModal').classList.remove('hidden');
+    }
+
+    function openEditQualificationModal(id) {
+      if (currentAuth.accountType !== "admin") return;
+      const q = qualificationsList.find(item => item.id === id);
+      if (!q) return;
+      document.getElementById('qualificationModalTitle').innerHTML = `<i class="fa-solid fa-pen text-emerald-500"></i><span>แก้ไขเกณฑ์คุณสมบัติ</span>`;
+      document.getElementById('qualEditId').value = q.id;
+      document.getElementById('qualTitleInput').value = q.title;
+      document.getElementById('qualPersonalPvInput').value = q.personalPv || 0;
+      document.getElementById('qualLegsCountInput').value = q.legsCount || 0;
+      document.getElementById('qualBonusInput').value = q.bonus || 0;
+      document.getElementById('qualificationModal').classList.remove('hidden');
+    }
+
+    function closeQualificationModal() {
+      document.getElementById('qualificationModal').classList.add('hidden');
+    }
+
+    function handleSaveQualification(e) {
+      e.preventDefault();
+      if (currentAuth.accountType !== "admin") return;
+
+      const id = document.getElementById('qualEditId').value;
+      const title = document.getElementById('qualTitleInput').value.trim();
+      const personalPv = parseFloat(document.getElementById('qualPersonalPvInput').value) || 0;
+      const legsCount = parseInt(document.getElementById('qualLegsCountInput').value) || 0;
+      const bonus = parseFloat(document.getElementById('qualBonusInput').value) || 0;
+
+      if (id) {
+        const idx = qualificationsList.findIndex(q => q.id === id);
+        if (idx !== -1) {
+          qualificationsList[idx] = { ...qualificationsList[idx], title, personalPv, legsCount, bonus };
+          showToast(`แก้ไขเกณฑ์ "${title}" สำเร็จ`);
+        }
+      } else {
+        const newQual = {
+          id: `qual-${Date.now().toString().slice(-5)}`,
+          title, personalPv, legsCount, bonus
+        };
+        qualificationsList.push(newQual);
+        showToast(`เพิ่มเกณฑ์ "${title}" สำเร็จ`);
+      }
+
+      saveProfileLocalCache();
+      renderQualificationsCards();
+      closeQualificationModal();
+      saveAllToCloud(false);
+    }
+
+    function deleteQualification(id) {
+      if (currentAuth.accountType !== "admin") return;
+      const q = qualificationsList.find(item => item.id === id);
+      if (!q) return;
+      if (!confirm(`คุณต้องการลบเกณฑ์คุณสมบัติ "${q.title}" ใช่หรือไม่?`)) return;
+
+      qualificationsList = qualificationsList.filter(item => item.id !== id);
+      saveProfileLocalCache();
+      renderQualificationsCards();
+      saveAllToCloud(false);
+      showToast("ลบเกณฑ์คุณสมบัติเรียบร้อยแล้ว");
+    }
+
+    /* ------------------------------------------------------------------------
+       ADMIN DASHBOARD FUNCTIONS (จัดการผู้เล่นทุกคน)
+       ------------------------------------------------------------------------ */
+    function renderAdminPlayersTable() {
+      const tbody = document.getElementById('adminPlayersTableBody');
+      const countEl = document.getElementById('totalPlayersCount');
+      if (!tbody) return;
+
+      const playerKeys = Object.keys(allPlayersDatabase);
+      if (countEl) countEl.innerText = playerKeys.length;
+
+      if (playerKeys.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="8" class="text-center py-8 text-slate-400">ยังไม่พบบัญชีผู้เล่นในระบบ</td></tr>`;
+        return;
+      }
+
+      tbody.innerHTML = playerKeys.map((key, idx) => {
+        const p = allPlayersDatabase[key];
+        const legsPv = (p.legs || []).reduce((a, b) => a + (b.pv || 0), 0);
+        const totalPv = (p.personalPv || 0) + legsPv;
+        const car = careersList.find(c => c.id === p.careerId);
+        const careerTitle = car ? car.title : '<span class="text-rose-500 font-bold">ยังไม่เลือก</span>';
+        const res = p.resources || { heart: 0, time: 0, knowledge: 0 };
+
+        return `
+          <tr class="hover:bg-slate-50 dark:hover:bg-slate-700/40 transition">
+            <td class="py-3 px-3 text-center font-mono text-slate-400">${idx + 1}</td>
+            <td class="py-3 px-3">
+              <span class="font-black text-slate-900 dark:text-white block">${escapeHTML(p.name)}</span>
+              <span class="text-[10px] font-mono text-slate-400">${escapeHTML(p.accountId || key)}</span>
+            </td>
+            <td class="py-3 px-3 text-center">
+              <span class="text-[10px] font-mono font-bold px-2 py-0.5 rounded-full bg-slate-100 dark:bg-slate-700">${key.split('_')[0].toUpperCase()}</span>
+            </td>
+            <td class="py-3 px-3 text-center text-xs">${careerTitle}</td>
+            <td class="py-3 px-3 text-right font-mono font-bold text-amber-500">฿${(p.cash || 0).toLocaleString()}</td>
+            <td class="py-3 px-3 text-right font-mono font-bold text-cyan-400">${totalPv.toLocaleString()}</td>
+            <td class="py-3 px-3 text-center font-mono text-xs">
+              <span class="text-red-500 font-bold">❤️${res.heart}</span>
+              <span class="text-slate-400 font-bold">⏳${res.time}</span>
+              <span class="text-blue-400 font-bold">💡${res.knowledge}</span>
+            </td>
+            <td class="py-3 px-3 text-center">
+              <div class="flex items-center justify-center gap-1.5">
+                <button type="button" onclick="adminOpenEditPlayer('${key}')" class="px-2.5 py-1 text-xs font-bold rounded-lg bg-blue-50 text-blue-600 dark:bg-slate-700 dark:text-blue-400 hover:scale-105 transition" title="แก้ไขข้อมูล">
+                  <i class="fa-solid fa-pen mr-1"></i>แก้ไข
+                </button>
+                <button type="button" onclick="adminResetPlayer('${key}')" class="px-2.5 py-1 text-xs font-bold rounded-lg bg-rose-50 text-rose-600 dark:bg-slate-700 dark:text-rose-400 hover:scale-105 transition" title="ล้างข้อมูลและบังคับเลือกอาชีพใหม่">
+                  <i class="fa-solid fa-trash-can mr-1"></i>ล้างข้อมูล
+                </button>
+              </div>
+            </td>
+          </tr>
+        `;
+      }).join('');
+    }
+
+    function adminOpenEditPlayer(accId) {
+      const p = allPlayersDatabase[accId];
+      if (!p) return;
+
+      document.getElementById('editPlayerAccountId').value = accId;
+      document.getElementById('editPlayerName').value = p.name || '';
+      document.getElementById('editPlayerCash').value = p.cash || 0;
+      document.getElementById('editPlayerPersonalPv').value = p.personalPv || 0;
+      document.getElementById('editPlayerActive').value = p.activeIncome || 0;
+      document.getElementById('editPlayerPassive').value = p.passiveIncome || 0;
+
+      const res = p.resources || { heart: 10, time: 10, knowledge: 10 };
+      document.getElementById('editPlayerHeart').value = res.heart;
+      document.getElementById('editPlayerTime').value = res.time;
+      document.getElementById('editPlayerKnowledge').value = res.knowledge;
+
+      document.getElementById('adminEditModal').classList.remove('hidden');
+    }
+
+    function closeAdminEditModal() {
+      document.getElementById('adminEditModal').classList.add('hidden');
+    }
+
+    function handleSaveAdminEdit(e) {
+      e.preventDefault();
+      const accId = document.getElementById('editPlayerAccountId').value;
+      if (!allPlayersDatabase[accId]) return;
+
+      allPlayersDatabase[accId].name = document.getElementById('editPlayerName').value.trim();
+      allPlayersDatabase[accId].cash = parseFloat(document.getElementById('editPlayerCash').value) || 0;
+      allPlayersDatabase[accId].personalPv = parseFloat(document.getElementById('editPlayerPersonalPv').value) || 0;
+      allPlayersDatabase[accId].activeIncome = parseFloat(document.getElementById('editPlayerActive').value) || 0;
+      allPlayersDatabase[accId].passiveIncome = parseFloat(document.getElementById('editPlayerPassive').value) || 0;
+
+      allPlayersDatabase[accId].resources = {
+        heart: parseInt(document.getElementById('editPlayerHeart').value) || 0,
+        time: parseInt(document.getElementById('editPlayerTime').value) || 0,
+        knowledge: parseInt(document.getElementById('editPlayerKnowledge').value) || 0
+      };
+
+      closeAdminEditModal();
+      saveProfileLocalCache();
+      renderAdminPlayersTable();
+      saveAllToCloud(false);
+      showToast(`แก้ไขข้อมูลผู้เล่น ${allPlayersDatabase[accId].name} สำเร็จ ✅`);
+    }
+
+    function adminResetPlayer(accId) {
+      const p = allPlayersDatabase[accId];
+      if (!p) return;
+      if (!confirm(`ต้องการล้างประวัติการเล่นและสถิติทั้งหมดของ "${p.name}" ใช่หรือไม่?\n(ผู้เล่นจะต้องเลือกอาชีพใหม่เมื่อเข้าใช้งาน)`)) return;
+
+      allPlayersDatabase[accId] = createDefaultPlayerProfile(p.name, accId);
+      saveProfileLocalCache();
+      renderAdminPlayersTable();
+      saveAllToCloud(false);
+      showToast(`ล้างข้อมูลผู้เล่น "${p.name}" เรียบร้อยแล้ว (ปลดอาชีพเดิมออกแล้ว)`);
+    }
+
+    /* ------------------------------------------------------------------------
+       Cloud Synchronization Engine (Apps Script)
+       ------------------------------------------------------------------------ */
     async function fetchProfileDataFromCloud() {
       if (!GOOGLE_SHEET_API_URL || GOOGLE_SHEET_API_URL.includes("PLACEHOLDER")) return;
       try {
         const res = await fetch(`${GOOGLE_SHEET_API_URL}?action=getCareers&nocache=${Date.now()}`);
         const data = await res.json();
-        if (Array.isArray(data) && data.length > 0) {
-          careersList = data;
+        
+        if (data) {
+          if (Array.isArray(data.careers) && data.careers.length > 0) careersList = data.careers;
+          if (Array.isArray(data.qualifications) && data.qualifications.length > 0) qualificationsList = data.qualifications;
+          if (data.allPlayers) {
+            allPlayersDatabase = data.allPlayers;
+            localStorage.setItem('rnd_all_players_db', JSON.stringify(allPlayersDatabase));
+
+            if (currentAuth.accountType !== "admin" && allPlayersDatabase[currentAuth.accountId]) {
+              profileData = allPlayersDatabase[currentAuth.accountId];
+            }
+          }
           saveProfileLocalCache();
-          renderCareersCards();
+          renderAllProfileUI();
         }
       } catch (err) {}
     }
 
-    async function saveAllToCloud() {
-      showSyncBanner("กำลังส่งข้อมูลขึ้น Cloud", "กำลังบันทึกข้อมูลตัวละครและอาชีพ...", "ขั้นตอน 1/2: กำลังอัปโหลด", 40);
+    async function fetchAllPlayersFromCloud() {
+      showSyncBanner("กำลังดึงข้อมูลผู้เล่น", "กำลังดาวน์โหลดฐานข้อมูลผู้เล่นทุกคน...", "ดาวน์โหลดข้อมูล", 40);
+      try {
+        const res = await fetch(`${GOOGLE_SHEET_API_URL}?action=getCareers&nocache=${Date.now()}`);
+        const data = await res.json();
+        if (data && data.allPlayers) {
+          allPlayersDatabase = data.allPlayers;
+          localStorage.setItem('rnd_all_players_db', JSON.stringify(allPlayersDatabase));
+          renderAdminPlayersTable();
+          updateSyncBannerProgress(100, "ดึงข้อมูลผู้เล่นสำเร็จ!", "เสร็จสิ้น");
+          setTimeout(hideSyncBanner, 500);
+          showToast("อัปเดตรายชื่อผู้เล่นทั้งหมดเรียบร้อย ☁️");
+        }
+      } catch (e) {
+        hideSyncBanner();
+        showToast("ไม่สามารถดึงข้อมูลได้");
+      }
+    }
+
+    async function saveAllToCloud(showBanner = true) {
+      if (showBanner) showSyncBanner("กำลังส่งข้อมูลขึ้น Cloud", "กำลังบันทึกข้อมูลโปรไฟล์และประวัติ...", "ขั้นตอน 1/2: กำลังอัปโหลด", 40);
+
+      if (currentAuth.accountType !== "admin" && currentAuth.accountId) {
+        allPlayersDatabase[currentAuth.accountId] = profileData;
+      }
 
       try {
         const payload = {
           action: "saveCareers",
           careers: careersList,
+          qualifications: qualificationsList,
           profile: profileData,
+          allPlayers: allPlayersDatabase,
           timestamp: Date.now()
         };
 
@@ -625,22 +1374,29 @@
         });
 
         const result = await response.json();
-
         if (result && result.status === "success") {
-          updateSyncBannerProgress(100, "บันทึกโปรไฟล์ขึ้น Google Sheets สำเร็จ!", "เสร็จสมบูรณ์");
-          confetti({ particleCount: 50, spread: 60, origin: { y: 0.6 } });
-          showToast("บันทึกข้อมูลตัวละครขึ้น Cloud สำเร็จ ☁️");
-          setTimeout(hideSyncBanner, 1000);
+          if (showBanner) {
+            updateSyncBannerProgress(100, "บันทึกโปรไฟล์ขึ้น Google Sheets สำเร็จ!", "เสร็จสมบูรณ์");
+            confetti({ particleCount: 50, spread: 60, origin: { y: 0.6 } });
+            setTimeout(hideSyncBanner, 800);
+            showToast("บันทึกข้อมูลตัวละครขึ้น Cloud สำเร็จ ☁️");
+          }
         } else {
           throw new Error(result?.message || "เซิร์ฟเวอร์ปฏิเสธการบันทึก");
         }
       } catch (err) {
-        setSyncBannerError(`ผิดพลาด: ${err.message}`);
+        if (showBanner) setSyncBannerError(`ผิดพลาด: ${err.message}`);
       }
     }
 
     function switchProfileTab(tab) {
-      ['profile', 'careers', 'qualifications'].forEach(t => {
+      // ป้องกันผู้เล่นทั่วไปเข้าถึงแท็บของแอดมินโดยตรง
+      const isAdmin = currentAuth.accountType === "admin";
+      if (!isAdmin && (tab === 'careers' || tab === 'qualifications' || tab === 'admin')) {
+        tab = 'profile';
+      }
+
+      ['profile', 'careers', 'qualifications', 'admin'].forEach(t => {
         const el = document.getElementById(`view-${t}`);
         if (el) el.classList.toggle('hidden', t !== tab);
 
@@ -653,6 +1409,7 @@
           }
         }
       });
+      if (tab === 'admin') renderAdminPlayersTable();
     }
 
     function initTheme() {
