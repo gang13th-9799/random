@@ -95,11 +95,6 @@
       overflow-wrap: break-word;
     }
 
-    .responsive-title {
-      font-size: var(--fluid-title) !important;
-      line-height: 1.35 !important;
-    }
-
     .card-vibrant-glow {
       box-shadow: 0 10px 30px -5px rgba(0, 0, 0, 0.08), 0 0 0 1px rgba(226, 232, 240, 0.8);
     }
@@ -162,8 +157,8 @@
             <span class="font-black text-xl sm:text-2xl tracking-tight text-slate-900 dark:text-white">MY PROFILE</span>
             <span id="accountTypeBadge" class="text-[11px] font-black px-2 py-0.5 rounded-full text-white uppercase tracking-wider btn-theme-action shadow-sm">GUEST</span>
           </div>
-          <p id="cloudSyncStatus" class="text-xs text-slate-500 dark:text-slate-400 font-semibold flex items-center gap-1.5 pt-0.5">
-            <i class="fa-solid fa-circle text-[9px] text-emerald-400"></i> ออนไลน์พร้อมใช้งาน
+          <p id="currentUserAccountText" class="text-xs text-slate-500 dark:text-slate-400 font-semibold truncate max-w-[180px] sm:max-w-xs">
+            กำลังโหลดข้อมูล...
           </p>
         </div>
       </div>
@@ -224,7 +219,7 @@
     <!-- VIEW 1: ข้อมูลตัวละคร & ทรัพยากร & สายงาน & คุณสมบัติ -->
     <section id="view-profile" class="space-y-6 animate-pop-in">
       
-      <!-- Player Banner (Avatar เชื่อมโยงกับรูปตัวละครประจำอาชีพ) -->
+      <!-- Player Banner -->
       <div class="bg-gradient-to-r from-rose-500/15 via-amber-500/10 to-indigo-500/10 p-5 sm:p-7 rounded-[2.5rem] border border-rose-500/20 card-vibrant-glow flex flex-col md:flex-row items-start md:items-center justify-between gap-5">
         <div class="flex items-center gap-4">
           <div id="playerAvatarWrapper" class="w-16 h-16 sm:w-20 sm:h-20 rounded-3xl bg-gradient-to-tr from-rose-500 via-amber-500 to-emerald-400 text-white flex items-center justify-center text-3xl sm:text-4xl shadow-xl icon-vibrant shrink-0 overflow-hidden">
@@ -309,7 +304,7 @@
         </div>
       </div>
 
-      <!-- คลังทรัพยากรตัวละคร -->
+      <!-- คลังทรัพยากรตัวละคร (ดึงค่าเริ่มต้นแยกตามอาชีพ) -->
       <div class="bg-white dark:bg-slate-800 p-5 sm:p-6 rounded-3xl border border-slate-200 dark:border-slate-700 shadow-sm space-y-4">
         <h3 class="font-black text-base sm:text-lg text-slate-900 dark:text-white flex items-center gap-2">
           <i class="fa-solid fa-battery-three-quarters text-emerald-500 text-xl"></i><span>คลังทรัพยากรตัวละคร (ค่าพลัง 1 - 10)</span>
@@ -351,7 +346,7 @@
           <h3 class="font-black text-lg text-slate-900 dark:text-white flex items-center gap-2">
             <i class="fa-solid fa-user-tie text-purple-500 text-xl"></i><span>ฐานข้อมูลอาชีพหลัก (Master Careers)</span>
           </h3>
-          <p class="text-xs text-slate-400 font-medium">เฉพาะ Admin ที่สามารถจัดการฐานข้อมูลหลักนี้ได้ (ซิงก์ตรงขึ้น Cloud)</p>
+          <p class="text-xs text-slate-400 font-medium">กำหนดเงินเดือน รายจ่าย เงินสด และทรัพยากรเริ่มต้น (สุขภาพ เวลา ความรู้) แยกตามแต่ละอาชีพ</p>
         </div>
         <button id="addCareerBtn" onclick="openAddCareerModal()" class="px-5 py-2.5 rounded-2xl text-white font-black text-xs sm:text-sm btn-theme-action shadow hover:scale-105 transition flex items-center gap-1.5">
           <i class="fa-solid fa-plus-circle"></i><span>เพิ่มอาชีพหลัก</span>
@@ -424,7 +419,7 @@
 
   </main>
 
-  <!-- MODAL เลือกอาชีพสำหรับผู้เล่น -->
+  <!-- MODAL เลือกอาชีพสำหรับผู้เล่น (แสดงทรัพยากรเริ่มต้นแยกตามอาชีพ) -->
   <div id="playerCareerSelectModal" class="hidden fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-md flex items-center justify-center p-4 overflow-y-auto">
     <div class="relative max-w-2xl w-full bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl p-6 shadow-2xl space-y-4 my-auto">
       <div class="flex items-center justify-between border-b pb-3 border-slate-100 dark:border-slate-800">
@@ -433,7 +428,7 @@
             <i class="fa-solid fa-user-tie text-purple-500"></i>
             <span>เลือกสายอาชีพของคุณ</span>
           </h3>
-          <p class="text-xs text-slate-400">เลือกอาชีพเพื่อกำหนดเงินเดือน รายจ่ายประจำ และทรัพยากรเริ่มต้น</p>
+          <p class="text-xs text-slate-400">ค่าพลังทรัพยากรเริ่มต้น (สุขภาพ เวลา ความรู้) จะถูกตั้งตามอาชีพที่เลือก</p>
         </div>
         <button type="button" onclick="closePlayerCareerSelectModal()" class="w-8 h-8 rounded-xl text-slate-400 hover:text-slate-600 flex items-center justify-center">
           <i class="fa-solid fa-xmark text-lg"></i>
@@ -443,7 +438,7 @@
     </div>
   </div>
 
-  <!-- CAREER MODAL (Admin เพิ่ม/แก้ไขอาชีพหลัก พร้อมช่องกรอก URL รูปตัวละคร) -->
+  <!-- CAREER MODAL (Admin กำหนดเงินเดือน รายจ่าย เงินสด และทรัพยากรเริ่มต้นแยกตามอาชีพ) -->
   <div id="careerModal" class="hidden fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-md flex items-center justify-center p-4 overflow-y-auto">
     <div class="relative max-w-md w-full bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl p-6 shadow-2xl space-y-4 my-auto">
       <div class="flex items-center justify-between border-b pb-3">
@@ -462,14 +457,12 @@
           <input type="text" id="careerTitleInput" required placeholder="เช่น นักธุรกิจ, พนักงานบริษัท" class="w-full mt-1 p-2 rounded-xl border dark:bg-slate-800">
         </div>
 
-        <!-- ช่องกรอก URL รูปตัวละคร -->
         <div>
           <label class="text-slate-500 flex items-center gap-1.5">
             <i class="fa-solid fa-image text-purple-500"></i>
             <span>URL รูปภาพตัวละคร (Image URL)</span>
           </label>
           <input type="url" id="careerAvatarInput" placeholder="https://example.com/character.png" class="w-full mt-1 p-2 rounded-xl border dark:bg-slate-800 text-xs font-mono">
-          <p class="text-[10px] text-slate-400 mt-0.5">*ใส่ลิงก์รูปภาพ เช่น Imgur หรือ ลิงก์ตรงจากเว็บไซต์รูปภาพ</p>
         </div>
 
         <div class="grid grid-cols-2 gap-2">
@@ -492,8 +485,10 @@
             <input type="number" id="careerMinPvInput" value="0" class="w-full mt-1 p-2 rounded-xl border font-mono dark:bg-slate-800">
           </div>
         </div>
+
+        <!-- กำหนดทรัพยากรเริ่มต้นเฉพาะของอาชีพนี้ (1-10) -->
         <div class="p-3 bg-slate-50 dark:bg-slate-800/80 rounded-2xl border space-y-2">
-          <span class="text-slate-400 block font-black text-[11px]">ทรัพยากรเริ่มต้น (1 - 10)</span>
+          <span class="text-slate-400 block font-black text-[11px]">ทรัพยากรเริ่มต้นของอาชีพนี้ (1 - 10)</span>
           <div class="grid grid-cols-3 gap-2 font-mono">
             <div>
               <span class="text-red-500">❤️ สุขภาพ</span>
@@ -509,6 +504,7 @@
             </div>
           </div>
         </div>
+
         <div class="flex justify-end gap-2 pt-2 border-t">
           <button type="button" onclick="closeCareerModal()" class="px-4 py-2 rounded-xl border text-slate-500">ยกเลิก</button>
           <button type="submit" class="px-5 py-2 rounded-xl text-white font-black btn-theme-action shadow">บันทึกอาชีพหลัก</button>
@@ -618,6 +614,23 @@
             <input type="number" id="editPlayerPassive" class="w-full mt-1 p-2 rounded-xl border font-mono dark:bg-slate-800">
           </div>
         </div>
+        <div class="p-3 bg-slate-50 dark:bg-slate-800/80 rounded-2xl border space-y-2">
+          <span class="text-slate-400 block font-black text-[11px]">ระดับทรัพยากร (1 - 10)</span>
+          <div class="grid grid-cols-3 gap-2 font-mono">
+            <div>
+              <span class="text-red-500">❤️ สุขภาพ</span>
+              <input type="number" min="1" max="10" id="editPlayerHeart" class="w-full p-1.5 border rounded-lg text-center dark:bg-slate-900">
+            </div>
+            <div>
+              <span class="text-slate-300">⏳ เวลา</span>
+              <input type="number" min="1" max="10" id="editPlayerTime" class="w-full p-1.5 border rounded-lg text-center dark:bg-slate-900">
+            </div>
+            <div>
+              <span class="text-blue-400">💡 ความรู้</span>
+              <input type="number" min="1" max="10" id="editPlayerKnowledge" class="w-full p-1.5 border rounded-lg text-center dark:bg-slate-900">
+            </div>
+          </div>
+        </div>
         <div class="flex justify-end gap-2 pt-2 border-t">
           <button type="button" onclick="closeAdminEditModal()" class="px-4 py-2 rounded-xl border text-slate-500">ยกเลิก</button>
           <button type="submit" class="px-5 py-2 rounded-xl text-white font-black btn-theme-action shadow">บันทึกการแก้ไข</button>
@@ -705,10 +718,47 @@
       { id: "F", name: "สายงาน F", pv: 0, level: "0%", activeIncome: 0, passiveIncome: 0 }
     ];
 
+    // ข้อมูลเริ่มต้นของแต่ละอาชีพ: มีการกำหนดทรัพยากรเริ่มต้น (สุขภาพ เวลา ความรู้) แตกต่างกัน
     const DEFAULT_CAREERS = [
-      { id: "car-1", title: "พนักงานประจำ", salary: 25000, expenses: 12000, cash: 40000, minPv: 0, activeIncome: 15000, passiveIncome: 0, resources: { heart: 8, time: 6, knowledge: 7 }, icon: "fa-briefcase", avatar: "" },
-      { id: "car-2", title: "เจ้าของธุรกิจ", salary: 45000, expenses: 25000, cash: 80000, minPv: 150000, activeIncome: 35000, passiveIncome: 5000, resources: { heart: 6, time: 5, knowledge: 9 }, icon: "fa-store", avatar: "" },
-      { id: "car-3", title: "นักลงทุนอิสระ", salary: 70000, expenses: 40000, cash: 150000, minPv: 450000, activeIncome: 75000, passiveIncome: 25000, resources: { heart: 9, time: 8, knowledge: 10 }, icon: "fa-chart-line", avatar: "" }
+      { 
+        id: "car-1", 
+        title: "พนักงานประจำ", 
+        salary: 25000, 
+        expenses: 12000, 
+        cash: 40000, 
+        minPv: 0, 
+        activeIncome: 15000, 
+        passiveIncome: 0, 
+        resources: { heart: 8, time: 4, knowledge: 7 }, // เวลาน้อย (4) เพราะต้องทำงานประจำ
+        icon: "fa-briefcase", 
+        avatar: "" 
+      },
+      { 
+        id: "car-2", 
+        title: "เจ้าของธุรกิจ", 
+        salary: 45000, 
+        expenses: 25000, 
+        cash: 80000, 
+        minPv: 150000, 
+        activeIncome: 35000, 
+        passiveIncome: 5000, 
+        resources: { heart: 6, time: 5, knowledge: 9 }, // สุขภาพน้อยลงจากความเครียด แต่ความรู้สูง
+        icon: "fa-store", 
+        avatar: "" 
+      },
+      { 
+        id: "car-3", 
+        title: "นักลงทุนอิสระ", 
+        salary: 70000, 
+        expenses: 40000, 
+        cash: 150000, 
+        minPv: 450000, 
+        activeIncome: 75000, 
+        passiveIncome: 25000, 
+        resources: { heart: 9, time: 9, knowledge: 10 }, // เวลาและสุขภาพสูง มีอิสรภาพ
+        icon: "fa-chart-line", 
+        avatar: "" 
+      }
     ];
 
     const DEFAULT_QUAL_CATEGORIES = ["พื้นฐานธุรกิจ", "การสร้างเครือข่าย", "ความเป็นผู้นำ"];
@@ -945,36 +995,48 @@
       } catch (e) {}
     }
 
-    /* ผู้เล่นเลือกอาชีพ (แสดงรูปตัวละครใน Modal เลือกอาชีพ) */
+    /* ผู้เล่นเลือกอาชีพ (แสดงทรัพยากรเริ่มต้นแยกตามอาชีพ) */
     function openPlayerCareerSelectModal() {
       const modal = document.getElementById('playerCareerSelectModal');
       const grid = document.getElementById('playerCareerModalGrid');
       if (!modal || !grid) return;
 
-      grid.innerHTML = careersList.map(car => `
-        <div class="p-4 rounded-2xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800/80 space-y-3">
-          <div class="flex items-center gap-3">
-            ${car.avatar ? `
-              <img src="${escapeHTML(car.avatar)}" alt="${escapeHTML(car.title)}" class="w-12 h-12 rounded-2xl object-cover shadow border border-slate-300 dark:border-slate-600 shrink-0">
-            ` : `
-              <div class="w-12 h-12 rounded-2xl bg-amber-500/15 text-amber-500 flex items-center justify-center text-2xl icon-vibrant shrink-0">
-                <i class="fa-solid ${car.icon || 'fa-award'}"></i>
+      grid.innerHTML = careersList.map(car => {
+        const r = car.resources || { heart: 10, time: 10, knowledge: 10 };
+        return `
+          <div class="p-4 rounded-2xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800/80 space-y-3">
+            <div class="flex items-center gap-3">
+              ${car.avatar ? `
+                <img src="${escapeHTML(car.avatar)}" alt="${escapeHTML(car.title)}" class="w-12 h-12 rounded-2xl object-cover shadow border border-slate-300 dark:border-slate-600 shrink-0">
+              ` : `
+                <div class="w-12 h-12 rounded-2xl bg-amber-500/15 text-amber-500 flex items-center justify-center text-2xl icon-vibrant shrink-0">
+                  <i class="fa-solid ${car.icon || 'fa-award'}"></i>
+                </div>
+              `}
+              <div>
+                <span class="font-black text-slate-900 dark:text-white text-base block">${escapeHTML(car.title)}</span>
+                <span class="text-xs font-mono text-slate-400">เงินสด: ฿${(car.cash || 0).toLocaleString()}</span>
               </div>
-            `}
-            <div>
-              <span class="font-black text-slate-900 dark:text-white text-base block">${escapeHTML(car.title)}</span>
-              <span class="text-xs font-mono text-slate-400">เงินสด: ฿${(car.cash || 0).toLocaleString()}</span>
             </div>
+
+            <div class="grid grid-cols-2 gap-2 text-xs font-mono bg-white dark:bg-slate-900/60 p-2.5 rounded-xl border border-slate-200/60 dark:border-slate-800">
+              <div>เงินเดือน: <strong class="text-blue-400 block">฿${(car.salary || 0).toLocaleString()}</strong></div>
+              <div>รายจ่ายประจำ: <strong class="text-rose-400 block">฿${(car.expenses || 0).toLocaleString()}</strong></div>
+            </div>
+
+            <!-- แสดงค่าพลังทรัพยากรเริ่มต้นของอาชีพนี้ -->
+            <div class="flex items-center justify-between text-xs font-mono bg-slate-100 dark:bg-slate-900/40 p-2 rounded-xl border border-slate-200/50 dark:border-slate-800 text-center">
+              <span class="text-red-500 font-bold">❤️ สุขภาพ ${r.heart}</span>
+              <span class="text-slate-400 font-bold">⏳ เวลา ${r.time}</span>
+              <span class="text-blue-400 font-bold">💡 ความรู้ ${r.knowledge}</span>
+            </div>
+
+            <button type="button" onclick="selectPlayerCareerClone('${car.id}')" class="w-full py-2 rounded-xl text-xs font-black ${profileData.careerId === car.id ? 'bg-emerald-500 text-white' : 'btn-theme-action text-white shadow hover:scale-[1.01]'} transition">
+              ${profileData.careerId === car.id ? 'อาชีพปัจจุบัน' : 'เลือกอาชีพนี้'}
+            </button>
           </div>
-          <div class="grid grid-cols-2 gap-2 text-xs font-mono bg-white dark:bg-slate-900/60 p-2.5 rounded-xl border border-slate-200/60 dark:border-slate-800">
-            <div>เงินเดือน: <strong class="text-blue-400 block">฿${(car.salary || 0).toLocaleString()}</strong></div>
-            <div>รายจ่ายประจำ: <strong class="text-rose-400 block">฿${(car.expenses || 0).toLocaleString()}</strong></div>
-          </div>
-          <button type="button" onclick="selectPlayerCareerClone('${car.id}')" class="w-full py-2 rounded-xl text-xs font-black ${profileData.careerId === car.id ? 'bg-emerald-500 text-white' : 'btn-theme-action text-white shadow hover:scale-[1.01]'} transition">
-            ${profileData.careerId === car.id ? 'อาชีพปัจจุบัน' : 'เลือกอาชีพนี้'}
-          </button>
-        </div>
-      `).join('');
+        `;
+      }).join('');
 
       modal.classList.remove('hidden');
     }
@@ -993,13 +1055,17 @@
       profileData.cash = targetMaster.cash || 0;
       profileData.activeIncome = targetMaster.activeIncome || 15000;
       profileData.passiveIncome = targetMaster.passiveIncome || 0;
-      profileData.resources = targetMaster.resources ? JSON.parse(JSON.stringify(targetMaster.resources)) : { heart: 10, time: 10, knowledge: 10 };
+
+      // คัดลอกทรัพยากรเริ่มต้นเฉพาะของอาชีพที่เลือก
+      profileData.resources = targetMaster.resources 
+        ? JSON.parse(JSON.stringify(targetMaster.resources)) 
+        : { heart: 10, time: 10, knowledge: 10 };
 
       saveProfileLocalCache();
       renderAllProfileUI();
       closePlayerCareerSelectModal();
       syncProfileAndMasterToCloud(false);
-      showToast(`เลือกอาชีพ "${targetMaster.title}" สำเร็จ! เริ่มต้นเกมธุรกิจแล้ว 🎯`);
+      showToast(`เลือกอาชีพ "${targetMaster.title}" สำเร็จ! ตั้งค่าพลังตามอาชีพแล้ว 🎯`);
       confetti({ particleCount: 50, spread: 60, origin: { y: 0.6 } });
     }
 
@@ -1018,9 +1084,6 @@
       `;
     }
 
-    /* ------------------------------------------------------------------------
-       เรนเดอร์ UI
-       ------------------------------------------------------------------------ */
     function setSafeInnerText(id, text) {
       const el = document.getElementById(id);
       if (el) el.innerText = text;
@@ -1083,7 +1146,6 @@
       const careerTitle = hasCareer ? profileData.career.title : "ยังไม่ได้เลือกอาชีพ (ค่าเป็น 0)";
       setSafeInnerText('currentCareerDisplay', careerTitle);
 
-      // อัปเดตรูปตัวละครที่โปรไฟล์ผู้เล่น
       const avatarWrapper = document.getElementById('playerAvatarWrapper');
       if (avatarWrapper) {
         if (hasCareer && profileData.career && profileData.career.avatar) {
@@ -1279,43 +1341,52 @@
       showToast(checked ? "บันทึกสถานะคุณสมบัติแล้ว! 🎉" : "ยกเลิกสถานะคุณสมบัติแล้ว");
     }
 
-    // แสดงรูปตัวละครในการ์ดอาชีพของ Admin
     function renderCareersCards() {
       const container = document.getElementById('careersListContainer');
       if (!container) return;
       const isAdmin = currentAuth.accountType === "admin";
 
-      container.innerHTML = careersList.map(car => `
-        <div class="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-3xl p-5 shadow-sm space-y-3 relative overflow-hidden">
-          <div class="flex items-center justify-between">
-            <div class="flex items-center gap-3">
-              ${car.avatar ? `
-                <img src="${escapeHTML(car.avatar)}" alt="${escapeHTML(car.title)}" class="w-12 h-12 rounded-2xl object-cover shadow border border-slate-300 dark:border-slate-600 shrink-0">
-              ` : `
-                <div class="w-12 h-12 rounded-2xl bg-amber-500/15 text-amber-500 flex items-center justify-center text-2xl icon-vibrant shrink-0">
-                  <i class="fa-solid ${car.icon || 'fa-award'}"></i>
+      container.innerHTML = careersList.map(car => {
+        const r = car.resources || { heart: 10, time: 10, knowledge: 10 };
+        return `
+          <div class="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-3xl p-5 shadow-sm space-y-3 relative overflow-hidden">
+            <div class="flex items-center justify-between">
+              <div class="flex items-center gap-3">
+                ${car.avatar ? `
+                  <img src="${escapeHTML(car.avatar)}" alt="${escapeHTML(car.title)}" class="w-12 h-12 rounded-2xl object-cover shadow border border-slate-300 dark:border-slate-600 shrink-0">
+                ` : `
+                  <div class="w-12 h-12 rounded-2xl bg-amber-500/15 text-amber-500 flex items-center justify-center text-2xl icon-vibrant shrink-0">
+                    <i class="fa-solid ${car.icon || 'fa-award'}"></i>
+                  </div>
+                `}
+                <div>
+                  <h4 class="font-black text-lg text-slate-900 dark:text-white">${escapeHTML(car.title)}</h4>
+                  <span class="text-xs text-slate-400 font-mono">เงินสด: ฿${(car.cash || 0).toLocaleString()}</span>
                 </div>
-              `}
-              <div>
-                <h4 class="font-black text-lg text-slate-900 dark:text-white">${escapeHTML(car.title)}</h4>
-                <span class="text-xs text-slate-400 font-mono">เกณฑ์ขั้นต่ำ: ${(car.minPv || 0).toLocaleString()} PV</span>
+              </div>
+
+              <div class="flex items-center gap-1.5 shrink-0">
+                ${isAdmin ? `
+                  <button onclick="openEditCareerModal('${car.id}')" class="p-1.5 rounded-lg text-slate-400 hover:text-cyan-400 transition" title="แก้ไขอาชีพ"><i class="fa-solid fa-pen text-xs"></i></button>
+                  <button onclick="deleteCareer('${car.id}')" class="p-1.5 rounded-lg text-slate-400 hover:text-rose-500 transition" title="ลบอาชีพ"><i class="fa-solid fa-trash-can text-xs"></i></button>
+                ` : ''}
               </div>
             </div>
 
-            <div class="flex items-center gap-1.5 shrink-0">
-              ${isAdmin ? `
-                <button onclick="openEditCareerModal('${car.id}')" class="p-1.5 rounded-lg text-slate-400 hover:text-cyan-400 transition" title="แก้ไขอาชีพ"><i class="fa-solid fa-pen text-xs"></i></button>
-                <button onclick="deleteCareer('${car.id}')" class="p-1.5 rounded-lg text-slate-400 hover:text-rose-500 transition" title="ลบอาชีพ"><i class="fa-solid fa-trash-can text-xs"></i></button>
-              ` : ''}
+            <div class="grid grid-cols-2 gap-2 text-xs font-mono pt-1">
+              <div>เงินเดือน: <strong class="text-blue-400 block font-bold">฿${(car.salary || 0).toLocaleString()}</strong></div>
+              <div>รายจ่าย: <strong class="text-rose-400 block font-bold">฿${(car.expenses || 0).toLocaleString()}</strong></div>
+            </div>
+
+            <!-- แสดงค่าทรัพยากรเริ่มต้นของอาชีพนี้ -->
+            <div class="flex items-center justify-between text-xs font-mono bg-slate-50 dark:bg-slate-900/60 p-2 rounded-xl border border-slate-200/60 dark:border-slate-800 text-center">
+              <span class="text-red-500 font-bold">❤️ สุขภาพ ${r.heart}</span>
+              <span class="text-slate-400 font-bold">⏳ เวลา ${r.time}</span>
+              <span class="text-blue-400 font-bold">💡 ความรู้ ${r.knowledge}</span>
             </div>
           </div>
-
-          <div class="grid grid-cols-2 gap-2 text-xs font-mono pt-2 border-t border-slate-100 dark:border-slate-700">
-            <div>เงินเดือน: <strong class="text-blue-400 block font-bold">฿${(car.salary || 0).toLocaleString()}</strong></div>
-            <div>รายจ่าย: <strong class="text-rose-400 block font-bold">฿${(car.expenses || 0).toLocaleString()}</strong></div>
-          </div>
-        </div>
-      `).join('');
+        `;
+      }).join('');
     }
 
     function renderAdminQualificationsTab() {
@@ -1495,6 +1566,9 @@
       setSafeValue('careerExpensesInput', 12000);
       setSafeValue('careerCashInput', 50000);
       setSafeValue('careerMinPvInput', 0);
+      setSafeValue('careerHeartInput', 10);
+      setSafeValue('careerTimeInput', 10);
+      setSafeValue('careerKnowledgeInput', 10);
       const m = document.getElementById('careerModal');
       if (m) m.classList.remove('hidden');
     }
@@ -1511,6 +1585,9 @@
       setSafeValue('careerExpensesInput', c.expenses || 0);
       setSafeValue('careerCashInput', c.cash || 0);
       setSafeValue('careerMinPvInput', c.minPv || 0);
+      setSafeValue('careerHeartInput', c.resources?.heart || 10);
+      setSafeValue('careerTimeInput', c.resources?.time || 10);
+      setSafeValue('careerKnowledgeInput', c.resources?.knowledge || 10);
       const m = document.getElementById('careerModal');
       if (m) m.classList.remove('hidden');
     }
@@ -1531,17 +1608,22 @@
       const expenses = parseFloat(document.getElementById('careerExpensesInput')?.value) || 0;
       const cash = parseFloat(document.getElementById('careerCashInput')?.value) || 0;
       const minPv = parseFloat(document.getElementById('careerMinPvInput')?.value) || 0;
+      const resources = {
+        heart: parseInt(document.getElementById('careerHeartInput')?.value) || 10,
+        time: parseInt(document.getElementById('careerTimeInput')?.value) || 10,
+        knowledge: parseInt(document.getElementById('careerKnowledgeInput')?.value) || 10
+      };
 
       if (id) {
         const idx = careersList.findIndex(c => c.id === id);
         if (idx !== -1) {
-          careersList[idx] = { ...careersList[idx], title, avatar, salary, expenses, cash, minPv };
+          careersList[idx] = { ...careersList[idx], title, avatar, salary, expenses, cash, minPv, resources };
           showToast(`แก้ไขอาชีพ "${title}" สำเร็จ`);
         }
       } else {
         careersList.push({
           id: `car-${Date.now().toString().slice(-5)}`,
-          title, avatar, salary, expenses, cash, minPv, activeIncome: 15000, passiveIncome: 0, icon: "fa-award"
+          title, avatar, salary, expenses, cash, minPv, activeIncome: 15000, passiveIncome: 0, resources, icon: "fa-award"
         });
         showToast(`เพิ่มอาชีพ "${title}" สำเร็จ`);
       }
