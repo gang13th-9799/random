@@ -108,7 +108,7 @@
 </head>
 <body class="text-slate-800 dark:text-slate-100 min-h-screen flex flex-col font-sans transition-colors duration-200 pb-24 md:pb-8">
 
-  <!-- BLOCKING SYNC OVERLAY BANNER (ป้องกันการเขียนข้อมูลทับกัน แสดงสถานะชัดเจน) -->
+  <!-- BLOCKING SYNC OVERLAY BANNER -->
   <div id="syncBlockingBanner" class="hidden fixed inset-0 z-50 bg-slate-950/85 backdrop-blur-md flex flex-col items-center justify-center p-4 select-none pointer-events-auto">
     <div class="relative max-w-md w-full bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl p-6 sm:p-8 text-center shadow-2xl space-y-6 animate-pop-in">
       <div class="relative w-24 h-24 mx-auto flex items-center justify-center">
@@ -166,7 +166,6 @@
         <button id="nav-btn-profile" onclick="switchProfileTab('profile')" class="px-4 py-2 rounded-xl text-sm font-bold transition-all flex items-center space-x-2.5 bg-white dark:bg-slate-700 shadow text-rose-500 dark:text-white">
           <i class="fa-solid fa-id-card text-base text-rose-500 icon-vibrant"></i><span>ข้อมูลตัวละคร</span>
         </button>
-        <!-- ปุ่มจัดการอาชีพ & คุณสมบัติ (เฉพาะ Admin เท่านั้น) -->
         <button id="nav-btn-careers" onclick="switchProfileTab('careers')" class="hidden px-4 py-2 rounded-xl text-sm font-bold transition-all flex items-center space-x-2.5 text-slate-600 dark:text-slate-300 hover:text-rose-500">
           <i class="fa-solid fa-user-tie text-base text-purple-500 icon-vibrant"></i><span>จัดการอาชีพ (Admin)</span>
         </button>
@@ -215,7 +214,7 @@
     <!-- VIEW 1: ข้อมูลตัวละคร & ทรัพยากร & สายงาน & คุณสมบัติ -->
     <section id="view-profile" class="space-y-6 animate-pop-in">
       
-      <!-- Player Banner + ปุ่มเลือกอาชีพ -->
+      <!-- Player Banner -->
       <div class="bg-gradient-to-r from-rose-500/15 via-amber-500/10 to-indigo-500/10 p-5 sm:p-7 rounded-[2.5rem] border border-rose-500/20 card-vibrant-glow flex flex-col md:flex-row items-start md:items-center justify-between gap-5">
         <div class="flex items-center gap-4">
           <div class="w-16 h-16 sm:w-20 sm:h-20 rounded-3xl bg-gradient-to-tr from-rose-500 via-amber-500 to-emerald-400 text-white flex items-center justify-center text-3xl sm:text-4xl shadow-xl icon-vibrant shrink-0">
@@ -358,7 +357,7 @@
           <h3 class="font-black text-lg text-slate-900 dark:text-white flex items-center gap-2">
             <i class="fa-solid fa-certificate text-emerald-500 text-xl"></i><span>ฐานข้อมูลคุณสมบัติหลัก & หมวดหมู่</span>
           </h3>
-          <p class="text-xs text-slate-400 font-medium">เฉพาะ Admin สามารถจัดการหมวดหมู่และเกณฑ์คุณสมบัติหลักได้</p>
+          <p class="text-xs text-slate-400 font-medium">เฉพาะ Admin สามารถจัดการหมวดหมู่, เพิ่ม/ลบ/แก้ไขเกณฑ์ และดูรหัส ID กำกับได้</p>
         </div>
         <div class="flex items-center gap-2">
           <button onclick="openAddCategoryModal()" class="px-4 py-2 rounded-2xl bg-indigo-600 hover:bg-indigo-700 text-white font-black text-xs sm:text-sm shadow transition flex items-center gap-1.5">
@@ -605,54 +604,6 @@
     </div>
   </div>
 
-  <!-- LOGIN MODAL -->
-  <div id="loginModal" class="hidden fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-md flex items-center justify-center p-4">
-    <div class="relative max-w-sm w-full bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl p-6 text-center shadow-2xl space-y-5 animate-pop-in">
-      <div class="flex items-center justify-between border-b pb-3 border-slate-100 dark:border-slate-800">
-        <h3 class="font-black text-lg text-slate-900 dark:text-white">เข้าสู่ระบบ</h3>
-        <button type="button" onclick="closeLoginModal()" class="w-8 h-8 rounded-xl text-slate-400 hover:text-slate-600 flex items-center justify-center">
-          <i class="fa-solid fa-xmark text-lg"></i>
-        </button>
-      </div>
-
-      <div class="space-y-3">
-        <button type="button" onclick="loginAsGuest()" class="w-full py-3 px-4 rounded-2xl bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-800 dark:text-slate-100 font-black text-sm flex items-center justify-center gap-2.5 transition shadow-xs">
-          <i class="fa-solid fa-user text-slate-400"></i>
-          <span>เข้าเล่นแบบ Guest</span>
-        </button>
-
-        <button type="button" onclick="loginWithGoogle()" class="w-full py-3 px-4 rounded-2xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 hover:bg-slate-50 text-slate-800 dark:text-slate-100 font-black text-sm flex items-center justify-center gap-2.5 transition shadow-xs">
-          <svg class="w-4 h-4" viewBox="0 0 24 24">
-            <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
-            <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
-            <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z"/>
-            <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z"/>
-          </svg>
-          <span>Sign in with Google</span>
-        </button>
-      </div>
-
-      <div class="relative py-1">
-        <div class="absolute inset-0 flex items-center"><div class="w-full border-t border-slate-200 dark:border-slate-800"></div></div>
-        <div class="relative flex justify-center text-xs uppercase"><span class="bg-white dark:bg-slate-900 px-2 text-slate-400 font-bold">หรือ</span></div>
-      </div>
-
-      <form onsubmit="handleAccountLogin(event)" class="space-y-3 text-left">
-        <div>
-          <label class="text-[11px] font-bold text-slate-500 dark:text-slate-400">ชื่อผู้ใช้งาน</label>
-          <input type="text" id="loginUsernameInput" required placeholder="Username" class="w-full mt-1 p-2.5 rounded-xl border border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-xs font-bold outline-none">
-        </div>
-        <div>
-          <label class="text-[11px] font-bold text-slate-500 dark:text-slate-400">รหัสผ่าน</label>
-          <input type="password" id="loginPasswordInput" required placeholder="••••••••" class="w-full mt-1 p-2.5 rounded-xl border border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-xs font-bold outline-none">
-        </div>
-        <button type="submit" class="w-full py-3 rounded-2xl text-white font-black text-sm btn-theme-action shadow-md hover:scale-[1.02] transition">
-          เข้าสู่ระบบ
-        </button>
-      </form>
-    </div>
-  </div>
-
   <!-- Toast Notification -->
   <div id="toastNotification" class="fixed top-20 right-4 z-50 transform translate-x-full opacity-0 transition-all duration-300 bg-slate-900 text-white px-5 py-3 rounded-2xl shadow-2xl flex items-center gap-3 text-xs sm:text-sm font-black pointer-events-none">
     <i class="fa-solid fa-circle-check text-emerald-400 text-lg"></i>
@@ -734,7 +685,7 @@
       initTheme();
       loadAuthAndProfile();
       renderAllProfileUI();
-      fetchProfileDataFromCloud(true); // ซิงก์ดึงข้อมูลจาก Cloud ทันทีเมื่อเปิดหน้าเว็บ
+      fetchProfileDataFromCloud(true);
     });
 
     function showSyncBanner(title, detail, stepText = "กำลังดำเนินการ...", percent = 20) {
@@ -1333,7 +1284,7 @@
       showToast("รีเซ็ตสถานะเรียบร้อยแล้ว (เลือกอาชีพใหม่เพื่อเริ่มเล่น)");
     }
 
-    /* Admin CRUD with Concurrency-Safe Sync */
+    /* Admin CRUD */
     function openAddCategoryModal() {
       if (currentAuth.accountType !== "admin") return;
       renderQualCategoryModalList();
@@ -1366,7 +1317,7 @@
       renderQualCategoryModalList();
       renderAdminQualificationsTab();
       renderPlayerDashboardQualifications();
-      syncProfileAndMasterToCloud(false);
+      syncProfileAndMasterToCloud(true);
       showToast(`เพิ่มหมวดหมู่ "${val}" สำเร็จ`);
     }
 
@@ -1382,7 +1333,7 @@
       renderQualCategoryModalList();
       renderAdminQualificationsTab();
       renderPlayerDashboardQualifications();
-      syncProfileAndMasterToCloud(false);
+      syncProfileAndMasterToCloud(true);
       showToast("ลบหมวดหมู่เรียบร้อยแล้ว");
     }
 
@@ -1442,7 +1393,7 @@
       saveProfileLocalCache();
       renderCareersCards();
       closeCareerModal();
-      syncProfileAndMasterToCloud(true); // ซิงก์ขึ้น Cloud ทันทีพร้อมแบนเนอร์
+      syncProfileAndMasterToCloud(true);
     }
 
     function deleteCareer(id) {
@@ -1640,7 +1591,7 @@
     }
 
     /* ------------------------------------------------------------------------
-       Cloud Synchronization (ใช้ระบบ Concurrency ป้องกันข้อมูลทับซ้อนเหมือน index.html)
+       Cloud Synchronization (Atomic Mutex Guard + Blocking Banner)
        ------------------------------------------------------------------------ */
     async function fetchProfileDataFromCloud(isManual = false) {
       if (!GOOGLE_SHEET_API_URL || GOOGLE_SHEET_API_URL.includes("PLACEHOLDER")) return;
