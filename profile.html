@@ -5,18 +5,11 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
   <title>Player Profile & Career Hub</title>
 
-  <!-- Google Fonts: Prompt & Inter -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Prompt:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
-
-  <!-- Font Awesome Icons 6.5 -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-
-  <!-- Tailwind CSS CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
-
-  <!-- Canvas Confetti -->
   <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.2/dist/confetti.browser.min.js"></script>
 
   <script>
@@ -66,46 +59,38 @@
       --fluid-title: clamp(1.35rem, 2.5vw + 0.8rem, 2.25rem);
       --fluid-body: clamp(0.92rem, 0.8vw + 0.75rem, 1.15rem);
     }
-
     html {
       font-size: 16px;
       line-height: 1.5;
       -webkit-text-size-adjust: 100%;
     }
-
     body {
       touch-action: manipulation;
       -webkit-tap-highlight-color: transparent;
       background-color: #F8FAFC;
       font-size: var(--fluid-body);
     }
-
     .dark body {
-      background-color: #0B1120;
+      background-color: #080E1A;
     }
-
     *, ::before, ::after {
       box-sizing: border-box;
       word-break: break-word;
       overflow-wrap: break-word;
     }
-
     .responsive-title {
       font-size: var(--fluid-title) !important;
       line-height: 1.35 !important;
     }
-
     .card-vibrant-glow {
       box-shadow: 0 10px 30px -5px rgba(0, 0, 0, 0.08), 0 0 0 1px rgba(226, 232, 240, 0.8);
     }
     .dark .card-vibrant-glow {
       box-shadow: 0 15px 35px -8px rgba(0, 0, 0, 0.6), 0 0 0 1px rgba(51, 65, 85, 0.6);
     }
-
     .btn-theme-action {
       background: var(--theme-btn-gradient);
     }
-
     .icon-vibrant {
       filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.15));
     }
@@ -113,24 +98,19 @@
 </head>
 <body class="text-slate-800 dark:text-slate-100 min-h-screen flex flex-col font-sans transition-colors duration-200 pb-24 md:pb-8">
 
-  <!-- =========================================================================
-       BLOCKING SYNC OVERLAY BANNER
-       ========================================================================= -->
+  <!-- BLOCKING SYNC OVERLAY BANNER -->
   <div id="syncBlockingBanner" class="hidden fixed inset-0 z-50 bg-slate-950/85 backdrop-blur-md flex flex-col items-center justify-center p-4 select-none pointer-events-auto">
     <div class="relative max-w-md w-full bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-3xl p-6 sm:p-8 text-center shadow-2xl space-y-6">
-      
       <div class="relative w-24 h-24 mx-auto flex items-center justify-center">
         <div class="absolute inset-0 rounded-3xl bg-amber-400/20 dark:bg-amber-400/10 animate-ping"></div>
         <div id="syncBannerIconWrapper" class="relative w-20 h-20 rounded-2xl bg-gradient-to-tr from-rose-500 via-amber-500 to-emerald-400 text-white flex items-center justify-center text-4xl shadow-xl icon-vibrant">
           <i id="syncBannerIcon" class="fa-solid fa-arrows-rotate animate-spin"></i>
         </div>
       </div>
-
       <div class="space-y-2">
         <h3 id="syncBannerTitle" class="text-xl sm:text-2xl font-black text-slate-900 dark:text-white tracking-tight">กำลังซิงก์ข้อมูลโปรไฟล์...</h3>
         <p id="syncBannerDetail" class="text-sm text-slate-500 dark:text-slate-400 font-medium">ระบบกำลังเชื่อมต่อและตรวจสอบข้อมูล กรุณารอสักครู่</p>
       </div>
-
       <div class="space-y-2">
         <div class="w-full bg-slate-100 dark:bg-slate-700 rounded-full h-3.5 p-0.5 overflow-hidden border border-slate-200 dark:border-slate-600">
           <div id="syncBannerProgressBar" class="h-full rounded-full bg-gradient-to-r from-rose-500 via-amber-400 to-emerald-400 transition-all duration-300" style="width: 20%;"></div>
@@ -140,14 +120,12 @@
           <span id="syncBannerPercentText" class="text-rose-500 dark:text-rose-400 font-black">20%</span>
         </div>
       </div>
-
       <div class="inline-flex items-center gap-2 px-3.5 py-2 rounded-xl bg-amber-50 dark:bg-amber-950/50 border border-amber-300 dark:border-amber-700 text-amber-800 dark:text-amber-200 text-xs font-bold">
         <i class="fa-solid fa-bolt-lightning text-amber-500 text-sm"></i>
         <span>ระบบถูกล็อกชั่วคราว ห้ามปิดหรือรีเฟรชหน้านี้</span>
       </div>
-
       <button type="button" id="syncBannerErrorBtn" onclick="hideSyncBanner()" class="hidden w-full py-3 rounded-2xl text-sm font-black bg-rose-600 hover:bg-rose-700 text-white transition shadow-lg">
-        ปิดหน้าต่างนี้ (กรณีติด Error)
+        ปิดหน้าต่างนี้
       </button>
     </div>
   </div>
@@ -155,7 +133,6 @@
   <!-- Header -->
   <header class="sticky top-0 z-40 bg-white/95 dark:bg-slate-900/95 backdrop-blur-md border-b border-slate-200 dark:border-slate-800 shadow-sm transition-colors">
     <div class="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 h-18 py-2 flex items-center justify-between gap-2">
-      
       <div class="flex items-center space-x-3 cursor-pointer group shrink-0" onclick="location.href='index.html'">
         <div class="w-12 h-12 rounded-2xl flex items-center justify-center text-white shadow-md transform transition group-hover:scale-105 shrink-0 btn-theme-action icon-vibrant">
           <i class="fa-solid fa-circle-user text-2xl animate-pulse-subtle"></i>
@@ -171,7 +148,6 @@
         </div>
       </div>
 
-      <!-- Navigation Tabs (Desktop & Tablet) -->
       <nav class="hidden lg:flex items-center space-x-1.5 bg-slate-100 dark:bg-slate-800/80 p-1.5 rounded-2xl border border-slate-200 dark:border-slate-700">
         <a href="index.html" class="px-4 py-2 rounded-xl text-sm font-bold transition-all flex items-center space-x-2.5 text-slate-600 dark:text-slate-300 hover:text-rose-500">
           <i class="fa-solid fa-shapes text-base text-amber-500 icon-vibrant"></i><span>หน้าสุ่มการ์ด</span>
@@ -187,47 +163,40 @@
         </button>
       </nav>
 
-      <!-- Action Buttons -->
       <div class="flex items-center space-x-2 shrink-0">
         <button onclick="saveAllToCloud()" title="บันทึกข้อมูลโปรไฟล์ขึ้น Cloud" class="px-3.5 py-2.5 rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-200 hover:bg-slate-50 text-xs sm:text-sm font-black transition flex items-center gap-2 shadow-sm">
           <i id="syncIcon" class="fa-solid fa-cloud-arrow-up text-blue-500 text-sm sm:text-base"></i><span class="hidden sm:inline">บันทึก Cloud</span>
         </button>
-
         <a href="index.html" title="กลับหน้าแรก" class="w-10 h-10 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:text-rose-500 flex items-center justify-center transition shadow-sm">
           <i class="fa-solid fa-house text-lg text-amber-500"></i>
         </a>
       </div>
-
     </div>
   </header>
 
-  <!-- Bottom Navigation Bar (สำหรับมือถือ) -->
+  <!-- Bottom Navigation Bar (มือถือ) -->
   <nav class="lg:hidden fixed bottom-0 left-0 right-0 z-40 bg-white/95 dark:bg-slate-900/95 backdrop-blur-md border-t border-slate-200 dark:border-slate-800 px-3 py-2 flex items-center justify-around shadow-lg">
     <a href="index.html" class="flex flex-col items-center gap-1 text-slate-400">
-      <i class="fa-solid fa-shapes text-xl"></i>
-      <span class="text-[10px] font-black">หน้าสุ่ม</span>
+      <i class="fa-solid fa-shapes text-xl"></i><span class="text-[10px] font-black">หน้าสุ่ม</span>
     </a>
     <button onclick="switchProfileTab('profile')" id="m-nav-profile" class="flex flex-col items-center gap-1 text-rose-500">
-      <i class="fa-solid fa-id-card text-xl"></i>
-      <span class="text-[10px] font-black">โปรไฟล์</span>
+      <i class="fa-solid fa-id-card text-xl"></i><span class="text-[10px] font-black">โปรไฟล์</span>
     </button>
     <button onclick="switchProfileTab('careers')" id="m-nav-careers" class="flex flex-col items-center gap-1 text-slate-400">
-      <i class="fa-solid fa-user-tie text-xl"></i>
-      <span class="text-[10px] font-black">อาชีพ</span>
+      <i class="fa-solid fa-user-tie text-xl"></i><span class="text-[10px] font-black">อาชีพ</span>
     </button>
     <button onclick="switchProfileTab('qualifications')" id="m-nav-qualifications" class="flex flex-col items-center gap-1 text-slate-400">
-      <i class="fa-solid fa-certificate text-xl"></i>
-      <span class="text-[10px] font-black">คุณสมบัติ</span>
+      <i class="fa-solid fa-certificate text-xl"></i><span class="text-[10px] font-black">คุณสมบัติ</span>
     </button>
   </nav>
 
   <!-- Main Container -->
   <main class="flex-1 max-w-7xl w-full mx-auto px-3 sm:px-6 lg:px-8 py-5">
     
-    <!-- VIEW 1: ข้อมูลตัวละคร & สถานะการเงิน & สายงาน -->
+    <!-- VIEW 1: ข้อมูลตัวละคร & ทรัพยากร & สายงาน -->
     <section id="view-profile" class="space-y-6 animate-pop-in">
       
-      <!-- Banner ตัวละคร & อาชีพ -->
+      <!-- Player Banner -->
       <div class="bg-gradient-to-r from-rose-500/15 via-amber-500/10 to-indigo-500/10 p-5 sm:p-7 rounded-[2.5rem] border border-rose-500/20 card-vibrant-glow flex flex-col md:flex-row items-start md:items-center justify-between gap-5">
         <div class="flex items-center gap-4">
           <div class="w-16 h-16 sm:w-20 sm:h-20 rounded-3xl bg-gradient-to-tr from-rose-500 via-amber-500 to-emerald-400 text-white flex items-center justify-center text-3xl sm:text-4xl shadow-xl icon-vibrant shrink-0">
@@ -252,22 +221,20 @@
         </div>
       </div>
 
-      <!-- สรุปสถานะการเงิน & PV รวม (ใช้ไอคอนชุดใหม่) -->
+      <!-- สรุปสถานะการเงิน (ราคา/เงินสด, PV ไร้ไอคอน, Active แขนยกดอลลาร์, Passive ต้นไม้) -->
       <div class="grid grid-cols-2 lg:grid-cols-4 gap-3.5 sm:gap-4">
         
-        <!-- เงินสดคงเหลือ (เหรียญทอง) -->
         <div class="bg-white dark:bg-slate-800 p-5 rounded-3xl border border-slate-200 dark:border-slate-700 shadow-sm space-y-2">
           <div class="flex items-center justify-between text-slate-400">
-            <span class="text-xs sm:text-sm font-bold flex items-center gap-1.5"><i class="fa-solid fa-coins text-amber-400 text-base"></i>เงินสด</span>
+            <span class="text-xs sm:text-sm font-bold flex items-center gap-1.5 text-amber-500"><i class="fa-solid fa-coins text-amber-400 text-base"></i>เงินสด</span>
             <i class="fa-solid fa-wallet text-amber-400/30 text-2xl"></i>
           </div>
           <div class="flex items-baseline gap-1">
-            <span class="text-lg sm:text-2xl font-black text-amber-400 font-mono" id="statCash">฿0</span>
+            <span class="text-lg sm:text-2xl font-black text-amber-500 font-mono" id="statCash">฿0</span>
           </div>
           <input type="number" id="inputCash" onchange="updatePlayerFinance()" value="50000" class="w-full text-xs font-mono bg-slate-50 dark:bg-slate-900 border rounded-xl p-1.5 outline-none dark:border-slate-700">
         </div>
 
-        <!-- PV รวม (ไม่มีไอคอน แสดง PV ล้วน) -->
         <div class="bg-white dark:bg-slate-800 p-5 rounded-3xl border border-slate-200 dark:border-slate-700 shadow-sm space-y-2">
           <div class="flex items-center justify-between text-slate-400">
             <span class="text-xs sm:text-sm font-black text-cyan-400 tracking-wider">PV รวมทั้งหมด</span>
@@ -279,10 +246,9 @@
           <input type="number" id="inputPersonalPv" onchange="updatePlayerFinance()" value="0" class="w-full text-xs font-mono bg-slate-50 dark:bg-slate-900 border rounded-xl p-1.5 outline-none dark:border-slate-700" placeholder="PV ส่วนตัว">
         </div>
 
-        <!-- Active Income (แขนจับเงิน) -->
         <div class="bg-white dark:bg-slate-800 p-5 rounded-3xl border border-slate-200 dark:border-slate-700 shadow-sm space-y-2">
           <div class="flex items-center justify-between text-slate-400">
-            <span class="text-xs sm:text-sm font-bold flex items-center gap-1.5"><i class="fa-solid fa-hand-holding-dollar text-emerald-400 text-base"></i>Active Income</span>
+            <span class="text-xs sm:text-sm font-bold flex items-center gap-1.5 text-emerald-500"><i class="fa-solid fa-hand-holding-dollar text-emerald-400 text-base"></i>Active Income</span>
             <i class="fa-solid fa-person-running text-emerald-400/30 text-2xl"></i>
           </div>
           <div class="flex items-baseline gap-1">
@@ -292,10 +258,9 @@
           <input type="number" id="inputActiveIncome" onchange="updatePlayerFinance()" value="25000" class="w-full text-xs font-mono bg-slate-50 dark:bg-slate-900 border rounded-xl p-1.5 outline-none dark:border-slate-700">
         </div>
 
-        <!-- Passive Income (ต้นไม้) -->
         <div class="bg-white dark:bg-slate-800 p-5 rounded-3xl border border-slate-200 dark:border-slate-700 shadow-sm space-y-2">
           <div class="flex items-center justify-between text-slate-400">
-            <span class="text-xs sm:text-sm font-bold flex items-center gap-1.5"><i class="fa-solid fa-seedling text-teal-400 text-base"></i>Passive Income</span>
+            <span class="text-xs sm:text-sm font-bold flex items-center gap-1.5 text-teal-400"><i class="fa-solid fa-seedling text-teal-400 text-base"></i>Passive Income</span>
             <i class="fa-solid fa-money-bill-trend-up text-teal-400/30 text-2xl"></i>
           </div>
           <div class="flex items-baseline gap-1">
@@ -307,19 +272,19 @@
 
       </div>
 
-      <!-- ทรัพยากร 3 ช่อง: หัวใจ, เวลา (นาฬิกา), ความรู้ (สมุด) -->
+      <!-- คลังทรัพยากรตัวละคร: สุขภาพ (หัวใจแดง), เวลา (นาฬิกาขาวดำ), ความรู้ (สมุดน้ำเงินขาว) -->
       <div class="bg-white dark:bg-slate-800 p-5 sm:p-6 rounded-3xl border border-slate-200 dark:border-slate-700 shadow-sm space-y-4">
         <h3 class="font-black text-base sm:text-lg text-slate-900 dark:text-white flex items-center gap-2">
-          <i class="fa-solid fa-battery-three-quarters text-emerald-500 text-xl"></i><span>คลังทรัพยากรตัวละคร</span>
+          <i class="fa-solid fa-battery-three-quarters text-emerald-500 text-xl"></i><span>คลังทรัพยากรตัวละคร (0 - 10 แต้ม)</span>
         </h3>
         
         <div class="grid grid-cols-1 sm:grid-cols-3 gap-3.5">
-          <!-- หัวใจ (พลังใจ) -->
+          <!-- สุขภาพ (หัวใจแดง) -->
           <div class="p-4 rounded-2xl bg-rose-50 dark:bg-rose-950/30 border border-rose-200 dark:border-rose-900/50 flex items-center justify-between">
             <div class="flex items-center gap-3">
-              <span class="text-3xl">❤️</span>
+              <i class="fa-solid fa-heart text-red-500 text-3xl"></i>
               <div>
-                <span class="text-xs font-black text-rose-600 dark:text-rose-400 uppercase block">พลังใจ (Heart)</span>
+                <span class="text-xs font-black text-rose-600 dark:text-rose-400 uppercase block">สุขภาพ</span>
                 <span id="displayResHeart" class="text-2xl font-black font-mono text-slate-800 dark:text-white">10</span>
               </div>
             </div>
@@ -329,33 +294,33 @@
             </div>
           </div>
 
-          <!-- เวลา (นาฬิกาฟ้า) -->
-          <div class="p-4 rounded-2xl bg-sky-50 dark:bg-sky-950/30 border border-sky-200 dark:border-sky-900/50 flex items-center justify-between">
+          <!-- เวลา (นาฬิกาขาวดำ) -->
+          <div class="p-4 rounded-2xl bg-slate-100 dark:bg-slate-900/80 border border-slate-300 dark:border-slate-700 flex items-center justify-between">
             <div class="flex items-center gap-3">
-              <i class="fa-solid fa-clock text-sky-400 text-3xl"></i>
+              <i class="fa-solid fa-clock text-slate-800 dark:text-white text-3xl"></i>
               <div>
-                <span class="text-xs font-black text-sky-600 dark:text-sky-400 uppercase block">เวลา (Time)</span>
+                <span class="text-xs font-black text-slate-700 dark:text-slate-300 uppercase block">เวลา</span>
                 <span id="displayResTime" class="text-2xl font-black font-mono text-slate-800 dark:text-white">10</span>
               </div>
             </div>
             <div class="flex items-center gap-1">
-              <button onclick="changeResource('time', -1)" class="w-8 h-8 rounded-xl bg-white dark:bg-slate-800 border text-rose-500 font-black hover:bg-sky-100">-</button>
-              <button onclick="changeResource('time', 1)" class="w-8 h-8 rounded-xl bg-white dark:bg-slate-800 border text-emerald-500 font-black hover:bg-emerald-100">+</button>
+              <button onclick="changeResource('time', -1)" class="w-8 h-8 rounded-xl bg-white dark:bg-slate-800 border text-rose-500 font-black hover:bg-slate-200">-</button>
+              <button onclick="changeResource('time', 1)" class="w-8 h-8 rounded-xl bg-white dark:bg-slate-800 border text-emerald-500 font-black hover:bg-slate-200">+</button>
             </div>
           </div>
 
-          <!-- ความรู้ (สมุดม่วง) -->
-          <div class="p-4 rounded-2xl bg-purple-50 dark:bg-purple-950/30 border border-purple-200 dark:border-purple-900/50 flex items-center justify-between">
+          <!-- ความรู้ (สมุดน้ำเงินขาว) -->
+          <div class="p-4 rounded-2xl bg-blue-50 dark:bg-blue-950/30 border border-blue-200 dark:border-blue-900/50 flex items-center justify-between">
             <div class="flex items-center gap-3">
-              <i class="fa-solid fa-book-bookmark text-violet-400 text-3xl"></i>
+              <i class="fa-solid fa-book-bookmark text-blue-600 dark:text-blue-400 text-3xl"></i>
               <div>
-                <span class="text-xs font-black text-purple-600 dark:text-purple-400 uppercase block">ความรู้ (Knowledge)</span>
+                <span class="text-xs font-black text-blue-600 dark:text-blue-400 uppercase block">ความรู้</span>
                 <span id="displayResKnowledge" class="text-2xl font-black font-mono text-slate-800 dark:text-white">10</span>
               </div>
             </div>
             <div class="flex items-center gap-1">
-              <button onclick="changeResource('knowledge', -1)" class="w-8 h-8 rounded-xl bg-white dark:bg-slate-800 border text-rose-500 font-black hover:bg-purple-100">-</button>
-              <button onclick="changeResource('knowledge', 1)" class="w-8 h-8 rounded-xl bg-white dark:bg-slate-800 border text-emerald-500 font-black hover:bg-emerald-100">+</button>
+              <button onclick="changeResource('knowledge', -1)" class="w-8 h-8 rounded-xl bg-white dark:bg-slate-800 border text-rose-500 font-black hover:bg-blue-100">-</button>
+              <button onclick="changeResource('knowledge', 1)" class="w-8 h-8 rounded-xl bg-white dark:bg-slate-800 border text-emerald-500 font-black hover:bg-blue-100">+</button>
             </div>
           </div>
         </div>
@@ -375,7 +340,7 @@
 
     </section>
 
-    <!-- VIEW 2: จัดการอาชีพ (Careers) -->
+    <!-- VIEW 2: จัดการอาชีพ -->
     <section id="view-careers" class="hidden space-y-4 animate-pop-in">
       <div class="bg-white/90 dark:bg-slate-800/90 backdrop-blur border border-slate-200 dark:border-slate-700 rounded-3xl p-5 shadow-sm flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
         <div>
@@ -392,7 +357,7 @@
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4" id="careersListContainer"></div>
     </section>
 
-    <!-- VIEW 3: คุณสมบัติ (Qualifications) -->
+    <!-- VIEW 3: คุณสมบัติ -->
     <section id="view-qualifications" class="hidden space-y-4 animate-pop-in">
       <div class="bg-white/90 dark:bg-slate-800/90 backdrop-blur border border-slate-200 dark:border-slate-700 rounded-3xl p-5 shadow-sm flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
         <div>
@@ -457,7 +422,6 @@
       fetchProfileDataFromCloud();
     });
 
-    /* Blocking Sync Banner Control */
     function showSyncBanner(title, detail, stepText = "กำลังดำเนินการ...", percent = 20) {
       const banner = document.getElementById('syncBlockingBanner');
       document.getElementById('syncBannerTitle').innerText = title;
@@ -508,7 +472,6 @@
       document.getElementById('statCash').innerText = `฿${(profileData.cash || 0).toLocaleString()}`;
       document.getElementById('inputCash').value = profileData.cash || 0;
 
-      // PV รวม (ส่วนตัว + 6 สายงาน)
       const legsTotalPv = profileData.legs.reduce((acc, l) => acc + (l.pv || 0), 0);
       const totalPv = (profileData.personalPv || 0) + legsTotalPv;
       document.getElementById('statTotalPv').innerText = totalPv.toLocaleString();
@@ -520,7 +483,7 @@
       document.getElementById('statPassiveIncome').innerText = `฿${(profileData.passiveIncome || 0).toLocaleString()}`;
       document.getElementById('inputPassiveIncome').value = profileData.passiveIncome || 0;
 
-      // ทรัพยากร
+      // ค่าพลังทรัพยากรตัวละคร: สุขภาพ, เวลา, ความรู้
       document.getElementById('displayResHeart').innerText = profileData.resources?.heart || 0;
       document.getElementById('displayResTime').innerText = profileData.resources?.time || 0;
       document.getElementById('displayResKnowledge').innerText = profileData.resources?.knowledge || 0;
@@ -609,7 +572,7 @@
 
     function changeResource(type, delta) {
       if (!profileData.resources) profileData.resources = { heart: 10, time: 10, knowledge: 10 };
-      profileData.resources[type] = Math.max(0, (profileData.resources[type] || 0) + delta);
+      profileData.resources[type] = Math.min(10, Math.max(0, (profileData.resources[type] || 0) + delta));
       saveProfileLocalCache();
       renderAllProfileUI();
     }
@@ -631,7 +594,6 @@
       showToast("รีเซ็ตสถานะเรียบร้อยแล้ว");
     }
 
-    /* Cloud Sync Engine */
     async function fetchProfileDataFromCloud() {
       if (!GOOGLE_SHEET_API_URL || GOOGLE_SHEET_API_URL.includes("PLACEHOLDER")) return;
       try {
