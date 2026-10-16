@@ -5,18 +5,11 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
   <title>Random Data Card Hub</title>
 
-  <!-- Google Fonts: Prompt & Inter -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Prompt:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
-
-  <!-- Font Awesome Icons 6.5 -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-
-  <!-- Tailwind CSS CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
-
-  <!-- Canvas Confetti -->
   <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.2/dist/confetti.browser.min.js"></script>
 
   <script>
@@ -71,46 +64,38 @@
       --fluid-title: clamp(1.35rem, 2.5vw + 0.8rem, 2.25rem);
       --fluid-body: clamp(0.92rem, 0.8vw + 0.75rem, 1.15rem);
     }
-
     html {
       font-size: 16px;
       line-height: 1.5;
       -webkit-text-size-adjust: 100%;
     }
-
     body {
       touch-action: manipulation;
       -webkit-tap-highlight-color: transparent;
       background-color: #F8FAFC;
       font-size: var(--fluid-body);
     }
-
     .dark body {
       background-color: #080E1A;
     }
-
     *, ::before, ::after {
       box-sizing: border-box;
       word-break: break-word;
       overflow-wrap: break-word;
     }
-
     .responsive-title {
       font-size: var(--fluid-title) !important;
       line-height: 1.35 !important;
     }
-
     .card-vibrant-glow {
       box-shadow: 0 10px 30px -5px rgba(0, 0, 0, 0.08), 0 0 0 1px rgba(226, 232, 240, 0.8);
     }
     .dark .card-vibrant-glow {
       box-shadow: 0 15px 35px -8px rgba(0, 0, 0, 0.6), 0 0 0 1px rgba(51, 65, 85, 0.6);
     }
-
     .btn-theme-action {
       background: var(--theme-btn-gradient);
     }
-
     .icon-vibrant {
       filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.15));
     }
@@ -200,7 +185,7 @@
   <!-- Main Container -->
   <main class="flex-1 max-w-7xl w-full mx-auto px-3 sm:px-6 lg:px-8 py-5">
     
-    <!-- VIEW 1: หมวดหมู่การ์ด (หน้าแรก) -->
+    <!-- VIEW 1: หมวดหมู่การ์ด -->
     <section id="view-categories" class="space-y-6 animate-pop-in">
       <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 bg-gradient-to-r from-rose-500/10 via-amber-500/10 to-transparent p-4 sm:p-5 rounded-3xl border border-rose-500/20">
         <div>
@@ -256,7 +241,7 @@
       </div>
     </section>
 
-    <!-- VIEW 3: คลังข้อมูลการ์ด (สลับโหมดการ์ด vs ตารางได้) -->
+    <!-- VIEW 3: คลังข้อมูลการ์ด -->
     <section id="view-data" class="hidden space-y-5 animate-pop-in">
       <div class="bg-white/90 dark:bg-slate-800/90 backdrop-blur border border-slate-200 dark:border-slate-700 rounded-3xl p-4 sm:p-5 shadow-sm flex flex-col lg:flex-row items-stretch lg:items-center justify-between gap-3">
         <div class="flex flex-wrap items-center gap-2.5 flex-1">
@@ -288,10 +273,10 @@
         </div>
       </div>
 
-      <!-- โหมดการ์ด (Card Grid View) -->
+      <!-- โหมดการ์ด -->
       <div id="cardsGridContainer" class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-3.5 sm:gap-4.5"></div>
 
-      <!-- โหมดตารางกระชับ (Compact Table View) -->
+      <!-- โหมดตารางกระชับ -->
       <div id="tableCompactContainer" class="hidden bg-white dark:bg-slate-800/90 border border-slate-200 dark:border-slate-700 rounded-3xl shadow-sm overflow-hidden">
         <div class="overflow-x-auto">
           <table class="w-full text-left text-xs sm:text-sm border-collapse">
@@ -305,7 +290,7 @@
                 <th class="py-3 px-2.5 text-red-500 text-right min-w-[85px]"><i class="fa-solid fa-coins mr-1"></i>ราคา</th>
                 <th class="py-3 px-2.5 text-emerald-500 text-right min-w-[90px]"><i class="fa-solid fa-hand-holding-dollar mr-1"></i>Active</th>
                 <th class="py-3 px-2.5 text-teal-400 text-right min-w-[90px]"><i class="fa-solid fa-seedling mr-1"></i>Passive</th>
-                <th class="py-3 px-3 min-w-[180px]">ทรัพยากร (ใช้ / ได้)</th>
+                <th class="py-3 px-3 min-w-[190px]">ทรัพยากร (ใช้ / ได้)</th>
                 <th class="py-3 px-2.5 text-center min-w-[90px]">หมวดหมู่</th>
                 <th class="py-3 px-2.5 text-center w-28 sticky right-0 bg-slate-50 dark:bg-slate-900 shadow-l">จัดการ</th>
               </tr>
@@ -352,27 +337,22 @@
     </a>
   </nav>
 
-  <!-- =========================================================================
-       MODAL แสดงการ์ดที่สุ่มได้ (พร้อมปุ่มจำลองผลกระทบ + ปุ่มรับการ์ด/ไม่รับการ์ด)
-       ========================================================================= -->
+  <!-- MODAL สุ่มการ์ด -->
   <div id="drawResultModal" class="hidden fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-md flex items-center justify-center p-3 sm:p-4 overflow-y-auto">
     <div class="relative max-w-sm sm:max-w-md w-full bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-[2.5rem] p-5 sm:p-7 text-center shadow-2xl animate-card-flip space-y-4 my-auto">
       
-      <!-- แถบบน: หมวดหมู่ + สายงาน + ปุ่มเปิด/ปิดจำลองข้อมูล (มุมขวาบน) -->
       <div class="flex items-center justify-between border-b pb-3 border-slate-100 dark:border-slate-700 gap-2">
         <div class="flex items-center gap-2">
           <span id="drawResultCategoryBadge" class="text-xs sm:text-sm font-black px-3.5 py-1 rounded-full border shadow-sm">หมวดหมู่</span>
           <span id="drawResultTargetBadge" class="text-xs sm:text-sm font-bold text-indigo-500 bg-indigo-50 dark:bg-indigo-950/60 px-2.5 py-0.5 rounded-xl border border-indigo-200 dark:border-indigo-800">ส่วนตัว</span>
         </div>
-        
-        <!-- ปุ่มจำลองข้อมูลมุมขวาบน -->
         <button type="button" id="toggleSimulationBtn" onclick="toggleSimulationPanel()" title="จำลองผลกระทบเมื่อรับการ์ด" class="px-2.5 py-1 rounded-xl text-xs font-black bg-purple-50 dark:bg-purple-950/60 text-purple-600 dark:text-purple-300 border border-purple-200 dark:border-purple-800 flex items-center gap-1.5 shadow-2xs hover:scale-105 active:scale-95 transition">
           <i class="fa-solid fa-calculator text-amber-500"></i>
           <span>จำลองผล</span>
         </button>
       </div>
 
-      <!-- ส่วนจำลองข้อมูล (ซ่อน/แสดง ตามการกดปุ่มมุมขวาบน) -->
+      <!-- Simulation Panel -->
       <div id="simulationPanel" class="hidden bg-slate-900/95 text-white p-3.5 rounded-2xl border border-purple-500/40 text-left space-y-2 animate-pop-in">
         <div class="flex items-center justify-between border-b border-slate-700 pb-1.5">
           <span class="text-xs font-black text-amber-400 flex items-center gap-1.5">
@@ -382,13 +362,11 @@
         </div>
 
         <div class="grid grid-cols-2 gap-2 text-xs font-mono">
-          <!-- สิ่งที่ต้องเสีย -->
           <div class="bg-slate-800/80 p-2 rounded-xl border border-rose-500/30 space-y-1">
             <span class="text-[10px] font-sans font-black text-rose-400 block border-b border-slate-700 pb-0.5">🔻 ต้องเสีย (Cost)</span>
             <div id="simDeductCash" class="text-red-400">เงินสด: -฿0</div>
             <div id="simDeductRes" class="text-slate-300 text-[11px]">-</div>
           </div>
-          <!-- สิ่งที่จะได้รับ -->
           <div class="bg-slate-800/80 p-2 rounded-xl border border-emerald-500/30 space-y-1">
             <span class="text-[10px] font-sans font-black text-emerald-400 block border-b border-slate-700 pb-0.5">🔺 ได้รับ (Reward)</span>
             <div id="simGainPv" class="text-cyan-400">PV: +0</div>
@@ -397,7 +375,6 @@
         </div>
       </div>
 
-      <!-- การ์ดและตัวเลข -->
       <div class="space-y-2">
         <div id="drawResultIconBox" class="w-16 h-16 sm:w-20 sm:h-20 rounded-3xl mx-auto flex items-center justify-center text-3xl sm:text-4xl text-white shadow-xl btn-theme-action icon-vibrant">
           <i id="drawResultIcon" class="fa-solid fa-star"></i>
@@ -408,7 +385,6 @@
         </div>
       </div>
 
-      <!-- สรุปตัวเลข PV, ราคาแดง, Active, Passive -->
       <div class="grid grid-cols-2 gap-2.5 bg-slate-50 dark:bg-slate-900/70 p-3 rounded-2xl border border-slate-200 dark:border-slate-700 text-xs sm:text-sm font-mono">
         <div class="text-left">PV: <strong id="drawResultPv" class="text-cyan-400 text-base sm:text-lg font-black block">0</strong></div>
         <div class="text-right flex flex-col items-end">
@@ -425,7 +401,6 @@
         </div>
       </div>
       
-      <!-- ขีดพลังทรัพยากร -->
       <div id="drawResultResourceSection" class="p-3 bg-slate-50 dark:bg-slate-900/60 rounded-2xl border border-slate-200 dark:border-slate-700 space-y-2 text-left">
         <div class="space-y-1">
           <div class="flex items-center justify-between text-xs font-black text-rose-500">
@@ -441,18 +416,15 @@
         </div>
       </div>
 
-      <!-- ข้อความแจ้งเตือนกรณีทรัพยากรไม่พอ -->
       <div id="insufficientWarningBox" class="hidden p-2 rounded-xl bg-rose-50 dark:bg-rose-950/60 border border-rose-300 dark:border-rose-800 text-rose-600 dark:text-rose-300 text-xs font-bold text-center">
         <i class="fa-solid fa-triangle-exclamation mr-1 text-rose-500"></i>
         <span id="insufficientWarningText">ทรัพยากรของคุณไม่เพียงพอสำหรับการรับการ์ดใบนี้</span>
       </div>
 
-      <!-- ปุ่มรับการ์ด กับ ไม่รับการ์ด -->
       <div class="grid grid-cols-2 gap-2.5 pt-1">
         <button type="button" onclick="closeDrawResultModal()" class="w-full py-3 rounded-2xl text-slate-700 dark:text-slate-200 font-black text-sm bg-slate-100 hover:bg-slate-200 dark:bg-slate-700 dark:hover:bg-slate-600 transition active:scale-95 shadow-sm">
           ไม่รับการ์ด
         </button>
-
         <button type="button" id="claimCardBtn" onclick="claimDrawnCard()" class="w-full py-3 rounded-2xl text-white font-black text-sm btn-theme-action shadow-lg hover:scale-[1.02] active:scale-95 transition disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100">
           รับการ์ด
         </button>
@@ -525,17 +497,17 @@
             <div class="space-y-2">
               <span class="text-rose-500 font-black">ต้องใช้ (Cost 0-10)</span>
               <div class="flex gap-2 items-center font-mono text-xs">
-                <span title="หัวใจ" class="text-base">❤️</span><input type="number" min="0" max="10" id="costHeart" value="0" class="w-14 p-2 border rounded-xl text-right dark:bg-slate-800 dark:border-slate-700">
-                <span title="เวลา" class="text-base"><i class="fa-solid fa-clock text-sky-400"></i></span><input type="number" min="0" max="10" id="costTime" value="0" class="w-14 p-2 border rounded-xl text-right dark:bg-slate-800 dark:border-slate-700">
-                <span title="ความรู้" class="text-base"><i class="fa-solid fa-book-bookmark text-violet-400"></i></span><input type="number" min="0" max="10" id="costKnowledge" value="0" class="w-14 p-2 border rounded-xl text-right dark:bg-slate-800 dark:border-slate-700">
+                <span title="สุขภาพ" class="text-base"><i class="fa-solid fa-heart text-red-500"></i></span><input type="number" min="0" max="10" id="costHeart" value="0" class="w-14 p-2 border rounded-xl text-right dark:bg-slate-800 dark:border-slate-700">
+                <span title="เวลา" class="text-base"><i class="fa-solid fa-clock text-slate-800 dark:text-white"></i></span><input type="number" min="0" max="10" id="costTime" value="0" class="w-14 p-2 border rounded-xl text-right dark:bg-slate-800 dark:border-slate-700">
+                <span title="ความรู้" class="text-base"><i class="fa-solid fa-book-bookmark text-blue-600 dark:text-blue-400"></i></span><input type="number" min="0" max="10" id="costKnowledge" value="0" class="w-14 p-2 border rounded-xl text-right dark:bg-slate-800 dark:border-slate-700">
               </div>
             </div>
             <div class="space-y-2">
               <span class="text-emerald-500 font-black">ได้รับ (Reward 0-10)</span>
               <div class="flex gap-2 items-center font-mono text-xs">
-                <span title="หัวใจ" class="text-base">❤️</span><input type="number" min="0" max="10" id="rewardHeart" value="0" class="w-14 p-2 border rounded-xl text-right dark:bg-slate-800 dark:border-slate-700">
-                <span title="เวลา" class="text-base"><i class="fa-solid fa-clock text-sky-400"></i></span><input type="number" min="0" max="10" id="rewardTime" value="0" class="w-14 p-2 border rounded-xl text-right dark:bg-slate-800 dark:border-slate-700">
-                <span title="ความรู้" class="text-base"><i class="fa-solid fa-book-bookmark text-violet-400"></i></span><input type="number" min="0" max="10" id="rewardKnowledge" value="0" class="w-14 p-2 border rounded-xl text-right dark:bg-slate-800 dark:border-slate-700">
+                <span title="สุขภาพ" class="text-base"><i class="fa-solid fa-heart text-red-500"></i></span><input type="number" min="0" max="10" id="rewardHeart" value="0" class="w-14 p-2 border rounded-xl text-right dark:bg-slate-800 dark:border-slate-700">
+                <span title="เวลา" class="text-base"><i class="fa-solid fa-clock text-slate-800 dark:text-white"></i></span><input type="number" min="0" max="10" id="rewardTime" value="0" class="w-14 p-2 border rounded-xl text-right dark:bg-slate-800 dark:border-slate-700">
+                <span title="ความรู้" class="text-base"><i class="fa-solid fa-book-bookmark text-blue-600 dark:text-blue-400"></i></span><input type="number" min="0" max="10" id="rewardKnowledge" value="0" class="w-14 p-2 border rounded-xl text-right dark:bg-slate-800 dark:border-slate-700">
               </div>
             </div>
           </div>
@@ -705,8 +677,8 @@
     let currentDbVersionName = "v8.0.0";
     let dbSnapshots = [];
     let isCloudSyncedSession = false;
-    let dataViewMode = "cards"; // "cards" หรือ "table"
-    let currentDrawnCard = null; // เก็บการ์ดที่เพิ่งสุ่มได้สำหรับจำลองและรับการ์ด
+    let dataViewMode = "cards";
+    let currentDrawnCard = null;
 
     function getNextSemVer(vStr, type = "patch") {
       const clean = String(vStr || "v8.0.0").replace(/^v/i, "");
@@ -959,6 +931,7 @@
       `;
     }
 
+    /* การแสดงผลหลัก: แถบค่าพลัง 0 - 10 ช่อง พร้อมไอคอนและคำบรรยายมาตรฐานใหม่ */
     function renderResourceMeterGroup(res, isCost = true) {
       if (!res) res = { heart: 0, time: 0, knowledge: 0 };
       const activeColor = isCost ? "bg-rose-500 shadow-[0_0_6px_rgba(244,63,94,0.6)]" : "bg-emerald-500 shadow-[0_0_6px_rgba(16,185,129,0.6)]";
@@ -970,21 +943,24 @@
           <div class="flex items-center justify-between text-[11px] font-black ${titleColor}">
             <span>${badgeTitle}</span>
           </div>
+          <!-- สุขภาพ: หัวใจสีแดง -->
           <div class="flex items-center justify-between gap-1.5 text-xs">
-            <span class="flex items-center gap-1 text-slate-800 dark:text-slate-200 font-bold shrink-0">
-              <span class="text-sm">❤️</span> ใจ
+            <span class="flex items-center gap-1.5 text-slate-800 dark:text-slate-200 font-bold shrink-0">
+              <i class="fa-solid fa-heart text-red-500 text-sm"></i> สุขภาพ
             </span>
             ${renderPowerSegmentBar(res.heart, activeColor)}
           </div>
+          <!-- เวลา: นาฬิกาสีขาว/ดำ -->
           <div class="flex items-center justify-between gap-1.5 text-xs">
-            <span class="flex items-center gap-1 text-slate-800 dark:text-slate-200 font-bold shrink-0">
-              <i class="fa-solid fa-clock text-sky-500 text-xs"></i> เวลา
+            <span class="flex items-center gap-1.5 text-slate-800 dark:text-slate-200 font-bold shrink-0">
+              <i class="fa-solid fa-clock text-slate-800 dark:text-white text-xs"></i> เวลา
             </span>
             ${renderPowerSegmentBar(res.time, activeColor)}
           </div>
+          <!-- ความรู้: สมุดสีน้ำเงิน/ขาว -->
           <div class="flex items-center justify-between gap-1.5 text-xs">
-            <span class="flex items-center gap-1 text-slate-800 dark:text-slate-200 font-bold shrink-0">
-              <i class="fa-solid fa-book-bookmark text-violet-500 text-xs"></i> ความรู้
+            <span class="flex items-center gap-1.5 text-slate-800 dark:text-slate-200 font-bold shrink-0">
+              <i class="fa-solid fa-book-bookmark text-blue-600 dark:text-blue-400 text-xs"></i> ความรู้
             </span>
             ${renderPowerSegmentBar(res.knowledge, activeColor)}
           </div>
@@ -992,30 +968,29 @@
       `;
     }
 
+    /* การแสดงผลแบบย่อ: แสดงแค่ไอคอนกับตัวเลข */
     function renderResourceCompactInline(cost, reward) {
       const c = cost || { heart: 0, time: 0, knowledge: 0 };
       const r = reward || { heart: 0, time: 0, knowledge: 0 };
       return `
         <div class="space-y-1 text-xs font-mono">
-          <div class="flex items-center gap-1.5 text-rose-500 font-bold">
+          <div class="flex items-center gap-2 text-rose-500 font-bold">
             <span class="text-[10px] uppercase font-sans font-black bg-rose-50 dark:bg-rose-950/60 px-1 rounded">ใช้</span>
-            <span>❤️${c.heart || 0}</span>
-            <span><i class="fa-solid fa-clock text-[10px] text-sky-400"></i>${c.time || 0}</span>
-            <span><i class="fa-solid fa-book-bookmark text-[10px] text-violet-400"></i>${c.knowledge || 0}</span>
+            <span class="flex items-center gap-0.5"><i class="fa-solid fa-heart text-red-500 text-[10px]"></i>${c.heart || 0}</span>
+            <span class="flex items-center gap-0.5"><i class="fa-solid fa-clock text-slate-800 dark:text-white text-[10px]"></i>${c.time || 0}</span>
+            <span class="flex items-center gap-0.5"><i class="fa-solid fa-book-bookmark text-blue-600 dark:text-blue-400 text-[10px]"></i>${c.knowledge || 0}</span>
           </div>
-          <div class="flex items-center gap-1.5 text-emerald-500 font-bold">
+          <div class="flex items-center gap-2 text-emerald-500 font-bold">
             <span class="text-[10px] uppercase font-sans font-black bg-emerald-50 dark:bg-emerald-950/60 px-1 rounded">ได้</span>
-            <span>❤️${r.heart || 0}</span>
-            <span><i class="fa-solid fa-clock text-[10px] text-sky-400"></i>${r.time || 0}</span>
-            <span><i class="fa-solid fa-book-bookmark text-[10px] text-violet-400"></i>${r.knowledge || 0}</span>
+            <span class="flex items-center gap-0.5"><i class="fa-solid fa-heart text-red-500 text-[10px]"></i>${r.heart || 0}</span>
+            <span class="flex items-center gap-0.5"><i class="fa-solid fa-clock text-slate-800 dark:text-white text-[10px]"></i>${r.time || 0}</span>
+            <span class="flex items-center gap-0.5"><i class="fa-solid fa-book-bookmark text-blue-600 dark:text-blue-400 text-[10px]"></i>${r.knowledge || 0}</span>
           </div>
         </div>
       `;
     }
 
-    /* ------------------------------------------------------------------------
-       เรนเดอร์คลังข้อมูล (รองรับทั้งโหมดการ์ดและโหมดตารางกระชับ)
-       ------------------------------------------------------------------------ */
+    /* เรนเดอร์คลังข้อมูล */
     function renderDataTable() {
       const query = (document.getElementById('searchInput')?.value || '').toLowerCase().trim();
       const filterCat = document.getElementById('tableCategoryFilter')?.value || 'ALL';
@@ -1104,6 +1079,7 @@
                   </div>
                 </div>
 
+                <!-- การแสดงผลหลัก: แถบค่าพลัง 0 - 10 ช่อง -->
                 <div class="grid grid-cols-2 gap-2 bg-white/95 dark:bg-slate-900/95 p-3 rounded-2xl border border-slate-300/80 dark:border-slate-800 shadow-xs">
                   <div>${renderResourceMeterGroup(item.cost, true)}</div>
                   <div class="border-l border-slate-200 dark:border-slate-800 pl-2.5">${renderResourceMeterGroup(item.reward, false)}</div>
@@ -1126,7 +1102,7 @@
         }
       }
 
-      // 2. โหมดตารางกระชับ
+      // 2. โหมดตารางกระชับ (การแสดงผลแบบย่อ: ไอคอน + ตัวเลข)
       const compactTbody = document.getElementById('tableBodyCompact');
       if (compactTbody) {
         compactTbody.innerHTML = filtered.map((item, idx) => `
@@ -1192,9 +1168,6 @@
       resetDrawPool();
     }
 
-    /* ------------------------------------------------------------------------
-       สุ่มการ์ด & ดึงข้อมูลโปรไฟล์มาเตรียมจำลองผลกระทบ
-       ------------------------------------------------------------------------ */
     function triggerRandomDraw() {
       let availableCards = (selectedCategory === "ALL") ? [...items] : items.filter(i => i.category === selectedCategory);
 
@@ -1212,7 +1185,7 @@
       }
 
       const drawnCard = availableCards[Math.floor(Math.random() * availableCards.length)];
-      currentDrawnCard = drawnCard; // บันทึกการ์ดใบที่สุ่มได้
+      currentDrawnCard = drawnCard;
 
       if (isUniqueDrawMode) {
         drawPool = drawPool.filter(id => id !== drawnCard.id);
@@ -1235,7 +1208,6 @@
       confetti({ particleCount: 60, spread: 80, origin: { y: 0.6 } });
     }
 
-    /* โหลดข้อมูลโปรไฟล์ผู้เล่น */
     function getPlayerProfileData() {
       try {
         const raw = localStorage.getItem('rnd_cache_player_profile');
@@ -1265,14 +1237,12 @@
       } catch (e) {}
     }
 
-    /* สลับเปิด/ปิด พาเนลจำลองผลกระทบ */
     function toggleSimulationPanel() {
       const panel = document.getElementById('simulationPanel');
       if (!panel) return;
       panel.classList.toggle('hidden');
     }
 
-    /* แสดง Modal สุ่มการ์ด พร้อมคำนวณความสามารถในการจ่าย */
     function showDrawResultModal(card) {
       const meta = getCategoryMeta(card.category);
       document.getElementById('drawResultTitle').innerText = card.title;
@@ -1294,16 +1264,12 @@
       document.getElementById('drawResultCostBars').innerHTML = renderResourceMeterGroup(card.cost, true);
       document.getElementById('drawResultRewardBars').innerHTML = renderResourceMeterGroup(card.reward, false);
 
-      // ซ่อนพาเนลจำลองไว้ก่อนเป็นค่าเริ่มต้น
       document.getElementById('simulationPanel').classList.add('hidden');
-
-      // ตรวจสอบความพร้อมของทรัพยากรผู้เล่น
       checkCardAffordability(card);
 
       document.getElementById('drawResultModal').classList.remove('hidden');
     }
 
-    /* ตรวจสอบว่าผู้เล่นจ่ายไหวหรือไม่ พร้อมสร้างข้อมูลจำลอง */
     function checkCardAffordability(card) {
       const player = getPlayerProfileData();
       const pCash = player.cash || 0;
@@ -1313,15 +1279,14 @@
 
       let shortageReasons = [];
       if (pCash < cPrice) shortageReasons.push(`เงินสดขาดอีก ฿${(cPrice - pCash).toLocaleString()}`);
-      if (pRes.heart < (cCost.heart || 0)) shortageReasons.push(`พลังใจขาดอีก ${(cCost.heart - pRes.heart)} แต้ม`);
+      if (pRes.heart < (cCost.heart || 0)) shortageReasons.push(`สุขภาพขาดอีก ${(cCost.heart - pRes.heart)} แต้ม`);
       if (pRes.time < (cCost.time || 0)) shortageReasons.push(`เวลาขาดอีก ${(cCost.time - pRes.time)} แต้ม`);
       if (pRes.knowledge < (cCost.knowledge || 0)) shortageReasons.push(`ความรู้ขาดอีก ${(cCost.knowledge - pRes.knowledge)} แต้ม`);
 
       const canAfford = shortageReasons.length === 0;
 
-      // อัปเดตพาเนลจำลอง
       document.getElementById('simDeductCash').innerText = `เงินสด: -฿${cPrice.toLocaleString()} (เหลือ ฿${Math.max(0, pCash - cPrice).toLocaleString()})`;
-      document.getElementById('simDeductRes').innerHTML = `❤️-${cCost.heart || 0} | ⏳-${cCost.time || 0} | 💡-${cCost.knowledge || 0}`;
+      document.getElementById('simDeductRes').innerHTML = `<i class="fa-solid fa-heart text-red-500"></i>-${cCost.heart || 0} | <i class="fa-solid fa-clock text-slate-800 dark:text-white"></i>-${cCost.time || 0} | <i class="fa-solid fa-book-bookmark text-blue-600 dark:text-blue-400"></i>-${cCost.knowledge || 0}`;
       document.getElementById('simGainPv').innerText = `PV: +${(card.pv || 0).toLocaleString()} (${card.targetLeg ? 'สาย ' + card.targetLeg : 'ส่วนตัว'})`;
       document.getElementById('simGainIncome').innerText = `+Act ฿${(card.activeIncome || 0).toLocaleString()} | +Pass ฿${(card.passiveIncome || 0).toLocaleString()}`;
 
@@ -1344,13 +1309,11 @@
       }
     }
 
-    /* กดรับการ์ด (หักทรัพยากร & เพิ่มสถิติโปรไฟล์จริง) */
     function claimDrawnCard() {
       if (!currentDrawnCard) return;
       const card = currentDrawnCard;
       const player = getPlayerProfileData();
 
-      // ตรวจสอบความปลอดภัยซ้ำ
       const pCash = player.cash || 0;
       const pRes = player.resources || { heart: 0, time: 0, knowledge: 0 };
       const cCost = card.cost || { heart: 0, time: 0, knowledge: 0 };
@@ -1362,7 +1325,6 @@
         return;
       }
 
-      // ดำเนินการหักและเพิ่มทรัพยากร
       player.cash = pCash - cPrice;
       player.resources = {
         heart: Math.min(10, Math.max(0, pRes.heart - (cCost.heart || 0) + (cReward.heart || 0))),
@@ -1370,7 +1332,6 @@
         knowledge: Math.min(10, Math.max(0, pRes.knowledge - (cCost.knowledge || 0) + (cReward.knowledge || 0)))
       };
 
-      // เพิ่ม PV
       if (card.targetLeg) {
         const targetLegObj = player.legs.find(l => l.id === card.targetLeg);
         if (targetLegObj) {
@@ -1380,13 +1341,10 @@
         player.personalPv = (player.personalPv || 0) + (card.pv || 0);
       }
 
-      // เพิ่มรายได้
       player.activeIncome = (player.activeIncome || 0) + (card.activeIncome || 0);
       player.passiveIncome = (player.passiveIncome || 0) + (card.passiveIncome || 0);
 
-      // บันทึกลงแคช
       savePlayerProfileData(player);
-
       closeDrawResultModal();
       showToast(`รับการ์ด "${card.title}" เรียบร้อย! อัปเดตสถิติแล้ว 🚀`);
       confetti({ particleCount: 70, spread: 80, origin: { y: 0.6 } });
@@ -1708,7 +1666,7 @@
       if (syncIcon) syncIcon.classList.add('animate-spin');
 
       if (isManual) {
-        showSyncBanner("กำลังดึงข้อมูลจาก Cloud", "กำลังเชื่อมต่อ Google Sheets...", "ขั้นตอน 1/2: กำลังดาวน์โหลด", 35);
+        showSyncBanner("กำลังซิงก์ข้อมูลกับ Cloud", "กำลังเชื่อมต่อ Google Sheets...", "ขั้นตอน 1/2: กำลังดาวน์โหลด", 35);
       }
 
       try {
@@ -1787,7 +1745,6 @@
       }).join('');
     }
 
-    /* Modal Navigation */
     function openSettingModal() { document.getElementById('settingModal').classList.remove('hidden'); }
     function closeSettingModal() { document.getElementById('settingModal').classList.add('hidden'); }
     function switchSettingTab(tab) {
@@ -1800,7 +1757,6 @@
     }
     function closeCategoryModal() { document.getElementById('categoryModal').classList.add('hidden'); }
 
-    /* จัดการหมวดหมู่ */
     function renderCategoryModalList() {
       const container = document.getElementById('categoryListContainer');
       if (!container) return;
@@ -1897,7 +1853,6 @@
       showToast('ลบหมวดหมู่เรียบร้อยแล้ว');
     }
 
-    /* Backup & Export */
     function exportDatabaseToCSV() {
       if (!items || items.length === 0) {
         showToast('ไม่มีข้อมูลการ์ดในระบบสำหรับส่งออก');
