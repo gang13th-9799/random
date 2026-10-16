@@ -95,6 +95,11 @@
       overflow-wrap: break-word;
     }
 
+    .responsive-title {
+      font-size: var(--fluid-title) !important;
+      line-height: 1.35 !important;
+    }
+
     .card-vibrant-glow {
       box-shadow: 0 10px 30px -5px rgba(0, 0, 0, 0.08), 0 0 0 1px rgba(226, 232, 240, 0.8);
     }
@@ -157,8 +162,8 @@
             <span class="font-black text-xl sm:text-2xl tracking-tight text-slate-900 dark:text-white">MY PROFILE</span>
             <span id="accountTypeBadge" class="text-[11px] font-black px-2 py-0.5 rounded-full text-white uppercase tracking-wider btn-theme-action shadow-sm">GUEST</span>
           </div>
-          <p id="currentUserAccountText" class="text-xs text-slate-500 dark:text-slate-400 font-semibold truncate max-w-[180px] sm:max-w-xs">
-            กำลังโหลดข้อมูล...
+          <p id="cloudSyncStatus" class="text-xs text-slate-500 dark:text-slate-400 font-semibold flex items-center gap-1.5 pt-0.5">
+            <i class="fa-solid fa-circle text-[9px] text-emerald-400"></i> ออนไลน์พร้อมใช้งาน
           </p>
         </div>
       </div>
@@ -304,7 +309,7 @@
         </div>
       </div>
 
-      <!-- คลังทรัพยากรตัวละคร (ดึงค่าเริ่มต้นแยกตามอาชีพ) -->
+      <!-- คลังทรัพยากรตัวละคร -->
       <div class="bg-white dark:bg-slate-800 p-5 sm:p-6 rounded-3xl border border-slate-200 dark:border-slate-700 shadow-sm space-y-4">
         <h3 class="font-black text-base sm:text-lg text-slate-900 dark:text-white flex items-center gap-2">
           <i class="fa-solid fa-battery-three-quarters text-emerald-500 text-xl"></i><span>คลังทรัพยากรตัวละคร (ค่าพลัง 1 - 10)</span>
@@ -339,41 +344,111 @@
 
     </section>
 
-    <!-- VIEW 2: จัดการอาชีพ (เฉพาะ ADMIN) -->
+    <!-- VIEW 2: จัดการอาชีพ (เฉพาะ ADMIN - รองรับสลับมุมมอง การ์ด vs ตาราง และปุ่มเรียงลำดับ) -->
     <section id="view-careers" class="hidden space-y-4 animate-pop-in">
-      <div class="bg-white/90 dark:bg-slate-800/90 backdrop-blur border border-slate-200 dark:border-slate-700 rounded-3xl p-5 shadow-sm flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
+      <div class="bg-white/90 dark:bg-slate-800/90 backdrop-blur border border-slate-200 dark:border-slate-700 rounded-3xl p-4 sm:p-5 shadow-sm flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
         <div>
           <h3 class="font-black text-lg text-slate-900 dark:text-white flex items-center gap-2">
             <i class="fa-solid fa-user-tie text-purple-500 text-xl"></i><span>ฐานข้อมูลอาชีพหลัก (Master Careers)</span>
           </h3>
-          <p class="text-xs text-slate-400 font-medium">กำหนดเงินเดือน รายจ่าย เงินสด และทรัพยากรเริ่มต้น (สุขภาพ เวลา ความรู้) แยกตามแต่ละอาชีพ</p>
+          <p class="text-xs text-slate-400 font-medium">กำหนดเงินเดือน รายจ่าย เงินสด และทรัพยากรเริ่มต้น (สุขภาพ เวลา ความรู้) พร้อมเรียงลำดับได้</p>
         </div>
-        <button id="addCareerBtn" onclick="openAddCareerModal()" class="px-5 py-2.5 rounded-2xl text-white font-black text-xs sm:text-sm btn-theme-action shadow hover:scale-105 transition flex items-center gap-1.5">
-          <i class="fa-solid fa-plus-circle"></i><span>เพิ่มอาชีพหลัก</span>
-        </button>
+        
+        <div class="flex items-center gap-2.5 self-stretch sm:self-auto justify-end">
+          <!-- ปุ่มสลับมุมมอง การ์ด vs ตาราง ของอาชีพ -->
+          <div class="inline-flex p-1 bg-slate-100 dark:bg-slate-900/80 rounded-2xl border border-slate-200 dark:border-slate-700">
+            <button type="button" id="careerModeCardBtn" onclick="setCareerViewMode('cards')" class="px-3 py-1.5 rounded-xl text-xs font-black transition flex items-center gap-1.5 bg-white dark:bg-slate-800 text-purple-500 shadow-xs">
+              <i class="fa-solid fa-table-cells-large"></i><span>การ์ด</span>
+            </button>
+            <button type="button" id="careerModeTableBtn" onclick="setCareerViewMode('table')" class="px-3 py-1.5 rounded-xl text-xs font-black transition flex items-center gap-1.5 text-slate-500 dark:text-slate-400 hover:text-slate-800 dark:hover:text-white">
+              <i class="fa-solid fa-table-list"></i><span>ตาราง</span>
+            </button>
+          </div>
+
+          <button id="addCareerBtn" onclick="openAddCareerModal()" class="px-4 py-2 rounded-2xl text-white font-black text-xs sm:text-sm btn-theme-action shadow hover:scale-105 transition flex items-center gap-1.5">
+            <i class="fa-solid fa-plus-circle"></i><span>เพิ่มอาชีพหลัก</span>
+          </button>
+        </div>
       </div>
+
+      <!-- คอนเทนเนอร์การ์ดอาชีพ -->
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4" id="careersListContainer"></div>
+
+      <!-- คอนเทนเนอร์ตารางอาชีพแบบกระชับ -->
+      <div id="careersTableContainer" class="hidden bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-3xl shadow-sm overflow-hidden">
+        <div class="overflow-x-auto">
+          <table class="w-full text-left text-xs sm:text-sm border-collapse">
+            <thead class="bg-slate-50 dark:bg-slate-900 border-b border-slate-200 dark:border-slate-700 text-[11px] uppercase font-black text-slate-400 whitespace-nowrap">
+              <tr>
+                <th class="py-3 px-3 text-center w-12">ลำดับ</th>
+                <th class="py-3 px-3 min-w-[180px]">อาชีพ / รูปภาพ</th>
+                <th class="py-3 px-3 text-right text-blue-500 min-w-[90px]">เงินเดือน</th>
+                <th class="py-3 px-3 text-right text-rose-500 min-w-[90px]">รายจ่าย</th>
+                <th class="py-3 px-3 text-right text-amber-500 min-w-[90px]">เงินสดเริ่มต้น</th>
+                <th class="py-3 px-3 text-right text-cyan-400 min-w-[80px]">เกณฑ์ PV</th>
+                <th class="py-3 px-3 text-center min-w-[150px]">ทรัพยากรเริ่มต้น</th>
+                <th class="py-3 px-3 text-center w-36">จัดเรียง & จัดการ</th>
+              </tr>
+            </thead>
+            <tbody id="careersTableBody" class="divide-y divide-slate-100 dark:divide-slate-700/60 font-medium"></tbody>
+          </table>
+        </div>
+      </div>
     </section>
 
-    <!-- VIEW 3: คุณสมบัติ (เฉพาะ ADMIN) -->
+    <!-- VIEW 3: คุณสมบัติ (เฉพาะ ADMIN - รองรับสลับมุมมอง การ์ด vs ตาราง และปุ่มเรียงลำดับ) -->
     <section id="view-qualifications" class="hidden space-y-5 animate-pop-in">
-      <div class="bg-white/90 dark:bg-slate-800/90 backdrop-blur border border-slate-200 dark:border-slate-700 rounded-3xl p-5 shadow-sm flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
+      <div class="bg-white/90 dark:bg-slate-800/90 backdrop-blur border border-slate-200 dark:border-slate-700 rounded-3xl p-4 sm:p-5 shadow-sm flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
         <div>
           <h3 class="font-black text-lg text-slate-900 dark:text-white flex items-center gap-2">
             <i class="fa-solid fa-certificate text-emerald-500 text-xl"></i><span>ฐานข้อมูลคุณสมบัติหลัก & หมวดหมู่</span>
           </h3>
-          <p class="text-xs text-slate-400 font-medium">เฉพาะ Admin สามารถจัดการหมวดหมู่, เพิ่ม/ลบ/แก้ไขเกณฑ์ และดูรหัส ID กำกับได้</p>
+          <p class="text-xs text-slate-400 font-medium">เฉพาะ Admin สามารถจัดการหมวดหมู่, ดูรหัส ID กำกับ และเรียงลำดับเกณฑ์คุณสมบัติได้</p>
         </div>
-        <div class="flex items-center gap-2">
-          <button onclick="openAddCategoryModal()" class="px-4 py-2 rounded-2xl bg-indigo-600 hover:bg-indigo-700 text-white font-black text-xs sm:text-sm shadow transition flex items-center gap-1.5">
-            <i class="fa-solid fa-folder-plus"></i><span>จัดการหมวดหมู่คุณสมบัติ</span>
+        
+        <div class="flex items-center gap-2.5 self-stretch sm:self-auto justify-end">
+          <!-- ปุ่มสลับมุมมอง การ์ด vs ตาราง ของคุณสมบัติ -->
+          <div class="inline-flex p-1 bg-slate-100 dark:bg-slate-900/80 rounded-2xl border border-slate-200 dark:border-slate-700">
+            <button type="button" id="qualModeCardBtn" onclick="setQualViewMode('cards')" class="px-3 py-1.5 rounded-xl text-xs font-black transition flex items-center gap-1.5 bg-white dark:bg-slate-800 text-emerald-500 shadow-xs">
+              <i class="fa-solid fa-table-cells-large"></i><span>การ์ด</span>
+            </button>
+            <button type="button" id="qualModeTableBtn" onclick="setQualViewMode('table')" class="px-3 py-1.5 rounded-xl text-xs font-black transition flex items-center gap-1.5 text-slate-500 dark:text-slate-400 hover:text-slate-800 dark:hover:text-white">
+              <i class="fa-solid fa-table-list"></i><span>ตาราง</span>
+            </button>
+          </div>
+
+          <button onclick="openAddCategoryModal()" class="px-3.5 py-2 rounded-2xl bg-indigo-600 hover:bg-indigo-700 text-white font-black text-xs sm:text-sm shadow transition flex items-center gap-1.5">
+            <i class="fa-solid fa-folder-plus"></i><span>หมวดหมู่</span>
           </button>
-          <button id="addQualificationBtn" onclick="openAddQualificationModal()" class="px-4 py-2 rounded-2xl text-white font-black text-xs sm:text-sm btn-theme-action shadow hover:scale-105 transition flex items-center gap-1.5">
-            <i class="fa-solid fa-plus-circle"></i><span>เพิ่มเกณฑ์คุณสมบัติ</span>
+          <button id="addQualificationBtn" onclick="openAddQualificationModal()" class="px-3.5 py-2 rounded-2xl text-white font-black text-xs sm:text-sm btn-theme-action shadow hover:scale-105 transition flex items-center gap-1.5">
+            <i class="fa-solid fa-plus-circle"></i><span>เพิ่มเกณฑ์</span>
           </button>
         </div>
       </div>
-      <div class="space-y-6" id="adminQualificationsContainer"></div>
+
+      <!-- คอนเทนเนอร์การ์ดคุณสมบัติ -->
+      <div class="space-y-6" id="adminQualificationsCardsContainer"></div>
+
+      <!-- คอนเทนเนอร์ตารางคุณสมบัติแบบกระชับ -->
+      <div id="adminQualificationsTableContainer" class="hidden bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-3xl shadow-sm overflow-hidden">
+        <div class="overflow-x-auto">
+          <table class="w-full text-left text-xs sm:text-sm border-collapse">
+            <thead class="bg-slate-50 dark:bg-slate-900 border-b border-slate-200 dark:border-slate-700 text-[11px] uppercase font-black text-slate-400 whitespace-nowrap">
+              <tr>
+                <th class="py-3 px-3 text-center w-12">ลำดับ</th>
+                <th class="py-3 px-3 text-center w-24">รหัส ID</th>
+                <th class="py-3 px-3 text-center w-32">หมวดหมู่</th>
+                <th class="py-3 px-3 min-w-[160px]">ชื่อเกณฑ์คุณสมบัติ</th>
+                <th class="py-3 px-3 text-right text-cyan-400 min-w-[90px]">PV ส่วนตัว</th>
+                <th class="py-3 px-3 text-center text-indigo-400 min-w-[90px]">สายงานที่ผ่าน</th>
+                <th class="py-3 px-3 text-right text-amber-500 min-w-[90px]">โบนัสพิเศษ</th>
+                <th class="py-3 px-3 text-center w-36">จัดเรียง & จัดการ</th>
+              </tr>
+            </thead>
+            <tbody id="adminQualificationsTableBody" class="divide-y divide-slate-100 dark:divide-slate-700/60 font-medium"></tbody>
+          </table>
+        </div>
+      </div>
     </section>
 
     <!-- VIEW 4: ADMIN DASHBOARD (เฉพาะ ADMIN) -->
@@ -419,7 +494,7 @@
 
   </main>
 
-  <!-- MODAL เลือกอาชีพสำหรับผู้เล่น (แสดงทรัพยากรเริ่มต้นแยกตามอาชีพ) -->
+  <!-- MODAL เลือกอาชีพสำหรับผู้เล่น -->
   <div id="playerCareerSelectModal" class="hidden fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-md flex items-center justify-center p-4 overflow-y-auto">
     <div class="relative max-w-2xl w-full bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl p-6 shadow-2xl space-y-4 my-auto">
       <div class="flex items-center justify-between border-b pb-3 border-slate-100 dark:border-slate-800">
@@ -438,7 +513,7 @@
     </div>
   </div>
 
-  <!-- CAREER MODAL (Admin กำหนดเงินเดือน รายจ่าย เงินสด และทรัพยากรเริ่มต้นแยกตามอาชีพ) -->
+  <!-- CAREER MODAL -->
   <div id="careerModal" class="hidden fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-md flex items-center justify-center p-4 overflow-y-auto">
     <div class="relative max-w-md w-full bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl p-6 shadow-2xl space-y-4 my-auto">
       <div class="flex items-center justify-between border-b pb-3">
@@ -486,21 +561,26 @@
           </div>
         </div>
 
-        <!-- กำหนดทรัพยากรเริ่มต้นเฉพาะของอาชีพนี้ (1-10) -->
         <div class="p-3 bg-slate-50 dark:bg-slate-800/80 rounded-2xl border space-y-2">
           <span class="text-slate-400 block font-black text-[11px]">ทรัพยากรเริ่มต้นของอาชีพนี้ (1 - 10)</span>
           <div class="grid grid-cols-3 gap-2 font-mono">
             <div>
-              <span class="text-red-500">❤️ สุขภาพ</span>
-              <input type="number" min="1" max="10" id="careerHeartInput" value="10" class="w-full p-1.5 border rounded-lg text-center dark:bg-slate-900">
+              <span class="flex items-center gap-1 text-red-500">
+                <i class="fa-solid fa-heart text-red-500"></i> สุขภาพ
+              </span>
+              <input type="number" min="1" max="10" id="careerHeartInput" value="10" class="w-full mt-1 p-1.5 border rounded-lg text-center dark:bg-slate-900">
             </div>
             <div>
-              <span class="text-slate-300">⏳ เวลา</span>
-              <input type="number" min="1" max="10" id="careerTimeInput" value="10" class="w-full p-1.5 border rounded-lg text-center dark:bg-slate-900">
+              <span class="flex items-center gap-1 text-slate-800 dark:text-white">
+                <i class="fa-solid fa-clock"></i> เวลา
+              </span>
+              <input type="number" min="1" max="10" id="careerTimeInput" value="10" class="w-full mt-1 p-1.5 border rounded-lg text-center dark:bg-slate-900">
             </div>
             <div>
-              <span class="text-blue-400">💡 ความรู้</span>
-              <input type="number" min="1" max="10" id="careerKnowledgeInput" value="10" class="w-full p-1.5 border rounded-lg text-center dark:bg-slate-900">
+              <span class="flex items-center gap-1 text-blue-600 dark:text-blue-400">
+                <i class="fa-solid fa-book-bookmark"></i> ความรู้
+              </span>
+              <input type="number" min="1" max="10" id="careerKnowledgeInput" value="10" class="w-full mt-1 p-1.5 border rounded-lg text-center dark:bg-slate-900">
             </div>
           </div>
         </div>
@@ -614,23 +694,6 @@
             <input type="number" id="editPlayerPassive" class="w-full mt-1 p-2 rounded-xl border font-mono dark:bg-slate-800">
           </div>
         </div>
-        <div class="p-3 bg-slate-50 dark:bg-slate-800/80 rounded-2xl border space-y-2">
-          <span class="text-slate-400 block font-black text-[11px]">ระดับทรัพยากร (1 - 10)</span>
-          <div class="grid grid-cols-3 gap-2 font-mono">
-            <div>
-              <span class="text-red-500">❤️ สุขภาพ</span>
-              <input type="number" min="1" max="10" id="editPlayerHeart" class="w-full p-1.5 border rounded-lg text-center dark:bg-slate-900">
-            </div>
-            <div>
-              <span class="text-slate-300">⏳ เวลา</span>
-              <input type="number" min="1" max="10" id="editPlayerTime" class="w-full p-1.5 border rounded-lg text-center dark:bg-slate-900">
-            </div>
-            <div>
-              <span class="text-blue-400">💡 ความรู้</span>
-              <input type="number" min="1" max="10" id="editPlayerKnowledge" class="w-full p-1.5 border rounded-lg text-center dark:bg-slate-900">
-            </div>
-          </div>
-        </div>
         <div class="flex justify-end gap-2 pt-2 border-t">
           <button type="button" onclick="closeAdminEditModal()" class="px-4 py-2 rounded-xl border text-slate-500">ยกเลิก</button>
           <button type="submit" class="px-5 py-2 rounded-xl text-white font-black btn-theme-action shadow">บันทึกการแก้ไข</button>
@@ -718,7 +781,6 @@
       { id: "F", name: "สายงาน F", pv: 0, level: "0%", activeIncome: 0, passiveIncome: 0 }
     ];
 
-    // ข้อมูลเริ่มต้นของแต่ละอาชีพ: มีการกำหนดทรัพยากรเริ่มต้น (สุขภาพ เวลา ความรู้) แตกต่างกัน
     const DEFAULT_CAREERS = [
       { 
         id: "car-1", 
@@ -729,7 +791,7 @@
         minPv: 0, 
         activeIncome: 15000, 
         passiveIncome: 0, 
-        resources: { heart: 8, time: 4, knowledge: 7 }, // เวลาน้อย (4) เพราะต้องทำงานประจำ
+        resources: { heart: 8, time: 4, knowledge: 7 },
         icon: "fa-briefcase", 
         avatar: "" 
       },
@@ -742,7 +804,7 @@
         minPv: 150000, 
         activeIncome: 35000, 
         passiveIncome: 5000, 
-        resources: { heart: 6, time: 5, knowledge: 9 }, // สุขภาพน้อยลงจากความเครียด แต่ความรู้สูง
+        resources: { heart: 6, time: 5, knowledge: 9 },
         icon: "fa-store", 
         avatar: "" 
       },
@@ -755,7 +817,7 @@
         minPv: 450000, 
         activeIncome: 75000, 
         passiveIncome: 25000, 
-        resources: { heart: 9, time: 9, knowledge: 10 }, // เวลาและสุขภาพสูง มีอิสรภาพ
+        resources: { heart: 9, time: 9, knowledge: 10 },
         icon: "fa-chart-line", 
         avatar: "" 
       }
@@ -782,6 +844,10 @@
     let careersList = [...DEFAULT_CAREERS];
     let qualificationsList = [...DEFAULT_QUALIFICATIONS];
     let qualificationCategories = [...DEFAULT_QUAL_CATEGORIES];
+
+    // โหมดการแสดงผล (Cards / Table)
+    let careerViewMode = "cards";
+    let qualViewMode = "cards";
 
     function createDefaultPlayerProfile(name, accId) {
       return {
@@ -973,6 +1039,9 @@
         const rawQualCats = localStorage.getItem('rnd_cache_qual_categories');
         if (rawQualCats) qualificationCategories = JSON.parse(rawQualCats);
 
+        careerViewMode = localStorage.getItem('rnd_career_view_mode') || 'cards';
+        qualViewMode = localStorage.getItem('rnd_qual_view_mode') || 'cards';
+
         if (currentAuth.accountType !== "admin" && allPlayersDatabase[currentAuth.accountId]) {
           profileData = allPlayersDatabase[currentAuth.accountId];
         } else {
@@ -992,10 +1061,55 @@
         localStorage.setItem('rnd_cache_careers', JSON.stringify(careersList));
         localStorage.setItem('rnd_cache_qualifications', JSON.stringify(qualificationsList));
         localStorage.setItem('rnd_cache_qual_categories', JSON.stringify(qualificationCategories));
+        localStorage.setItem('rnd_career_view_mode', careerViewMode);
+        localStorage.setItem('rnd_qual_view_mode', qualViewMode);
       } catch (e) {}
     }
 
-    /* ผู้เล่นเลือกอาชีพ (แสดงทรัพยากรเริ่มต้นแยกตามอาชีพ) */
+    /* สลับมุมมองอาชีพ (Cards / Table) */
+    function setCareerViewMode(mode) {
+      careerViewMode = mode;
+      saveProfileLocalCache();
+      renderCareersCards();
+    }
+
+    /* สลับมุมมองคุณสมบัติ (Cards / Table) */
+    function setQualViewMode(mode) {
+      qualViewMode = mode;
+      saveProfileLocalCache();
+      renderAdminQualificationsTab();
+    }
+
+    /* เรียงลำดับอาชีพ (Move Up / Down) */
+    function moveCareerOrder(index, direction) {
+      const target = index + direction;
+      if (target < 0 || target >= careersList.length) return;
+      const temp = careersList[index];
+      careersList[index] = careersList[target];
+      careersList[target] = temp;
+      saveProfileLocalCache();
+      renderCareersCards();
+      syncProfileAndMasterToCloud(true);
+      showToast("ปรับลำดับอาชีพเรียบร้อย 🔁");
+    }
+
+    /* เรียงลำดับคุณสมบัติ (Move Up / Down) */
+    function moveQualificationOrder(id, direction) {
+      const index = qualificationsList.findIndex(q => q.id === id);
+      if (index === -1) return;
+      const target = index + direction;
+      if (target < 0 || target >= qualificationsList.length) return;
+      const temp = qualificationsList[index];
+      qualificationsList[index] = qualificationsList[target];
+      qualificationsList[target] = temp;
+      saveProfileLocalCache();
+      renderAdminQualificationsTab();
+      renderPlayerDashboardQualifications();
+      syncProfileAndMasterToCloud(true);
+      showToast("ปรับลำดับคุณสมบัติเรียบร้อย 🔁");
+    }
+
+    /* ผู้เล่นเลือกอาชีพ */
     function openPlayerCareerSelectModal() {
       const modal = document.getElementById('playerCareerSelectModal');
       const grid = document.getElementById('playerCareerModalGrid');
@@ -1024,11 +1138,16 @@
               <div>รายจ่ายประจำ: <strong class="text-rose-400 block">฿${(car.expenses || 0).toLocaleString()}</strong></div>
             </div>
 
-            <!-- แสดงค่าพลังทรัพยากรเริ่มต้นของอาชีพนี้ -->
             <div class="flex items-center justify-between text-xs font-mono bg-slate-100 dark:bg-slate-900/40 p-2 rounded-xl border border-slate-200/50 dark:border-slate-800 text-center">
-              <span class="text-red-500 font-bold">❤️ สุขภาพ ${r.heart}</span>
-              <span class="text-slate-400 font-bold">⏳ เวลา ${r.time}</span>
-              <span class="text-blue-400 font-bold">💡 ความรู้ ${r.knowledge}</span>
+              <span class="flex items-center gap-1 text-red-500 font-bold">
+                <i class="fa-solid fa-heart text-red-500"></i> ${r.heart}
+              </span>
+              <span class="flex items-center gap-1 text-slate-800 dark:text-white font-bold">
+                <i class="fa-solid fa-clock"></i> ${r.time}
+              </span>
+              <span class="flex items-center gap-1 text-blue-600 dark:text-blue-400 font-bold">
+                <i class="fa-solid fa-book-bookmark"></i> ${r.knowledge}
+              </span>
             </div>
 
             <button type="button" onclick="selectPlayerCareerClone('${car.id}')" class="w-full py-2 rounded-xl text-xs font-black ${profileData.careerId === car.id ? 'bg-emerald-500 text-white' : 'btn-theme-action text-white shadow hover:scale-[1.01]'} transition">
@@ -1055,8 +1174,6 @@
       profileData.cash = targetMaster.cash || 0;
       profileData.activeIncome = targetMaster.activeIncome || 15000;
       profileData.passiveIncome = targetMaster.passiveIncome || 0;
-
-      // คัดลอกทรัพยากรเริ่มต้นเฉพาะของอาชีพที่เลือก
       profileData.resources = targetMaster.resources 
         ? JSON.parse(JSON.stringify(targetMaster.resources)) 
         : { heart: 10, time: 10, knowledge: 10 };
@@ -1098,7 +1215,6 @@
       const isAdmin = currentAuth.accountType === "admin";
       const hasCareer = Boolean(profileData.careerId && profileData.career);
 
-      // Role Guard Nav
       const navCareersBtn = document.getElementById('nav-btn-careers');
       const navQualBtn = document.getElementById('nav-btn-qualifications');
       const mNavCareersBtn = document.getElementById('m-nav-careers');
@@ -1199,6 +1315,7 @@
       const res = hasCareer && profileData.resources ? profileData.resources : { heart: 0, time: 0, knowledge: 0 };
 
       container.innerHTML = `
+        <!-- สุขภาพ: หัวใจสีแดง -->
         <div class="p-4 rounded-2xl bg-rose-50 dark:bg-rose-950/30 border border-rose-200 dark:border-rose-900/50 flex flex-col justify-between space-y-3">
           <div class="flex items-center justify-between">
             <span class="text-xs font-black text-rose-600 dark:text-rose-400 uppercase flex items-center gap-1.5">
@@ -1213,6 +1330,7 @@
           </div>
         </div>
 
+        <!-- เวลา: นาฬิกาสีขาว/ดำ -->
         <div class="p-4 rounded-2xl bg-slate-100 dark:bg-slate-900/80 border border-slate-300 dark:border-slate-700 flex flex-col justify-between space-y-3">
           <div class="flex items-center justify-between">
             <span class="text-xs font-black text-slate-700 dark:text-slate-300 uppercase flex items-center gap-1.5">
@@ -1227,6 +1345,7 @@
           </div>
         </div>
 
+        <!-- ความรู้: สมุดสีน้ำเงิน/ขาว -->
         <div class="p-4 rounded-2xl bg-blue-50 dark:bg-blue-950/30 border border-blue-200 dark:border-blue-900/50 flex flex-col justify-between space-y-3">
           <div class="flex items-center justify-between">
             <span class="text-xs font-black text-blue-600 dark:text-blue-400 uppercase flex items-center gap-1.5">
@@ -1341,13 +1460,35 @@
       showToast(checked ? "บันทึกสถานะคุณสมบัติแล้ว! 🎉" : "ยกเลิกสถานะคุณสมบัติแล้ว");
     }
 
+    /* เรนเดอร์การ์ด/ตารางอาชีพ (พร้อมปุ่มจัดเรียงลำดับ) */
     function renderCareersCards() {
       const container = document.getElementById('careersListContainer');
-      if (!container) return;
+      const tableContainer = document.getElementById('careersTableContainer');
+      const tableBody = document.getElementById('careersTableBody');
+      const cardBtn = document.getElementById('careerModeCardBtn');
+      const tableBtn = document.getElementById('careerModeTableBtn');
+      if (!container || !tableContainer) return;
+
       const isAdmin = currentAuth.accountType === "admin";
 
-      container.innerHTML = careersList.map(car => {
+      if (careerViewMode === 'cards') {
+        if (cardBtn) cardBtn.className = "px-3 py-1.5 rounded-xl text-xs font-black transition flex items-center gap-1.5 bg-white dark:bg-slate-800 text-purple-500 shadow-xs";
+        if (tableBtn) tableBtn.className = "px-3 py-1.5 rounded-xl text-xs font-black transition flex items-center gap-1.5 text-slate-500 dark:text-slate-400 hover:text-slate-800 dark:hover:text-white";
+        container.classList.remove('hidden');
+        tableContainer.classList.add('hidden');
+      } else {
+        if (cardBtn) cardBtn.className = "px-3 py-1.5 rounded-xl text-xs font-black transition flex items-center gap-1.5 text-slate-500 dark:text-slate-400 hover:text-slate-800 dark:hover:text-white";
+        if (tableBtn) tableBtn.className = "px-3 py-1.5 rounded-xl text-xs font-black transition flex items-center gap-1.5 bg-white dark:bg-slate-800 text-purple-500 shadow-xs";
+        container.classList.add('hidden');
+        tableContainer.classList.remove('hidden');
+      }
+
+      // 1. โหมดการ์ด
+      container.innerHTML = careersList.map((car, idx) => {
         const r = car.resources || { heart: 10, time: 10, knowledge: 10 };
+        const isFirst = idx === 0;
+        const isLast = idx === careersList.length - 1;
+
         return `
           <div class="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-3xl p-5 shadow-sm space-y-3 relative overflow-hidden">
             <div class="flex items-center justify-between">
@@ -1360,13 +1501,19 @@
                   </div>
                 `}
                 <div>
-                  <h4 class="font-black text-lg text-slate-900 dark:text-white">${escapeHTML(car.title)}</h4>
+                  <div class="flex items-center gap-2">
+                    <span class="text-xs font-mono font-bold text-slate-400">#${idx + 1}</span>
+                    <h4 class="font-black text-base sm:text-lg text-slate-900 dark:text-white">${escapeHTML(car.title)}</h4>
+                  </div>
                   <span class="text-xs text-slate-400 font-mono">เงินสด: ฿${(car.cash || 0).toLocaleString()}</span>
                 </div>
               </div>
 
-              <div class="flex items-center gap-1.5 shrink-0">
+              <!-- ปุ่มเรียงลำดับ & แก้ไข/ลบ เฉพาะ Admin -->
+              <div class="flex items-center gap-1 shrink-0">
                 ${isAdmin ? `
+                  <button onclick="moveCareerOrder(${idx}, -1)" ${isFirst ? 'disabled class="p-1.5 text-slate-300 dark:text-slate-600 cursor-not-allowed"' : 'class="p-1.5 text-slate-400 hover:text-purple-500"'} title="เลื่อนขึ้น"><i class="fa-solid fa-arrow-up text-xs"></i></button>
+                  <button onclick="moveCareerOrder(${idx}, 1)" ${isLast ? 'disabled class="p-1.5 text-slate-300 dark:text-slate-600 cursor-not-allowed"' : 'class="p-1.5 text-slate-400 hover:text-purple-500"'} title="เลื่อนลง"><i class="fa-solid fa-arrow-down text-xs"></i></button>
                   <button onclick="openEditCareerModal('${car.id}')" class="p-1.5 rounded-lg text-slate-400 hover:text-cyan-400 transition" title="แก้ไขอาชีพ"><i class="fa-solid fa-pen text-xs"></i></button>
                   <button onclick="deleteCareer('${car.id}')" class="p-1.5 rounded-lg text-slate-400 hover:text-rose-500 transition" title="ลบอาชีพ"><i class="fa-solid fa-trash-can text-xs"></i></button>
                 ` : ''}
@@ -1378,22 +1525,84 @@
               <div>รายจ่าย: <strong class="text-rose-400 block font-bold">฿${(car.expenses || 0).toLocaleString()}</strong></div>
             </div>
 
-            <!-- แสดงค่าทรัพยากรเริ่มต้นของอาชีพนี้ -->
+            <!-- ทรัพยากรเริ่มต้น -->
             <div class="flex items-center justify-between text-xs font-mono bg-slate-50 dark:bg-slate-900/60 p-2 rounded-xl border border-slate-200/60 dark:border-slate-800 text-center">
-              <span class="text-red-500 font-bold">❤️ สุขภาพ ${r.heart}</span>
-              <span class="text-slate-400 font-bold">⏳ เวลา ${r.time}</span>
-              <span class="text-blue-400 font-bold">💡 ความรู้ ${r.knowledge}</span>
+              <span class="flex items-center gap-1 text-red-500 font-bold"><i class="fa-solid fa-heart text-red-500"></i> ${r.heart}</span>
+              <span class="flex items-center gap-1 text-slate-800 dark:text-white font-bold"><i class="fa-solid fa-clock"></i> ${r.time}</span>
+              <span class="flex items-center gap-1 text-blue-600 dark:text-blue-400 font-bold"><i class="fa-solid fa-book-bookmark"></i> ${r.knowledge}</span>
             </div>
           </div>
         `;
       }).join('');
+
+      // 2. โหมดตารางกระชับ
+      if (tableBody) {
+        tableBody.innerHTML = careersList.map((car, idx) => {
+          const r = car.resources || { heart: 10, time: 10, knowledge: 10 };
+          const isFirst = idx === 0;
+          const isLast = idx === careersList.length - 1;
+
+          return `
+            <tr class="hover:bg-slate-50 dark:hover:bg-slate-700/40 transition">
+              <td class="py-3 px-3 text-center font-mono text-xs text-slate-400 font-bold">${idx + 1}</td>
+              <td class="py-3 px-3">
+                <div class="flex items-center gap-2.5">
+                  ${car.avatar ? `
+                    <img src="${escapeHTML(car.avatar)}" alt="${escapeHTML(car.title)}" class="w-8 h-8 rounded-xl object-cover border border-slate-300 dark:border-slate-600 shrink-0">
+                  ` : `
+                    <div class="w-8 h-8 rounded-xl bg-amber-500/15 text-amber-500 flex items-center justify-center text-sm icon-vibrant shrink-0">
+                      <i class="fa-solid ${car.icon || 'fa-award'}"></i>
+                    </div>
+                  `}
+                  <strong class="font-black text-slate-900 dark:text-white text-xs sm:text-sm block">${escapeHTML(car.title)}</strong>
+                </div>
+              </td>
+              <td class="py-3 px-3 text-right font-mono font-bold text-blue-500">฿${(car.salary || 0).toLocaleString()}</td>
+              <td class="py-3 px-3 text-right font-mono font-bold text-rose-500">฿${(car.expenses || 0).toLocaleString()}</td>
+              <td class="py-3 px-3 text-right font-mono font-bold text-amber-500">฿${(car.cash || 0).toLocaleString()}</td>
+              <td class="py-3 px-3 text-right font-mono font-bold text-cyan-400">${(car.minPv || 0).toLocaleString()}</td>
+              <td class="py-3 px-3 text-center font-mono text-xs whitespace-nowrap">
+                <span class="text-red-500 font-bold mr-2"><i class="fa-solid fa-heart text-[10px]"></i> ${r.heart}</span>
+                <span class="text-slate-800 dark:text-white font-bold mr-2"><i class="fa-solid fa-clock text-[10px]"></i> ${r.time}</span>
+                <span class="text-blue-500 font-bold"><i class="fa-solid fa-book-bookmark text-[10px]"></i> ${r.knowledge}</span>
+              </td>
+              <td class="py-3 px-3 text-center whitespace-nowrap">
+                <div class="flex items-center justify-center gap-1">
+                  <button onclick="moveCareerOrder(${idx}, -1)" ${isFirst ? 'disabled class="p-1 text-slate-300 dark:text-slate-600 cursor-not-allowed"' : 'class="p-1 text-slate-400 hover:text-purple-500"'} title="เลื่อนขึ้น"><i class="fa-solid fa-arrow-up text-xs"></i></button>
+                  <button onclick="moveCareerOrder(${idx}, 1)" ${isLast ? 'disabled class="p-1 text-slate-300 dark:text-slate-600 cursor-not-allowed"' : 'class="p-1 text-slate-400 hover:text-purple-500"'} title="เลื่อนลง"><i class="fa-solid fa-arrow-down text-xs"></i></button>
+                  <button onclick="openEditCareerModal('${car.id}')" class="p-1 text-slate-400 hover:text-cyan-400" title="แก้ไข"><i class="fa-solid fa-pen text-xs"></i></button>
+                  <button onclick="deleteCareer('${car.id}')" class="p-1 text-slate-400 hover:text-rose-500" title="ลบ"><i class="fa-solid fa-trash-can text-xs"></i></button>
+                </div>
+              </td>
+            </tr>
+          `;
+        }).join('');
+      }
     }
 
+    /* เรนเดอร์การ์ด/ตารางคุณสมบัติของ Admin (พร้อมปุ่มจัดเรียงลำดับ) */
     function renderAdminQualificationsTab() {
-      const container = document.getElementById('adminQualificationsContainer');
-      if (!container) return;
+      const cardsContainer = document.getElementById('adminQualificationsCardsContainer');
+      const tableContainer = document.getElementById('adminQualificationsTableContainer');
+      const tableBody = document.getElementById('adminQualificationsTableBody');
+      const cardBtn = document.getElementById('qualModeCardBtn');
+      const tableBtn = document.getElementById('qualModeTableBtn');
+      if (!cardsContainer || !tableContainer) return;
 
-      container.innerHTML = qualificationCategories.map(cat => {
+      if (qualViewMode === 'cards') {
+        if (cardBtn) cardBtn.className = "px-3 py-1.5 rounded-xl text-xs font-black transition flex items-center gap-1.5 bg-white dark:bg-slate-800 text-emerald-500 shadow-xs";
+        if (tableBtn) tableBtn.className = "px-3 py-1.5 rounded-xl text-xs font-black transition flex items-center gap-1.5 text-slate-500 dark:text-slate-400 hover:text-slate-800 dark:hover:text-white";
+        cardsContainer.classList.remove('hidden');
+        tableContainer.classList.add('hidden');
+      } else {
+        if (cardBtn) cardBtn.className = "px-3 py-1.5 rounded-xl text-xs font-black transition flex items-center gap-1.5 text-slate-500 dark:text-slate-400 hover:text-slate-800 dark:hover:text-white";
+        if (tableBtn) tableBtn.className = "px-3 py-1.5 rounded-xl text-xs font-black transition flex items-center gap-1.5 bg-white dark:bg-slate-800 text-emerald-500 shadow-xs";
+        cardsContainer.classList.add('hidden');
+        tableContainer.classList.remove('hidden');
+      }
+
+      // 1. โหมดการ์ด
+      cardsContainer.innerHTML = qualificationCategories.map(cat => {
         const catQuals = qualificationsList.filter(q => (q.category || "ทั่วไป") === cat);
 
         return `
@@ -1406,31 +1615,77 @@
             </div>
             
             <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
-              ${catQuals.length === 0 ? '<p class="text-xs text-slate-400 italic py-2">ยังไม่มีเกณฑ์คุณสมบัติในหมวดนี้</p>' : catQuals.map(qual => `
-                <div class="p-3.5 rounded-2xl bg-slate-50 dark:bg-slate-900/60 border border-slate-200 dark:border-slate-700/80 space-y-2">
-                  <div class="flex items-center justify-between">
-                    <span class="font-mono text-xs font-black px-2 py-0.5 rounded bg-indigo-50 dark:bg-indigo-950/60 text-indigo-400 border border-indigo-200 dark:border-indigo-800">
-                      ${escapeHTML(qual.code || 'Q-000')}
-                    </span>
-                    <div class="flex items-center gap-1">
-                      <button onclick="openEditQualificationModal('${qual.id}')" class="p-1 text-slate-400 hover:text-cyan-400 transition" title="แก้ไข"><i class="fa-solid fa-pen text-xs"></i></button>
-                      <button onclick="deleteQualification('${qual.id}')" class="p-1 text-slate-400 hover:text-rose-500 transition" title="ลบ"><i class="fa-solid fa-trash-can text-xs"></i></button>
+              ${catQuals.length === 0 ? '<p class="text-xs text-slate-400 italic py-2">ยังไม่มีเกณฑ์คุณสมบัติในหมวดนี้</p>' : catQuals.map((qual, qIdx) => {
+                const globalIdx = qualificationsList.findIndex(q => q.id === qual.id);
+                const isFirst = globalIdx === 0;
+                const isLast = globalIdx === qualificationsList.length - 1;
+
+                return `
+                  <div class="p-3.5 rounded-2xl bg-slate-50 dark:bg-slate-900/60 border border-slate-200 dark:border-slate-700/80 space-y-2">
+                    <div class="flex items-center justify-between">
+                      <span class="font-mono text-xs font-black px-2 py-0.5 rounded bg-indigo-50 dark:bg-indigo-950/60 text-indigo-400 border border-indigo-200 dark:border-indigo-800">
+                        ${escapeHTML(qual.code || 'Q-000')}
+                      </span>
+                      <div class="flex items-center gap-1">
+                        <button onclick="moveQualificationOrder('${qual.id}', -1)" ${isFirst ? 'disabled class="p-1 text-slate-300 dark:text-slate-600 cursor-not-allowed"' : 'class="p-1 text-slate-400 hover:text-emerald-500"'} title="เลื่อนขึ้น"><i class="fa-solid fa-arrow-up text-xs"></i></button>
+                        <button onclick="moveQualificationOrder('${qual.id}', 1)" ${isLast ? 'disabled class="p-1 text-slate-300 dark:text-slate-600 cursor-not-allowed"' : 'class="p-1 text-slate-400 hover:text-emerald-500"'} title="เลื่อนลง"><i class="fa-solid fa-arrow-down text-xs"></i></button>
+                        <button onclick="openEditQualificationModal('${qual.id}')" class="p-1 text-slate-400 hover:text-cyan-400 transition" title="แก้ไข"><i class="fa-solid fa-pen text-xs"></i></button>
+                        <button onclick="deleteQualification('${qual.id}')" class="p-1 text-slate-400 hover:text-rose-500 transition" title="ลบ"><i class="fa-solid fa-trash-can text-xs"></i></button>
+                      </div>
+                    </div>
+                    <div>
+                      <h5 class="font-black text-slate-900 dark:text-white text-sm">${escapeHTML(qual.title)}</h5>
+                      <span class="text-xs font-mono text-amber-500 font-bold">โบนัส: ฿${(qual.bonus || 0).toLocaleString()}</span>
+                    </div>
+                    <div class="grid grid-cols-2 gap-2 text-xs font-mono pt-2 border-t border-slate-200 dark:border-slate-800">
+                      <div>PV ขั้นต่ำ: <strong class="text-cyan-400">${(qual.personalPv || 0).toLocaleString()}</strong></div>
+                      <div>สายงาน: <strong class="text-indigo-400">${qual.legsCount || 0} สาย</strong></div>
                     </div>
                   </div>
-                  <div>
-                    <h5 class="font-black text-slate-900 dark:text-white text-sm">${escapeHTML(qual.title)}</h5>
-                    <span class="text-xs font-mono text-amber-500 font-bold">โบนัส: ฿${(qual.bonus || 0).toLocaleString()}</span>
-                  </div>
-                  <div class="grid grid-cols-2 gap-2 text-xs font-mono pt-2 border-t border-slate-200 dark:border-slate-800">
-                    <div>PV ขั้นต่ำ: <strong class="text-cyan-400">${(qual.personalPv || 0).toLocaleString()}</strong></div>
-                    <div>สายงาน: <strong class="text-indigo-400">${qual.legsCount || 0} สาย</strong></div>
-                  </div>
-                </div>
-              `).join('')}
+                `;
+              }).join('')}
             </div>
           </div>
         `;
       }).join('');
+
+      // 2. โหมดตารางกระชับ
+      if (tableBody) {
+        tableBody.innerHTML = qualificationsList.map((qual, idx) => {
+          const isFirst = idx === 0;
+          const isLast = idx === qualificationsList.length - 1;
+
+          return `
+            <tr class="hover:bg-slate-50 dark:hover:bg-slate-700/40 transition">
+              <td class="py-3 px-3 text-center font-mono text-xs text-slate-400 font-bold">${idx + 1}</td>
+              <td class="py-3 px-3 text-center">
+                <span class="font-mono text-xs font-black px-2 py-0.5 rounded bg-indigo-50 dark:bg-indigo-950/60 text-indigo-400 border border-indigo-200 dark:border-indigo-800">
+                  ${escapeHTML(qual.code || 'Q-000')}
+                </span>
+              </td>
+              <td class="py-3 px-3 text-center">
+                <span class="px-2 py-0.5 rounded-lg bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-300 text-xs font-bold">
+                  ${escapeHTML(qual.category || 'ทั่วไป')}
+                </span>
+              </td>
+              <td class="py-3 px-3 font-black text-slate-900 dark:text-white text-xs sm:text-sm">
+                ${escapeHTML(qual.title)}
+              </td>
+              <td class="py-3 px-3 text-right font-mono font-bold text-cyan-400">${(qual.personalPv || 0).toLocaleString()}</td>
+              <td class="py-3 px-3 text-center font-mono font-bold text-indigo-400">${qual.legsCount || 0} สาย</td>
+              <td class="py-3 px-3 text-right font-mono font-bold text-amber-500">฿${(qual.bonus || 0).toLocaleString()}</td>
+              <td class="py-3 px-3 text-center whitespace-nowrap">
+                <div class="flex items-center justify-center gap-1">
+                  <button onclick="moveQualificationOrder('${qual.id}', -1)" ${isFirst ? 'disabled class="p-1 text-slate-300 dark:text-slate-600 cursor-not-allowed"' : 'class="p-1 text-slate-400 hover:text-emerald-500"'} title="เลื่อนขึ้น"><i class="fa-solid fa-arrow-up text-xs"></i></button>
+                  <button onclick="moveQualificationOrder('${qual.id}', 1)" ${isLast ? 'disabled class="p-1 text-slate-300 dark:text-slate-600 cursor-not-allowed"' : 'class="p-1 text-slate-400 hover:text-emerald-500"'} title="เลื่อนลง"><i class="fa-solid fa-arrow-down text-xs"></i></button>
+                  <button onclick="openEditQualificationModal('${qual.id}')" class="p-1 text-slate-400 hover:text-cyan-400" title="แก้ไข"><i class="fa-solid fa-pen text-xs"></i></button>
+                  <button onclick="deleteQualification('${qual.id}')" class="p-1 text-slate-400 hover:text-rose-500" title="ลบ"><i class="fa-solid fa-trash-can text-xs"></i></button>
+                </div>
+              </td>
+            </tr>
+          `;
+        }).join('');
+      }
     }
 
     function updatePlayerProfile() {
@@ -1966,6 +2221,7 @@
         }
       });
       if (tab === 'admin') renderAdminPlayersTable();
+      if (tab === 'careers') renderCareersCards();
       if (tab === 'qualifications') renderAdminQualificationsTab();
     }
 
