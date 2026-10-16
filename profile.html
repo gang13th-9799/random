@@ -108,9 +108,9 @@
 </head>
 <body class="text-slate-800 dark:text-slate-100 min-h-screen flex flex-col font-sans transition-colors duration-200 pb-24 md:pb-8">
 
-  <!-- BLOCKING SYNC OVERLAY BANNER -->
+  <!-- BLOCKING SYNC OVERLAY BANNER (ป้องกันการเขียนข้อมูลทับกัน แสดงสถานะชัดเจน) -->
   <div id="syncBlockingBanner" class="hidden fixed inset-0 z-50 bg-slate-950/85 backdrop-blur-md flex flex-col items-center justify-center p-4 select-none pointer-events-auto">
-    <div class="relative max-w-md w-full bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-3xl p-6 sm:p-8 text-center shadow-2xl space-y-6 animate-pop-in">
+    <div class="relative max-w-md w-full bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl p-6 sm:p-8 text-center shadow-2xl space-y-6 animate-pop-in">
       <div class="relative w-24 h-24 mx-auto flex items-center justify-center">
         <div class="absolute inset-0 rounded-3xl bg-amber-400/20 dark:bg-amber-400/10 animate-ping"></div>
         <div class="relative w-20 h-20 rounded-2xl bg-gradient-to-tr from-rose-500 via-amber-500 to-emerald-400 text-white flex items-center justify-center text-4xl shadow-xl icon-vibrant">
@@ -119,16 +119,20 @@
       </div>
       <div class="space-y-2">
         <h3 id="syncBannerTitle" class="text-xl sm:text-2xl font-black text-slate-900 dark:text-white tracking-tight">กำลังซิงก์ข้อมูลกับ Cloud...</h3>
-        <p id="syncBannerDetail" class="text-sm text-slate-500 dark:text-slate-400 font-medium">ระบบกำลังเชื่อมต่อ Google Sheets กรุณารอสักครู่</p>
+        <p id="syncBannerDetail" class="text-sm text-slate-500 dark:text-slate-400 font-medium">ระบบกำลังจัดคิวตรวจสอบข้อมูล ป้องกันการเขียนทับกัน</p>
       </div>
       <div class="space-y-2">
-        <div class="w-full bg-slate-100 dark:bg-slate-700 rounded-full h-3.5 p-0.5 overflow-hidden border border-slate-200 dark:border-slate-600">
+        <div class="w-full bg-slate-100 dark:bg-slate-800 rounded-full h-3.5 p-0.5 overflow-hidden border border-slate-200 dark:border-slate-700">
           <div id="syncBannerProgressBar" class="h-full rounded-full bg-gradient-to-r from-rose-500 via-amber-400 to-emerald-400 transition-all duration-300" style="width: 30%;"></div>
         </div>
         <div class="flex items-center justify-between text-xs sm:text-sm font-mono font-bold text-slate-400 px-1">
-          <span id="syncBannerStepText">ขั้นตอน: เชื่อมต่อเซิร์ฟเวอร์</span>
+          <span id="syncBannerStepText">ขั้นตอน: ตรวจสอบคิวเซิร์ฟเวอร์</span>
           <span id="syncBannerPercentText" class="text-rose-500 dark:text-rose-400 font-black">30%</span>
         </div>
+      </div>
+      <div class="inline-flex items-center gap-2 px-3.5 py-2 rounded-xl bg-amber-50 dark:bg-amber-950/50 border border-amber-300 dark:border-amber-700 text-amber-800 dark:text-amber-200 text-xs font-bold">
+        <i class="fa-solid fa-shield-halved text-amber-500 text-sm"></i>
+        <span>ระบบล็อคคิว Concurrency กำลังทำงาน</span>
       </div>
       <button type="button" id="syncBannerErrorBtn" onclick="hideSyncBanner()" class="hidden w-full py-3 rounded-2xl text-sm font-black bg-rose-600 hover:bg-rose-700 text-white transition shadow-lg">
         ปิดหน้าต่างนี้
@@ -162,6 +166,7 @@
         <button id="nav-btn-profile" onclick="switchProfileTab('profile')" class="px-4 py-2 rounded-xl text-sm font-bold transition-all flex items-center space-x-2.5 bg-white dark:bg-slate-700 shadow text-rose-500 dark:text-white">
           <i class="fa-solid fa-id-card text-base text-rose-500 icon-vibrant"></i><span>ข้อมูลตัวละคร</span>
         </button>
+        <!-- ปุ่มจัดการอาชีพ & คุณสมบัติ (เฉพาะ Admin เท่านั้น) -->
         <button id="nav-btn-careers" onclick="switchProfileTab('careers')" class="hidden px-4 py-2 rounded-xl text-sm font-bold transition-all flex items-center space-x-2.5 text-slate-600 dark:text-slate-300 hover:text-rose-500">
           <i class="fa-solid fa-user-tie text-base text-purple-500 icon-vibrant"></i><span>จัดการอาชีพ (Admin)</span>
         </button>
@@ -178,8 +183,8 @@
         <button onclick="openLoginModal()" id="loginActionBtn" class="px-3.5 py-2.5 rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-800 dark:text-slate-200 hover:bg-slate-50 text-xs sm:text-sm font-black transition flex items-center gap-2 shadow-sm">
           <i class="fa-solid fa-right-to-bracket text-emerald-500"></i><span>เข้าสู่ระบบ</span>
         </button>
-        <button onclick="saveAllToCloud(true)" title="บันทึกข้อมูลโปรไฟล์ขึ้น Cloud" class="px-3.5 py-2.5 rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-200 hover:bg-slate-50 text-xs sm:text-sm font-black transition flex items-center gap-2 shadow-sm">
-          <i id="syncIcon" class="fa-solid fa-cloud-arrow-up text-blue-500 text-sm sm:text-base"></i><span class="hidden sm:inline">บันทึก Cloud</span>
+        <button onclick="syncProfileAndMasterToCloud(true)" title="ซิงก์ข้อมูลทั้งหมดกับ Cloud" class="px-3.5 py-2.5 rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-200 hover:bg-slate-50 text-xs sm:text-sm font-black transition flex items-center gap-2 shadow-sm">
+          <i id="syncIcon" class="fa-solid fa-cloud-arrow-up text-blue-500 text-sm sm:text-base"></i><span class="hidden sm:inline">ซิงก์ Cloud</span>
         </button>
       </div>
     </div>
@@ -207,9 +212,10 @@
   <!-- Main Container -->
   <main class="flex-1 max-w-7xl w-full mx-auto px-3 sm:px-6 lg:px-8 py-5">
     
-    <!-- VIEW 1: ข้อมูลตัวละคร -->
+    <!-- VIEW 1: ข้อมูลตัวละคร & ทรัพยากร & สายงาน & คุณสมบัติ -->
     <section id="view-profile" class="space-y-6 animate-pop-in">
       
+      <!-- Player Banner + ปุ่มเลือกอาชีพ -->
       <div class="bg-gradient-to-r from-rose-500/15 via-amber-500/10 to-indigo-500/10 p-5 sm:p-7 rounded-[2.5rem] border border-rose-500/20 card-vibrant-glow flex flex-col md:flex-row items-start md:items-center justify-between gap-5">
         <div class="flex items-center gap-4">
           <div class="w-16 h-16 sm:w-20 sm:h-20 rounded-3xl bg-gradient-to-tr from-rose-500 via-amber-500 to-emerald-400 text-white flex items-center justify-center text-3xl sm:text-4xl shadow-xl icon-vibrant shrink-0">
@@ -236,7 +242,7 @@
           <button onclick="resetPlayerStats()" class="px-4 py-2.5 rounded-2xl bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-700 text-xs sm:text-sm font-black text-rose-500 shadow-sm hover:scale-105 transition">
             <i class="fa-solid fa-rotate-left mr-1.5"></i>รีเซ็ตค่า
           </button>
-          <button onclick="saveAllToCloud(true)" class="px-5 py-2.5 rounded-2xl text-white text-xs sm:text-sm font-black btn-theme-action shadow-lg hover:scale-105 transition">
+          <button onclick="syncProfileAndMasterToCloud(true)" class="px-5 py-2.5 rounded-2xl text-white text-xs sm:text-sm font-black btn-theme-action shadow-lg hover:scale-105 transition">
             <i class="fa-solid fa-floppy-disk mr-1.5"></i>บันทึก Cloud
           </button>
         </div>
@@ -268,7 +274,7 @@
             <div class="text-base sm:text-lg font-black text-rose-500 font-mono" id="statExpenses">฿0</div>
           </div>
           <div class="bg-white dark:bg-slate-800 p-3.5 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm space-y-1">
-            <span class="text-[11px] text-slate-400 font-bold block">เงินเหลือ/เดือน</span>
+            <span class="text-[11px] text-slate-400 font-bold block" title="(Active + Passive + เงินเดือน) - รายจ่าย">เงินเหลือ/เดือน</span>
             <div class="text-base sm:text-lg font-black text-emerald-400 font-mono" id="statNetMonthly">฿0</div>
           </div>
           <div class="bg-white dark:bg-slate-800 p-3.5 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm space-y-1">
@@ -329,14 +335,14 @@
 
     </section>
 
-    <!-- VIEW 2: จัดการอาชีพ (ADMIN) -->
+    <!-- VIEW 2: จัดการอาชีพ (เฉพาะ ADMIN) -->
     <section id="view-careers" class="hidden space-y-4 animate-pop-in">
       <div class="bg-white/90 dark:bg-slate-800/90 backdrop-blur border border-slate-200 dark:border-slate-700 rounded-3xl p-5 shadow-sm flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
         <div>
           <h3 class="font-black text-lg text-slate-900 dark:text-white flex items-center gap-2">
             <i class="fa-solid fa-user-tie text-purple-500 text-xl"></i><span>ฐานข้อมูลอาชีพหลัก (Master Careers)</span>
           </h3>
-          <p class="text-xs text-slate-400 font-medium">เฉพาะ Admin ที่สามารถจัดการฐานข้อมูลหลักนี้ได้</p>
+          <p class="text-xs text-slate-400 font-medium">เฉพาะ Admin ที่สามารถจัดการฐานข้อมูลหลักนี้ได้ (ซิงก์ตรงขึ้น Cloud ป้องกันข้อมูลทับซ้อน)</p>
         </div>
         <button id="addCareerBtn" onclick="openAddCareerModal()" class="px-5 py-2.5 rounded-2xl text-white font-black text-xs sm:text-sm btn-theme-action shadow hover:scale-105 transition flex items-center gap-1.5">
           <i class="fa-solid fa-plus-circle"></i><span>เพิ่มอาชีพหลัก</span>
@@ -345,14 +351,14 @@
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4" id="careersListContainer"></div>
     </section>
 
-    <!-- VIEW 3: คุณสมบัติ (ADMIN) -->
+    <!-- VIEW 3: คุณสมบัติ (เฉพาะ ADMIN) -->
     <section id="view-qualifications" class="hidden space-y-5 animate-pop-in">
       <div class="bg-white/90 dark:bg-slate-800/90 backdrop-blur border border-slate-200 dark:border-slate-700 rounded-3xl p-5 shadow-sm flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
         <div>
           <h3 class="font-black text-lg text-slate-900 dark:text-white flex items-center gap-2">
             <i class="fa-solid fa-certificate text-emerald-500 text-xl"></i><span>ฐานข้อมูลคุณสมบัติหลัก & หมวดหมู่</span>
           </h3>
-          <p class="text-xs text-slate-400 font-medium">เฉพาะ Admin สามารถจัดการหมวดหมู่, เพิ่ม/ลบ/แก้ไขเกณฑ์ และดูรหัส ID กำกับได้</p>
+          <p class="text-xs text-slate-400 font-medium">เฉพาะ Admin สามารถจัดการหมวดหมู่และเกณฑ์คุณสมบัติหลักได้</p>
         </div>
         <div class="flex items-center gap-2">
           <button onclick="openAddCategoryModal()" class="px-4 py-2 rounded-2xl bg-indigo-600 hover:bg-indigo-700 text-white font-black text-xs sm:text-sm shadow transition flex items-center gap-1.5">
@@ -366,7 +372,7 @@
       <div class="space-y-6" id="adminQualificationsContainer"></div>
     </section>
 
-    <!-- VIEW 4: ADMIN DASHBOARD -->
+    <!-- VIEW 4: ADMIN DASHBOARD (เฉพาะ ADMIN) -->
     <section id="view-admin" class="hidden space-y-5 animate-pop-in">
       <div class="bg-gradient-to-r from-amber-500/20 via-orange-500/10 to-transparent p-5 rounded-3xl border border-amber-500/30 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
         <div>
@@ -378,7 +384,7 @@
             แสดงข้อมูลผู้เล่นทุกคนในระบบ แม้ผู้เล่นจะ Logout ออกไปแล้วก็ตาม สามารถแก้ไขและล้างข้อมูลได้
           </p>
         </div>
-        <button onclick="fetchAllPlayersFromCloud()" class="px-4 py-2 rounded-xl bg-amber-500 text-white font-black text-xs sm:text-sm shadow hover:bg-amber-600 transition flex items-center gap-1.5">
+        <button onclick="fetchProfileDataFromCloud(true)" class="px-4 py-2 rounded-xl bg-amber-500 text-white font-black text-xs sm:text-sm shadow hover:bg-amber-600 transition flex items-center gap-1.5">
           <i class="fa-solid fa-arrows-rotate"></i><span>รีเฟรชข้อมูลผู้เล่น</span>
         </button>
       </div>
@@ -554,6 +560,51 @@
     </div>
   </div>
 
+  <!-- ADMIN EDIT PLAYER MODAL -->
+  <div id="adminEditModal" class="hidden fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-md flex items-center justify-center p-4 overflow-y-auto">
+    <div class="relative max-w-md w-full bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl p-6 shadow-2xl space-y-4 my-auto">
+      <div class="flex items-center justify-between border-b pb-3">
+        <h3 class="font-black text-base text-slate-900 dark:text-white flex items-center gap-2">
+          <i class="fa-solid fa-user-pen text-amber-500"></i>
+          <span>แก้ไขข้อมูลผู้เล่น</span>
+        </h3>
+        <button type="button" onclick="closeAdminEditModal()" class="w-8 h-8 rounded-xl text-slate-400 hover:text-slate-600"><i class="fa-solid fa-xmark text-lg"></i></button>
+      </div>
+
+      <form id="adminEditForm" onsubmit="handleSaveAdminEdit(event)" class="space-y-3 text-xs font-bold">
+        <input type="hidden" id="editPlayerAccountId">
+        <div>
+          <label class="text-slate-500">ชื่อผู้เล่น</label>
+          <input type="text" id="editPlayerName" class="w-full mt-1 p-2 rounded-xl border dark:bg-slate-800">
+        </div>
+        <div class="grid grid-cols-2 gap-2">
+          <div>
+            <label class="text-amber-500">เงินสด (฿)</label>
+            <input type="number" id="editPlayerCash" class="w-full mt-1 p-2 rounded-xl border font-mono dark:bg-slate-800">
+          </div>
+          <div>
+            <label class="text-cyan-400">PV ส่วนตัว</label>
+            <input type="number" id="editPlayerPersonalPv" class="w-full mt-1 p-2 rounded-xl border font-mono dark:bg-slate-800">
+          </div>
+        </div>
+        <div class="grid grid-cols-2 gap-2">
+          <div>
+            <label class="text-emerald-500">Active Income (฿)</label>
+            <input type="number" id="editPlayerActive" class="w-full mt-1 p-2 rounded-xl border font-mono dark:bg-slate-800">
+          </div>
+          <div>
+            <label class="text-teal-400">Passive Income (฿)</label>
+            <input type="number" id="editPlayerPassive" class="w-full mt-1 p-2 rounded-xl border font-mono dark:bg-slate-800">
+          </div>
+        </div>
+        <div class="flex justify-end gap-2 pt-2 border-t">
+          <button type="button" onclick="closeAdminEditModal()" class="px-4 py-2 rounded-xl border text-slate-500">ยกเลิก</button>
+          <button type="submit" class="px-5 py-2 rounded-xl text-white font-black btn-theme-action shadow">บันทึกการแก้ไข</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
   <!-- LOGIN MODAL -->
   <div id="loginModal" class="hidden fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-md flex items-center justify-center p-4">
     <div class="relative max-w-sm w-full bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl p-6 text-center shadow-2xl space-y-5 animate-pop-in">
@@ -602,58 +653,13 @@
     </div>
   </div>
 
-  <!-- ADMIN EDIT PLAYER MODAL -->
-  <div id="adminEditModal" class="hidden fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-md flex items-center justify-center p-4 overflow-y-auto">
-    <div class="relative max-w-md w-full bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl p-6 shadow-2xl space-y-4 my-auto">
-      <div class="flex items-center justify-between border-b pb-3">
-        <h3 class="font-black text-base text-slate-900 dark:text-white flex items-center gap-2">
-          <i class="fa-solid fa-user-pen text-amber-500"></i>
-          <span>แก้ไขข้อมูลผู้เล่น</span>
-        </h3>
-        <button type="button" onclick="closeAdminEditModal()" class="w-8 h-8 rounded-xl text-slate-400 hover:text-slate-600"><i class="fa-solid fa-xmark text-lg"></i></button>
-      </div>
-
-      <form id="adminEditForm" onsubmit="handleSaveAdminEdit(event)" class="space-y-3 text-xs font-bold">
-        <input type="hidden" id="editPlayerAccountId">
-        <div>
-          <label class="text-slate-500">ชื่อผู้เล่น</label>
-          <input type="text" id="editPlayerName" class="w-full mt-1 p-2 rounded-xl border dark:bg-slate-800">
-        </div>
-        <div class="grid grid-cols-2 gap-2">
-          <div>
-            <label class="text-amber-500">เงินสด (฿)</label>
-            <input type="number" id="editPlayerCash" class="w-full mt-1 p-2 rounded-xl border font-mono dark:bg-slate-800">
-          </div>
-          <div>
-            <label class="text-cyan-400">PV ส่วนตัว</label>
-            <input type="number" id="editPlayerPersonalPv" class="w-full mt-1 p-2 rounded-xl border font-mono dark:bg-slate-800">
-          </div>
-        </div>
-        <div class="grid grid-cols-2 gap-2">
-          <div>
-            <label class="text-emerald-500">Active Income (฿)</label>
-            <input type="number" id="editPlayerActive" class="w-full mt-1 p-2 rounded-xl border font-mono dark:bg-slate-800">
-          </div>
-          <div>
-            <label class="text-teal-400">Passive Income (฿)</label>
-            <input type="number" id="editPlayerPassive" class="w-full mt-1 p-2 rounded-xl border font-mono dark:bg-slate-800">
-          </div>
-        </div>
-        <div class="flex justify-end gap-2 pt-2 border-t">
-          <button type="button" onclick="closeAdminEditModal()" class="px-4 py-2 rounded-xl border text-slate-500">ยกเลิก</button>
-          <button type="submit" class="px-5 py-2 rounded-xl text-white font-black btn-theme-action shadow">บันทึกการแก้ไข</button>
-        </div>
-      </form>
-    </div>
-  </div>
-
   <!-- Toast Notification -->
   <div id="toastNotification" class="fixed top-20 right-4 z-50 transform translate-x-full opacity-0 transition-all duration-300 bg-slate-900 text-white px-5 py-3 rounded-2xl shadow-2xl flex items-center gap-3 text-xs sm:text-sm font-black pointer-events-none">
     <i class="fa-solid fa-circle-check text-emerald-400 text-lg"></i>
     <span id="toastMessage">แจ้งเตือน</span>
   </div>
 
-  <!-- JavaScript Engine -->
+  <!-- JavaScript Engine with Concurrency-Safe Sync -->
   <script>
     const GOOGLE_SHEET_API_URL = "https://script.google.com/macros/s/AKfycbzq9oD33K3nf_r2JRq5RjCafAQIvt2o9ywvJ1EvXvVg4l9QyUalIuQvxxT7zQ890nR1/exec";
 
@@ -728,7 +734,7 @@
       initTheme();
       loadAuthAndProfile();
       renderAllProfileUI();
-      fetchProfileDataFromCloud();
+      fetchProfileDataFromCloud(true); // ซิงก์ดึงข้อมูลจาก Cloud ทันทีเมื่อเปิดหน้าเว็บ
     });
 
     function showSyncBanner(title, detail, stepText = "กำลังดำเนินการ...", percent = 20) {
@@ -750,6 +756,13 @@
     }
 
     function hideSyncBanner() { document.getElementById('syncBlockingBanner').classList.add('hidden'); }
+    function setSyncBannerError(errMsg) {
+      document.getElementById('syncBannerTitle').innerText = "การซิงก์ไม่สำเร็จ";
+      document.getElementById('syncBannerDetail').innerText = errMsg;
+      document.getElementById('syncBannerIcon').className = "fa-solid fa-circle-xmark text-rose-500 text-4xl";
+      document.getElementById('syncBannerErrorBtn').classList.remove('hidden');
+    }
+
     function openLoginModal() { document.getElementById('loginModal').classList.remove('hidden'); }
     function closeLoginModal() { document.getElementById('loginModal').classList.add('hidden'); }
 
@@ -820,7 +833,7 @@
       }
       saveProfileLocalCache();
       renderAllProfileUI();
-      saveAllToCloud(false);
+      syncProfileAndMasterToCloud(false);
     }
 
     function logoutUser() {
@@ -883,7 +896,7 @@
       } catch (e) {}
     }
 
-    /* ผู้เล่นเลือกอาชีพ (Decoupled Clone) */
+    /* ผู้เล่นเลือกอาชีพ */
     function openPlayerCareerSelectModal() {
       const modal = document.getElementById('playerCareerSelectModal');
       const grid = document.getElementById('playerCareerModalGrid');
@@ -924,7 +937,7 @@
       saveProfileLocalCache();
       renderAllProfileUI();
       closePlayerCareerSelectModal();
-      saveAllToCloud(false);
+      syncProfileAndMasterToCloud(false);
       showToast(`เลือกอาชีพ "${targetMaster.title}" สำเร็จ! เริ่มต้นเกมธุรกิจแล้ว 🎯`);
       confetti({ particleCount: 50, spread: 60, origin: { y: 0.6 } });
     }
@@ -951,7 +964,6 @@
       const isAdmin = currentAuth.accountType === "admin";
       const hasCareer = Boolean(profileData.careerId && profileData.career);
 
-      // Role Guard Nav
       const navCareersBtn = document.getElementById('nav-btn-careers');
       const navQualBtn = document.getElementById('nav-btn-qualifications');
       const mNavCareersBtn = document.getElementById('m-nav-careers');
@@ -1179,7 +1191,7 @@
       profileData.unlockedQualifications[qualId] = checked;
       saveProfileLocalCache();
       renderPlayerDashboardQualifications();
-      saveAllToCloud(false);
+      syncProfileAndMasterToCloud(false);
       showToast(checked ? "บันทึกสถานะคุณสมบัติแล้ว! 🎉" : "ยกเลิกสถานะคุณสมบัติแล้ว");
     }
 
@@ -1260,6 +1272,7 @@
     function updatePlayerProfile() {
       profileData.name = document.getElementById('playerNameInput').value.trim();
       saveProfileLocalCache();
+      syncProfileAndMasterToCloud(false);
       showToast('อัปเดตชื่อผู้เล่นเรียบร้อย');
     }
 
@@ -1276,6 +1289,7 @@
       profileData.passiveIncome = parseFloat(document.getElementById('inputPassiveIncome').value) || 0;
       saveProfileLocalCache();
       renderAllProfileUI();
+      syncProfileAndMasterToCloud(false);
       showToast('บันทึกยอดเงินและข้อมูลธุรกิจเรียบร้อย');
     }
 
@@ -1294,6 +1308,7 @@
         leg.passiveIncome = pctNumber >= 21 ? 15000 : 0;
         saveProfileLocalCache();
         renderAllProfileUI();
+        syncProfileAndMasterToCloud(false);
       }
     }
 
@@ -1306,6 +1321,7 @@
       profileData.resources[type] = Math.max(1, Math.min(10, (profileData.resources[type] || 1) + delta));
       saveProfileLocalCache();
       renderAllProfileUI();
+      syncProfileAndMasterToCloud(false);
     }
 
     function resetPlayerStats() {
@@ -1313,10 +1329,11 @@
       profileData = createDefaultPlayerProfile(profileData.name, currentAuth.accountId);
       saveProfileLocalCache();
       renderAllProfileUI();
+      syncProfileAndMasterToCloud(false);
       showToast("รีเซ็ตสถานะเรียบร้อยแล้ว (เลือกอาชีพใหม่เพื่อเริ่มเล่น)");
     }
 
-    /* Admin CRUD */
+    /* Admin CRUD with Concurrency-Safe Sync */
     function openAddCategoryModal() {
       if (currentAuth.accountType !== "admin") return;
       renderQualCategoryModalList();
@@ -1349,6 +1366,7 @@
       renderQualCategoryModalList();
       renderAdminQualificationsTab();
       renderPlayerDashboardQualifications();
+      syncProfileAndMasterToCloud(false);
       showToast(`เพิ่มหมวดหมู่ "${val}" สำเร็จ`);
     }
 
@@ -1364,6 +1382,7 @@
       renderQualCategoryModalList();
       renderAdminQualificationsTab();
       renderPlayerDashboardQualifications();
+      syncProfileAndMasterToCloud(false);
       showToast("ลบหมวดหมู่เรียบร้อยแล้ว");
     }
 
@@ -1423,7 +1442,7 @@
       saveProfileLocalCache();
       renderCareersCards();
       closeCareerModal();
-      saveAllToCloud(false);
+      syncProfileAndMasterToCloud(true); // ซิงก์ขึ้น Cloud ทันทีพร้อมแบนเนอร์
     }
 
     function deleteCareer(id) {
@@ -1435,7 +1454,7 @@
       careersList = careersList.filter(item => item.id !== id);
       saveProfileLocalCache();
       renderCareersCards();
-      saveAllToCloud(false);
+      syncProfileAndMasterToCloud(true);
       showToast("ลบอาชีพเรียบร้อยแล้ว");
     }
 
@@ -1506,7 +1525,7 @@
       renderAdminQualificationsTab();
       renderPlayerDashboardQualifications();
       closeQualificationModal();
-      saveAllToCloud(false);
+      syncProfileAndMasterToCloud(true);
     }
 
     function deleteQualification(id) {
@@ -1519,7 +1538,7 @@
       saveProfileLocalCache();
       renderAdminQualificationsTab();
       renderPlayerDashboardQualifications();
-      saveAllToCloud(false);
+      syncProfileAndMasterToCloud(true);
       showToast("ลบเกณฑ์คุณสมบัติเรียบร้อยแล้ว");
     }
 
@@ -1604,7 +1623,7 @@
       closeAdminEditModal();
       saveProfileLocalCache();
       renderAdminPlayersTable();
-      saveAllToCloud(false);
+      syncProfileAndMasterToCloud(true);
       showToast(`แก้ไขข้อมูลผู้เล่น ${allPlayersDatabase[accId].name} สำเร็จ ✅`);
     }
 
@@ -1616,21 +1635,36 @@
       allPlayersDatabase[accId] = createDefaultPlayerProfile(p.name, accId);
       saveProfileLocalCache();
       renderAdminPlayersTable();
-      saveAllToCloud(false);
+      syncProfileAndMasterToCloud(true);
       showToast(`ล้างข้อมูลผู้เล่น "${p.name}" เรียบร้อยแล้ว (ปลดอาชีพเดิมออกแล้ว)`);
     }
 
-    /* Cloud Synchronization */
-    async function fetchProfileDataFromCloud() {
+    /* ------------------------------------------------------------------------
+       Cloud Synchronization (ใช้ระบบ Concurrency ป้องกันข้อมูลทับซ้อนเหมือน index.html)
+       ------------------------------------------------------------------------ */
+    async function fetchProfileDataFromCloud(isManual = false) {
       if (!GOOGLE_SHEET_API_URL || GOOGLE_SHEET_API_URL.includes("PLACEHOLDER")) return;
+      const syncIcon = document.getElementById('syncIcon');
+      if (syncIcon) syncIcon.classList.add('animate-spin');
+
+      if (isManual) {
+        showSyncBanner("กำลังซิงก์ข้อมูลกับ Cloud", "กำลังดาวน์โหลดฐานข้อมูลหลักและโปรไฟล์...", "ขั้นตอน 1/2: กำลังดาวน์โหลด", 35);
+      }
+
       try {
-        const res = await fetch(`${GOOGLE_SHEET_API_URL}?action=getCareers&nocache=${Date.now()}`);
+        const freshUrl = `${GOOGLE_SHEET_API_URL}${GOOGLE_SHEET_API_URL.includes('?') ? '&' : '?'}nocache=${Date.now()}`;
+        const res = await fetch(freshUrl, { method: 'GET', cache: 'no-store' });
         const data = await res.json();
-        
+
+        if (isManual) {
+          updateSyncBannerProgress(75, "ประมวลผลข้อมูลและอัปเดตแคช...", "ขั้นตอน 2/2: จัดเรียงข้อมูล");
+        }
+
         if (data) {
           if (Array.isArray(data.careers) && data.careers.length > 0) careersList = data.careers;
           if (Array.isArray(data.qualifications) && data.qualifications.length > 0) qualificationsList = data.qualifications;
           if (Array.isArray(data.qualificationCategories) && data.qualificationCategories.length > 0) qualificationCategories = data.qualificationCategories;
+          
           if (data.allPlayers) {
             allPlayersDatabase = data.allPlayers;
             localStorage.setItem('rnd_all_players_db', JSON.stringify(allPlayersDatabase));
@@ -1639,33 +1673,30 @@
               profileData = allPlayersDatabase[currentAuth.accountId];
             }
           }
+
           saveProfileLocalCache();
           renderAllProfileUI();
-        }
-      } catch (err) {}
-    }
 
-    async function fetchAllPlayersFromCloud() {
-      showSyncBanner("กำลังดึงข้อมูลผู้เล่น", "กำลังดาวน์โหลดฐานข้อมูลผู้เล่นทุกคน...", "ดาวน์โหลดข้อมูล", 40);
-      try {
-        const res = await fetch(`${GOOGLE_SHEET_API_URL}?action=getCareers&nocache=${Date.now()}`);
-        const data = await res.json();
-        if (data && data.allPlayers) {
-          allPlayersDatabase = data.allPlayers;
-          localStorage.setItem('rnd_all_players_db', JSON.stringify(allPlayersDatabase));
-          renderAdminPlayersTable();
-          updateSyncBannerProgress(100, "ดึงข้อมูลผู้เล่นสำเร็จ!", "เสร็จสิ้น");
-          setTimeout(hideSyncBanner, 500);
-          showToast("อัปเดตรายชื่อผู้เล่นทั้งหมดเรียบร้อย ☁️");
+          document.getElementById('cloudSyncStatus').innerHTML = `<i class="fa-solid fa-circle text-[9px] text-emerald-400"></i> ออนไลน์ (ซิงก์สำเร็จ)`;
+          
+          if (isManual) {
+            updateSyncBannerProgress(100, "ซิงก์ข้อมูลสมบูรณ์แล้ว!", "เสร็จสิ้น");
+            setTimeout(hideSyncBanner, 600);
+            showToast("ซิงก์ข้อมูลจาก Cloud สำเร็จ ☁️");
+          }
         }
-      } catch (e) {
-        hideSyncBanner();
-        showToast("ไม่สามารถดึงข้อมูลได้");
+      } catch (err) {
+        document.getElementById('cloudSyncStatus').innerHTML = `<i class="fa-solid fa-circle text-[9px] text-rose-500"></i> ออฟไลน์`;
+        if (isManual) setSyncBannerError(`ไม่สามารถซิงก์ข้อมูลได้: ${err.message}`);
+      } finally {
+        if (syncIcon) syncIcon.classList.remove('animate-spin');
       }
     }
 
-    async function saveAllToCloud(showBanner = true) {
-      if (showBanner) showSyncBanner("กำลังส่งข้อมูลขึ้น Cloud", "กำลังบันทึกข้อมูลโปรไฟล์และประวัติ...", "ขั้นตอน 1/2: กำลังอัปโหลด", 40);
+    async function syncProfileAndMasterToCloud(showBanner = true) {
+      if (showBanner) {
+        showSyncBanner("กำลังซิงก์ข้อมูลขึ้น Cloud", "กำลังจัดคิวบันทึกข้อมูล ป้องกันการเขียนทับกัน...", "ขั้นตอน: ส่งข้อมูลขึ้น Cloud", 45);
+      }
 
       if (currentAuth.accountType !== "admin" && currentAuth.accountId) {
         allPlayersDatabase[currentAuth.accountId] = profileData;
@@ -1691,10 +1722,10 @@
         const result = await response.json();
         if (result && result.status === "success") {
           if (showBanner) {
-            updateSyncBannerProgress(100, "บันทึกโปรไฟล์ขึ้น Google Sheets สำเร็จ!", "เสร็จสมบูรณ์");
+            updateSyncBannerProgress(100, "ซิงก์และบันทึกข้อมูลลง Google Sheets สำเร็จ 100%!", "เสร็จสมบูรณ์");
             confetti({ particleCount: 50, spread: 60, origin: { y: 0.6 } });
             setTimeout(hideSyncBanner, 800);
-            showToast("บันทึกข้อมูลตัวละครขึ้น Cloud สำเร็จ ☁️");
+            showToast("บันทึกข้อมูลขึ้น Cloud สำเร็จ ☁️");
           }
         } else {
           throw new Error(result?.message || "เซิร์ฟเวอร์ปฏิเสธการบันทึก");
