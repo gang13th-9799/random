@@ -40,6 +40,7 @@
             'shimmer': 'shimmer 2.2s infinite linear',
             'pulse-subtle': 'pulseSubtle 2s infinite ease-in-out',
             'pop-in': 'popIn 0.3s cubic-bezier(0.16, 1, 0.3, 1)',
+            'card-flip': 'cardFlip 0.5s cubic-bezier(0.34, 1.56, 0.64, 1)',
           },
           keyframes: {
             shimmer: {
@@ -53,6 +54,10 @@
             popIn: {
               '0%': { opacity: '0', transform: 'scale(0.94) translateY(10px)' },
               '100%': { opacity: '1', transform: 'scale(1) translateY(0)' }
+            },
+            cardFlip: {
+              '0%': { opacity: '0', transform: 'scale(0.85) rotateY(-80deg)' },
+              '100%': { opacity: '1', transform: 'scale(1) rotateY(0deg)' }
             }
           }
         }
@@ -88,6 +93,11 @@
       box-sizing: border-box;
       word-break: break-word;
       overflow-wrap: break-word;
+    }
+
+    .responsive-title {
+      font-size: var(--fluid-title) !important;
+      line-height: 1.35 !important;
     }
 
     .card-vibrant-glow {
@@ -140,7 +150,7 @@
     </div>
   </div>
 
-  <!-- Header -->
+  <!-- Header (เพิ่ม id="cloudSyncStatus" เพื่อป้องกัน TypeError) -->
   <header class="sticky top-0 z-40 bg-white/95 dark:bg-slate-900/95 backdrop-blur-md border-b border-slate-200 dark:border-slate-800 shadow-sm transition-colors">
     <div class="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 h-18 py-2 flex items-center justify-between gap-2">
       <div class="flex items-center space-x-3 cursor-pointer group shrink-0" onclick="location.href='index.html'">
@@ -152,8 +162,8 @@
             <span class="font-black text-xl sm:text-2xl tracking-tight text-slate-900 dark:text-white">MY PROFILE</span>
             <span id="accountTypeBadge" class="text-[11px] font-black px-2 py-0.5 rounded-full text-white uppercase tracking-wider btn-theme-action shadow-sm">GUEST</span>
           </div>
-          <p id="currentUserAccountText" class="text-xs text-slate-500 dark:text-slate-400 font-semibold truncate max-w-[180px] sm:max-w-xs">
-            กำลังโหลดข้อมูล...
+          <p id="cloudSyncStatus" class="text-xs text-slate-500 dark:text-slate-400 font-semibold flex items-center gap-1.5 pt-0.5">
+            <i class="fa-solid fa-circle text-[9px] text-emerald-400"></i> ออนไลน์พร้อมใช้งาน
           </p>
         </div>
       </div>
@@ -690,32 +700,60 @@
 
     function showSyncBanner(title, detail, stepText = "กำลังดำเนินการ...", percent = 20) {
       const banner = document.getElementById('syncBlockingBanner');
-      document.getElementById('syncBannerTitle').innerText = title;
-      document.getElementById('syncBannerDetail').innerText = detail;
-      document.getElementById('syncBannerStepText').innerText = stepText;
+      if (!banner) return;
+      const t = document.getElementById('syncBannerTitle');
+      const d = document.getElementById('syncBannerDetail');
+      const s = document.getElementById('syncBannerStepText');
+      if (t) t.innerText = title;
+      if (d) d.innerText = detail;
+      if (s) s.innerText = stepText;
       updateSyncBannerProgress(percent);
-      document.getElementById('syncBannerErrorBtn').classList.add('hidden');
-      document.getElementById('syncBannerIcon').className = "fa-solid fa-arrows-rotate animate-spin";
+      const errBtn = document.getElementById('syncBannerErrorBtn');
+      if (errBtn) errBtn.classList.add('hidden');
+      const icon = document.getElementById('syncBannerIcon');
+      if (icon) icon.className = "fa-solid fa-arrows-rotate animate-spin";
       banner.classList.remove('hidden');
     }
 
     function updateSyncBannerProgress(percent, detail = null, stepText = null) {
-      document.getElementById('syncBannerProgressBar').style.width = `${percent}%`;
-      document.getElementById('syncBannerPercentText').innerText = `${percent}%`;
-      if (detail) document.getElementById('syncBannerDetail').innerText = detail;
-      if (stepText) document.getElementById('syncBannerStepText').innerText = stepText;
+      const bar = document.getElementById('syncBannerProgressBar');
+      const txt = document.getElementById('syncBannerPercentText');
+      if (bar) bar.style.width = `${percent}%`;
+      if (txt) txt.innerText = `${percent}%`;
+      if (detail) {
+        const d = document.getElementById('syncBannerDetail');
+        if (d) d.innerText = detail;
+      }
+      if (stepText) {
+        const s = document.getElementById('syncBannerStepText');
+        if (s) s.innerText = stepText;
+      }
     }
 
-    function hideSyncBanner() { document.getElementById('syncBlockingBanner').classList.add('hidden'); }
+    function hideSyncBanner() { 
+      const banner = document.getElementById('syncBlockingBanner');
+      if (banner) banner.classList.add('hidden'); 
+    }
+
     function setSyncBannerError(errMsg) {
-      document.getElementById('syncBannerTitle').innerText = "การซิงก์ไม่สำเร็จ";
-      document.getElementById('syncBannerDetail').innerText = errMsg;
-      document.getElementById('syncBannerIcon').className = "fa-solid fa-circle-xmark text-rose-500 text-4xl";
-      document.getElementById('syncBannerErrorBtn').classList.remove('hidden');
+      const t = document.getElementById('syncBannerTitle');
+      const d = document.getElementById('syncBannerDetail');
+      const icon = document.getElementById('syncBannerIcon');
+      const errBtn = document.getElementById('syncBannerErrorBtn');
+      if (t) t.innerText = "การซิงก์ไม่สำเร็จ";
+      if (d) d.innerText = errMsg;
+      if (icon) icon.className = "fa-solid fa-circle-xmark text-rose-500 text-4xl";
+      if (errBtn) errBtn.classList.remove('hidden');
     }
 
-    function openLoginModal() { document.getElementById('loginModal').classList.remove('hidden'); }
-    function closeLoginModal() { document.getElementById('loginModal').classList.add('hidden'); }
+    function openLoginModal() { 
+      const m = document.getElementById('loginModal');
+      if (m) m.classList.remove('hidden'); 
+    }
+    function closeLoginModal() { 
+      const m = document.getElementById('loginModal');
+      if (m) m.classList.add('hidden'); 
+    }
 
     function loginAsGuest() {
       currentAuth = {
@@ -746,8 +784,8 @@
 
     function handleAccountLogin(e) {
       e.preventDefault();
-      const user = document.getElementById('loginUsernameInput').value.trim();
-      const pass = document.getElementById('loginPasswordInput').value.trim();
+      const user = (document.getElementById('loginUsernameInput')?.value || '').trim();
+      const pass = (document.getElementById('loginPasswordInput')?.value || '').trim();
 
       if (user === "admin" && pass === "9799") {
         currentAuth = {
@@ -847,7 +885,6 @@
       } catch (e) {}
     }
 
-    /* ผู้เล่นเลือกอาชีพ */
     function openPlayerCareerSelectModal() {
       const modal = document.getElementById('playerCareerSelectModal');
       const grid = document.getElementById('playerCareerModalGrid');
@@ -872,7 +909,10 @@
       modal.classList.remove('hidden');
     }
 
-    function closePlayerCareerSelectModal() { document.getElementById('playerCareerSelectModal').classList.add('hidden'); }
+    function closePlayerCareerSelectModal() { 
+      const m = document.getElementById('playerCareerSelectModal');
+      if (m) m.classList.add('hidden'); 
+    }
 
     function selectPlayerCareerClone(careerId) {
       const targetMaster = careersList.find(c => c.id === careerId);
@@ -909,12 +949,23 @@
     }
 
     /* ------------------------------------------------------------------------
-       เรนเดอร์ UI
+       เรนเดอร์ UI (Null-safe 100% ป้องกัน TypeError)
        ------------------------------------------------------------------------ */
+    function setSafeInnerText(id, text) {
+      const el = document.getElementById(id);
+      if (el) el.innerText = text;
+    }
+
+    function setSafeValue(id, val) {
+      const el = document.getElementById(id);
+      if (el) el.value = val;
+    }
+
     function renderAllProfileUI() {
       const isAdmin = currentAuth.accountType === "admin";
       const hasCareer = Boolean(profileData.careerId && profileData.career);
 
+      // Role Guard Nav
       const navCareersBtn = document.getElementById('nav-btn-careers');
       const navQualBtn = document.getElementById('nav-btn-qualifications');
       const mNavCareersBtn = document.getElementById('m-nav-careers');
@@ -935,30 +986,32 @@
       if (addQualBtn) addQualBtn.classList.toggle('hidden', !isAdmin);
 
       const typeBadge = document.getElementById('accountTypeBadge');
-      const accountText = document.getElementById('currentUserAccountText');
       const loginBtn = document.getElementById('loginActionBtn');
       const playerRoleBadge = document.getElementById('playerRoleBadge');
 
       if (typeBadge) typeBadge.innerText = currentAuth.accountType.toUpperCase();
-      if (accountText) accountText.innerText = `${currentAuth.name} (${currentAuth.accountId})`;
+      setSafeInnerText('currentUserAccountText', `${currentAuth.name} (${currentAuth.accountId})`);
+
       if (playerRoleBadge) {
         playerRoleBadge.innerText = isAdmin ? "ADMIN" : "PLAYER";
         playerRoleBadge.className = isAdmin ? "text-xs font-black px-2.5 py-1 rounded-full bg-amber-500 text-white shadow-sm" : "text-xs font-black px-2.5 py-1 rounded-full bg-rose-500 text-white shadow-sm";
       }
 
-      if (currentAuth.isLoggedIn) {
-        loginBtn.innerHTML = `<i class="fa-solid fa-right-from-bracket text-rose-500"></i><span>ออกจากระบบ</span>`;
-        loginBtn.onclick = logoutUser;
-      } else {
-        loginBtn.innerHTML = `<i class="fa-solid fa-right-to-bracket text-emerald-500"></i><span>เข้าสู่ระบบ</span>`;
-        loginBtn.onclick = openLoginModal;
+      if (loginBtn) {
+        if (currentAuth.isLoggedIn) {
+          loginBtn.innerHTML = `<i class="fa-solid fa-right-from-bracket text-rose-500"></i><span>ออกจากระบบ</span>`;
+          loginBtn.onclick = logoutUser;
+        } else {
+          loginBtn.innerHTML = `<i class="fa-solid fa-right-to-bracket text-emerald-500"></i><span>เข้าสู่ระบบ</span>`;
+          loginBtn.onclick = openLoginModal;
+        }
       }
 
       const unselectedBanner = document.getElementById('unselectedCareerBanner');
       if (unselectedBanner) unselectedBanner.classList.toggle('hidden', hasCareer);
 
       const careerTitle = hasCareer ? profileData.career.title : "ยังไม่ได้เลือกอาชีพ (ค่าเป็น 0)";
-      document.getElementById('currentCareerDisplay').innerText = careerTitle;
+      setSafeInnerText('currentCareerDisplay', careerTitle);
 
       const salaryVal = hasCareer ? (profileData.career.salary || 0) : 0;
       const expensesVal = hasCareer ? (profileData.career.expenses || 0) : 0;
@@ -970,20 +1023,20 @@
       const pvBahtVal = hasCareer ? (profileData.personalVolumeBaht || 0) : 0;
       const personalPvVal = hasCareer ? (profileData.personalPv || 0) : 0;
 
-      document.getElementById('playerNameInput').value = profileData.name || "ผู้เล่นทั่วไป";
-      document.getElementById('statSalary').innerText = `฿${salaryVal.toLocaleString()}`;
-      document.getElementById('statExpenses').innerText = `฿${expensesVal.toLocaleString()}`;
-      document.getElementById('statNetMonthly').innerText = `฿${netMonthly.toLocaleString()}`;
-      document.getElementById('statCash').innerText = `฿${cashVal.toLocaleString()}`;
-      document.getElementById('inputCash').value = cashVal;
-      document.getElementById('statPersonalVolumeBaht').innerText = `฿${pvBahtVal.toLocaleString()}`;
-      document.getElementById('inputPersonalVolumeBaht').value = pvBahtVal;
-      document.getElementById('statPersonalPv').innerText = personalPvVal.toLocaleString();
-      document.getElementById('inputPersonalPv').value = personalPvVal;
-      document.getElementById('statActiveIncome').innerText = `฿${activeIncVal.toLocaleString()}`;
-      document.getElementById('inputActiveIncome').value = activeIncVal;
-      document.getElementById('statPassiveIncome').innerText = `฿${passiveIncVal.toLocaleString()}`;
-      document.getElementById('inputPassiveIncome').value = passiveIncVal;
+      setSafeValue('playerNameInput', profileData.name || "ผู้เล่นทั่วไป");
+      setSafeInnerText('statSalary', `฿${salaryVal.toLocaleString()}`);
+      setSafeInnerText('statExpenses', `฿${expensesVal.toLocaleString()}`);
+      setSafeInnerText('statNetMonthly', `฿${netMonthly.toLocaleString()}`);
+      setSafeInnerText('statCash', `฿${cashVal.toLocaleString()}`);
+      setSafeValue('inputCash', cashVal);
+      setSafeInnerText('statPersonalVolumeBaht', `฿${pvBahtVal.toLocaleString()}`);
+      setSafeValue('inputPersonalVolumeBaht', pvBahtVal);
+      setSafeInnerText('statPersonalPv', personalPvVal.toLocaleString());
+      setSafeValue('inputPersonalPv', personalPvVal);
+      setSafeInnerText('statActiveIncome', `฿${activeIncVal.toLocaleString()}`);
+      setSafeValue('inputActiveIncome', activeIncVal);
+      setSafeInnerText('statPassiveIncome', `฿${passiveIncVal.toLocaleString()}`);
+      setSafeValue('inputPassiveIncome', passiveIncVal);
 
       renderDashboardResources(hasCareer);
       renderLegsCards(hasCareer);
@@ -1221,7 +1274,8 @@
     }
 
     function updatePlayerProfile() {
-      profileData.name = document.getElementById('playerNameInput').value.trim();
+      const input = document.getElementById('playerNameInput');
+      if (input) profileData.name = input.value.trim();
       saveProfileLocalCache();
       syncProfileAndMasterToCloud(false);
       showToast('อัปเดตชื่อผู้เล่นเรียบร้อย');
@@ -1233,11 +1287,11 @@
         renderAllProfileUI();
         return;
       }
-      profileData.cash = parseFloat(document.getElementById('inputCash').value) || 0;
-      profileData.personalVolumeBaht = parseFloat(document.getElementById('inputPersonalVolumeBaht').value) || 0;
-      profileData.personalPv = parseFloat(document.getElementById('inputPersonalPv').value) || 0;
-      profileData.activeIncome = parseFloat(document.getElementById('inputActiveIncome').value) || 0;
-      profileData.passiveIncome = parseFloat(document.getElementById('inputPassiveIncome').value) || 0;
+      profileData.cash = parseFloat(document.getElementById('inputCash')?.value) || 0;
+      profileData.personalVolumeBaht = parseFloat(document.getElementById('inputPersonalVolumeBaht')?.value) || 0;
+      profileData.personalPv = parseFloat(document.getElementById('inputPersonalPv')?.value) || 0;
+      profileData.activeIncome = parseFloat(document.getElementById('inputActiveIncome')?.value) || 0;
+      profileData.passiveIncome = parseFloat(document.getElementById('inputPassiveIncome')?.value) || 0;
       saveProfileLocalCache();
       renderAllProfileUI();
       syncProfileAndMasterToCloud(false);
@@ -1288,10 +1342,14 @@
     function openAddCategoryModal() {
       if (currentAuth.accountType !== "admin") return;
       renderQualCategoryModalList();
-      document.getElementById('categoryQualModal').classList.remove('hidden');
+      const m = document.getElementById('categoryQualModal');
+      if (m) m.classList.remove('hidden');
     }
 
-    function closeCategoryQualModal() { document.getElementById('categoryQualModal').classList.add('hidden'); }
+    function closeCategoryQualModal() { 
+      const m = document.getElementById('categoryQualModal');
+      if (m) m.classList.add('hidden'); 
+    }
 
     function renderQualCategoryModalList() {
       const container = document.getElementById('qualCategoryListContainer');
@@ -1305,14 +1363,15 @@
     }
 
     function handleAddQualCategory() {
-      const val = document.getElementById('newQualCategoryInput').value.trim();
+      const input = document.getElementById('newQualCategoryInput');
+      const val = (input?.value || '').trim();
       if (!val) return;
       if (qualificationCategories.includes(val)) {
         showToast("มีหมวดหมู่นี้อยู่แล้ว");
         return;
       }
       qualificationCategories.push(val);
-      document.getElementById('newQualCategoryInput').value = '';
+      if (input) input.value = '';
       saveProfileLocalCache();
       renderQualCategoryModalList();
       renderAdminQualificationsTab();
@@ -1339,42 +1398,47 @@
 
     function openAddCareerModal() {
       if (currentAuth.accountType !== "admin") return;
-      document.getElementById('careerModalTitle').innerHTML = `<i class="fa-solid fa-plus-circle text-purple-500"></i><span>เพิ่มอาชีพหลัก</span>`;
-      document.getElementById('careerEditId').value = "";
-      document.getElementById('careerTitleInput').value = "";
-      document.getElementById('careerSalaryInput').value = 25000;
-      document.getElementById('careerExpensesInput').value = 12000;
-      document.getElementById('careerCashInput').value = 50000;
-      document.getElementById('careerMinPvInput').value = 0;
-      document.getElementById('careerModal').classList.remove('hidden');
+      setSafeInnerText('careerModalTitle', 'เพิ่มอาชีพหลัก');
+      setSafeValue('careerEditId', '');
+      setSafeValue('careerTitleInput', '');
+      setSafeValue('careerSalaryInput', 25000);
+      setSafeValue('careerExpensesInput', 12000);
+      setSafeValue('careerCashInput', 50000);
+      setSafeValue('careerMinPvInput', 0);
+      const m = document.getElementById('careerModal');
+      if (m) m.classList.remove('hidden');
     }
 
     function openEditCareerModal(id) {
       if (currentAuth.accountType !== "admin") return;
       const c = careersList.find(item => item.id === id);
       if (!c) return;
-      document.getElementById('careerModalTitle').innerHTML = `<i class="fa-solid fa-pen text-purple-500"></i><span>แก้ไขอาชีพหลัก</span>`;
-      document.getElementById('careerEditId').value = c.id;
-      document.getElementById('careerTitleInput').value = c.title;
-      document.getElementById('careerSalaryInput').value = c.salary || 0;
-      document.getElementById('careerExpensesInput').value = c.expenses || 0;
-      document.getElementById('careerCashInput').value = c.cash || 0;
-      document.getElementById('careerMinPvInput').value = c.minPv || 0;
-      document.getElementById('careerModal').classList.remove('hidden');
+      setSafeInnerText('careerModalTitle', 'แก้ไขอาชีพหลัก');
+      setSafeValue('careerEditId', c.id);
+      setSafeValue('careerTitleInput', c.title);
+      setSafeValue('careerSalaryInput', c.salary || 0);
+      setSafeValue('careerExpensesInput', c.expenses || 0);
+      setSafeValue('careerCashInput', c.cash || 0);
+      setSafeValue('careerMinPvInput', c.minPv || 0);
+      const m = document.getElementById('careerModal');
+      if (m) m.classList.remove('hidden');
     }
 
-    function closeCareerModal() { document.getElementById('careerModal').classList.add('hidden'); }
+    function closeCareerModal() { 
+      const m = document.getElementById('careerModal');
+      if (m) m.classList.add('hidden'); 
+    }
 
     function handleSaveCareer(e) {
       e.preventDefault();
       if (currentAuth.accountType !== "admin") return;
 
-      const id = document.getElementById('careerEditId').value;
-      const title = document.getElementById('careerTitleInput').value.trim();
-      const salary = parseFloat(document.getElementById('careerSalaryInput').value) || 0;
-      const expenses = parseFloat(document.getElementById('careerExpensesInput').value) || 0;
-      const cash = parseFloat(document.getElementById('careerCashInput').value) || 0;
-      const minPv = parseFloat(document.getElementById('careerMinPvInput').value) || 0;
+      const id = document.getElementById('careerEditId')?.value;
+      const title = (document.getElementById('careerTitleInput')?.value || '').trim();
+      const salary = parseFloat(document.getElementById('careerSalaryInput')?.value) || 0;
+      const expenses = parseFloat(document.getElementById('careerExpensesInput')?.value) || 0;
+      const cash = parseFloat(document.getElementById('careerCashInput')?.value) || 0;
+      const minPv = parseFloat(document.getElementById('careerMinPvInput')?.value) || 0;
 
       if (id) {
         const idx = careersList.findIndex(c => c.id === id);
@@ -1412,14 +1476,15 @@
     function openAddQualificationModal() {
       if (currentAuth.accountType !== "admin") return;
       renderQualCategorySelectOptions();
-      document.getElementById('qualificationModalTitle').innerHTML = `<i class="fa-solid fa-plus-circle text-emerald-500"></i><span>เพิ่มเกณฑ์คุณสมบัติหลัก</span>`;
-      document.getElementById('qualEditId').value = "";
-      document.getElementById('qualCodeInput').value = `Q-${Math.floor(100 + Math.random() * 900)}`;
-      document.getElementById('qualTitleInput').value = "";
-      document.getElementById('qualPersonalPvInput').value = 0;
-      document.getElementById('qualLegsCountInput').value = 0;
-      document.getElementById('qualBonusInput').value = 0;
-      document.getElementById('qualificationModal').classList.remove('hidden');
+      setSafeInnerText('qualificationModalTitle', 'เพิ่มเกณฑ์คุณสมบัติหลัก');
+      setSafeValue('qualEditId', '');
+      setSafeValue('qualCodeInput', `Q-${Math.floor(100 + Math.random() * 900)}`);
+      setSafeValue('qualTitleInput', '');
+      setSafeValue('qualPersonalPvInput', 0);
+      setSafeValue('qualLegsCountInput', 0);
+      setSafeValue('qualBonusInput', 0);
+      const m = document.getElementById('qualificationModal');
+      if (m) m.classList.remove('hidden');
     }
 
     function openEditQualificationModal(id) {
@@ -1427,18 +1492,22 @@
       renderQualCategorySelectOptions();
       const q = qualificationsList.find(item => item.id === id);
       if (!q) return;
-      document.getElementById('qualificationModalTitle').innerHTML = `<i class="fa-solid fa-pen text-emerald-500"></i><span>แก้ไขเกณฑ์คุณสมบัติหลัก</span>`;
-      document.getElementById('qualEditId').value = q.id;
-      document.getElementById('qualCodeInput').value = q.code || "Q-001";
-      document.getElementById('qualCategorySelect').value = q.category || qualificationCategories[0];
-      document.getElementById('qualTitleInput').value = q.title;
-      document.getElementById('qualPersonalPvInput').value = q.personalPv || 0;
-      document.getElementById('qualLegsCountInput').value = q.legsCount || 0;
-      document.getElementById('qualBonusInput').value = q.bonus || 0;
-      document.getElementById('qualificationModal').classList.remove('hidden');
+      setSafeInnerText('qualificationModalTitle', 'แก้ไขเกณฑ์คุณสมบัติหลัก');
+      setSafeValue('qualEditId', q.id);
+      setSafeValue('qualCodeInput', q.code || "Q-001");
+      setSafeValue('qualCategorySelect', q.category || qualificationCategories[0]);
+      setSafeValue('qualTitleInput', q.title);
+      setSafeValue('qualPersonalPvInput', q.personalPv || 0);
+      setSafeValue('qualLegsCountInput', q.legsCount || 0);
+      setSafeValue('qualBonusInput', q.bonus || 0);
+      const m = document.getElementById('qualificationModal');
+      if (m) m.classList.remove('hidden');
     }
 
-    function closeQualificationModal() { document.getElementById('qualificationModal').classList.add('hidden'); }
+    function closeQualificationModal() { 
+      const m = document.getElementById('qualificationModal');
+      if (m) m.classList.add('hidden'); 
+    }
 
     function renderQualCategorySelectOptions() {
       const sel = document.getElementById('qualCategorySelect');
@@ -1450,13 +1519,13 @@
       e.preventDefault();
       if (currentAuth.accountType !== "admin") return;
 
-      const id = document.getElementById('qualEditId').value;
-      const code = document.getElementById('qualCodeInput').value.trim();
-      const category = document.getElementById('qualCategorySelect').value;
-      const title = document.getElementById('qualTitleInput').value.trim();
-      const personalPv = parseFloat(document.getElementById('qualPersonalPvInput').value) || 0;
-      const legsCount = parseInt(document.getElementById('qualLegsCountInput').value) || 0;
-      const bonus = parseFloat(document.getElementById('qualBonusInput').value) || 0;
+      const id = document.getElementById('qualEditId')?.value;
+      const code = (document.getElementById('qualCodeInput')?.value || '').trim();
+      const category = document.getElementById('qualCategorySelect')?.value;
+      const title = (document.getElementById('qualTitleInput')?.value || '').trim();
+      const personalPv = parseFloat(document.getElementById('qualPersonalPvInput')?.value) || 0;
+      const legsCount = parseInt(document.getElementById('qualLegsCountInput')?.value) || 0;
+      const bonus = parseFloat(document.getElementById('qualBonusInput')?.value) || 0;
 
       if (id) {
         const idx = qualificationsList.findIndex(q => q.id === id);
@@ -1549,27 +1618,38 @@
     function adminOpenEditPlayer(accId) {
       const p = allPlayersDatabase[accId];
       if (!p) return;
-      document.getElementById('editPlayerAccountId').value = accId;
-      document.getElementById('editPlayerName').value = p.name || '';
-      document.getElementById('editPlayerCash').value = p.cash || 0;
-      document.getElementById('editPlayerPersonalPv').value = p.personalPv || 0;
-      document.getElementById('editPlayerActive').value = p.activeIncome || 0;
-      document.getElementById('editPlayerPassive').value = p.passiveIncome || 0;
-      document.getElementById('adminEditModal').classList.remove('hidden');
+
+      setSafeValue('editPlayerAccountId', accId);
+      setSafeValue('editPlayerName', p.name || '');
+      setSafeValue('editPlayerCash', p.cash || 0);
+      setSafeValue('editPlayerPersonalPv', p.personalPv || 0);
+      setSafeValue('editPlayerActive', p.activeIncome || 0);
+      setSafeValue('editPlayerPassive', p.passiveIncome || 0);
+
+      const res = p.resources || { heart: 1, time: 1, knowledge: 1 };
+      setSafeValue('editPlayerHeart', res.heart);
+      setSafeValue('editPlayerTime', res.time);
+      setSafeValue('editPlayerKnowledge', res.knowledge);
+
+      const m = document.getElementById('adminEditModal');
+      if (m) m.classList.remove('hidden');
     }
 
-    function closeAdminEditModal() { document.getElementById('adminEditModal').classList.add('hidden'); }
+    function closeAdminEditModal() { 
+      const m = document.getElementById('adminEditModal');
+      if (m) m.classList.add('hidden'); 
+    }
 
     function handleSaveAdminEdit(e) {
       e.preventDefault();
-      const accId = document.getElementById('editPlayerAccountId').value;
+      const accId = document.getElementById('editPlayerAccountId')?.value;
       if (!allPlayersDatabase[accId]) return;
 
-      allPlayersDatabase[accId].name = document.getElementById('editPlayerName').value.trim();
-      allPlayersDatabase[accId].cash = parseFloat(document.getElementById('editPlayerCash').value) || 0;
-      allPlayersDatabase[accId].personalPv = parseFloat(document.getElementById('editPlayerPersonalPv').value) || 0;
-      allPlayersDatabase[accId].activeIncome = parseFloat(document.getElementById('editPlayerActive').value) || 0;
-      allPlayersDatabase[accId].passiveIncome = parseFloat(document.getElementById('editPlayerPassive').value) || 0;
+      allPlayersDatabase[accId].name = (document.getElementById('editPlayerName')?.value || '').trim();
+      allPlayersDatabase[accId].cash = parseFloat(document.getElementById('editPlayerCash')?.value) || 0;
+      allPlayersDatabase[accId].personalPv = parseFloat(document.getElementById('editPlayerPersonalPv')?.value) || 0;
+      allPlayersDatabase[accId].activeIncome = parseFloat(document.getElementById('editPlayerActive')?.value) || 0;
+      allPlayersDatabase[accId].passiveIncome = parseFloat(document.getElementById('editPlayerPassive')?.value) || 0;
 
       closeAdminEditModal();
       saveProfileLocalCache();
@@ -1628,7 +1708,10 @@
           saveProfileLocalCache();
           renderAllProfileUI();
 
-          document.getElementById('cloudSyncStatus').innerHTML = `<i class="fa-solid fa-circle text-[9px] text-emerald-400"></i> ออนไลน์ (ซิงก์สำเร็จ)`;
+          const syncStatusEl = document.getElementById('cloudSyncStatus');
+          if (syncStatusEl) {
+            syncStatusEl.innerHTML = `<i class="fa-solid fa-circle text-[9px] text-emerald-400"></i> ออนไลน์ (ซิงก์สำเร็จ)`;
+          }
           
           if (isManual) {
             updateSyncBannerProgress(100, "ซิงก์ข้อมูลสมบูรณ์แล้ว!", "เสร็จสิ้น");
@@ -1637,7 +1720,10 @@
           }
         }
       } catch (err) {
-        document.getElementById('cloudSyncStatus').innerHTML = `<i class="fa-solid fa-circle text-[9px] text-rose-500"></i> ออฟไลน์`;
+        const syncStatusEl = document.getElementById('cloudSyncStatus');
+        if (syncStatusEl) {
+          syncStatusEl.innerHTML = `<i class="fa-solid fa-circle text-[9px] text-rose-500"></i> ออฟไลน์`;
+        }
         if (isManual) setSyncBannerError(`ไม่สามารถซิงก์ข้อมูลได้: ${err.message}`);
       } finally {
         if (syncIcon) syncIcon.classList.remove('animate-spin');
@@ -1716,7 +1802,9 @@
 
     function showToast(msg) {
       const t = document.getElementById('toastNotification');
-      document.getElementById('toastMessage').innerText = msg;
+      if (!t) return;
+      const m = document.getElementById('toastMessage');
+      if (m) m.innerText = msg;
       t.classList.remove('translate-x-full', 'opacity-0');
       setTimeout(() => t.classList.add('translate-x-full', 'opacity-0'), 2500);
     }
