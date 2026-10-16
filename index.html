@@ -1065,7 +1065,7 @@
             <span>คำอธิบาย:</span>
           </p>
           <p>• <strong>เลือกใช้:</strong> โหลดชุดข้อมูลเวอร์ชันนั้นมาใช้งานในเครื่องนี้ทันที</p>
-          <p>• <strong>Push:</strong> ตั้งชื่อ Version ใหม่ และอัปโหลดชุดข้อมูลนั้นขึ้น Google Sheets ให้ทุกเครื่องใช้ข้อมูลชุดเดียวกัน</p>
+          <p>• <strong>Push:</strong> ตั้งชื่อ Version ใหม่ อัปโหลดขึ้นชีต และตรวจสอบยืนยันผลลัพธ์กับเซิร์ฟเวอร์โดยตรง</p>
         </div>
       </div>
 
@@ -1162,9 +1162,8 @@
     let lastCloudCardCount = 0;
     let dbSnapshots = [];
     let activeSnapshotId = "cloud_active";
-    let isCloudSyncedSession = false; // ป้องกันเครื่องที่ยังไม่ได้ซิงก์เผลอส่งข้อมูลเก่าทับ Cloud
+    let isCloudSyncedSession = false;
 
-    // พาเลท 24 เฉดสีครบชุด
     const COLOR_PALETTES = {
       red: { id: "red", name: "1. แดงทับทิม", hex: "#EF4444", gradient: "linear-gradient(135deg, #EF4444 0%, #DC2626 50%, #991B1B 100%)", badge: "bg-red-100 text-red-800 dark:bg-red-950/80 dark:text-red-300" },
       crimson: { id: "crimson", name: "2. แดงเข้มคริมสัน", hex: "#BE123C", gradient: "linear-gradient(135deg, #F43F5E 0%, #BE123C 50%, #881337 100%)", badge: "bg-rose-100 text-rose-900 dark:bg-rose-950/80 dark:text-rose-300" },
@@ -1197,7 +1196,6 @@
       dark: { id: "dark", name: "24. ดำมิดไนท์", hex: "#0F172A", gradient: "linear-gradient(135deg, #334155 0%, #1E293B 50%, #020617 100%)", badge: "bg-slate-900 text-white dark:bg-black dark:text-white" }
     };
 
-    // ชุดไอคอน 40 แบบ
     const ICON_PRESETS = [
       "fa-folder", "fa-book", "fa-graduation-cap", "fa-lightbulb", 
       "fa-heart", "fa-dumbbell", "fa-person-running", "fa-apple-whole", "fa-utensils", 
@@ -1498,6 +1496,8 @@
       document.getElementById('syncProgressTitle').innerText = title;
       document.getElementById('syncProgressStatusText').innerText = initialStatus;
       document.getElementById('syncProgressBar').style.width = '0%';
+      document.getElementById('syncProgressBar').classList.remove('bg-red-500');
+      document.getElementById('syncProgressBar').classList.add('from-blue-500', 'via-indigo-500', 'to-emerald-500');
       document.getElementById('syncProgressPercent').innerText = '0%';
       document.getElementById('syncProgressStep').innerText = 'เริ่มต้น';
       document.getElementById('syncProgressCloseBtn').classList.add('hidden');
@@ -1529,7 +1529,7 @@
     }
 
     /* ==========================================================================
-       FETCH FROM GOOGLE SHEETS (ระบบ Cloud Master 100% ไม่นำของเก่ามาปน)
+       FETCH FROM GOOGLE SHEETS (ระบบ Cloud Master 100%)
        ========================================================================== */
     async function fetchFromGoogleSheets(isManual = false) {
       if (!GOOGLE_SHEET_API_URL || GOOGLE_SHEET_API_URL.includes("PLACEHOLDER")) {
@@ -1542,7 +1542,6 @@
       if (syncIcon) syncIcon.classList.add('animate-spin');
 
       try {
-        // ใส่ nocache บังคับไม่ให้เบราว์เซอร์จำค่าเก่า
         const freshUrl = `${GOOGLE_SHEET_API_URL}${GOOGLE_SHEET_API_URL.includes('?') ? '&' : '?'}nocache=${Date.now()}`;
         const res = await fetch(freshUrl, { 
           method: 'GET', 
@@ -1555,7 +1554,7 @@
           if (data.dbVersion) currentDbVersion = parseInt(data.dbVersion, 10);
           if (data.dbVersionName) currentDbVersionName = data.dbVersionName;
 
-          // ⭐️ ยึดข้อมูลจาก Cloud 100% ทับข้อมูลในเครื่องทันที (ไม่เอาของเก่าในเครื่องมาปน)
+          // ยึดข้อมูลจาก Cloud 100% ทับข้อมูลในเครื่องทันที
           items = data.items.map(it => ({ ...it, syncStatus: "synced" }));
 
           if (Array.isArray(data.categories) && data.categories.length > 0) {
@@ -1566,7 +1565,6 @@
             historyLog = data.historyLog;
           }
 
-          // ยึดตารางประวัติ Snapshot จาก Cloud เป็นหลัก
           if (Array.isArray(data.snapshotsHistory) && data.snapshotsHistory.length > 0) {
             dbSnapshots = data.snapshotsHistory.map(s => ({
               ...s,
@@ -1580,7 +1578,7 @@
             name: data.dbTitle || "Google Sheets (Cloud Master)",
             version: currentDbVersionName,
             timestamp: nowTime,
-            dateStr: new Date(nowTime).toLocaleString('th-TH', { dateStyle: 'short', timeStyle: 'short' }),
+            dateStr: data.lastUpdated || new Date(nowTime).toLocaleString('th-TH', { dateStyle: 'short', timeStyle: 'short' }),
             count: items.length,
             items: JSON.parse(JSON.stringify(items)),
             categories: JSON.parse(JSON.stringify(categories))
@@ -1588,7 +1586,7 @@
 
           activeSnapshotId = "cloud_active";
           lastCloudSyncedTime = new Date().toLocaleTimeString('th-TH', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
-          isCloudSyncedSession = true; // ยืนยันว่าเครื่องนี้ได้ข้อมูลตรงกับ Cloud แล้ว
+          isCloudSyncedSession = true;
 
           saveLocalCache();
           saveDbSnapshotsList();
@@ -1615,7 +1613,6 @@
       }
     }
 
-    /* ล้างแคชเก่าในเครื่องทิ้งก่อนดึงจาก Cloud เสมอ */
     async function forceSyncFromCloud() {
       if (!confirm("ต้องการดึงข้อมูลชุดล่าสุดจาก Cloud มาแทนที่ข้อมูลในเครื่องนี้ทั้งหมดใช่หรือไม่?")) return;
       
@@ -1630,12 +1627,11 @@
       await pushSnapshotToCloudById(activeSnapshotId);
     }
 
-    /* บันทึกอัตโนมัติแบบเบื้องหลังเมื่อแก้ไขหมวดหมู่หรือการ์ด */
+    /* บันทึกอัตโนมัติเมื่อแก้ไขการ์ดหรือหมวดหมู่ (ตรวจสอบผลลัพธ์จริงจาก Google Sheets) */
     async function pushToGoogleSheets() {
       saveLocalCache();
       if (!GOOGLE_SHEET_API_URL || GOOGLE_SHEET_API_URL.includes("PLACEHOLDER")) return;
 
-      // ป้องกันเครื่องที่เพิ่งเปิดแล้วยังซิงก์ไม่เสร็จ เผลอเอาแคชเก่าไปทับ Cloud
       if (!isCloudSyncedSession) {
         const confirmOverwrite = confirm("⚠️ เครื่องของคุณยังไม่ได้ซิงก์ข้อมูลล่าสุดจาก Cloud!\nหากบันทึกตอนนี้ ข้อมูลในเครื่องนี้อาจไปทับข้อมูลบน Cloud ได้\n\nต้องการส่งข้อมูลชุดนี้ขึ้นไปทับบน Cloud จริงหรือไม่?");
         if (!confirmOverwrite) return;
@@ -1644,11 +1640,14 @@
       setCloudStatus('กำลังบันทึกลงชีต...', 'text-amber-500');
       try {
         const nowTime = Date.now();
+        currentDbVersion++;
+        currentDbVersionName = `v${currentDbVersion}.0`;
+
         const payload = {
           action: 'saveData',
           items: items.map(it => ({ ...it, syncStatus: "synced" })),
           categories: categories,
-          historyLog: historyLog,
+          historyLog: historyLog.slice(0, 20),
           dbVersion: currentDbVersion,
           dbVersionName: currentDbVersionName,
           dbTitle: "Google Sheets DataHub",
@@ -1656,25 +1655,33 @@
           lastUpdated: new Date().toISOString()
         };
 
-        await fetch(GOOGLE_SHEET_API_URL, {
+        const res = await fetch(GOOGLE_SHEET_API_URL, {
           method: 'POST',
-          mode: 'no-cors',
           headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-          body: JSON.stringify(payload)
+          body: JSON.stringify(payload),
+          redirect: 'follow'
         });
 
-        items.forEach(it => it.syncStatus = "synced");
-        isCloudSyncedSession = true;
-        saveLocalCache();
-        renderDataTable();
+        const result = await res.json();
 
-        setCloudStatus(`ออนไลน์ (${currentDbVersionName} | ${items.length} ใบ)`, 'text-emerald-500');
+        if (result && result.status === 'success') {
+          items.forEach(it => it.syncStatus = "synced");
+          isCloudSyncedSession = true;
+          saveLocalCache();
+          renderDataTable();
+          setCloudStatus(`ออนไลน์ (${currentDbVersionName} | ${items.length} ใบ)`, 'text-emerald-500');
+          showToast(`บันทึกลงชีตสำเร็จ (${currentDbVersionName} - ${result.cardCount} ใบ) ☁️`, 'success');
+        } else {
+          throw new Error(result?.message || 'เซิร์ฟเวอร์ปฏิเสธการบันทึก');
+        }
       } catch (e) {
+        console.error("Push Error:", e);
         setCloudStatus('บันทึกไม่สำเร็จ (ค้างในเครื่อง)', 'text-red-500');
+        showToast(`บันทึกลงชีตไม่สำเร็จ: ${e.message}`, 'danger');
       }
     }
 
-    /* ฟังก์ชัน Push จากตารางฐานข้อมูล พร้อมแสดง % และให้ตั้งชื่อ Version */
+    /* ฟังก์ชัน Push จากแท็บ Data Base พร้อม Verify เช็คข้อมูลบนชีตจริง */
     async function pushSnapshotToCloudById(snapId) {
       let targetSnap = dbSnapshots.find(s => s.id === snapId);
       if (!targetSnap && snapId === 'cloud_active') {
@@ -1704,21 +1711,20 @@
       closeSettingModal();
 
       try {
-        await sleep(250);
-        updateSyncProgress(15, `กำลังตรวจสอบข้อมูล...`, 'ขั้นตอน 1/4: แพ็กข้อมูล');
+        await sleep(200);
+        updateSyncProgress(15, `กำลังเตรียมข้อมูลการ์ด ${targetSnap.items?.length || items.length} ใบ...`, 'ขั้นตอน 1/4: แพ็กข้อมูล');
         
         currentDbVersion++;
         currentDbVersionName = newVerName;
 
         const uploadItems = (targetSnap.items || items).map(it => ({ ...it, syncStatus: "synced" }));
         const nowTime = Date.now();
-        const nowDateStr = new Date(nowTime).toLocaleString('th-TH', { dateStyle: 'short', timeStyle: 'short' });
 
         const payload = {
           action: 'saveData',
           items: uploadItems,
           categories: targetSnap.categories || categories,
-          historyLog: historyLog,
+          historyLog: historyLog.slice(0, 20),
           dbVersion: currentDbVersion,
           dbVersionName: newVerName,
           dbTitle: newTitleName,
@@ -1726,62 +1732,38 @@
           lastUpdated: new Date().toISOString()
         };
 
-        await sleep(350);
-        updateSyncProgress(40, 'กำลังเชื่อมต่อเซิร์ฟเวอร์ Google Cloud...', 'ขั้นตอน 2/4: เตรียมส่ง');
-        const jsonString = JSON.stringify(payload);
+        await sleep(250);
+        updateSyncProgress(40, 'กำลังส่งข้อมูลไปยัง Google Sheets...', 'ขั้นตอน 2/4: ส่งข้อมูลขึ้น Cloud');
 
-        updateSyncProgress(65, 'กำลังอัปโหลดข้อมูล...', 'ขั้นตอน 3/4: ส่งข้อมูล');
-
-        const controller = new AbortController();
-        const timeoutTimer = setTimeout(() => controller.abort(), 35000);
-
-        await fetch(GOOGLE_SHEET_API_URL, {
+        const response = await fetch(GOOGLE_SHEET_API_URL, {
           method: 'POST',
-          mode: 'no-cors',
           headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-          body: jsonString,
-          signal: controller.signal
-        });
-        clearTimeout(timeoutTimer);
-
-        updateSyncProgress(90, 'บันทึกประวัติบนชีตเรียบร้อย!', 'ขั้นตอน 4/4: บันทึกสำเร็จ');
-        await sleep(400);
-
-        items = uploadItems;
-        lastCloudSyncedTime = new Date().toLocaleTimeString('th-TH', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
-        lastCloudCardCount = items.length;
-        isCloudSyncedSession = true;
-
-        registerDbSnapshot({
-          id: `snap_${nowTime}`,
-          name: newTitleName,
-          version: newVerName,
-          timestamp: nowTime,
-          dateStr: nowDateStr,
-          count: items.length,
-          items: JSON.parse(JSON.stringify(items)),
-          categories: JSON.parse(JSON.stringify(categories))
+          body: JSON.stringify(payload),
+          redirect: 'follow'
         });
 
-        activeSnapshotId = 'cloud_active';
+        const postResult = await response.json();
+        if (!postResult || postResult.status !== 'success') {
+          throw new Error(postResult?.message || 'ไม่สามารถเขียนข้อมูลลงชีตได้');
+        }
 
-        saveLocalCache();
-        renderDataTable();
-        renderDbSnapshotsTable();
+        // ดึงข้อมูลจากชีตกลับมาตรวจสอบ (Read-Back Verification) ว่าเปลี่ยนจริง
+        updateSyncProgress(75, 'กำลังตรวจสอบข้อมูลบน Google Sheets ว่าตรงกัน 100%...', 'ขั้นตอน 3/4: ยืนยันผลบนชีต');
+        await fetchFromGoogleSheets(false);
 
-        updateSyncProgress(100, `อัปโหลดสำเร็จ 100%!`, 'เสร็จสมบูรณ์');
+        updateSyncProgress(100, `ยืนยันสำเร็จ! บนชีตเป็นเวอร์ชัน ${newVerName} (${items.length} ใบ) เรียบร้อยแล้ว`, 'เสร็จสมบูรณ์ 100%');
         document.getElementById('syncProgressIcon').className = "fa-solid fa-circle-check text-emerald-500 text-3xl";
         confetti({ particleCount: 50, spread: 60, origin: { y: 0.6 } });
 
-        setCloudStatus(`ออนไลน์ (${newVerName} | ${items.length} ใบ)`, 'text-emerald-500');
-        showToast(`อัปโหลด "${newTitleName}" สำเร็จ ☁️`, 'success');
+        showToast(`อัปโหลดและยืนยัน "${newTitleName}" (${newVerName}) สำเร็จ ☁️`, 'success');
 
-        setTimeout(() => { closeSyncProgressModal(); }, 1500);
+        setTimeout(() => { closeSyncProgressModal(); }, 1800);
 
       } catch (err) {
-        setSyncProgressError(`อัปโหลดไม่สำเร็จ: ${err.message || 'Timeout'}`);
+        console.error("Upload Error:", err);
+        setSyncProgressError(`อัปโหลดไม่สำเร็จ: ${err.message || 'กรุณาตรวจสอบการ Deploy New Version บน Apps Script'}`);
         setCloudStatus('อัปโหลดไม่สำเร็จ', 'text-red-500');
-        showToast('อัปโหลดไม่สำเร็จ', 'danger');
+        showToast('อัปโหลดไม่สำเร็จ กรุณาดูข้อความแจ้งเตือน', 'danger');
       }
     }
 
@@ -2677,9 +2659,6 @@
       }
     }
 
-    /* ==========================================================================
-       จัดการหมวดหมู่การ์ด (พร้อมเปลี่ยนสี 24 เฉดสี และไอคอน 40 แบบ)
-       ========================================================================== */
     function openCategoryModal() {
       newCategorySelectedIcon = "fa-folder";
       newCategorySelectedColor = "red";
