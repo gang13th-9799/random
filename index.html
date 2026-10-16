@@ -317,7 +317,7 @@
     </section>
   </main>
 
-  <!-- Progress Overlay Modal -->
+  <!-- Progress Overlay Modal (0% - 100%) -->
   <div id="syncProgressModal" class="hidden fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-md flex items-center justify-center p-4">
     <div class="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-3xl max-w-sm w-full p-6 text-center shadow-2xl relative space-y-4">
       <div class="w-16 h-16 rounded-2xl bg-blue-50 dark:bg-blue-950/60 border border-blue-200 dark:border-blue-800 text-blue-600 dark:text-blue-400 flex items-center justify-center mx-auto text-2xl shadow-inner">
@@ -340,7 +340,7 @@
     </div>
   </div>
 
-  <!-- Setting Modal (Tab General [พร้อมปุ่ม Backup / Export / Import] + Tab Data Base) -->
+  <!-- Setting Modal (Tab General + Data Base) -->
   <div id="settingModal" class="hidden fixed inset-0 z-50 bg-slate-950/75 backdrop-blur-sm flex items-center justify-center p-3 sm:p-4 overflow-y-auto">
     <div class="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-3xl max-w-xl w-full p-5 sm:p-6 shadow-2xl relative space-y-4 my-auto">
       <div class="flex items-center justify-between pb-3 border-b border-slate-100 dark:border-slate-700">
@@ -353,7 +353,7 @@
         <button type="button" id="tabSettingDatabaseBtn" onclick="switchSettingTab('database')" class="py-2 rounded-xl transition text-slate-500 hover:text-slate-800 dark:hover:text-white">ฐานข้อมูล (Data Base)</button>
       </div>
 
-      <!-- Tab General (กู้คืนปุ่ม Backup, CSV และ Import) -->
+      <!-- Tab General (พร้อมปุ่ม Backup, CSV และ Import) -->
       <div id="settingTabContentGeneral" class="space-y-4">
         <div class="p-3 bg-slate-50 dark:bg-slate-900/60 rounded-2xl border border-slate-200 dark:border-slate-700/80 flex items-center justify-between">
           <span class="text-xs font-bold">โหมดสว่าง / มืด</span>
@@ -415,7 +415,7 @@
     </div>
   </div>
 
-  <!-- Category Manager Modal -->
+  <!-- Category Manager Modal (พร้อมปุ่มดินสอแก้ไขชื่อ และปุ่มเลื่อนลำดับ) -->
   <div id="categoryModal" class="hidden fixed inset-0 z-50 bg-slate-950/70 backdrop-blur-sm flex items-center justify-center p-4 overflow-y-auto">
     <div class="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-3xl max-w-lg w-full p-5 space-y-4">
       <div class="flex justify-between items-center border-b pb-3">
@@ -429,7 +429,7 @@
         <button type="button" onclick="openIconPicker(-1)" class="w-9 h-9 rounded-xl border flex items-center justify-center text-sm">
           <i id="newCatIconPreview" class="fa-solid fa-folder"></i>
         </button>
-        <input type="text" id="newCategoryInput" placeholder="ชื่อหมวดหมู่..." class="flex-1 border rounded-xl px-3 text-xs font-bold dark:bg-slate-900">
+        <input type="text" id="newCategoryInput" placeholder="ชื่อหมวดหมู่..." class="flex-1 border rounded-xl px-3 text-xs font-bold dark:bg-slate-900 outline-none">
         <button onclick="handleAddCategory()" class="px-4 py-2 text-white rounded-xl text-xs font-bold btn-theme-action">เพิ่ม</button>
       </div>
       <div id="categoryListContainer" class="divide-y max-h-64 overflow-y-auto pr-1"></div>
@@ -459,7 +459,7 @@
   </div>
 
   <!-- Toast Notification -->
-  <div id="toastNotification" class="fixed top-20 right-4 z-50 transform translate-x-full opacity-0 transition-all duration-300 bg-slate-900 dark:bg-white text-white dark:text-slate-900 px-4 py-2.5 rounded-xl shadow-xl flex items-center gap-2 text-xs font-bold pointer-events-none">
+  <div id="toastNotification" class="fixed top-20 right-4 z-50 transform translate-x-full opacity-0 transition-all duration-300 bg-slate-900 text-white px-4 py-2.5 rounded-xl shadow-xl flex items-center gap-2 text-xs font-bold pointer-events-none">
     <i class="fa-solid fa-check text-emerald-400"></i>
     <span id="toastMessage">แจ้งเตือน</span>
   </div>
@@ -677,21 +677,39 @@
       await fetchFromGoogleSheets(true);
     }
 
+    /* Push Snapshot ขึ้น Google Sheets และอ่านผลลัพธ์ JSON ตอบกลับจริง */
     async function pushSnapshotToCloudById(snapId) {
-      const defaultVer = currentDbVersionName.startsWith('v') ? `v${(parseFloat(currentDbVersionName.replace('v','')) + 0.1).toFixed(1)}` : `v${currentDbVersion + 1}.0`;
+      let targetSnap = dbSnapshots.find(s => s.id === snapId);
+      if (!targetSnap || snapId === 'cloud_active') {
+        targetSnap = {
+          name: `Database Master (${items.length} ใบ)`,
+          version: currentDbVersionName,
+          items: items,
+          categories: categories
+        };
+      }
+
+      const defaultVer = currentDbVersionName.startsWith('v') 
+        ? `v${(parseFloat(currentDbVersionName.replace('v','')) + 0.1).toFixed(1)}` 
+        : `v${currentDbVersion + 1}.0`;
+      
       const inputVersion = prompt("ระบุชื่อ Version สำหรับอัปโหลดขึ้น Google Sheets:", defaultVer);
       if (!inputVersion || !inputVersion.trim()) return;
 
-      const inputTitle = prompt("ระบุชื่อฐานข้อมูลชุดนี้:", `Database Master (${items.length} ใบ)`);
+      const inputTitle = prompt("ระบุชื่อฐานข้อมูลชุดนี้:", targetSnap.name || `Database Master (${items.length} ใบ)`);
       if (!inputTitle || !inputTitle.trim()) return;
 
-      showSyncProgress(`กำลังอัปโหลด ${inputVersion}`, 'กำลังส่งข้อมูล...');
+      const newVerName = inputVersion.trim();
+      const newTitleName = inputTitle.trim();
+
+      showSyncProgress(`กำลังอัปโหลด ${newVerName}`, 'เริ่มต้นแพ็กข้อมูล...');
       closeSettingModal();
 
       try {
+        updateSyncProgress(25, `กำลังเตรียมข้อมูลการ์ด ${items.length} ใบ...`, 'ขั้นตอน 1/3: แพ็กข้อมูล');
+        
         currentDbVersion++;
-        currentDbVersionName = inputVersion.trim();
-        const nowTime = Date.now();
+        currentDbVersionName = newVerName;
 
         const payload = {
           action: 'saveData',
@@ -700,29 +718,40 @@
           categories: categories,
           historyLog: historyLog.slice(0, 20),
           dbVersion: currentDbVersion,
-          dbVersionName: currentDbVersionName,
-          dbTitle: inputTitle.trim(),
-          timestamp: nowTime
+          dbVersionName: newVerName,
+          dbTitle: newTitleName,
+          timestamp: Date.now()
         };
 
-        updateSyncProgress(40, 'กำลังส่งขึ้น Google Sheets...');
-        await fetch(GOOGLE_SHEET_API_URL, {
+        updateSyncProgress(55, 'กำลังส่งข้อมูลไปยัง Google Sheets...', 'ขั้นตอน 2/3: ส่งข้อมูลขึ้น Cloud');
+
+        const response = await fetch(GOOGLE_SHEET_API_URL, {
           method: 'POST',
-          mode: 'no-cors',
           headers: { 'Content-Type': 'text/plain;charset=utf-8' },
           body: JSON.stringify(payload)
         });
 
-        updateSyncProgress(75, 'กำลังตรวจสอบผลลัพธ์จากชีต...');
-        await new Promise(r => setTimeout(r, 1500));
-        await fetchFromGoogleSheets(false);
+        const result = await response.json();
 
-        updateSyncProgress(100, `อัปโหลด ${currentDbVersionName} สำเร็จ 100%!`);
-        document.getElementById('syncProgressIcon').className = "fa-solid fa-circle-check text-emerald-500 text-3xl";
-        confetti({ particleCount: 50, spread: 60, origin: { y: 0.6 } });
-        setTimeout(closeSyncProgressModal, 1500);
+        if (result && result.status === 'success') {
+          updateSyncProgress(85, 'กำลังดึงตารางฐานข้อมูลล่าสุดมาแสดง...', 'ขั้นตอน 3/3: ยืนยันผลบนชีต');
+          
+          await fetchFromGoogleSheets(false);
+
+          updateSyncProgress(100, `บันทึกเวอร์ชัน ${newVerName} (${items.length} ใบ) ขึ้นชีตสำเร็จ 100%!`, 'เสร็จสมบูรณ์');
+          document.getElementById('syncProgressIcon').className = "fa-solid fa-circle-check text-emerald-500 text-3xl";
+          confetti({ particleCount: 50, spread: 60, origin: { y: 0.6 } });
+          showToast(`อัปโหลด "${newTitleName}" (${newVerName}) ขึ้นชีตสำเร็จ ☁️`);
+          
+          setTimeout(() => { closeSyncProgressModal(); }, 1600);
+        } else {
+          throw new Error(result?.message || 'เซิร์ฟเวอร์ปฏิเสธการบันทึก');
+        }
+
       } catch (err) {
+        console.error("Upload Error:", err);
         setSyncProgressError(`ผิดพลาด: ${err.message}`);
+        showToast('อัปโหลดไม่สำเร็จ กรุณาดูข้อความแจ้งเตือน', 'danger');
       }
     }
 
@@ -757,10 +786,11 @@
       document.getElementById('syncProgressModal').classList.remove('hidden');
     }
 
-    function updateSyncProgress(percent, status) {
+    function updateSyncProgress(percent, status, step) {
       document.getElementById('syncProgressBar').style.width = `${percent}%`;
       document.getElementById('syncProgressPercent').innerText = `${percent}%`;
       if (status) document.getElementById('syncProgressStatusText').innerText = status;
+      if (step) document.getElementById('syncProgressStep').innerText = step;
     }
 
     function setSyncProgressError(msg) {
