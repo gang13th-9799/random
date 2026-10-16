@@ -5,11 +5,18 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
   <title>Player Profile & Career Hub</title>
 
+  <!-- Google Fonts: Prompt & Inter -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Prompt:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Prompt:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+  <!-- Font Awesome Icons 6.5 -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+  <!-- Tailwind CSS CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- Canvas Confetti -->
   <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.2/dist/confetti.browser.min.js"></script>
 
   <script>
@@ -17,316 +24,678 @@
       darkMode: 'class',
       theme: {
         extend: {
-          fontFamily: { sans: ['Prompt', 'Inter', 'sans-serif'], mono: ['Inter', 'monospace'] }
+          fontFamily: {
+            sans: ['Prompt', 'Inter', 'sans-serif'],
+            mono: ['Inter', 'monospace'],
+          },
+          colors: {
+            brand: {
+              primary: '#FFFFFF',
+              accentRed: '#EF4444',
+              accentRedHover: '#DC2626',
+              neutralGray: '#64748B'
+            }
+          },
+          animation: {
+            'shimmer': 'shimmer 2.2s infinite linear',
+            'pulse-subtle': 'pulseSubtle 2s infinite ease-in-out',
+            'pop-in': 'popIn 0.3s cubic-bezier(0.16, 1, 0.3, 1)',
+          },
+          keyframes: {
+            shimmer: {
+              '0%': { backgroundPosition: '-200% 0' },
+              '100%': { backgroundPosition: '200% 0' }
+            },
+            pulseSubtle: {
+              '0%, 100%': { opacity: '1', transform: 'scale(1)' },
+              '50%': { opacity: '0.9', transform: 'scale(0.98)' }
+            },
+            popIn: {
+              '0%': { opacity: '0', transform: 'scale(0.94) translateY(10px)' },
+              '100%': { opacity: '1', transform: 'scale(1) translateY(0)' }
+            }
+          }
         }
       }
     }
   </script>
-</head>
-<body class="text-slate-800 dark:text-slate-100 min-h-screen flex flex-col font-sans transition-colors duration-200 pb-20 md:pb-8 bg-slate-50 dark:bg-slate-900">
 
-  <!-- Header -->
-  <header class="sticky top-0 z-40 bg-white/95 dark:bg-slate-900/95 backdrop-blur-md border-b border-slate-200 dark:border-slate-800 shadow-sm">
-    <div class="max-w-7xl mx-auto px-4 h-16 flex items-center justify-between">
-      <div class="flex items-center space-x-3">
-        <a href="index.html" class="w-10 h-10 rounded-xl bg-red-600 text-white flex items-center justify-center shadow"><i class="fa-solid fa-arrow-left"></i></a>
-        <div>
-          <span class="font-extrabold text-lg">PLAYER PROFILE</span>
-          <p id="cloudSyncStatus" class="text-[11px] text-slate-400"><i class="fa-solid fa-circle text-[8px] text-emerald-500"></i> พร้อมใช้งาน</p>
+  <style>
+    :root {
+      --theme-btn-gradient: linear-gradient(135deg, #FF3366 0%, #FF6B4A 50%, #FFA033 100%);
+      --fluid-title: clamp(1.35rem, 2.5vw + 0.8rem, 2.25rem);
+      --fluid-body: clamp(0.92rem, 0.8vw + 0.75rem, 1.15rem);
+    }
+
+    html {
+      font-size: 16px;
+      line-height: 1.5;
+      -webkit-text-size-adjust: 100%;
+    }
+
+    body {
+      touch-action: manipulation;
+      -webkit-tap-highlight-color: transparent;
+      background-color: #F8FAFC;
+      font-size: var(--fluid-body);
+    }
+
+    .dark body {
+      background-color: #0B1120;
+    }
+
+    *, ::before, ::after {
+      box-sizing: border-box;
+      word-break: break-word;
+      overflow-wrap: break-word;
+    }
+
+    .responsive-title {
+      font-size: var(--fluid-title) !important;
+      line-height: 1.35 !important;
+    }
+
+    .card-vibrant-glow {
+      box-shadow: 0 10px 30px -5px rgba(0, 0, 0, 0.08), 0 0 0 1px rgba(226, 232, 240, 0.8);
+    }
+    .dark .card-vibrant-glow {
+      box-shadow: 0 15px 35px -8px rgba(0, 0, 0, 0.6), 0 0 0 1px rgba(51, 65, 85, 0.6);
+    }
+
+    .btn-theme-action {
+      background: var(--theme-btn-gradient);
+    }
+
+    .icon-vibrant {
+      filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.15));
+    }
+  </style>
+</head>
+<body class="text-slate-800 dark:text-slate-100 min-h-screen flex flex-col font-sans transition-colors duration-200 pb-24 md:pb-8">
+
+  <!-- =========================================================================
+       BLOCKING SYNC OVERLAY BANNER
+       ========================================================================= -->
+  <div id="syncBlockingBanner" class="hidden fixed inset-0 z-50 bg-slate-950/85 backdrop-blur-md flex flex-col items-center justify-center p-4 select-none pointer-events-auto">
+    <div class="relative max-w-md w-full bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-3xl p-6 sm:p-8 text-center shadow-2xl space-y-6">
+      
+      <div class="relative w-24 h-24 mx-auto flex items-center justify-center">
+        <div class="absolute inset-0 rounded-3xl bg-amber-400/20 dark:bg-amber-400/10 animate-ping"></div>
+        <div id="syncBannerIconWrapper" class="relative w-20 h-20 rounded-2xl bg-gradient-to-tr from-rose-500 via-amber-500 to-emerald-400 text-white flex items-center justify-center text-4xl shadow-xl icon-vibrant">
+          <i id="syncBannerIcon" class="fa-solid fa-arrows-rotate animate-spin"></i>
         </div>
       </div>
-      <div class="flex items-center space-x-2">
-        <button onclick="syncAllFromGoogleSheets(true)" class="px-3 py-1.5 rounded-lg border text-xs font-bold"><i id="syncIcon" class="fa-solid fa-rotate mr-1"></i>Sync Cloud</button>
-        <button onclick="pushAllMasterDataToCloud()" class="px-3 py-1.5 rounded-lg bg-blue-600 text-white text-xs font-bold shadow"><i class="fa-solid fa-cloud-arrow-up mr-1"></i>Push ชีต</button>
+
+      <div class="space-y-2">
+        <h3 id="syncBannerTitle" class="text-xl sm:text-2xl font-black text-slate-900 dark:text-white tracking-tight">กำลังซิงก์ข้อมูลโปรไฟล์...</h3>
+        <p id="syncBannerDetail" class="text-sm text-slate-500 dark:text-slate-400 font-medium">ระบบกำลังเชื่อมต่อและตรวจสอบข้อมูล กรุณารอสักครู่</p>
       </div>
+
+      <div class="space-y-2">
+        <div class="w-full bg-slate-100 dark:bg-slate-700 rounded-full h-3.5 p-0.5 overflow-hidden border border-slate-200 dark:border-slate-600">
+          <div id="syncBannerProgressBar" class="h-full rounded-full bg-gradient-to-r from-rose-500 via-amber-400 to-emerald-400 transition-all duration-300" style="width: 20%;"></div>
+        </div>
+        <div class="flex items-center justify-between text-xs sm:text-sm font-mono font-bold text-slate-400 px-1">
+          <span id="syncBannerStepText">ขั้นตอน: ตรวจสอบความถูกต้อง</span>
+          <span id="syncBannerPercentText" class="text-rose-500 dark:text-rose-400 font-black">20%</span>
+        </div>
+      </div>
+
+      <div class="inline-flex items-center gap-2 px-3.5 py-2 rounded-xl bg-amber-50 dark:bg-amber-950/50 border border-amber-300 dark:border-amber-700 text-amber-800 dark:text-amber-200 text-xs font-bold">
+        <i class="fa-solid fa-bolt-lightning text-amber-500 text-sm"></i>
+        <span>ระบบถูกล็อกชั่วคราว ห้ามปิดหรือรีเฟรชหน้านี้</span>
+      </div>
+
+      <button type="button" id="syncBannerErrorBtn" onclick="hideSyncBanner()" class="hidden w-full py-3 rounded-2xl text-sm font-black bg-rose-600 hover:bg-rose-700 text-white transition shadow-lg">
+        ปิดหน้าต่างนี้ (กรณีติด Error)
+      </button>
+    </div>
+  </div>
+
+  <!-- Header -->
+  <header class="sticky top-0 z-40 bg-white/95 dark:bg-slate-900/95 backdrop-blur-md border-b border-slate-200 dark:border-slate-800 shadow-sm transition-colors">
+    <div class="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 h-18 py-2 flex items-center justify-between gap-2">
+      
+      <div class="flex items-center space-x-3 cursor-pointer group shrink-0" onclick="location.href='index.html'">
+        <div class="w-12 h-12 rounded-2xl flex items-center justify-center text-white shadow-md transform transition group-hover:scale-105 shrink-0 btn-theme-action icon-vibrant">
+          <i class="fa-solid fa-circle-user text-2xl animate-pulse-subtle"></i>
+        </div>
+        <div>
+          <div class="flex items-center space-x-2">
+            <span class="font-black text-xl sm:text-2xl tracking-tight text-slate-900 dark:text-white">MY PROFILE</span>
+            <span class="text-[11px] font-black px-2 py-0.5 rounded-full text-white uppercase tracking-wider btn-theme-action shadow-sm">HUB</span>
+          </div>
+          <p id="cloudSyncStatus" class="text-xs text-slate-500 dark:text-slate-400 font-semibold flex items-center gap-1.5 pt-0.5">
+            <i class="fa-solid fa-circle text-[9px] text-emerald-400 shadow-[0_0_8px_rgba(52,211,153,0.8)]"></i> ออนไลน์พร้อมใช้งาน
+          </p>
+        </div>
+      </div>
+
+      <!-- Navigation Tabs (Desktop & Tablet) -->
+      <nav class="hidden lg:flex items-center space-x-1.5 bg-slate-100 dark:bg-slate-800/80 p-1.5 rounded-2xl border border-slate-200 dark:border-slate-700">
+        <a href="index.html" class="px-4 py-2 rounded-xl text-sm font-bold transition-all flex items-center space-x-2.5 text-slate-600 dark:text-slate-300 hover:text-rose-500">
+          <i class="fa-solid fa-shapes text-base text-amber-500 icon-vibrant"></i><span>หน้าสุ่มการ์ด</span>
+        </a>
+        <button id="nav-btn-profile" onclick="switchProfileTab('profile')" class="px-4 py-2 rounded-xl text-sm font-bold transition-all flex items-center space-x-2.5 bg-white dark:bg-slate-700 shadow text-rose-500 dark:text-white">
+          <i class="fa-solid fa-id-card text-base text-rose-500 icon-vibrant"></i><span>ข้อมูลตัวละคร</span>
+        </button>
+        <button id="nav-btn-careers" onclick="switchProfileTab('careers')" class="px-4 py-2 rounded-xl text-sm font-bold transition-all flex items-center space-x-2.5 text-slate-600 dark:text-slate-300 hover:text-rose-500">
+          <i class="fa-solid fa-user-tie text-base text-purple-500 icon-vibrant"></i><span>จัดการอาชีพ</span>
+        </button>
+        <button id="nav-btn-qualifications" onclick="switchProfileTab('qualifications')" class="px-4 py-2 rounded-xl text-sm font-bold transition-all flex items-center space-x-2.5 text-slate-600 dark:text-slate-300 hover:text-rose-500">
+          <i class="fa-solid fa-certificate text-base text-emerald-500 icon-vibrant"></i><span>คุณสมบัติ</span>
+        </button>
+      </nav>
+
+      <!-- Action Buttons -->
+      <div class="flex items-center space-x-2 shrink-0">
+        <button onclick="saveAllToCloud()" title="บันทึกข้อมูลโปรไฟล์ขึ้น Cloud" class="px-3.5 py-2.5 rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-200 hover:bg-slate-50 text-xs sm:text-sm font-black transition flex items-center gap-2 shadow-sm">
+          <i id="syncIcon" class="fa-solid fa-cloud-arrow-up text-blue-500 text-sm sm:text-base"></i><span class="hidden sm:inline">บันทึก Cloud</span>
+        </button>
+
+        <a href="index.html" title="กลับหน้าแรก" class="w-10 h-10 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:text-rose-500 flex items-center justify-center transition shadow-sm">
+          <i class="fa-solid fa-house text-lg text-amber-500"></i>
+        </a>
+      </div>
+
     </div>
   </header>
 
-  <!-- Main Tabs -->
-  <main class="flex-1 max-w-7xl w-full mx-auto px-4 py-5 space-y-6">
-    <div class="flex border-b border-slate-200 dark:border-slate-700 gap-4 text-sm font-bold">
-      <button onclick="switchTab('dashboard')" id="tabBtn-dashboard" class="pb-2 border-b-2 border-red-600 text-red-600">ข้อมูลผู้เล่น</button>
-      <button onclick="switchTab('careers')" id="tabBtn-careers" class="pb-2 text-slate-400">คลังอาชีพ (<span id="careerCountBadge">0</span>)</button>
-      <button onclick="switchTab('quals')" id="tabBtn-quals" class="pb-2 text-slate-400">คุณสมบัติ (<span id="qualCountBadge">0</span>)</button>
-    </div>
+  <!-- Bottom Navigation Bar (สำหรับมือถือ) -->
+  <nav class="lg:hidden fixed bottom-0 left-0 right-0 z-40 bg-white/95 dark:bg-slate-900/95 backdrop-blur-md border-t border-slate-200 dark:border-slate-800 px-3 py-2 flex items-center justify-around shadow-lg">
+    <a href="index.html" class="flex flex-col items-center gap-1 text-slate-400">
+      <i class="fa-solid fa-shapes text-xl"></i>
+      <span class="text-[10px] font-black">หน้าสุ่ม</span>
+    </a>
+    <button onclick="switchProfileTab('profile')" id="m-nav-profile" class="flex flex-col items-center gap-1 text-rose-500">
+      <i class="fa-solid fa-id-card text-xl"></i>
+      <span class="text-[10px] font-black">โปรไฟล์</span>
+    </button>
+    <button onclick="switchProfileTab('careers')" id="m-nav-careers" class="flex flex-col items-center gap-1 text-slate-400">
+      <i class="fa-solid fa-user-tie text-xl"></i>
+      <span class="text-[10px] font-black">อาชีพ</span>
+    </button>
+    <button onclick="switchProfileTab('qualifications')" id="m-nav-qualifications" class="flex flex-col items-center gap-1 text-slate-400">
+      <i class="fa-solid fa-certificate text-xl"></i>
+      <span class="text-[10px] font-black">คุณสมบัติ</span>
+    </button>
+  </nav>
 
-    <!-- Tab 1: Dashboard -->
-    <div id="tab-dashboard" class="space-y-4">
-      <div class="p-4 bg-white dark:bg-slate-800 rounded-2xl border shadow-sm flex justify-between items-center">
+  <!-- Main Container -->
+  <main class="flex-1 max-w-7xl w-full mx-auto px-3 sm:px-6 lg:px-8 py-5">
+    
+    <!-- VIEW 1: ข้อมูลตัวละคร & สถานะการเงิน & สายงาน -->
+    <section id="view-profile" class="space-y-6 animate-pop-in">
+      
+      <!-- Banner ตัวละคร & อาชีพ -->
+      <div class="bg-gradient-to-r from-rose-500/15 via-amber-500/10 to-indigo-500/10 p-5 sm:p-7 rounded-[2.5rem] border border-rose-500/20 card-vibrant-glow flex flex-col md:flex-row items-start md:items-center justify-between gap-5">
+        <div class="flex items-center gap-4">
+          <div class="w-16 h-16 sm:w-20 sm:h-20 rounded-3xl bg-gradient-to-tr from-rose-500 via-amber-500 to-emerald-400 text-white flex items-center justify-center text-3xl sm:text-4xl shadow-xl icon-vibrant shrink-0">
+            <i class="fa-solid fa-user-astronaut"></i>
+          </div>
+          <div class="space-y-1">
+            <div class="flex items-center gap-2">
+              <input type="text" id="playerNameInput" onchange="updatePlayerProfile()" value="ผู้เล่นระดับโปร" class="text-xl sm:text-2xl font-black bg-transparent border-b border-dashed border-slate-400 dark:border-slate-600 outline-none focus:border-rose-500 text-slate-900 dark:text-white">
+              <span class="text-xs font-black px-2.5 py-1 rounded-full bg-rose-500 text-white shadow-sm">Lv.1</span>
+            </div>
+            <p class="text-xs sm:text-sm text-slate-500 dark:text-slate-400 font-medium">อาชีพปัจจุบัน: <strong id="currentCareerDisplay" class="text-rose-500 font-black">นักธุรกิจเริ่มต้น</strong></p>
+          </div>
+        </div>
+
+        <div class="flex flex-wrap items-center gap-2.5 self-stretch sm:self-auto justify-end">
+          <button onclick="resetPlayerStats()" class="px-4 py-2.5 rounded-2xl bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-700 text-xs sm:text-sm font-black text-rose-500 shadow-sm hover:scale-105 transition">
+            <i class="fa-solid fa-rotate-left mr-1.5"></i>รีเซ็ตค่า
+          </button>
+          <button onclick="saveAllToCloud()" class="px-5 py-2.5 rounded-2xl text-white text-xs sm:text-sm font-black btn-theme-action shadow-lg hover:scale-105 transition">
+            <i class="fa-solid fa-floppy-disk mr-1.5"></i>บันทึกข้อมูล
+          </button>
+        </div>
+      </div>
+
+      <!-- สรุปสถานะการเงิน & PV รวม (ใช้ไอคอนชุดใหม่) -->
+      <div class="grid grid-cols-2 lg:grid-cols-4 gap-3.5 sm:gap-4">
+        
+        <!-- เงินสดคงเหลือ (เหรียญทอง) -->
+        <div class="bg-white dark:bg-slate-800 p-5 rounded-3xl border border-slate-200 dark:border-slate-700 shadow-sm space-y-2">
+          <div class="flex items-center justify-between text-slate-400">
+            <span class="text-xs sm:text-sm font-bold flex items-center gap-1.5"><i class="fa-solid fa-coins text-amber-400 text-base"></i>เงินสด</span>
+            <i class="fa-solid fa-wallet text-amber-400/30 text-2xl"></i>
+          </div>
+          <div class="flex items-baseline gap-1">
+            <span class="text-lg sm:text-2xl font-black text-amber-400 font-mono" id="statCash">฿0</span>
+          </div>
+          <input type="number" id="inputCash" onchange="updatePlayerFinance()" value="50000" class="w-full text-xs font-mono bg-slate-50 dark:bg-slate-900 border rounded-xl p-1.5 outline-none dark:border-slate-700">
+        </div>
+
+        <!-- PV รวม (ไม่มีไอคอน แสดง PV ล้วน) -->
+        <div class="bg-white dark:bg-slate-800 p-5 rounded-3xl border border-slate-200 dark:border-slate-700 shadow-sm space-y-2">
+          <div class="flex items-center justify-between text-slate-400">
+            <span class="text-xs sm:text-sm font-black text-cyan-400 tracking-wider">PV รวมทั้งหมด</span>
+            <span class="text-xs font-mono font-bold text-cyan-500/40">POINTS</span>
+          </div>
+          <div class="flex items-baseline gap-1">
+            <span class="text-lg sm:text-2xl font-black text-cyan-400 font-mono" id="statTotalPv">0</span>
+          </div>
+          <input type="number" id="inputPersonalPv" onchange="updatePlayerFinance()" value="0" class="w-full text-xs font-mono bg-slate-50 dark:bg-slate-900 border rounded-xl p-1.5 outline-none dark:border-slate-700" placeholder="PV ส่วนตัว">
+        </div>
+
+        <!-- Active Income (แขนจับเงิน) -->
+        <div class="bg-white dark:bg-slate-800 p-5 rounded-3xl border border-slate-200 dark:border-slate-700 shadow-sm space-y-2">
+          <div class="flex items-center justify-between text-slate-400">
+            <span class="text-xs sm:text-sm font-bold flex items-center gap-1.5"><i class="fa-solid fa-hand-holding-dollar text-emerald-400 text-base"></i>Active Income</span>
+            <i class="fa-solid fa-person-running text-emerald-400/30 text-2xl"></i>
+          </div>
+          <div class="flex items-baseline gap-1">
+            <span class="text-lg sm:text-2xl font-black text-emerald-400 font-mono" id="statActiveIncome">฿0</span>
+            <span class="text-xs text-slate-400 font-bold">/เดือน</span>
+          </div>
+          <input type="number" id="inputActiveIncome" onchange="updatePlayerFinance()" value="25000" class="w-full text-xs font-mono bg-slate-50 dark:bg-slate-900 border rounded-xl p-1.5 outline-none dark:border-slate-700">
+        </div>
+
+        <!-- Passive Income (ต้นไม้) -->
+        <div class="bg-white dark:bg-slate-800 p-5 rounded-3xl border border-slate-200 dark:border-slate-700 shadow-sm space-y-2">
+          <div class="flex items-center justify-between text-slate-400">
+            <span class="text-xs sm:text-sm font-bold flex items-center gap-1.5"><i class="fa-solid fa-seedling text-teal-400 text-base"></i>Passive Income</span>
+            <i class="fa-solid fa-money-bill-trend-up text-teal-400/30 text-2xl"></i>
+          </div>
+          <div class="flex items-baseline gap-1">
+            <span class="text-lg sm:text-2xl font-black text-teal-400 font-mono" id="statPassiveIncome">฿0</span>
+            <span class="text-xs text-slate-400 font-bold">/เดือน</span>
+          </div>
+          <input type="number" id="inputPassiveIncome" onchange="updatePlayerFinance()" value="0" class="w-full text-xs font-mono bg-slate-50 dark:bg-slate-900 border rounded-xl p-1.5 outline-none dark:border-slate-700">
+        </div>
+
+      </div>
+
+      <!-- ทรัพยากร 3 ช่อง: หัวใจ, เวลา (นาฬิกา), ความรู้ (สมุด) -->
+      <div class="bg-white dark:bg-slate-800 p-5 sm:p-6 rounded-3xl border border-slate-200 dark:border-slate-700 shadow-sm space-y-4">
+        <h3 class="font-black text-base sm:text-lg text-slate-900 dark:text-white flex items-center gap-2">
+          <i class="fa-solid fa-battery-three-quarters text-emerald-500 text-xl"></i><span>คลังทรัพยากรตัวละคร</span>
+        </h3>
+        
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-3.5">
+          <!-- หัวใจ (พลังใจ) -->
+          <div class="p-4 rounded-2xl bg-rose-50 dark:bg-rose-950/30 border border-rose-200 dark:border-rose-900/50 flex items-center justify-between">
+            <div class="flex items-center gap-3">
+              <span class="text-3xl">❤️</span>
+              <div>
+                <span class="text-xs font-black text-rose-600 dark:text-rose-400 uppercase block">พลังใจ (Heart)</span>
+                <span id="displayResHeart" class="text-2xl font-black font-mono text-slate-800 dark:text-white">10</span>
+              </div>
+            </div>
+            <div class="flex items-center gap-1">
+              <button onclick="changeResource('heart', -1)" class="w-8 h-8 rounded-xl bg-white dark:bg-slate-800 border text-rose-500 font-black hover:bg-rose-100">-</button>
+              <button onclick="changeResource('heart', 1)" class="w-8 h-8 rounded-xl bg-white dark:bg-slate-800 border text-emerald-500 font-black hover:bg-emerald-100">+</button>
+            </div>
+          </div>
+
+          <!-- เวลา (นาฬิกาฟ้า) -->
+          <div class="p-4 rounded-2xl bg-sky-50 dark:bg-sky-950/30 border border-sky-200 dark:border-sky-900/50 flex items-center justify-between">
+            <div class="flex items-center gap-3">
+              <i class="fa-solid fa-clock text-sky-400 text-3xl"></i>
+              <div>
+                <span class="text-xs font-black text-sky-600 dark:text-sky-400 uppercase block">เวลา (Time)</span>
+                <span id="displayResTime" class="text-2xl font-black font-mono text-slate-800 dark:text-white">10</span>
+              </div>
+            </div>
+            <div class="flex items-center gap-1">
+              <button onclick="changeResource('time', -1)" class="w-8 h-8 rounded-xl bg-white dark:bg-slate-800 border text-rose-500 font-black hover:bg-sky-100">-</button>
+              <button onclick="changeResource('time', 1)" class="w-8 h-8 rounded-xl bg-white dark:bg-slate-800 border text-emerald-500 font-black hover:bg-emerald-100">+</button>
+            </div>
+          </div>
+
+          <!-- ความรู้ (สมุดม่วง) -->
+          <div class="p-4 rounded-2xl bg-purple-50 dark:bg-purple-950/30 border border-purple-200 dark:border-purple-900/50 flex items-center justify-between">
+            <div class="flex items-center gap-3">
+              <i class="fa-solid fa-book-bookmark text-violet-400 text-3xl"></i>
+              <div>
+                <span class="text-xs font-black text-purple-600 dark:text-purple-400 uppercase block">ความรู้ (Knowledge)</span>
+                <span id="displayResKnowledge" class="text-2xl font-black font-mono text-slate-800 dark:text-white">10</span>
+              </div>
+            </div>
+            <div class="flex items-center gap-1">
+              <button onclick="changeResource('knowledge', -1)" class="w-8 h-8 rounded-xl bg-white dark:bg-slate-800 border text-rose-500 font-black hover:bg-purple-100">-</button>
+              <button onclick="changeResource('knowledge', 1)" class="w-8 h-8 rounded-xl bg-white dark:bg-slate-800 border text-emerald-500 font-black hover:bg-emerald-100">+</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ผังสายงาน 6 สาย (Leg A-F) -->
+      <div class="bg-white dark:bg-slate-800 p-5 sm:p-6 rounded-3xl border border-slate-200 dark:border-slate-700 shadow-sm space-y-4">
+        <div class="flex items-center justify-between">
+          <h3 class="font-black text-base sm:text-lg text-slate-900 dark:text-white flex items-center gap-2">
+            <i class="fa-solid fa-sitemap text-indigo-400 text-xl"></i><span>คะแนนองค์กร & สายงาน (Leg A - F)</span>
+          </h3>
+          <span class="text-xs font-mono font-bold text-slate-400">อัปเดตอัตโนมัติ</span>
+        </div>
+
+        <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3" id="legsGridContainer"></div>
+      </div>
+
+    </section>
+
+    <!-- VIEW 2: จัดการอาชีพ (Careers) -->
+    <section id="view-careers" class="hidden space-y-4 animate-pop-in">
+      <div class="bg-white/90 dark:bg-slate-800/90 backdrop-blur border border-slate-200 dark:border-slate-700 rounded-3xl p-5 shadow-sm flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
         <div>
-          <span class="text-xs text-slate-400 block font-bold">ผู้เล่น</span>
-          <span id="activeAccountDisplay" class="font-extrabold text-lg">ผู้เล่นหลัก</span>
+          <h3 class="font-black text-lg text-slate-900 dark:text-white flex items-center gap-2">
+            <i class="fa-solid fa-user-tie text-purple-500 text-xl"></i><span>สายอาชีพในเกม (Career Paths)</span>
+          </h3>
+          <p class="text-xs text-slate-400 font-medium">จัดการคุณสมบัติและผลตอบแทนของแต่ละระดับอาชีพ</p>
         </div>
-        <button onclick="receiveMonthlyCash()" class="px-4 py-2 bg-emerald-600 text-white rounded-xl text-xs font-bold shadow">+ รับเงินประจำเดือน</button>
+        <button onclick="openAddCareerModal()" class="px-5 py-2.5 rounded-2xl text-white font-black text-xs sm:text-sm btn-theme-action shadow hover:scale-105 transition">
+          <i class="fa-solid fa-plus-circle mr-1.5"></i>เพิ่มอาชีพใหม่
+        </button>
       </div>
 
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-        <div class="p-4 bg-white dark:bg-slate-800 rounded-2xl border space-y-2">
-          <span class="text-xs text-slate-400 font-bold block">เงินสดติดตัว</span>
-          <input type="number" id="profCash" oninput="saveProfile()" class="text-2xl font-black text-amber-500 bg-transparent outline-none w-full" value="0">
-        </div>
-        <div class="p-4 bg-white dark:bg-slate-800 rounded-2xl border space-y-2">
-          <span class="text-xs text-slate-400 font-bold block">เงินเดือนประจำ</span>
-          <input type="number" id="profSalary" oninput="saveProfile()" class="text-2xl font-black text-green-600 bg-transparent outline-none w-full" value="0">
-        </div>
-        <div class="p-4 bg-white dark:bg-slate-800 rounded-2xl border space-y-2">
-          <span class="text-xs text-slate-400 font-bold block">รายจ่ายต่อเดือน</span>
-          <input type="number" id="profExpense" oninput="saveProfile()" class="text-2xl font-black text-red-500 bg-transparent outline-none w-full" value="0">
-        </div>
-      </div>
-    </div>
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4" id="careersListContainer"></div>
+    </section>
 
-    <!-- Tab 2: Careers -->
-    <div id="tab-careers" class="hidden space-y-4">
-      <div class="flex justify-between items-center">
-        <h3 class="font-bold text-base">ฐานข้อมูลอาชีพต้นแบบ (CareersDB)</h3>
-        <button onclick="openCareerModal()" class="px-3 py-1.5 bg-red-600 text-white rounded-xl text-xs font-bold">+ เพิ่มอาชีพ</button>
+    <!-- VIEW 3: คุณสมบัติ (Qualifications) -->
+    <section id="view-qualifications" class="hidden space-y-4 animate-pop-in">
+      <div class="bg-white/90 dark:bg-slate-800/90 backdrop-blur border border-slate-200 dark:border-slate-700 rounded-3xl p-5 shadow-sm flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
+        <div>
+          <h3 class="font-black text-lg text-slate-900 dark:text-white flex items-center gap-2">
+            <i class="fa-solid fa-certificate text-emerald-500 text-xl"></i><span>เกณฑ์คุณสมบัติ & เข็มเกียรติยศ</span>
+          </h3>
+          <p class="text-xs text-slate-400 font-medium">เงื่อนไข PV ส่วนตัวและคะแนนสายงานเพื่อเลื่อนขั้น</p>
+        </div>
+        <button onclick="openAddQualificationModal()" class="px-5 py-2.5 rounded-2xl text-white font-black text-xs sm:text-sm btn-theme-action shadow hover:scale-105 transition">
+          <i class="fa-solid fa-plus-circle mr-1.5"></i>เพิ่มเกณฑ์คุณสมบัติ
+        </button>
       </div>
-      <div class="border rounded-2xl overflow-hidden bg-white dark:bg-slate-800">
-        <table class="w-full text-left text-xs">
-          <thead class="bg-slate-50 dark:bg-slate-900 border-b text-slate-400">
-            <tr>
-              <th class="p-3">รหัส</th>
-              <th class="p-3">ชื่ออาชีพ</th>
-              <th class="p-3 text-right">เงินเดือน</th>
-              <th class="p-3 text-right">รายจ่าย</th>
-              <th class="p-3 text-right">เงินสดตั้งต้น</th>
-              <th class="p-3 text-center">จัดการ</th>
-            </tr>
-          </thead>
-          <tbody id="careersTableBody" class="divide-y"></tbody>
-        </table>
-      </div>
-    </div>
 
-    <!-- Tab 3: Quals -->
-    <div id="tab-quals" class="hidden space-y-4">
-      <div class="flex justify-between items-center">
-        <h3 class="font-bold text-base">ฐานข้อมูลคุณสมบัติหลัก (QualificationsDB)</h3>
-        <button onclick="openQualModal()" class="px-3 py-1.5 bg-red-600 text-white rounded-xl text-xs font-bold">+ เพิ่มคุณสมบัติ</button>
-      </div>
-      <div class="border rounded-2xl overflow-hidden bg-white dark:bg-slate-800">
-        <table class="w-full text-left text-xs">
-          <thead class="bg-slate-50 dark:bg-slate-900 border-b text-slate-400">
-            <tr>
-              <th class="p-3 w-12">#</th>
-              <th class="p-3">คุณสมบัติ</th>
-              <th class="p-3">รายละเอียด</th>
-              <th class="p-3 text-center w-20">จัดการ</th>
-            </tr>
-          </thead>
-          <tbody id="qualsTableBody" class="divide-y"></tbody>
-        </table>
-      </div>
-    </div>
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4" id="qualificationsListContainer"></div>
+    </section>
+
   </main>
 
-  <!-- Progress Overlay Modal -->
-  <div id="syncProgressModal" class="hidden fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-md flex items-center justify-center p-4">
-    <div class="bg-white dark:bg-slate-800 border rounded-3xl max-w-sm w-full p-6 text-center space-y-4">
-      <div class="w-16 h-16 rounded-2xl bg-blue-50 text-blue-600 flex items-center justify-center mx-auto text-2xl">
-        <i id="syncProgressIcon" class="fa-solid fa-cloud-arrow-up animate-bounce"></i>
-      </div>
-      <div>
-        <h3 id="syncProgressTitle" class="font-bold">กำลังส่งข้อมูล</h3>
-        <p id="syncProgressStatusText" class="text-xs text-slate-400">โปรดรอสักครู่...</p>
-      </div>
-      <div class="w-full bg-slate-100 rounded-full h-2.5 overflow-hidden">
-        <div id="syncProgressBar" class="h-full bg-blue-600 transition-all duration-300" style="width: 0%"></div>
-      </div>
-      <span id="syncProgressPercent" class="text-xs font-mono font-bold text-blue-600">0%</span>
-    </div>
-  </div>
-
   <!-- Toast Notification -->
-  <div id="toastNotification" class="fixed top-20 right-4 z-50 transform translate-x-full opacity-0 transition-all duration-300 bg-slate-900 text-white px-4 py-2 rounded-xl text-xs font-bold">
+  <div id="toastNotification" class="fixed top-20 right-4 z-50 transform translate-x-full opacity-0 transition-all duration-300 bg-slate-900 text-white px-5 py-3 rounded-2xl shadow-2xl flex items-center gap-3 text-xs sm:text-sm font-black pointer-events-none">
+    <i class="fa-solid fa-circle-check text-emerald-400 text-lg"></i>
     <span id="toastMessage">แจ้งเตือน</span>
   </div>
 
-  <!-- JavaScript -->
+  <!-- JavaScript Engine -->
   <script>
     const GOOGLE_SHEET_API_URL = "https://script.google.com/macros/s/AKfycbzq9oD33K3nf_r2JRq5RjCafAQIvt2o9ywvJ1EvXvVg4l9QyUalIuQvxxT7zQ890nR1/exec";
 
-    let careersDB = [];
-    let qualificationsDB = [];
-    let userProfile = { cash: 15000, salary: 25000, expense: 18000 };
+    const DEFAULT_LEGS = [
+      { id: "A", name: "สายงาน A", pv: 15000, level: "12%" },
+      { id: "B", name: "สายงาน B", pv: 10000, level: "9%" },
+      { id: "C", name: "สายงาน C", pv: 55000, level: "21%" },
+      { id: "D", name: "สายงาน D", pv: 0, level: "0%" },
+      { id: "E", name: "สายงาน E", pv: 0, level: "0%" },
+      { id: "F", name: "สายงาน F", pv: 0, level: "0%" }
+    ];
+
+    const DEFAULT_CAREERS = [
+      { id: "car-1", title: "นักธุรกิจเริ่มต้น", minPv: 0, activeIncome: 15000, passiveIncome: 0, icon: "fa-seedling", color: "emerald" },
+      { id: "car-2", title: "Silver Producer", minPv: 150000, activeIncome: 35000, passiveIncome: 5000, icon: "fa-award", color: "blue" },
+      { id: "car-3", title: "Platinum Leader", minPv: 450000, activeIncome: 75000, passiveIncome: 25000, icon: "fa-crown", color: "amber" }
+    ];
+
+    let profileData = {
+      name: "ผู้เล่นระดับโปร",
+      cash: 50000,
+      personalPv: 3500,
+      activeIncome: 25000,
+      passiveIncome: 0,
+      resources: { heart: 10, time: 10, knowledge: 10 },
+      legs: [...DEFAULT_LEGS],
+      careerId: "car-1"
+    };
+
+    let careersList = [...DEFAULT_CAREERS];
+    let qualificationsList = [];
 
     window.addEventListener('DOMContentLoaded', () => {
-      loadProfileData();
-      syncAllFromGoogleSheets(false);
+      initTheme();
+      loadProfileLocalCache();
+      renderAllProfileUI();
+      fetchProfileDataFromCloud();
     });
 
-    function loadProfileData() {
+    /* Blocking Sync Banner Control */
+    function showSyncBanner(title, detail, stepText = "กำลังดำเนินการ...", percent = 20) {
+      const banner = document.getElementById('syncBlockingBanner');
+      document.getElementById('syncBannerTitle').innerText = title;
+      document.getElementById('syncBannerDetail').innerText = detail;
+      document.getElementById('syncBannerStepText').innerText = stepText;
+      updateSyncBannerProgress(percent);
+      document.getElementById('syncBannerErrorBtn').classList.add('hidden');
+      document.getElementById('syncBannerIcon').className = "fa-solid fa-arrows-rotate animate-spin";
+      banner.classList.remove('hidden');
+    }
+
+    function updateSyncBannerProgress(percent, detail = null, stepText = null) {
+      document.getElementById('syncBannerProgressBar').style.width = `${percent}%`;
+      document.getElementById('syncBannerPercentText').innerText = `${percent}%`;
+      if (detail) document.getElementById('syncBannerDetail').innerText = detail;
+      if (stepText) document.getElementById('syncBannerStepText').innerText = stepText;
+    }
+
+    function hideSyncBanner() {
+      document.getElementById('syncBlockingBanner').classList.add('hidden');
+    }
+
+    function setSyncBannerError(errMsg) {
+      document.getElementById('syncBannerTitle').innerText = "การซิงก์ไม่สำเร็จ";
+      document.getElementById('syncBannerDetail').innerText = errMsg;
+      document.getElementById('syncBannerIcon').className = "fa-solid fa-circle-xmark text-rose-500 text-4xl";
+      document.getElementById('syncBannerErrorBtn').classList.remove('hidden');
+    }
+
+    function loadProfileLocalCache() {
       try {
-        const rawC = localStorage.getItem('game_careers_database');
-        careersDB = rawC ? JSON.parse(rawC) : [];
-        const rawQ = localStorage.getItem('game_qualifications_database');
-        qualificationsDB = rawQ ? JSON.parse(rawQ) : [];
-        const rawP = localStorage.getItem('game_user_profile_guest_default');
-        if (rawP) userProfile = JSON.parse(rawP);
+        const cProf = localStorage.getItem('rnd_cache_player_profile');
+        if (cProf) profileData = JSON.parse(cProf);
+        const cCars = localStorage.getItem('rnd_cache_careers');
+        if (cCars) careersList = JSON.parse(cCars);
       } catch (e) {}
-
-      document.getElementById('profCash').value = userProfile.cash || 0;
-      document.getElementById('profSalary').value = userProfile.salary || 0;
-      document.getElementById('profExpense').value = userProfile.expense || 0;
-      renderTables();
     }
 
-    function saveProfile() {
-      userProfile.cash = parseFloat(document.getElementById('profCash').value) || 0;
-      userProfile.salary = parseFloat(document.getElementById('profSalary').value) || 0;
-      userProfile.expense = parseFloat(document.getElementById('profExpense').value) || 0;
-      localStorage.setItem('game_user_profile_guest_default', JSON.stringify(userProfile));
+    function saveProfileLocalCache() {
+      try {
+        localStorage.setItem('rnd_cache_player_profile', JSON.stringify(profileData));
+        localStorage.setItem('rnd_cache_careers', JSON.stringify(careersList));
+      } catch (e) {}
     }
 
-    function receiveMonthlyCash() {
-      const net = (userProfile.salary || 0) - (userProfile.expense || 0);
-      userProfile.cash = (userProfile.cash || 0) + net;
-      document.getElementById('profCash').value = userProfile.cash;
-      saveProfile();
-      confetti({ particleCount: 30, spread: 50, origin: { y: 0.7 } });
-      showToast(`รับเงินเดือนสุทธิ ฿${net.toLocaleString()} เรียบร้อย!`);
+    function renderAllProfileUI() {
+      document.getElementById('playerNameInput').value = profileData.name;
+      document.getElementById('statCash').innerText = `฿${(profileData.cash || 0).toLocaleString()}`;
+      document.getElementById('inputCash').value = profileData.cash || 0;
+
+      // PV รวม (ส่วนตัว + 6 สายงาน)
+      const legsTotalPv = profileData.legs.reduce((acc, l) => acc + (l.pv || 0), 0);
+      const totalPv = (profileData.personalPv || 0) + legsTotalPv;
+      document.getElementById('statTotalPv').innerText = totalPv.toLocaleString();
+      document.getElementById('inputPersonalPv').value = profileData.personalPv || 0;
+
+      document.getElementById('statActiveIncome').innerText = `฿${(profileData.activeIncome || 0).toLocaleString()}`;
+      document.getElementById('inputActiveIncome').value = profileData.activeIncome || 0;
+
+      document.getElementById('statPassiveIncome').innerText = `฿${(profileData.passiveIncome || 0).toLocaleString()}`;
+      document.getElementById('inputPassiveIncome').value = profileData.passiveIncome || 0;
+
+      // ทรัพยากร
+      document.getElementById('displayResHeart').innerText = profileData.resources?.heart || 0;
+      document.getElementById('displayResTime').innerText = profileData.resources?.time || 0;
+      document.getElementById('displayResKnowledge').innerText = profileData.resources?.knowledge || 0;
+
+      renderLegsCards();
+      renderCareersCards();
     }
 
-    function renderTables() {
-      document.getElementById('careerCountBadge').innerText = careersDB.length;
-      document.getElementById('qualCountBadge').innerText = qualificationsDB.length;
+    function renderLegsCards() {
+      const container = document.getElementById('legsGridContainer');
+      if (!container) return;
 
-      const tbC = document.getElementById('careersTableBody');
-      if (tbC) {
-        tbC.innerHTML = careersDB.map(c => `
-          <tr class="hover:bg-slate-50 dark:hover:bg-slate-800">
-            <td class="p-3 font-mono text-slate-400">${c.id}</td>
-            <td class="p-3 font-bold">${c.name}</td>
-            <td class="p-3 text-right font-mono font-bold text-green-600">฿${Number(c.salary).toLocaleString()}</td>
-            <td class="p-3 text-right font-mono font-bold text-red-500">฿${Number(c.expense).toLocaleString()}</td>
-            <td class="p-3 text-right font-mono font-bold text-amber-500">฿${Number(c.cash).toLocaleString()}</td>
-            <td class="p-3 text-center"><button onclick="deleteCareer('${c.id}')" class="text-slate-400 hover:text-red-500"><i class="fa-solid fa-trash-can"></i></button></td>
-          </tr>
-        `).join('');
+      container.innerHTML = profileData.legs.map((leg, idx) => `
+        <div class="p-3.5 bg-slate-50 dark:bg-slate-900/60 rounded-2xl border border-slate-200 dark:border-slate-700/80 space-y-2 text-center">
+          <div class="flex items-center justify-between">
+            <span class="text-xs font-black text-indigo-400">สาย ${leg.id}</span>
+            <span class="text-[10px] font-bold px-1.5 py-0.5 rounded bg-indigo-50 dark:bg-indigo-950/60 text-indigo-500 border border-indigo-200 dark:border-indigo-800">${leg.level || '0%'}</span>
+          </div>
+          <div class="text-base font-black text-slate-800 dark:text-white font-mono">${(leg.pv || 0).toLocaleString()}</div>
+          <input type="number" value="${leg.pv || 0}" onchange="updateLegPv('${leg.id}', this.value)" class="w-full text-[11px] font-mono text-center p-1 rounded-lg border dark:bg-slate-800 dark:border-slate-700 outline-none">
+        </div>
+      `).join('');
+    }
+
+    function renderCareersCards() {
+      const container = document.getElementById('careersListContainer');
+      if (!container) return;
+
+      container.innerHTML = careersList.map(car => `
+        <div class="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-3xl p-5 shadow-sm space-y-3 relative overflow-hidden">
+          <div class="flex items-center justify-between">
+            <div class="w-12 h-12 rounded-2xl bg-amber-500/15 text-amber-500 flex items-center justify-center text-2xl icon-vibrant">
+              <i class="fa-solid ${car.icon || 'fa-award'}"></i>
+            </div>
+            <button onclick="selectCareer('${car.id}')" class="px-3.5 py-1.5 rounded-xl text-xs font-black ${profileData.careerId === car.id ? 'bg-emerald-500 text-white' : 'border hover:bg-slate-50 dark:hover:bg-slate-700'}">
+              ${profileData.careerId === car.id ? 'กำลังใช้อยู่' : 'เลือกใช้'}
+            </button>
+          </div>
+          <div>
+            <h4 class="font-black text-lg text-slate-900 dark:text-white">${escapeHTML(car.title)}</h4>
+            <span class="text-xs text-slate-400 font-mono">เกณฑ์ขั้นต่ำ: ${(car.minPv || 0).toLocaleString()} PV</span>
+          </div>
+          <div class="grid grid-cols-2 gap-2 text-xs font-mono pt-2 border-t border-slate-100 dark:border-slate-700">
+            <div>Active: <strong class="text-emerald-400 block font-bold">฿${(car.activeIncome || 0).toLocaleString()}</strong></div>
+            <div>Passive: <strong class="text-teal-400 block font-bold">฿${(car.passiveIncome || 0).toLocaleString()}</strong></div>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function selectCareer(id) {
+      profileData.careerId = id;
+      const found = careersList.find(c => c.id === id);
+      if (found) {
+        document.getElementById('currentCareerDisplay').innerText = found.title;
+        showToast(`เลือกใช้ตำแหน่ง "${found.title}" เรียบร้อยแล้ว`);
       }
+      saveProfileLocalCache();
+      renderAllProfileUI();
+    }
 
-      const tbQ = document.getElementById('qualsTableBody');
-      if (tbQ) {
-        tbQ.innerHTML = qualificationsDB.map((q, i) => `
-          <tr class="hover:bg-slate-50 dark:hover:bg-slate-800">
-            <td class="p-3 font-mono text-slate-400">${i + 1}</td>
-            <td class="p-3 font-bold">${q.title}</td>
-            <td class="p-3 text-slate-400">${q.desc || '-'}</td>
-            <td class="p-3 text-center"><button onclick="deleteQual('${q.id}')" class="text-slate-400 hover:text-red-500"><i class="fa-solid fa-trash-can"></i></button></td>
-          </tr>
-        `).join('');
+    function updatePlayerProfile() {
+      profileData.name = document.getElementById('playerNameInput').value.trim();
+      saveProfileLocalCache();
+      showToast('อัปเดตชื่อผู้เล่นเรียบร้อย');
+    }
+
+    function updatePlayerFinance() {
+      profileData.cash = parseFloat(document.getElementById('inputCash').value) || 0;
+      profileData.personalPv = parseFloat(document.getElementById('inputPersonalPv').value) || 0;
+      profileData.activeIncome = parseFloat(document.getElementById('inputActiveIncome').value) || 0;
+      profileData.passiveIncome = parseFloat(document.getElementById('inputPassiveIncome').value) || 0;
+      saveProfileLocalCache();
+      renderAllProfileUI();
+      showToast('บันทึกยอดเงินและ PV เรียบร้อย');
+    }
+
+    function updateLegPv(legId, val) {
+      const leg = profileData.legs.find(l => l.id === legId);
+      if (leg) {
+        leg.pv = parseFloat(val) || 0;
+        saveProfileLocalCache();
+        renderAllProfileUI();
       }
     }
 
-    async function syncAllFromGoogleSheets(isManual = false) {
-      if (!GOOGLE_SHEET_API_URL) return;
-      const icon = document.getElementById('syncIcon');
-      if (icon) icon.classList.add('animate-spin');
+    function changeResource(type, delta) {
+      if (!profileData.resources) profileData.resources = { heart: 10, time: 10, knowledge: 10 };
+      profileData.resources[type] = Math.max(0, (profileData.resources[type] || 0) + delta);
+      saveProfileLocalCache();
+      renderAllProfileUI();
+    }
+
+    function resetPlayerStats() {
+      if (!confirm("ต้องการรีเซ็ตสถานะตัวละครกลับเป็นค่าเริ่มต้นหรือไม่?")) return;
+      profileData = {
+        name: "ผู้เล่นระดับโปร",
+        cash: 50000,
+        personalPv: 0,
+        activeIncome: 25000,
+        passiveIncome: 0,
+        resources: { heart: 10, time: 10, knowledge: 10 },
+        legs: [...DEFAULT_LEGS],
+        careerId: "car-1"
+      };
+      saveProfileLocalCache();
+      renderAllProfileUI();
+      showToast("รีเซ็ตสถานะเรียบร้อยแล้ว");
+    }
+
+    /* Cloud Sync Engine */
+    async function fetchProfileDataFromCloud() {
+      if (!GOOGLE_SHEET_API_URL || GOOGLE_SHEET_API_URL.includes("PLACEHOLDER")) return;
+      try {
+        const res = await fetch(`${GOOGLE_SHEET_API_URL}?action=getCareers&nocache=${Date.now()}`);
+        const data = await res.json();
+        if (Array.isArray(data) && data.length > 0) {
+          careersList = data;
+          saveProfileLocalCache();
+          renderCareersCards();
+        }
+      } catch (err) {}
+    }
+
+    async function saveAllToCloud() {
+      showSyncBanner("กำลังส่งข้อมูลขึ้น Cloud", "กำลังบันทึกข้อมูลตัวละครและอาชีพ...", "ขั้นตอน 1/2: กำลังอัปโหลด", 40);
 
       try {
-        const ts = Date.now();
-        const [resC, resQ] = await Promise.all([
-          fetch(`${GOOGLE_SHEET_API_URL}?action=getCareers&nocache=${ts}`),
-          fetch(`${GOOGLE_SHEET_API_URL}?action=getQualifications&nocache=${ts}`)
-        ]);
-        careersDB = await resC.json();
-        qualificationsDB = await resQ.json();
+        const payload = {
+          action: "saveCareers",
+          careers: careersList,
+          profile: profileData,
+          timestamp: Date.now()
+        };
 
-        localStorage.setItem('game_careers_database', JSON.stringify(careersDB));
-        localStorage.setItem('game_qualifications_database', JSON.stringify(qualificationsDB));
+        const response = await fetch(GOOGLE_SHEET_API_URL, {
+          method: "POST",
+          headers: { "Content-Type": "text/plain;charset=utf-8" },
+          body: JSON.stringify(payload)
+        });
 
-        renderTables();
-        if (isManual) showToast(`ซิงก์สำเร็จ! (อาชีพ ${careersDB.length} | คุณสมบัติ ${qualificationsDB.length})`);
-      } catch (e) {
-        if (isManual) showToast('ไม่สามารถดึงข้อมูลจาก Cloud ได้');
-      } finally {
-        if (icon) icon.classList.remove('animate-spin');
+        const result = await response.json();
+
+        if (result && result.status === "success") {
+          updateSyncBannerProgress(100, "บันทึกโปรไฟล์ขึ้น Google Sheets สำเร็จ!", "เสร็จสมบูรณ์");
+          confetti({ particleCount: 50, spread: 60, origin: { y: 0.6 } });
+          showToast("บันทึกข้อมูลตัวละครขึ้น Cloud สำเร็จ ☁️");
+          setTimeout(hideSyncBanner, 1000);
+        } else {
+          throw new Error(result?.message || "เซิร์ฟเวอร์ปฏิเสธการบันทึก");
+        }
+      } catch (err) {
+        setSyncBannerError(`ผิดพลาด: ${err.message}`);
       }
     }
 
-    async function pushAllMasterDataToCloud() {
-      showProgress('กำลังอัปโหลด', 'กำลังส่งขึ้น Cloud...');
-      try {
-        updateProgress(40, 'กำลังส่งอาชีพ...');
-        await fetch(GOOGLE_SHEET_API_URL, {
-          method: 'POST',
-          mode: 'no-cors',
-          headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-          body: JSON.stringify({ action: 'saveCareers', careers: careersDB })
-        });
+    function switchProfileTab(tab) {
+      ['profile', 'careers', 'qualifications'].forEach(t => {
+        const el = document.getElementById(`view-${t}`);
+        if (el) el.classList.toggle('hidden', t !== tab);
 
-        updateProgress(70, 'กำลังส่งคุณสมบัติ...');
-        await fetch(GOOGLE_SHEET_API_URL, {
-          method: 'POST',
-          mode: 'no-cors',
-          headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-          body: JSON.stringify({ action: 'saveQualifications', qualifications: qualificationsDB })
-        });
-
-        updateProgress(90, 'กำลังตรวจสอบผลลัพธ์...');
-        await new Promise(r => setTimeout(r, 1500));
-        await syncAllFromGoogleSheets(false);
-
-        updateProgress(100, 'อัปโหลดสำเร็จ 100%!');
-        confetti({ particleCount: 30, spread: 50, origin: { y: 0.7 } });
-        setTimeout(closeProgress, 1200);
-        showToast('อัปโหลดอาชีพและคุณสมบัติขึ้นชีตสำเร็จ ☁️');
-      } catch (e) {
-        closeProgress();
-        showToast('อัปโหลดไม่สำเร็จ');
-      }
-    }
-
-    function openCareerModal() {
-      const name = prompt("ระบุชื่ออาชีพใหม่:");
-      if (!name) return;
-      const salary = parseFloat(prompt("ระบุเงินเดือน:", "30000")) || 0;
-      careersDB.push({ id: `car-${Date.now().toString().slice(-4)}`, name, salary, expense: salary * 0.7, cash: 15000 });
-      localStorage.setItem('game_careers_database', JSON.stringify(careersDB));
-      renderTables();
-    }
-
-    function deleteCareer(id) {
-      careersDB = careersDB.filter(c => c.id !== id);
-      localStorage.setItem('game_careers_database', JSON.stringify(careersDB));
-      renderTables();
-    }
-
-    function openQualModal() {
-      const title = prompt("ระบุชื่อคุณสมบัติ/เข็มใหม่:");
-      if (!title) return;
-      qualificationsDB.push({ id: `q-${Date.now().toString().slice(-4)}`, title, desc: "" });
-      localStorage.setItem('game_qualifications_database', JSON.stringify(qualificationsDB));
-      renderTables();
-    }
-
-    function deleteQual(id) {
-      qualificationsDB = qualificationsDB.filter(q => q.id !== id);
-      localStorage.setItem('game_qualifications_database', JSON.stringify(qualificationsDB));
-      renderTables();
-    }
-
-    function showProgress(t, s) {
-      document.getElementById('syncProgressTitle').innerText = t;
-      document.getElementById('syncProgressStatusText').innerText = s;
-      document.getElementById('syncProgressBar').style.width = '0%';
-      document.getElementById('syncProgressPercent').innerText = '0%';
-      document.getElementById('syncProgressModal').classList.remove('hidden');
-    }
-    function updateProgress(p, s) {
-      document.getElementById('syncProgressBar').style.width = `${p}%`;
-      document.getElementById('syncProgressPercent').innerText = `${p}%`;
-      if (s) document.getElementById('syncProgressStatusText').innerText = s;
-    }
-    function closeProgress() { document.getElementById('syncProgressModal').classList.add('hidden'); }
-
-    function switchTab(t) {
-      ['dashboard', 'careers', 'quals'].forEach(v => {
-        document.getElementById(`tab-${v}`).classList.toggle('hidden', v !== t);
-        const b = document.getElementById(`tabBtn-${v}`);
-        if (b) b.className = (v === t) ? "pb-2 border-b-2 border-red-600 text-red-600" : "pb-2 text-slate-400";
+        const mBtn = document.getElementById(`m-nav-${t}`);
+        if (mBtn) {
+          if (t === tab) {
+            mBtn.className = "flex flex-col items-center gap-1 text-rose-500 scale-105 transition";
+          } else {
+            mBtn.className = "flex flex-col items-center gap-1 text-slate-400";
+          }
+        }
       });
+    }
+
+    function initTheme() {
+      const isDark = localStorage.getItem('rnd_theme_dark') !== 'false';
+      document.documentElement.classList.toggle('dark', isDark);
     }
 
     function showToast(msg) {
@@ -335,6 +704,8 @@
       t.classList.remove('translate-x-full', 'opacity-0');
       setTimeout(() => t.classList.add('translate-x-full', 'opacity-0'), 2500);
     }
+
+    function escapeHTML(str) { return String(str || '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;'); }
   </script>
 </body>
 </html>
