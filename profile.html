@@ -3,2329 +3,337 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-  <title>โปรไฟล์ & สถานะในเกม (Profile Hub)</title>
+  <title>Player Profile & Career Hub</title>
 
-  <!-- Google Fonts: Prompt & Inter -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Prompt:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-
-  <!-- Font Awesome Icons -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-
-  <!-- Tailwind CSS CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.2/dist/confetti.browser.min.js"></script>
 
   <script>
     tailwind.config = {
       darkMode: 'class',
       theme: {
         extend: {
-          fontFamily: {
-            sans: ['Prompt', 'Inter', 'sans-serif'],
-            mono: ['Inter', 'monospace'],
-          },
-          colors: {
-            brand: {
-              red: '#EF4444',
-              redHover: '#DC2626',
-              emerald: '#10B981',
-              blue: '#3B82F6',
-              amber: '#F59E0B',
-              purple: '#8B5CF6'
-            }
-          },
-          animation: {
-            'pop-in': 'popIn 0.3s cubic-bezier(0.16, 1, 0.3, 1)',
-          },
-          keyframes: {
-            popIn: {
-              '0%': { opacity: '0', transform: 'scale(0.92) translateY(12px)' },
-              '100%': { opacity: '1', transform: 'scale(1) translateY(0)' }
-            }
-          }
+          fontFamily: { sans: ['Prompt', 'Inter', 'sans-serif'], mono: ['Inter', 'monospace'] }
         }
       }
     }
   </script>
-
-  <style>
-    html {
-      font-size: 18px;
-      line-height: 1.55;
-      -webkit-text-size-adjust: 100%;
-    }
-
-    body {
-      touch-action: manipulation;
-      -webkit-tap-highlight-color: transparent;
-      background: radial-gradient(circle at 10% 20%, rgba(248, 250, 252, 1) 0%, rgba(241, 245, 249, 1) 90%);
-    }
-
-    .dark body {
-      background: radial-gradient(circle at 10% 10%, #0F172A 0%, #0B132B 50%, #090E1A 100%);
-    }
-
-    .glass-card {
-      background: rgba(255, 255, 255, 0.95);
-      backdrop-filter: blur(12px);
-      border: 1px solid rgba(226, 232, 240, 0.9);
-    }
-
-    .dark .glass-card {
-      background: rgba(17, 28, 68, 0.75);
-      backdrop-filter: blur(16px);
-      border: 1px solid rgba(255, 255, 255, 0.08);
-    }
-
-    .btn-gradient-red {
-      background: linear-gradient(135deg, #EF4444 0%, #DC2626 50%, #B91C1C 100%);
-    }
-
-    .btn-gradient-red:hover {
-      background: linear-gradient(135deg, #F87171 0%, #EF4444 50%, #DC2626 100%);
-    }
-
-    fieldset:disabled {
-      opacity: 0.88;
-    }
-    fieldset:disabled input,
-    fieldset:disabled select,
-    fieldset:disabled textarea {
-      cursor: not-allowed !important;
-      background-color: rgba(241, 245, 249, 0.85) !important;
-      border-color: rgba(203, 213, 225, 0.7) !important;
-    }
-    .dark fieldset:disabled input,
-    .dark fieldset:disabled select,
-    .dark fieldset:disabled textarea {
-      background-color: rgba(15, 23, 42, 0.55) !important;
-      border-color: rgba(255, 255, 255, 0.06) !important;
-    }
-    fieldset:disabled input[type=range] {
-      pointer-events: none !important;
-      opacity: 0.6;
-    }
-    fieldset:disabled label {
-      cursor: not-allowed !important;
-    }
-
-    input[type=range] {
-      -webkit-appearance: none;
-      background: transparent;
-    }
-    input[type=range]:focus { outline: none; }
-    input[type=range]::-webkit-slider-thumb {
-      -webkit-appearance: none;
-      height: 22px;
-      width: 22px;
-      border-radius: 50%;
-      background: #FFFFFF;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.3);
-      cursor: pointer;
-      margin-top: -8px;
-      border: 3.5px solid currentColor;
-      transition: transform 0.15s ease;
-    }
-    input[type=range]::-webkit-slider-thumb:hover { transform: scale(1.15); }
-    input[type=range]::-webkit-slider-runnable-track {
-      width: 100%;
-      height: 6px;
-      border-radius: 9999px;
-      background: #E2E8F0;
-    }
-    .dark input[type=range]::-webkit-slider-runnable-track {
-      background: #1E293B;
-    }
-
-    .checkbox-row.active-checked {
-      background-color: #ECFDF5 !important;
-      border-color: #10B981 !important;
-      color: #065F46 !important;
-    }
-    .dark .checkbox-row.active-checked {
-      background-color: rgba(6, 78, 59, 0.5) !important;
-      border-color: #059669 !important;
-      color: #A7F3D0 !important;
-    }
-  </style>
 </head>
-<body class="text-slate-800 dark:text-slate-100 min-h-screen flex flex-col font-sans pb-32 md:pb-20 transition-colors duration-200">
+<body class="text-slate-800 dark:text-slate-100 min-h-screen flex flex-col font-sans transition-colors duration-200 pb-20 md:pb-8 bg-slate-50 dark:bg-slate-900">
 
-  <!-- Top Navigation Bar -->
-  <header class="sticky top-0 z-40 bg-white/95 dark:bg-[#0B132B]/95 backdrop-blur-md border-b border-slate-200/80 dark:border-white/10 shadow-sm transition-colors">
-    <div class="max-w-6xl mx-auto px-3 sm:px-4 h-16 sm:h-20 flex items-center justify-between gap-2">
-      
-      <!-- Brand & Back Button -->
-      <div class="flex items-center space-x-2.5 sm:space-x-3.5 min-w-0">
-        <a href="index.html" class="w-10 h-10 sm:w-12 sm:h-12 rounded-2xl flex items-center justify-center text-white shadow-md btn-gradient-red hover:scale-105 active:scale-95 transition-all shrink-0" title="กลับหน้าสุ่มการ์ด">
-          <i class="fa-solid fa-arrow-left text-base sm:text-lg"></i>
-        </a>
-        <div class="min-w-0">
-          <div class="flex items-center gap-2 truncate">
-            <span class="font-extrabold text-base sm:text-xl text-slate-900 dark:text-white tracking-tight truncate">ข้อมูลโปรไฟล์เกม</span>
-            <span id="userAccountBadge" class="text-[10px] sm:text-xs font-black px-2 py-0.5 rounded-full bg-slate-200 dark:bg-slate-700 text-slate-700 dark:text-slate-300 uppercase shrink-0">ยังไม่ Login</span>
-          </div>
-          <p id="cloudCareersStatus" class="text-xs text-slate-400 font-medium flex items-center gap-1 truncate">
-            <i class="fa-solid fa-circle text-[7px] text-emerald-500"></i> พร้อมใช้งาน
-          </p>
+  <!-- Header -->
+  <header class="sticky top-0 z-40 bg-white/95 dark:bg-slate-900/95 backdrop-blur-md border-b border-slate-200 dark:border-slate-800 shadow-sm">
+    <div class="max-w-7xl mx-auto px-4 h-16 flex items-center justify-between">
+      <div class="flex items-center space-x-3">
+        <a href="index.html" class="w-10 h-10 rounded-xl bg-red-600 text-white flex items-center justify-center shadow"><i class="fa-solid fa-arrow-left"></i></a>
+        <div>
+          <span class="font-extrabold text-lg">PLAYER PROFILE</span>
+          <p id="cloudSyncStatus" class="text-[11px] text-slate-400"><i class="fa-solid fa-circle text-[8px] text-emerald-500"></i> พร้อมใช้งาน</p>
         </div>
       </div>
-
-      <!-- Action Controls -->
-      <div class="flex items-center space-x-1.5 sm:space-x-2 shrink-0">
-        <div id="authHeaderBox">
-          <button type="button" onclick="openLoginModal()" class="px-3 py-2 rounded-xl text-xs sm:text-sm font-black transition-all flex items-center gap-1.5 bg-blue-600 hover:bg-blue-700 text-white shadow-md">
-            <i class="fa-solid fa-right-to-bracket text-xs"></i>
-            <span>เข้าสู่ระบบ</span>
-          </button>
-        </div>
-
-        <button type="button" onclick="exportProfileToGoogleSheetCSV()" title="ส่งออกข้อมูลโปรไฟล์เป็นไฟล์ Google Sheets (.CSV)" class="px-2.5 sm:px-3 py-2 rounded-xl text-xs sm:text-sm font-bold transition-all flex items-center gap-1.5 border border-emerald-300 dark:border-emerald-700/60 bg-emerald-50 dark:bg-emerald-950/40 text-emerald-700 dark:text-emerald-300 shadow-sm hover:bg-emerald-100">
-          <i class="fa-solid fa-file-excel text-xs text-emerald-600"></i>
-          <span class="hidden md:inline">Export Sheets</span>
-        </button>
-
-        <button type="button" onclick="fetchCareersFromCloud(true)" title="ดึงข้อมูลจาก Google Sheets" class="px-2.5 sm:px-3 py-2 rounded-xl text-xs sm:text-sm font-bold transition-all flex items-center gap-1.5 border border-slate-200 dark:border-white/10 bg-white dark:bg-slate-800 shadow-sm hover:border-slate-300">
-          <i id="syncCareersIcon" class="fa-solid fa-rotate text-xs text-amber-500"></i>
-          <span class="hidden md:inline">Sync ชีต</span>
-        </button>
-
-        <button type="button" id="toggleEditBtn" onclick="toggleEditMode()" class="px-2.5 sm:px-3.5 py-2 rounded-xl text-xs sm:text-sm font-bold transition-all flex items-center gap-1.5 border border-slate-200 dark:border-slate-800 shadow-sm">
-          <i id="editIcon" class="fa-solid fa-lock text-slate-400"></i>
-          <span id="editText" class="hidden sm:inline">ปลดล็อคแก้ไข</span>
-        </button>
-
-        <!-- ปุ่ม Setting รูปเฟืองสีแดง -->
-        <button type="button" onclick="openSettingModal()" title="การตั้งค่าระบบและสำรองข้อมูล" class="w-9 h-9 sm:w-10 sm:h-10 rounded-xl border border-red-200 dark:border-red-900/50 bg-white dark:bg-slate-800 text-red-500 hover:text-red-600 hover:bg-red-50 dark:hover:bg-red-950/30 flex items-center justify-center shadow-sm transition group">
-          <i class="fa-solid fa-gear text-base sm:text-lg group-hover:rotate-90 transition-transform duration-300"></i>
-        </button>
+      <div class="flex items-center space-x-2">
+        <button onclick="syncAllFromGoogleSheets(true)" class="px-3 py-1.5 rounded-lg border text-xs font-bold"><i id="syncIcon" class="fa-solid fa-rotate mr-1"></i>Sync Cloud</button>
+        <button onclick="pushAllMasterDataToCloud()" class="px-3 py-1.5 rounded-lg bg-blue-600 text-white text-xs font-bold shadow"><i class="fa-solid fa-cloud-arrow-up mr-1"></i>Push ชีต</button>
       </div>
-
     </div>
   </header>
 
-  <!-- NAVIGATION TABS -->
-  <div class="max-w-6xl mx-auto px-3 sm:px-6 pt-4">
-    <div class="flex items-center gap-2 border-b border-slate-200 dark:border-white/10 pb-2">
-      <button type="button" id="tabMainProfileBtn" onclick="switchMainTab('profile')" class="px-4 py-2 rounded-2xl font-black text-sm transition-all bg-red-600 text-white shadow-md flex items-center gap-2">
-        <i class="fa-solid fa-id-card"></i>
-        <span>ข้อมูลโปรไฟล์ของฉัน</span>
-      </button>
-
-      <button type="button" id="tabAdminPanelBtn" onclick="switchMainTab('admin')" class="hidden px-4 py-2 rounded-2xl font-black text-sm transition-all bg-slate-200 dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:text-amber-500 flex items-center gap-2">
-        <i class="fa-solid fa-shield-halved text-amber-500"></i>
-        <span>👑 แผงควบคุม Admin (<span id="userTotalCountBadge">0</span>)</span>
-      </button>
-    </div>
-  </div>
-
-  <!-- Main Container -->
-  <main class="flex-1 max-w-6xl w-full mx-auto px-3 sm:px-6 py-4 space-y-6">
-
-    <!-- VIEW 1: หน้าโปรไฟล์หลัก -->
-    <div id="viewMainProfile" class="space-y-6">
-      
-      <!-- KPI DASHBOARD SUMMARY -->
-      <section class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-        <!-- 1. เงินสด -->
-        <div class="glass-card rounded-2xl p-4 sm:p-5 relative overflow-hidden flex items-center gap-4 border-l-4 border-l-amber-500 shadow-sm">
-          <div class="w-14 h-14 rounded-2xl bg-amber-500/10 text-amber-500 flex items-center justify-center text-2xl shrink-0">
-            <i class="fa-solid fa-wallet"></i>
-          </div>
-          <div class="min-w-0">
-            <span class="text-xs font-bold uppercase tracking-wider text-slate-400 block">เงินสด</span>
-            <div class="text-2xl sm:text-3xl font-black font-mono text-amber-500 truncate" id="kpiCash">฿0</div>
-          </div>
-        </div>
-
-        <!-- 2. เงินคงเหลือต่อเดือน -->
-        <div class="glass-card rounded-2xl p-4 sm:p-5 relative overflow-hidden flex items-center gap-4 border-l-4 border-l-indigo-500 shadow-sm bg-gradient-to-br from-indigo-50/50 to-purple-50/50 dark:from-indigo-950/20 dark:to-purple-950/20">
-          <div class="w-14 h-14 rounded-2xl bg-indigo-500/10 text-indigo-500 flex items-center justify-center text-2xl shrink-0">
-            <i class="fa-solid fa-coins"></i>
-          </div>
-          <div class="min-w-0 flex-1">
-            <div class="flex items-center justify-between">
-              <span class="text-xs font-bold uppercase tracking-wider text-indigo-600 dark:text-indigo-400 block truncate">เงินคงเหลือต่อเดือน</span>
-            </div>
-            <div class="text-2xl sm:text-3xl font-black font-mono text-indigo-600 dark:text-indigo-400 truncate" id="kpiNetSurplus">฿0</div>
-            <p class="text-[10px] text-slate-400 dark:text-slate-500 font-medium truncate mt-0.5">*รับเมื่อสุ่มเจอการ์ดเงินเดือน</p>
-          </div>
-        </div>
-
-        <!-- 3. Active Income รวม -->
-        <div class="glass-card rounded-2xl p-4 sm:p-5 relative overflow-hidden flex items-center gap-4 border-l-4 border-l-green-500 shadow-sm">
-          <div class="w-14 h-14 rounded-2xl bg-green-500/10 text-green-500 flex items-center justify-center text-xl shrink-0">
-            <i class="fa-solid fa-hand-holding-dollar"></i>
-          </div>
-          <div class="min-w-0">
-            <span class="text-xs font-bold uppercase tracking-wider text-slate-400 block">Active Income รวม</span>
-            <div class="text-2xl sm:text-3xl font-black font-mono text-green-500 truncate" id="kpiTotalActive">฿0</div>
-          </div>
-        </div>
-
-        <!-- 4. Passive Income รวม -->
-        <div class="glass-card rounded-2xl p-4 sm:p-5 relative overflow-hidden flex items-center gap-4 border-l-4 border-l-emerald-500 shadow-sm">
-          <div class="w-14 h-14 rounded-2xl bg-emerald-500/10 text-emerald-500 flex items-center justify-center text-xl shrink-0">
-            <i class="fa-solid fa-seedling"></i>
-          </div>
-          <div class="min-w-0">
-            <span class="text-xs font-bold uppercase tracking-wider text-slate-400 block">Passive Income รวม</span>
-            <div class="text-2xl sm:text-3xl font-black font-mono text-emerald-600 dark:text-emerald-400 truncate" id="kpiTotalPassive">฿0</div>
-          </div>
-        </div>
-      </section>
-
-      <!-- FORM WRAPPER -->
-      <form id="profileForm" onsubmit="handleProfileSubmit(event)">
-        <fieldset id="profileFieldset" disabled class="space-y-6">
-
-          <!-- SECTION 1: ข้อมูลส่วนบุคคล -->
-          <div class="glass-card rounded-3xl p-5 sm:p-7 shadow-sm space-y-4">
-            <div class="flex items-center gap-3 pb-3 border-b border-slate-100 dark:border-white/5">
-              <div class="w-10 h-10 rounded-2xl bg-gradient-to-br from-red-500 to-rose-600 text-white flex items-center justify-center text-base shadow-sm">
-                <i class="fa-solid fa-id-badge"></i>
-              </div>
-              <div>
-                <h2 class="text-lg font-bold text-slate-900 dark:text-white">1. ข้อมูลส่วนบุคคล (General Profile)</h2>
-                <p class="text-xs text-slate-400">กรอกชื่อ-นามสกุล (จำเป็น) ส่วนเบอร์โทรและอีเมลไม่จำเป็นต้องกรอกก็ได้</p>
-              </div>
-            </div>
-
-            <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
-              <div>
-                <label class="block text-xs sm:text-sm font-bold text-slate-600 dark:text-slate-300 mb-1.5">ชื่อ - นามสกุล <span class="text-red-500">*</span></label>
-                <div class="relative">
-                  <input type="text" id="userFullName" required placeholder="เช่น สมชาย สิริลาภอนันต์" class="w-full bg-slate-50 dark:bg-slate-900/60 border border-slate-200 dark:border-white/10 rounded-xl pl-10 pr-3.5 py-3 text-sm sm:text-base font-medium focus:ring-2 focus:ring-red-500 transition">
-                  <i class="fa-solid fa-user absolute left-3.5 top-3.5 text-slate-400 text-sm"></i>
-                </div>
-              </div>
-              <div>
-                <label class="block text-xs sm:text-sm font-bold text-slate-600 dark:text-slate-300 mb-1.5">เบอร์โทรศัพท์ <span class="text-slate-400 font-normal text-xs">(ไม่บังคับ)</span></label>
-                <div class="relative">
-                  <input type="tel" id="userPhone" placeholder="08x-xxx-xxxx" class="w-full bg-slate-50 dark:bg-slate-900/60 border border-slate-200 dark:border-white/10 rounded-xl pl-10 pr-3.5 py-3 text-sm sm:text-base font-mono font-medium focus:ring-2 focus:ring-red-500 transition">
-                  <i class="fa-solid fa-phone absolute left-3.5 top-3.5 text-slate-400 text-sm"></i>
-                </div>
-              </div>
-              <div>
-                <label class="block text-xs sm:text-sm font-bold text-slate-600 dark:text-slate-300 mb-1.5">อีเมล (Email) <span class="text-slate-400 font-normal text-xs">(ไม่บังคับ)</span></label>
-                <div class="relative">
-                  <input type="email" id="userEmail" placeholder="example@email.com" class="w-full bg-slate-50 dark:bg-slate-900/60 border border-slate-200 dark:border-white/10 rounded-xl pl-10 pr-3.5 py-3 text-sm sm:text-base font-medium focus:ring-2 focus:ring-red-500 transition">
-                  <i class="fa-solid fa-envelope absolute left-3.5 top-3.5 text-slate-400 text-sm"></i>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <!-- SECTION 2: อาชีพในเกม & พลังทรัพยากร -->
-          <div class="glass-card rounded-3xl p-5 sm:p-7 shadow-sm space-y-4">
-            <div class="flex items-center gap-3 pb-3 border-b border-slate-100 dark:border-white/5">
-              <div class="w-10 h-10 rounded-2xl bg-gradient-to-br from-amber-500 to-orange-600 text-white flex items-center justify-center text-base shadow-sm">
-                <i class="fa-solid fa-briefcase"></i>
-              </div>
-              <div>
-                <h2 class="text-lg font-bold text-slate-900 dark:text-white">2. อาชีพในเกม & พลังทรัพยากร (Game Careers & Stats)</h2>
-                <p class="text-xs text-slate-400">เลือกอาชีพต้นแบบ แล้วปรับแต่งรายได้/ค่าพลังเฉพาะตัวของคุณได้ (ผูกกับบัญชีผู้เล่น ไม่ทับฐานข้อมูลกลาง)</p>
-              </div>
-            </div>
-
-            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-              <div>
-                <label class="block text-xs sm:text-sm font-bold text-slate-600 dark:text-slate-300 mb-1.5">อาชีพในเกม <span class="text-red-500">*</span></label>
-                <select id="gameCareerSelect" required onchange="onCareerSelected(this.value)" class="w-full bg-slate-50 dark:bg-slate-900/60 border border-slate-200 dark:border-white/10 rounded-xl px-3.5 py-3 text-sm sm:text-base font-bold text-slate-800 dark:text-white focus:ring-2 focus:ring-red-500 transition"></select>
-              </div>
-              <div>
-                <label class="block text-xs sm:text-sm font-bold text-amber-600 dark:text-amber-400 mb-1.5 flex items-center gap-1">
-                  <i class="fa-solid fa-wallet text-sm"></i> เงินสดติดตัวเริ่มต้น
-                </label>
-                <div class="relative">
-                  <input type="number" id="careerCash" oninput="calculateTotalSummary()" placeholder="0" class="w-full bg-slate-50 dark:bg-slate-900/60 border border-slate-200 dark:border-white/10 rounded-xl pl-9 pr-3.5 py-3 text-sm sm:text-base font-mono font-bold text-amber-600 dark:text-amber-400 focus:ring-2 focus:ring-amber-500 transition">
-                  <span class="absolute left-3.5 top-3 text-slate-400 font-bold text-sm">฿</span>
-                </div>
-              </div>
-              <div>
-                <label class="block text-xs sm:text-sm font-bold text-green-500 mb-1.5 flex items-center gap-1">
-                  <i class="fa-solid fa-money-bill-wave text-sm"></i> เงินเดือน (Salary / ด.)
-                </label>
-                <div class="relative">
-                  <input type="number" id="careerSalary" oninput="calculateTotalSummary()" placeholder="0" class="w-full bg-slate-50 dark:bg-slate-900/60 border border-slate-200 dark:border-white/10 rounded-xl pl-9 pr-3.5 py-3 text-sm sm:text-base font-mono font-bold text-green-500 focus:ring-2 focus:ring-green-500 transition">
-                  <span class="absolute left-3.5 top-3 text-slate-400 font-bold text-sm">฿</span>
-                </div>
-              </div>
-              <div>
-                <label class="block text-xs sm:text-sm font-bold text-red-500 mb-1.5 flex items-center gap-1">
-                  <i class="fa-solid fa-receipt text-sm"></i> รายจ่ายประจำ (Expenses / ด.)
-                </label>
-                <div class="relative">
-                  <input type="number" id="careerExpense" oninput="calculateTotalSummary()" placeholder="0" class="w-full bg-slate-50 dark:bg-slate-900/60 border border-slate-200 dark:border-white/10 rounded-xl pl-8 pr-3.5 py-3 text-sm sm:text-base font-mono font-bold text-red-500 focus:ring-2 focus:ring-red-500 transition">
-                  <span class="absolute left-3.5 top-3 text-slate-400 font-bold text-sm">฿</span>
-                </div>
-              </div>
-            </div>
-
-            <!-- ทรัพยากร 3 ด้าน -->
-            <div class="p-4 sm:p-5 rounded-3xl bg-slate-50/90 dark:bg-slate-900/50 border border-slate-200/80 dark:border-white/5 space-y-3.5">
-              <div class="flex items-center justify-between border-b border-slate-200/60 dark:border-white/5 pb-2">
-                <span class="text-xs sm:text-sm font-black uppercase tracking-wider text-slate-700 dark:text-slate-300 flex items-center gap-2">
-                  <i class="fa-solid fa-gauge-high text-amber-500"></i>
-                  <span>ค่าพลังทรัพยากร (0 - 10)</span>
-                </span>
-                <span class="text-[11px] text-slate-400">บันทึกเฉพาะในบัญชีของคุณ</span>
-              </div>
-
-              <div class="grid grid-cols-1 sm:grid-cols-3 gap-3.5 sm:gap-4">
-                <!-- 1. หัวใจ -->
-                <div class="p-3.5 sm:p-4 rounded-2xl bg-white dark:bg-slate-800/90 border-2 border-red-500/30 dark:border-red-500/40 shadow-sm space-y-3">
-                  <div class="flex justify-between items-center">
-                    <span class="text-red-500 flex items-center">
-                      <i class="fa-solid fa-heart text-2xl animate-pulse"></i>
-                    </span>
-                    <div class="flex items-baseline gap-1 font-mono">
-                      <span id="statHeartVal" class="text-2xl sm:text-3xl font-black text-red-600 dark:text-red-400 leading-none">5</span>
-                      <span class="text-xs text-slate-400 font-bold">/10</span>
-                    </div>
-                  </div>
-                  <div class="w-full bg-slate-100 dark:bg-slate-700/80 h-3 rounded-full overflow-hidden p-0.5 border border-slate-200 dark:border-slate-600/50">
-                    <div id="barHeart" class="h-full rounded-full bg-gradient-to-r from-red-500 to-rose-600 shadow-sm transition-all duration-300" style="width: 50%;"></div>
-                  </div>
-                  <input type="range" min="0" max="10" value="5" id="sliderHeart" oninput="updateStatBadge('Heart', this.value)" class="w-full text-red-500">
-                </div>
-
-                <!-- 2. เวลา -->
-                <div class="p-3.5 sm:p-4 rounded-2xl bg-white dark:bg-slate-800/90 border-2 border-blue-500/30 dark:border-blue-500/40 shadow-sm space-y-3">
-                  <div class="flex justify-between items-center">
-                    <span class="text-blue-500 flex items-center">
-                      <i class="fa-solid fa-clock text-2xl"></i>
-                    </span>
-                    <div class="flex items-baseline gap-1 font-mono">
-                      <span id="statTimeVal" class="text-2xl sm:text-3xl font-black text-blue-600 dark:text-blue-400 leading-none">5</span>
-                      <span class="text-xs text-slate-400 font-bold">/10</span>
-                    </div>
-                  </div>
-                  <div class="w-full bg-slate-100 dark:bg-slate-700/80 h-3 rounded-full overflow-hidden p-0.5 border border-slate-200 dark:border-slate-600/50">
-                    <div id="barTime" class="h-full rounded-full bg-gradient-to-r from-sky-400 to-blue-600 shadow-sm transition-all duration-300" style="width: 50%;"></div>
-                  </div>
-                  <input type="range" min="0" max="10" value="5" id="sliderTime" oninput="updateStatBadge('Time', this.value)" class="w-full text-blue-500">
-                </div>
-
-                <!-- 3. ความรู้ -->
-                <div class="p-3.5 sm:p-4 rounded-2xl bg-white dark:bg-slate-800/90 border-2 border-purple-500/30 dark:border-purple-500/40 shadow-sm space-y-3">
-                  <div class="flex justify-between items-center">
-                    <span class="text-purple-500 flex items-center">
-                      <i class="fa-solid fa-book text-2xl"></i>
-                    </span>
-                    <div class="flex items-baseline gap-1 font-mono">
-                      <span id="statKnowledgeVal" class="text-2xl sm:text-3xl font-black text-purple-600 dark:text-purple-400 leading-none">5</span>
-                      <span class="text-xs text-slate-400 font-bold">/10</span>
-                    </div>
-                  </div>
-                  <div class="w-full bg-slate-100 dark:bg-slate-700/80 h-3 rounded-full overflow-hidden p-0.5 border border-slate-200 dark:border-slate-600/50">
-                    <div id="barKnowledge" class="h-full rounded-full bg-gradient-to-r from-purple-500 to-indigo-600 shadow-sm transition-all duration-300" style="width: 50%;"></div>
-                  </div>
-                  <input type="range" min="0" max="10" value="5" id="sliderKnowledge" oninput="updateStatBadge('Knowledge', this.value)" class="w-full text-purple-500">
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <!-- SECTION 3: เช็คลิสต์ คุณสมบัติ (ย้ายปุ่มจัดการไปไว้ใน Setting Modal เรียบร้อยแล้ว) -->
-          <div class="glass-card rounded-3xl p-5 sm:p-7 shadow-sm space-y-4">
-            <div class="flex items-center gap-3 pb-3 border-b border-slate-100 dark:border-white/5">
-              <div class="w-10 h-10 rounded-2xl bg-gradient-to-br from-emerald-500 to-teal-600 text-white flex items-center justify-center text-base shadow-sm">
-                <i class="fa-solid fa-list-check"></i>
-              </div>
-              <div>
-                <h2 class="text-lg font-bold text-slate-900 dark:text-white">3. เช็คลิสต์คุณสมบัติความก้าวหน้า (Qualifications)</h2>
-                <p class="text-xs text-slate-400">การติ๊กถูกจะผูกติดกับบัญชีผู้เล่นของคุณ (ไม่กระทบผู้อื่น)</p>
-              </div>
-            </div>
-
-            <div id="qualificationsDisplayContainer" class="grid grid-cols-1 lg:grid-cols-3 gap-4"></div>
-          </div>
-
-          <!-- SECTION 4: ยอดส่วนตัว Amway -->
-          <div class="glass-card rounded-3xl p-5 sm:p-7 shadow-sm space-y-4">
-            <div class="flex items-center gap-3 pb-3 border-b border-slate-100 dark:border-white/5">
-              <div class="w-10 h-10 rounded-2xl bg-gradient-to-br from-blue-500 to-indigo-600 text-white flex items-center justify-center text-base shadow-sm">
-                <i class="fa-solid fa-user-tag"></i>
-              </div>
-              <div>
-                <h2 class="text-lg font-bold text-slate-900 dark:text-white">4. สายงานธุรกิจ Amway — ยอดส่วนตัว (Personal)</h2>
-                <p class="text-xs text-slate-400">บันทึกยอด PV และรายได้ส่วนบุคคล</p>
-              </div>
-            </div>
-
-            <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
-              <div>
-                <label class="block text-xs sm:text-sm font-bold text-slate-600 dark:text-slate-300 mb-1.5">PV รวมส่วนตัว</label>
-                <div class="relative">
-                  <input type="number" id="personalPV" oninput="calculateTotalSummary()" placeholder="0" class="w-full bg-slate-50 dark:bg-slate-900/60 border border-slate-200 dark:border-white/10 rounded-xl px-3.5 py-3 text-sm sm:text-base font-mono font-bold text-blue-600 dark:text-blue-400 focus:ring-2 focus:ring-blue-500 transition">
-                  <span class="absolute right-3.5 top-3 text-xs sm:text-sm text-slate-400 font-bold">PV</span>
-                </div>
-              </div>
-
-              <div>
-                <label class="block text-xs sm:text-sm font-bold text-green-500 mb-1.5 flex items-center gap-1">
-                  <i class="fa-solid fa-hand-holding-dollar text-sm"></i> Active Income (฿)
-                </label>
-                <input type="number" id="personalActive" oninput="calculateTotalSummary()" placeholder="0" class="w-full bg-slate-50 dark:bg-slate-900/60 border border-slate-200 dark:border-white/10 rounded-xl px-3.5 py-3 text-sm sm:text-base font-mono font-bold text-green-500 focus:ring-2 focus:ring-green-500 transition">
-              </div>
-
-              <div>
-                <label class="block text-xs sm:text-sm font-bold text-emerald-500 mb-1.5 flex items-center gap-1">
-                  <i class="fa-solid fa-seedling text-sm"></i> Passive Income (฿)
-                </label>
-                <input type="number" id="personalPassive" oninput="calculateTotalSummary()" placeholder="0" class="w-full bg-slate-50 dark:bg-slate-900/60 border border-slate-200 dark:border-white/10 rounded-xl px-3.5 py-3 text-sm sm:text-base font-mono font-bold text-emerald-500 focus:ring-2 focus:ring-emerald-500 transition">
-              </div>
-            </div>
-          </div>
-
-          <!-- SECTION 5: 6 สายงาน (A - F) -->
-          <div class="glass-card rounded-3xl p-5 sm:p-7 shadow-sm space-y-4">
-            <div class="flex items-center justify-between pb-3 border-b border-slate-100 dark:border-white/5">
-              <div class="flex items-center gap-3">
-                <div class="w-10 h-10 rounded-2xl bg-gradient-to-br from-indigo-500 to-purple-600 text-white flex items-center justify-center text-base shadow-sm">
-                  <i class="fa-solid fa-sitemap"></i>
-                </div>
-                <div>
-                  <h2 class="text-lg font-bold text-slate-900 dark:text-white">5. ข้อมูล 6 สายงาน (A, B, C, D, E, F)</h2>
-                  <p class="text-xs text-slate-400">กรอกแยกตามสายงาน ระบบจะนำไปคำนวณรวมอัตโนมัติ</p>
-                </div>
-              </div>
-            </div>
-
-            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4" id="legsContainer"></div>
-          </div>
-
-        </fieldset>
-
-        <!-- FLOATING ACTION DOCK -->
-        <div class="sticky bottom-3 z-30 p-3 sm:p-4 rounded-2xl bg-white/95 dark:bg-[#0B132B]/95 backdrop-blur-lg border border-slate-200 dark:border-white/10 shadow-2xl flex items-center justify-between gap-2.5">
-          <div class="flex items-center gap-2">
-            <a href="index.html" class="px-3.5 sm:px-4 py-2.5 rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-200 hover:bg-slate-200 text-xs sm:text-sm font-bold transition flex items-center gap-1.5 shadow-sm">
-              <i class="fa-solid fa-arrow-left text-xs"></i>
-              <span>หน้าสุ่มการ์ด</span>
-            </a>
-
-            <button type="button" onclick="exportProfileToGoogleSheetCSV()" class="px-3 sm:px-3.5 py-2.5 rounded-xl border border-emerald-300 dark:border-emerald-700/60 bg-emerald-50 dark:bg-emerald-950/40 text-emerald-700 dark:text-emerald-300 hover:bg-emerald-100 text-xs sm:text-sm font-bold transition flex items-center gap-1.5 shadow-sm" title="ส่งออกข้อมูลโปรไฟล์เป็นไฟล์ Google Sheets (.CSV)">
-              <i class="fa-solid fa-file-excel text-xs text-emerald-600"></i>
-              <span class="hidden sm:inline">Export Sheets</span>
-            </button>
-
-            <button type="button" id="resetBtn" onclick="confirmResetProfile()" class="px-3 sm:px-3.5 py-2.5 rounded-xl border border-red-200 dark:border-red-500/20 text-red-500 hover:bg-red-50 dark:hover:bg-red-950/30 text-xs sm:text-sm font-bold transition flex items-center gap-1.5">
-              <i class="fa-solid fa-trash-can"></i>
-              <span class="hidden sm:inline">ล้างข้อมูล</span>
-            </button>
-          </div>
-
-          <div class="flex items-center gap-2">
-            <button type="button" id="dockToggleEditBtn" onclick="toggleEditMode()" class="px-3 sm:px-4 py-2.5 rounded-xl text-xs sm:text-sm font-bold transition-all flex items-center gap-1.5 border border-slate-300 dark:border-white/10 bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-200 shadow-sm">
-              <i class="fa-solid fa-lock text-slate-400"></i>
-              <span>ปลดล็อคแก้ไข</span>
-            </button>
-
-            <button type="submit" id="saveProfileBtn" class="px-4 sm:px-6 py-2.5 rounded-xl text-white text-xs sm:text-sm font-black shadow-lg btn-gradient-red hover:scale-102 active:scale-98 transition flex items-center gap-1.5">
-              <i class="fa-solid fa-floppy-disk"></i>
-              <span>บันทึกข้อมูล</span>
-            </button>
-          </div>
-        </div>
-
-      </form>
+  <!-- Main Tabs -->
+  <main class="flex-1 max-w-7xl w-full mx-auto px-4 py-5 space-y-6">
+    <div class="flex border-b border-slate-200 dark:border-slate-700 gap-4 text-sm font-bold">
+      <button onclick="switchTab('dashboard')" id="tabBtn-dashboard" class="pb-2 border-b-2 border-red-600 text-red-600">ข้อมูลผู้เล่น</button>
+      <button onclick="switchTab('careers')" id="tabBtn-careers" class="pb-2 text-slate-400">คลังอาชีพ (<span id="careerCountBadge">0</span>)</button>
+      <button onclick="switchTab('quals')" id="tabBtn-quals" class="pb-2 text-slate-400">คุณสมบัติ (<span id="qualCountBadge">0</span>)</button>
     </div>
 
-    <!-- VIEW 2: แผงควบคุม ADMIN -->
-    <div id="viewAdminPanel" class="hidden space-y-5 animate-pop-in">
-      <div class="glass-card rounded-3xl p-5 sm:p-7 shadow-sm space-y-4">
-        <div class="flex flex-wrap items-center justify-between pb-3 border-b border-slate-100 dark:border-white/5 gap-3">
-          <div class="flex items-center gap-3">
-            <div class="w-11 h-11 rounded-2xl bg-amber-500/10 text-amber-500 flex items-center justify-center text-xl shadow-sm">
-              <i class="fa-solid fa-users-gear"></i>
-            </div>
-            <div>
-              <h2 class="text-lg font-black text-slate-900 dark:text-white flex items-center gap-2">
-                <span>จัดการบัญชีผู้ใช้งานทั้งหมด</span>
-                <span class="text-xs px-2 py-0.5 rounded-full bg-amber-500 text-white font-mono">MASTER ADMIN</span>
-              </h2>
-              <p class="text-xs text-slate-400">ดูข้อมูลของผู้ใช้แต่ละคน, แก้ไขข้อมูลแทนผู้ใช้ และดูประวัติกิจกรรมย้อนหลังได้</p>
-            </div>
-          </div>
-
-          <div class="relative w-full sm:w-64">
-            <input type="text" id="adminSearchInput" oninput="renderAdminUserList()" placeholder="ค้นหาชื่อ, เบอร์โทร, หรือ ID..." class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-white/10 rounded-xl pl-9 pr-3 py-2 text-xs font-medium focus:ring-2 focus:ring-amber-500">
-            <i class="fa-solid fa-magnifying-glass absolute left-3 top-2.5 text-slate-400 text-xs"></i>
-          </div>
+    <!-- Tab 1: Dashboard -->
+    <div id="tab-dashboard" class="space-y-4">
+      <div class="p-4 bg-white dark:bg-slate-800 rounded-2xl border shadow-sm flex justify-between items-center">
+        <div>
+          <span class="text-xs text-slate-400 block font-bold">ผู้เล่น</span>
+          <span id="activeAccountDisplay" class="font-extrabold text-lg">ผู้เล่นหลัก</span>
         </div>
+        <button onclick="receiveMonthlyCash()" class="px-4 py-2 bg-emerald-600 text-white rounded-xl text-xs font-bold shadow">+ รับเงินประจำเดือน</button>
+      </div>
 
-        <div class="overflow-x-auto">
-          <table class="w-full text-left text-xs text-slate-600 dark:text-slate-300">
-            <thead class="bg-slate-50 dark:bg-slate-900/60 border-b border-slate-200 dark:border-white/10 text-[11px] uppercase font-bold text-slate-400">
-              <tr>
-                <th class="py-3 px-3 w-10 text-center">#</th>
-                <th class="py-3 px-3">ผู้ใช้งาน / บัญชี</th>
-                <th class="py-3 px-3 w-28">ประเภท</th>
-                <th class="py-3 px-3 w-32">อาชีพในเกม</th>
-                <th class="py-3 px-3 w-28 text-right text-blue-500">PV รวม</th>
-                <th class="py-3 px-3 w-28 text-right text-green-500">Active</th>
-                <th class="py-3 px-3 w-28 text-right text-emerald-500">Passive</th>
-                <th class="py-3 px-4 w-40 text-center">การดำเนินการ</th>
-              </tr>
-            </thead>
-            <tbody id="adminUserTableBody" class="divide-y divide-slate-100 dark:divide-white/5 font-medium"></tbody>
-          </table>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <div class="p-4 bg-white dark:bg-slate-800 rounded-2xl border space-y-2">
+          <span class="text-xs text-slate-400 font-bold block">เงินสดติดตัว</span>
+          <input type="number" id="profCash" oninput="saveProfile()" class="text-2xl font-black text-amber-500 bg-transparent outline-none w-full" value="0">
+        </div>
+        <div class="p-4 bg-white dark:bg-slate-800 rounded-2xl border space-y-2">
+          <span class="text-xs text-slate-400 font-bold block">เงินเดือนประจำ</span>
+          <input type="number" id="profSalary" oninput="saveProfile()" class="text-2xl font-black text-green-600 bg-transparent outline-none w-full" value="0">
+        </div>
+        <div class="p-4 bg-white dark:bg-slate-800 rounded-2xl border space-y-2">
+          <span class="text-xs text-slate-400 font-bold block">รายจ่ายต่อเดือน</span>
+          <input type="number" id="profExpense" oninput="saveProfile()" class="text-2xl font-black text-red-500 bg-transparent outline-none w-full" value="0">
         </div>
       </div>
     </div>
 
+    <!-- Tab 2: Careers -->
+    <div id="tab-careers" class="hidden space-y-4">
+      <div class="flex justify-between items-center">
+        <h3 class="font-bold text-base">ฐานข้อมูลอาชีพต้นแบบ (CareersDB)</h3>
+        <button onclick="openCareerModal()" class="px-3 py-1.5 bg-red-600 text-white rounded-xl text-xs font-bold">+ เพิ่มอาชีพ</button>
+      </div>
+      <div class="border rounded-2xl overflow-hidden bg-white dark:bg-slate-800">
+        <table class="w-full text-left text-xs">
+          <thead class="bg-slate-50 dark:bg-slate-900 border-b text-slate-400">
+            <tr>
+              <th class="p-3">รหัส</th>
+              <th class="p-3">ชื่ออาชีพ</th>
+              <th class="p-3 text-right">เงินเดือน</th>
+              <th class="p-3 text-right">รายจ่าย</th>
+              <th class="p-3 text-right">เงินสดตั้งต้น</th>
+              <th class="p-3 text-center">จัดการ</th>
+            </tr>
+          </thead>
+          <tbody id="careersTableBody" class="divide-y"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Tab 3: Quals -->
+    <div id="tab-quals" class="hidden space-y-4">
+      <div class="flex justify-between items-center">
+        <h3 class="font-bold text-base">ฐานข้อมูลคุณสมบัติหลัก (QualificationsDB)</h3>
+        <button onclick="openQualModal()" class="px-3 py-1.5 bg-red-600 text-white rounded-xl text-xs font-bold">+ เพิ่มคุณสมบัติ</button>
+      </div>
+      <div class="border rounded-2xl overflow-hidden bg-white dark:bg-slate-800">
+        <table class="w-full text-left text-xs">
+          <thead class="bg-slate-50 dark:bg-slate-900 border-b text-slate-400">
+            <tr>
+              <th class="p-3 w-12">#</th>
+              <th class="p-3">คุณสมบัติ</th>
+              <th class="p-3">รายละเอียด</th>
+              <th class="p-3 text-center w-20">จัดการ</th>
+            </tr>
+          </thead>
+          <tbody id="qualsTableBody" class="divide-y"></tbody>
+        </table>
+      </div>
+    </div>
   </main>
 
-  <!-- ============================================================ -->
-  <!-- SETTING MODAL: รวมจัดการ Theme, อาชีพต้นแบบ, เช็คลิสต์ และ Import/Export -->
-  <!-- ============================================================ -->
-  <div id="settingModal" class="hidden fixed inset-0 z-50 bg-slate-950/75 backdrop-blur-sm flex items-center justify-center p-3 sm:p-4 overflow-y-auto">
-    <div class="bg-white dark:bg-[#111C44] rounded-3xl max-w-md w-full p-5 sm:p-6 shadow-2xl border border-slate-200 dark:border-white/10 space-y-4 my-auto animate-pop-in">
-      
-      <div class="flex items-center justify-between pb-3 border-b border-slate-100 dark:border-white/10">
-        <div class="flex items-center gap-2.5">
-          <div class="w-10 h-10 rounded-2xl bg-red-500/10 text-red-500 flex items-center justify-center text-lg">
-            <i class="fa-solid fa-gear"></i>
-          </div>
-          <div>
-            <h3 class="font-bold text-base sm:text-lg text-slate-900 dark:text-white">การตั้งค่าระบบ (Settings)</h3>
-            <p class="text-xs text-slate-400">จัดการหน้าตา, ฐานข้อมูล และสำรองข้อมูล</p>
-          </div>
-        </div>
-        <button type="button" onclick="closeSettingModal()" class="w-8 h-8 rounded-xl text-slate-400 hover:text-slate-600 dark:hover:text-white flex items-center justify-center">
-          <i class="fa-solid fa-xmark text-lg"></i>
-        </button>
-      </div>
-
-      <!-- 1. โหมดสว่าง / มืด -->
-      <div class="p-3.5 bg-slate-50 dark:bg-slate-900/60 rounded-2xl border border-slate-200 dark:border-white/5 flex items-center justify-between">
-        <div class="flex items-center gap-3">
-          <div class="w-9 h-9 rounded-xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-white/10 flex items-center justify-center text-sm shadow-sm">
-            <i id="settingThemeIcon" class="fa-solid fa-moon text-red-500"></i>
-          </div>
-          <div>
-            <span class="text-xs font-bold text-slate-800 dark:text-white block">โหมดสว่าง / มืด</span>
-            <span id="settingThemeStatusText" class="text-[10px] text-slate-400">Night Mode</span>
-          </div>
-        </div>
-        <button type="button" onclick="toggleTheme()" class="px-3.5 py-1.5 rounded-xl text-xs font-bold border border-slate-300 dark:border-white/10 bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-200 shadow-sm hover:border-red-400">
-          สลับโหมด
-        </button>
-      </div>
-
-      <!-- 2. จัดการอาชีพต้นแบบ (Master Careers) -->
-      <div class="p-3.5 bg-slate-50 dark:bg-slate-900/60 rounded-2xl border border-slate-200 dark:border-white/5 flex items-center justify-between">
-        <div class="flex items-center gap-3">
-          <div class="w-9 h-9 rounded-xl bg-amber-500/10 text-amber-500 flex items-center justify-center text-sm">
-            <i class="fa-solid fa-briefcase"></i>
-          </div>
-          <div>
-            <span class="text-xs font-bold text-slate-800 dark:text-white block">จัดการอาชีพต้นแบบ</span>
-            <span class="text-[10px] text-slate-400">แก้ไขฐานข้อมูลอาชีพกลาง (Master DB)</span>
-          </div>
-        </div>
-        <button type="button" onclick="closeSettingModal(); openCareerManagerModal();" class="px-3.5 py-1.5 rounded-xl text-xs font-bold bg-amber-500 hover:bg-amber-600 text-white shadow-sm flex items-center gap-1.5">
-          <i class="fa-solid fa-sliders text-[11px]"></i>
-          <span>จัดการ</span>
-        </button>
-      </div>
-
-      <!-- 3. จัดการเช็คลิสต์คุณสมบัติฐานข้อมูลหลัก (Master Qualifications) [ย้ายมาไว้ที่นี่] -->
-      <div class="p-3.5 bg-slate-50 dark:bg-slate-900/60 rounded-2xl border border-slate-200 dark:border-white/5 flex items-center justify-between">
-        <div class="flex items-center gap-3">
-          <div class="w-9 h-9 rounded-xl bg-emerald-500/10 text-emerald-500 flex items-center justify-center text-sm">
-            <i class="fa-solid fa-list-check"></i>
-          </div>
-          <div>
-            <span class="text-xs font-bold text-slate-800 dark:text-white block">จัดการเช็คลิสต์คุณสมบัติ</span>
-            <span class="text-[10px] text-slate-400">แก้ไขฐานข้อมูลข้อกำหนดหลัก (Master DB)</span>
-          </div>
-        </div>
-        <button type="button" onclick="closeSettingModal(); openQualManagerModal();" class="px-3.5 py-1.5 rounded-xl text-xs font-bold bg-emerald-600 hover:bg-emerald-700 text-white shadow-sm flex items-center gap-1.5">
-          <i class="fa-solid fa-sliders text-[11px]"></i>
-          <span>จัดการ</span>
-        </button>
-      </div>
-
-      <!-- 4. สำรองข้อมูลและส่งออกฐานข้อมูล -->
-      <div class="p-3.5 bg-slate-50 dark:bg-slate-900/60 rounded-2xl border border-slate-200 dark:border-white/5 space-y-3">
-        <div>
-          <span class="text-xs font-bold text-slate-800 dark:text-white block flex items-center gap-1.5">
-            <i class="fa-solid fa-database text-blue-500"></i>
-            <span>สำรองและส่งออกข้อมูล (Backup & Export)</span>
-          </span>
-          <p class="text-[10px] text-slate-400 mt-0.5">ส่งออกไฟล์เพื่อเปิดใน Google Sheets หรือสำรองข้อมูลทั้งระบบ</p>
-        </div>
-
-        <div class="grid grid-cols-3 gap-2 pt-1">
-          <button type="button" onclick="exportProfileToGoogleSheetCSV()" class="py-2.5 px-2 rounded-xl bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-300 dark:border-emerald-700/60 hover:bg-emerald-100 text-emerald-700 dark:text-emerald-300 text-xs font-bold flex flex-col items-center justify-center gap-1 shadow-sm transition" title="ส่งออกข้อมูลเป็นตารางสำหรับเปิดใน Google Sheets">
-            <i class="fa-solid fa-file-excel text-base text-emerald-600"></i>
-            <span>Sheets (.CSV)</span>
-          </button>
-
-          <button type="button" onclick="exportProfileJSONBackup()" class="py-2.5 px-2 rounded-xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-white/10 hover:border-slate-300 text-slate-700 dark:text-slate-200 text-xs font-bold flex flex-col items-center justify-center gap-1 shadow-sm transition" title="ดาวน์โหลดไฟล์สำรองข้อมูล JSON">
-            <i class="fa-solid fa-download text-base text-blue-500"></i>
-            <span>Backup (.JSON)</span>
-          </button>
-
-          <button type="button" onclick="triggerImportProfileBackup()" class="py-2.5 px-2 rounded-xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-white/10 hover:border-purple-400 text-slate-700 dark:text-slate-200 text-xs font-bold flex flex-col items-center justify-center gap-1 shadow-sm transition" title="นำเข้าไฟล์สำรองข้อมูล">
-            <i class="fa-solid fa-upload text-base text-purple-500"></i>
-            <span>Import</span>
-          </button>
-          <input type="file" id="profileImportFileInput" accept=".json" onchange="handleImportProfileBackup(event)" class="hidden">
-        </div>
-      </div>
-
-      <div class="pt-2 flex justify-end">
-        <button type="button" onclick="closeSettingModal()" class="px-5 py-2 rounded-xl text-white text-xs font-bold shadow btn-gradient-red">เสร็จสิ้น</button>
-      </div>
-
-    </div>
-  </div>
-
-  <!-- MODAL: จัดการฐานข้อมูลอาชีพต้นแบบ (Master Careers) -->
-  <div id="careerManagerModal" class="hidden fixed inset-0 z-50 bg-slate-950/70 backdrop-blur-sm flex items-center justify-center p-3 sm:p-4 overflow-y-auto">
-    <div class="bg-white dark:bg-[#111C44] rounded-3xl max-w-lg w-full p-5 sm:p-6 shadow-2xl border border-slate-200 dark:border-white/10 space-y-4 max-h-[92vh] flex flex-col my-auto">
-      <div class="flex items-center justify-between pb-3 border-b border-slate-100 dark:border-white/10">
-        <div class="flex items-center gap-2.5">
-          <div class="w-9 h-9 rounded-xl bg-amber-500/10 text-amber-500 flex items-center justify-center text-base">
-            <i class="fa-solid fa-briefcase"></i>
-          </div>
-          <div>
-            <h3 class="font-bold text-base sm:text-lg text-slate-900 dark:text-white">จัดการฐานข้อมูลอาชีพต้นแบบ (Master Careers)</h3>
-            <p class="text-xs text-slate-400">กำหนดชื่อ, เงินสดติดตัว, เงินเดือน, รายจ่าย และค่าพลัง (0-10)</p>
-          </div>
-        </div>
-        <button type="button" onclick="closeCareerManagerModal()" class="w-9 h-9 rounded-xl text-slate-400 hover:text-slate-600 dark:hover:text-white flex items-center justify-center">
-          <i class="fa-solid fa-xmark text-lg"></i>
-        </button>
-      </div>
-
-      <form id="careerCrudForm" onsubmit="handleCareerFormSubmit(event)" class="p-3.5 sm:p-4 rounded-2xl bg-slate-50 dark:bg-slate-900/60 border border-slate-200 dark:border-white/5 space-y-3">
-        <input type="hidden" id="crudCareerId">
-        <div class="flex items-center justify-between">
-          <span id="crudFormTitle" class="text-xs sm:text-sm font-black uppercase text-amber-600 dark:text-amber-400 flex items-center gap-1">
-            <i class="fa-solid fa-plus-circle"></i> เพิ่มอาชีพใหม่
-          </span>
-          <button type="button" id="cancelEditCareerBtn" onclick="resetCareerCrudForm()" class="hidden text-xs text-slate-400 hover:text-red-500 underline font-semibold">
-            ยกเลิกแก้ไข
-          </button>
-        </div>
-
-        <div>
-          <label class="block text-xs font-bold text-slate-500 mb-1">1. ชื่ออาชีพ <span class="text-red-500">*</span></label>
-          <input type="text" id="crudCareerName" required placeholder="เช่น นักธุรกิจอิสระ, วิศวกร..." class="w-full bg-white dark:bg-slate-800 border border-slate-200 dark:border-white/10 rounded-xl px-3 py-2 text-sm font-bold text-slate-800 dark:text-white focus:ring-2 focus:ring-amber-500">
-        </div>
-
-        <div class="grid grid-cols-3 gap-2 sm:gap-3">
-          <div>
-            <label class="block text-[11px] sm:text-xs font-bold text-amber-500 mb-1 truncate">2. เงินสดติดตัว (฿)</label>
-            <input type="number" id="crudCareerCash" min="0" placeholder="0" class="w-full bg-white dark:bg-slate-800 border border-slate-200 dark:border-white/10 rounded-xl px-2.5 py-2 text-xs sm:text-sm font-mono font-bold text-amber-500 focus:ring-2 focus:ring-amber-500">
-          </div>
-          <div>
-            <label class="block text-[11px] sm:text-xs font-bold text-green-500 mb-1 truncate">3. เงินเดือน (฿/ด.)</label>
-            <input type="number" id="crudCareerSalary" min="0" placeholder="0" class="w-full bg-white dark:bg-slate-800 border border-slate-200 dark:border-white/10 rounded-xl px-2.5 py-2 text-xs sm:text-sm font-mono font-bold text-green-500 focus:ring-2 focus:ring-green-500">
-          </div>
-          <div>
-            <label class="block text-[11px] sm:text-xs font-bold text-red-500 mb-1 truncate">4. รายจ่าย (฿/ด.)</label>
-            <input type="number" id="crudCareerExpense" min="0" placeholder="0" class="w-full bg-white dark:bg-slate-800 border border-slate-200 dark:border-white/10 rounded-xl px-2.5 py-2 text-xs sm:text-sm font-mono font-bold text-red-500 focus:ring-2 focus:ring-red-500">
-          </div>
-        </div>
-
-        <div class="p-3 bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-white/10 space-y-2.5">
-          <span class="text-[11px] font-bold uppercase text-slate-500 block">5. ค่าพลังทรัพยากรประจำอาชีพ (0 - 10)</span>
-          
-          <div class="flex items-center gap-2 text-xs">
-            <span class="w-24 font-bold text-red-500 flex items-center gap-1.5"><i class="fa-solid fa-heart"></i> สุขภาพ:</span>
-            <input type="range" min="0" max="10" value="5" id="crudCareerHeart" oninput="document.getElementById('crudHeartBadge').innerText = this.value" class="flex-1 text-red-500">
-            <span id="crudHeartBadge" class="w-7 text-center font-mono font-black text-red-500 bg-red-50 dark:bg-red-950/50 py-0.5 rounded">5</span>
-          </div>
-
-          <div class="flex items-center gap-2 text-xs">
-            <span class="w-24 font-bold text-blue-500 flex items-center gap-1.5"><i class="fa-solid fa-clock"></i> เวลาว่าง:</span>
-            <input type="range" min="0" max="10" value="5" id="crudCareerTime" oninput="document.getElementById('crudTimeBadge').innerText = this.value" class="flex-1 text-blue-500">
-            <span id="crudTimeBadge" class="w-7 text-center font-mono font-black text-blue-500 bg-blue-50 dark:bg-blue-950/50 py-0.5 rounded">5</span>
-          </div>
-
-          <div class="flex items-center gap-2 text-xs">
-            <span class="w-24 font-bold text-purple-500 flex items-center gap-1.5"><i class="fa-solid fa-book"></i> ความรู้:</span>
-            <input type="range" min="0" max="10" value="5" id="crudCareerKnowledge" oninput="document.getElementById('crudKnowledgeBadge').innerText = this.value" class="flex-1 text-purple-500">
-            <span id="crudKnowledgeBadge" class="w-7 text-center font-mono font-black text-purple-500 bg-purple-50 dark:bg-purple-950/50 py-0.5 rounded">5</span>
-          </div>
-        </div>
-
-        <button type="submit" id="crudSubmitBtn" class="w-full py-2.5 rounded-xl text-xs sm:text-sm font-black text-white bg-amber-500 hover:bg-amber-600 transition shadow-sm flex items-center justify-center gap-1.5">
-          <i class="fa-solid fa-cloud-arrow-up"></i>
-          <span>บันทึกอาชีพลงชีตออนไลน์</span>
-        </button>
-      </form>
-
-      <div class="space-y-2 flex-1 overflow-hidden flex flex-col">
-        <span class="text-xs font-bold uppercase tracking-wider text-slate-400">รายการอาชีพในฐานข้อมูล (<span id="careerCountBadge">0</span>)</span>
-        <div id="careerListContainer" class="flex-1 overflow-y-auto space-y-2 pr-1 divide-y divide-slate-100 dark:divide-white/5"></div>
-      </div>
-    </div>
-  </div>
-
-  <!-- MODAL: จัดการฐานข้อมูลคุณสมบัติหลัก (Master Qualifications DB) -->
-  <div id="qualManagerModal" class="hidden fixed inset-0 z-50 bg-slate-950/70 backdrop-blur-sm flex items-center justify-center p-3 sm:p-4 overflow-y-auto">
-    <div class="bg-white dark:bg-[#111C44] rounded-3xl max-w-lg w-full p-5 sm:p-6 shadow-2xl border border-slate-200 dark:border-white/10 space-y-4 max-h-[92vh] flex flex-col my-auto animate-pop-in">
-      <div class="flex items-center justify-between pb-3 border-b border-slate-100 dark:border-white/10">
-        <div class="flex items-center gap-2.5">
-          <div class="w-9 h-9 rounded-xl bg-emerald-500/10 text-emerald-500 flex items-center justify-center text-base">
-            <i class="fa-solid fa-list-check"></i>
-          </div>
-          <div>
-            <h3 class="font-bold text-base sm:text-lg text-slate-900 dark:text-white">จัดการคุณสมบัติฐานข้อมูลหลัก (Master DB)</h3>
-            <p class="text-xs text-slate-400">การเพิ่ม แก้ไข หรือ ลบที่นี่จะบันทึกเป็นข้อกำหนดคุณสมบัติส่วนกลาง</p>
-          </div>
-        </div>
-        <button type="button" onclick="closeQualManagerModal()" class="w-9 h-9 rounded-xl text-slate-400 hover:text-slate-600 dark:hover:text-white flex items-center justify-center">
-          <i class="fa-solid fa-xmark text-lg"></i>
-        </button>
-      </div>
-
-      <form id="qualCrudForm" onsubmit="handleQualFormSubmit(event)" class="p-3.5 sm:p-4 rounded-2xl bg-slate-50 dark:bg-slate-900/60 border border-slate-200 dark:border-white/5 space-y-3">
-        <input type="hidden" id="crudQualId">
-        
-        <div class="flex items-center justify-between">
-          <span id="crudQualFormTitle" class="text-xs sm:text-sm font-black uppercase text-emerald-600 dark:text-emerald-400 flex items-center gap-1">
-            <i class="fa-solid fa-plus-circle"></i> เพิ่มข้อคุณสมบัติใหม่ (Master DB)
-          </span>
-          <button type="button" id="cancelEditQualBtn" onclick="resetQualCrudForm()" class="hidden text-xs text-slate-400 hover:text-red-500 underline font-semibold">
-            ยกเลิกแก้ไข
-          </button>
-        </div>
-
-        <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
-          <div>
-            <label class="block text-xs font-bold text-slate-500 mb-1">หมวดหมู่ <span class="text-red-500">*</span></label>
-            <input type="text" id="crudQualCategory" required list="qualCategoryList" placeholder="เช่น FL, 12%, 21%..." class="w-full bg-white dark:bg-slate-800 border border-slate-200 dark:border-white/10 rounded-xl px-3 py-2 text-xs sm:text-sm font-bold text-slate-800 dark:text-white focus:ring-2 focus:ring-emerald-500">
-            <datalist id="qualCategoryList"></datalist>
-          </div>
-          <div>
-            <label class="block text-xs font-bold text-slate-500 mb-1">ธีมสีหมวดหมู่</label>
-            <select id="crudQualColor" class="w-full bg-white dark:bg-slate-800 border border-slate-200 dark:border-white/10 rounded-xl px-3 py-2 text-xs sm:text-sm font-bold focus:ring-2 focus:ring-emerald-500">
-              <option value="red">สีแดง (Red)</option>
-              <option value="blue">สีน้ำเงิน (Blue)</option>
-              <option value="emerald">สีเขียว (Emerald)</option>
-              <option value="purple">สีม่วง (Purple)</option>
-              <option value="amber">สีส้ม (Amber)</option>
-            </select>
-          </div>
-        </div>
-
-        <div>
-          <label class="block text-xs font-bold text-slate-500 mb-1">รายละเอียดคุณสมบัติ <span class="text-red-500">*</span></label>
-          <input type="text" id="crudQualText" required placeholder="ระบุข้อความเงื่อนไขคุณสมบัติ..." class="w-full bg-white dark:bg-slate-800 border border-slate-200 dark:border-white/10 rounded-xl px-3 py-2 text-xs sm:text-sm font-medium text-slate-800 dark:text-white focus:ring-2 focus:ring-emerald-500">
-        </div>
-
-        <button type="submit" id="crudQualSubmitBtn" class="w-full py-2.5 rounded-xl text-xs sm:text-sm font-black text-white bg-emerald-600 hover:bg-emerald-700 transition shadow-sm flex items-center justify-center gap-1.5">
-          <i class="fa-solid fa-cloud-arrow-up"></i>
-          <span>บันทึกคุณสมบัติลงฐานข้อมูลหลัก</span>
-        </button>
-      </form>
-
-      <div class="space-y-2 flex-1 overflow-hidden flex flex-col">
-        <span class="text-xs font-bold uppercase tracking-wider text-slate-400">รายการคุณสมบัติทั้งหมด (<span id="qualTotalCountBadge">0</span>)</span>
-        <div id="qualListTableContainer" class="flex-1 overflow-y-auto space-y-2 pr-1 divide-y divide-slate-100 dark:divide-white/5"></div>
-      </div>
-    </div>
-  </div>
-
-  <!-- MODAL: เข้าสู่ระบบ -->
-  <div id="loginModal" class="hidden fixed inset-0 z-50 bg-slate-950/75 backdrop-blur-sm flex items-center justify-center p-3 sm:p-4 overflow-y-auto">
-    <div class="bg-white dark:bg-[#111C44] rounded-3xl max-w-md w-full p-6 sm:p-7 shadow-2xl border border-slate-200 dark:border-white/10 space-y-5 my-auto animate-pop-in">
-      <div class="flex items-center justify-between pb-3 border-b border-slate-100 dark:border-white/10">
-        <div class="flex items-center gap-2.5">
-          <div class="w-10 h-10 rounded-2xl bg-blue-500/10 text-blue-500 flex items-center justify-center text-lg">
-            <i class="fa-solid fa-user-lock"></i>
-          </div>
-          <div>
-            <h3 class="font-extrabold text-lg text-slate-900 dark:text-white">เข้าสู่ระบบ (Login)</h3>
-            <p class="text-xs text-slate-400">เลือกประเภทบัญชีเพื่อบันทึกโปรไฟล์แยกกัน</p>
-          </div>
-        </div>
-        <button type="button" onclick="closeLoginModal()" class="w-8 h-8 rounded-xl text-slate-400 hover:text-slate-600 dark:hover:text-white flex items-center justify-center">
-          <i class="fa-solid fa-xmark text-lg"></i>
-        </button>
-      </div>
-
-      <div class="grid grid-cols-3 gap-1 bg-slate-100 dark:bg-slate-900/60 p-1 rounded-2xl border border-slate-200 dark:border-white/5 text-xs font-bold text-center">
-        <button type="button" id="tabGuestBtn" onclick="switchLoginTab('guest')" class="py-2 rounded-xl transition bg-white dark:bg-slate-800 text-blue-600 dark:text-white shadow-sm">
-          <i class="fa-solid fa-user mr-1"></i>Guest
-        </button>
-        <button type="button" id="tabGoogleBtn" onclick="switchLoginTab('google')" class="py-2 rounded-xl transition text-slate-500 hover:text-slate-800 dark:hover:text-white">
-          <i class="fa-brands fa-google mr-1"></i>Google
-        </button>
-        <button type="button" id="tabAdminBtn" onclick="switchLoginTab('admin')" class="py-2 rounded-xl transition text-slate-500 hover:text-slate-800 dark:hover:text-white">
-          <i class="fa-solid fa-shield-halved mr-1"></i>Admin
-        </button>
-      </div>
-
-      <form id="guestLoginForm" onsubmit="handleGuestLogin(event)" class="space-y-3.5">
-        <div>
-          <label class="block text-xs font-bold text-slate-500 mb-1">ชื่อผู้เล่น <span class="text-red-500">*</span></label>
-          <input type="text" id="guestNameInput" required placeholder="ระบุชื่อสำหรับ Guest" class="w-full bg-slate-50 dark:bg-slate-900/60 border border-slate-200 dark:border-white/10 rounded-xl px-3.5 py-2.5 text-sm font-medium focus:ring-2 focus:ring-blue-500">
-        </div>
-        <div>
-          <label class="block text-xs font-bold text-slate-500 mb-1">เบอร์โทรศัพท์ <span class="text-red-500">*</span></label>
-          <input type="tel" id="guestPhoneInput" required placeholder="08x-xxx-xxxx" class="w-full bg-slate-50 dark:bg-slate-900/60 border border-slate-200 dark:border-white/10 rounded-xl px-3.5 py-2.5 text-sm font-mono font-medium focus:ring-2 focus:ring-blue-500">
-        </div>
-        <button type="submit" class="w-full py-3 rounded-2xl text-sm font-black text-white bg-blue-600 hover:bg-blue-700 transition shadow-md flex items-center justify-center gap-2">
-          <i class="fa-solid fa-arrow-right-to-bracket"></i>
-          <span>เข้าใช้งานในโหมด Guest</span>
-        </button>
-      </form>
-
-      <div id="googleLoginForm" class="hidden space-y-4 text-center py-2">
-        <p class="text-xs text-slate-400">เข้าสู่ระบบด้วยบัญชี Google เพื่อซิงก์โปรไฟล์ส่วนตัว</p>
-        <button type="button" onclick="handleGoogleLogin()" class="w-full py-3 px-4 rounded-2xl text-sm font-black border border-slate-300 dark:border-white/10 bg-white dark:bg-slate-800 text-slate-800 dark:text-white hover:bg-slate-50 dark:hover:bg-slate-700 transition shadow-sm flex items-center justify-center gap-3">
-          <svg class="w-5 h-5 shrink-0" viewBox="0 0 24 24">
-            <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
-            <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
-            <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z"/>
-            <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z"/>
-          </svg>
-          <span>Sign in with Google</span>
-        </button>
-      </div>
-
-      <form id="adminLoginForm" onsubmit="handleAdminLogin(event)" class="hidden space-y-3.5">
-        <div>
-          <label class="block text-xs font-bold text-slate-500 mb-1">ชื่อผู้ใช้ (Username)</label>
-          <input type="text" id="adminUserInput" required placeholder="กรอก Username..." class="w-full bg-slate-50 dark:bg-slate-900/60 border border-slate-200 dark:border-white/10 rounded-xl px-3.5 py-2.5 text-sm font-medium focus:ring-2 focus:ring-amber-500">
-        </div>
-        <div>
-          <label class="block text-xs font-bold text-slate-500 mb-1">รหัสผ่าน (Password)</label>
-          <input type="password" id="adminPassInput" required placeholder="กรอกรหัสผ่าน..." class="w-full bg-slate-50 dark:bg-slate-900/60 border border-slate-200 dark:border-white/10 rounded-xl px-3.5 py-2.5 text-sm font-mono font-medium focus:ring-2 focus:ring-amber-500">
-        </div>
-        <button type="submit" class="w-full py-3 rounded-2xl text-sm font-black text-white bg-amber-500 hover:bg-amber-600 transition shadow-md flex items-center justify-center gap-2">
-          <i class="fa-solid fa-shield-halved"></i>
-          <span>เข้าสู่ระบบ Admin</span>
-        </button>
-      </form>
-    </div>
-  </div>
-
-  <!-- MODAL: ประวัติกิจกรรมย้อนหลัง -->
-  <div id="activityLogModal" class="hidden fixed inset-0 z-50 bg-slate-950/75 backdrop-blur-sm flex items-center justify-center p-3 sm:p-4 overflow-y-auto">
-    <div class="bg-white dark:bg-[#111C44] rounded-3xl max-w-lg w-full p-6 shadow-2xl border border-slate-200 dark:border-white/10 space-y-4 max-h-[85vh] flex flex-col my-auto animate-pop-in">
-      <div class="flex items-center justify-between pb-3 border-b border-slate-100 dark:border-white/10">
-        <div class="flex items-center gap-2.5">
-          <div class="w-9 h-9 rounded-xl bg-purple-500/10 text-purple-500 flex items-center justify-center text-base">
-            <i class="fa-solid fa-clock-rotate-left"></i>
-          </div>
-          <div>
-            <h3 class="font-bold text-base text-slate-900 dark:text-white" id="activityModalUserTitle">ประวัติกิจกรรมย้อนหลัง</h3>
-            <p class="text-xs text-slate-400">บันทึกการเข้าใช้, อัปเดตข้อมูล และผลการสุ่ม</p>
-          </div>
-        </div>
-        <button type="button" onclick="closeActivityLogModal()" class="w-8 h-8 rounded-lg text-slate-400 hover:text-slate-600 dark:hover:text-white flex items-center justify-center">
-          <i class="fa-solid fa-xmark text-lg"></i>
-        </button>
-      </div>
-
-      <div class="flex-1 overflow-y-auto space-y-2.5 pr-1" id="activityLogContainer"></div>
-    </div>
-  </div>
-
-  <!-- Modal Confirm Reset -->
-  <div id="resetConfirmModal" class="hidden fixed inset-0 z-50 bg-slate-950/70 backdrop-blur-sm flex items-center justify-center p-4">
-    <div class="bg-white dark:bg-slate-800 rounded-3xl max-w-sm w-full p-6 text-center space-y-4 shadow-2xl border border-slate-200 dark:border-white/10 animate-pop-in">
-      <div class="w-14 h-14 rounded-2xl bg-red-500/10 text-red-500 flex items-center justify-center mx-auto text-2xl">
-        <i class="fa-solid fa-triangle-exclamation"></i>
+  <!-- Progress Overlay Modal -->
+  <div id="syncProgressModal" class="hidden fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-md flex items-center justify-center p-4">
+    <div class="bg-white dark:bg-slate-800 border rounded-3xl max-w-sm w-full p-6 text-center space-y-4">
+      <div class="w-16 h-16 rounded-2xl bg-blue-50 text-blue-600 flex items-center justify-center mx-auto text-2xl">
+        <i id="syncProgressIcon" class="fa-solid fa-cloud-arrow-up animate-bounce"></i>
       </div>
       <div>
-        <h3 class="font-bold text-base text-slate-900 dark:text-white">ยืนยันการล้างข้อมูล?</h3>
-        <p class="text-xs text-slate-400 mt-1">ข้อมูลโปรไฟล์ เช็กลิสต์ และ 6 สายงานทั้งหมดของบัญชีนี้จะถูกล้างค่า</p>
+        <h3 id="syncProgressTitle" class="font-bold">กำลังส่งข้อมูล</h3>
+        <p id="syncProgressStatusText" class="text-xs text-slate-400">โปรดรอสักครู่...</p>
       </div>
-      <div class="flex justify-center gap-2.5 pt-1">
-        <button type="button" onclick="closeResetModal()" class="px-4 py-2.5 rounded-xl text-xs font-bold bg-slate-100 dark:bg-slate-700">ยกเลิก</button>
-        <button type="button" onclick="executeResetProfile()" class="px-5 py-2.5 rounded-xl text-xs font-bold text-white btn-gradient-red">ยืนยันล้างข้อมูล</button>
+      <div class="w-full bg-slate-100 rounded-full h-2.5 overflow-hidden">
+        <div id="syncProgressBar" class="h-full bg-blue-600 transition-all duration-300" style="width: 0%"></div>
       </div>
+      <span id="syncProgressPercent" class="text-xs font-mono font-bold text-blue-600">0%</span>
     </div>
   </div>
 
   <!-- Toast Notification -->
-  <div id="toastNotification" class="fixed top-20 right-4 z-50 translate-x-full opacity-0 pointer-events-none transition-all duration-300 bg-slate-900 text-white px-4 py-2.5 rounded-xl text-xs font-bold shadow-xl flex items-center gap-2">
-    <i id="toastIcon" class="fa-solid fa-check text-emerald-400"></i>
+  <div id="toastNotification" class="fixed top-20 right-4 z-50 transform translate-x-full opacity-0 transition-all duration-300 bg-slate-900 text-white px-4 py-2 rounded-xl text-xs font-bold">
     <span id="toastMessage">แจ้งเตือน</span>
   </div>
 
-  <!-- JAVASCRIPT LOGIC -->
+  <!-- JavaScript -->
   <script>
     const GOOGLE_SHEET_API_URL = "https://script.google.com/macros/s/AKfycbzq9oD33K3nf_r2JRq5RjCafAQIvt2o9ywvJ1EvXvVg4l9QyUalIuQvxxT7zQ890nR1/exec";
 
-    const DEFAULT_CAREERS = [
-      { id: "business_owner", name: "เจ้าของธุรกิจส่วนตัว", cash: 100000, salary: 75000, expense: 45000, heart: 6, time: 4, knowledge: 8 },
-      { id: "software_engineer", name: "วิศวกรซอฟต์แวร์ / โปรแกรมเมอร์", cash: 50000, salary: 65000, expense: 32000, heart: 5, time: 3, knowledge: 9 },
-      { id: "medical_doctor", name: "แพทย์ / บุคลากรการแพทย์", cash: 120000, salary: 90000, expense: 48000, heart: 4, time: 2, knowledge: 10 },
-      { id: "marketing_manager", name: "ผู้จัดการฝ่ายการตลาด", cash: 40000, salary: 55000, expense: 30000, heart: 7, time: 5, knowledge: 7 },
-      { id: "teacher", name: "อาจารย์ / ผู้เชี่ยวชาญด้านการสอน", cash: 25000, salary: 38000, expense: 22000, heart: 7, time: 6, knowledge: 8 },
-      { id: "freelancer", name: "ฟรีแลนซ์ / คอนเทนต์ครีเอเตอร์", cash: 30000, salary: 45000, expense: 25000, heart: 5, time: 7, knowledge: 6 },
-      { id: "office_worker", name: "พนักงานบริษัททั่วไป", cash: 20000, salary: 30000, expense: 18000, heart: 6, time: 5, knowledge: 5 }
-    ];
-
-    const DEFAULT_QUALIFICATIONS = [
-      { id: "q_fl_1", category: "FL", color: "red", text: "เงื่อนไข FL ข้อที่ 1" },
-      { id: "q_fl_2", category: "FL", color: "red", text: "เงื่อนไข FL ข้อที่ 2" },
-      { id: "q_fl_3", category: "FL", color: "red", text: "เงื่อนไข FL ข้อที่ 3" },
-      { id: "q_12_1", category: "12%", color: "blue", text: "เงื่อนไข 12% ข้อที่ 1" },
-      { id: "q_12_2", category: "12%", color: "blue", text: "เงื่อนไข 12% ข้อที่ 2" },
-      { id: "q_12_3", category: "12%", color: "blue", text: "เงื่อนไข 12% ข้อที่ 3" },
-      { id: "q_12_4", category: "12%", color: "blue", text: "เงื่อนไข 12% ข้อที่ 4" },
-      { id: "q_12_5", category: "12%", color: "blue", text: "เงื่อนไข 12% ข้อที่ 5" },
-      { id: "q_21_1", category: "21% (Silver)", color: "emerald", text: "เงื่อนไข 21% ข้อที่ 1" },
-      { id: "q_21_2", category: "21% (Silver)", color: "emerald", text: "เงื่อนไข 21% ข้อที่ 2" },
-      { id: "q_21_3", category: "21% (Silver)", color: "emerald", text: "เงื่อนไข 21% ข้อที่ 3" },
-      { id: "q_21_4", category: "21% (Silver)", color: "emerald", text: "เงื่อนไข 21% ข้อที่ 4" },
-      { id: "q_21_5", category: "21% (Silver)", color: "emerald", text: "เงื่อนไข 21% ข้อที่ 5" }
-    ];
-
     let careersDB = [];
     let qualificationsDB = [];
-    const LEGS = ['A', 'B', 'C', 'D', 'E', 'F'];
-    let isEditMode = false;
-
-    let currentAccount = {
-      type: "guest",
-      id: "guest_default",
-      name: "ผู้เยี่ยมชม",
-      phone: ""
-    };
+    let userProfile = { cash: 15000, salary: 25000, expense: 18000 };
 
     window.addEventListener('DOMContentLoaded', () => {
-      initTheme();
-      initAccountSession();
-      renderLegsUI();
-      loadQualificationsDB();
-      loadCareersDB();
       loadProfileData();
-      checkDrawResultParams();
-      applyLockState();
-
-      const topBtn = document.getElementById('toggleEditBtn');
-      const dockBtn = document.getElementById('dockToggleEditBtn');
-      if (topBtn) topBtn.onclick = toggleEditMode;
-      if (dockBtn) dockBtn.onclick = toggleEditMode;
+      syncAllFromGoogleSheets(false);
     });
 
-    function renderLegsUI() {
-      const container = document.getElementById('legsContainer');
-      if (!container) return;
-      container.innerHTML = LEGS.map(leg => `
-        <div class="p-4 rounded-2xl border border-slate-200 dark:border-white/10 bg-slate-50/70 dark:bg-slate-900/40 space-y-3">
-          <div class="flex items-center justify-between border-b border-slate-200/80 dark:border-white/5 pb-2">
-            <span class="text-sm font-black text-slate-800 dark:text-white flex items-center gap-2">
-              <span class="w-7 h-7 rounded-lg bg-gradient-to-br from-red-500 to-rose-600 text-white flex items-center justify-center text-sm font-mono font-bold shadow-sm">${leg}</span>
-              <span>สายงาน ${leg}</span>
-            </span>
-          </div>
-          <div>
-            <label class="block text-xs font-bold text-slate-400 mb-1">PV รวม</label>
-            <input type="number" id="leg_${leg}_pv" oninput="calculateTotalSummary()" placeholder="0" class="w-full bg-white dark:bg-slate-800 border border-slate-200 dark:border-white/10 rounded-xl px-3 py-2 text-sm font-mono font-bold text-blue-500 focus:ring-2 focus:ring-blue-500 transition">
-          </div>
-          <div class="grid grid-cols-2 gap-2.5">
-            <div>
-              <label class="block text-xs font-bold text-green-500 mb-1">Active (฿)</label>
-              <input type="number" id="leg_${leg}_active" oninput="calculateTotalSummary()" placeholder="0" class="w-full bg-white dark:bg-slate-800 border border-slate-200 dark:border-white/10 rounded-xl px-3 py-2 text-xs sm:text-sm font-mono font-bold text-green-500 focus:ring-2 focus:ring-green-500 transition">
-            </div>
-            <div>
-              <label class="block text-xs font-bold text-emerald-500 mb-1">Passive (฿)</label>
-              <input type="number" id="leg_${leg}_passive" oninput="calculateTotalSummary()" placeholder="0" class="w-full bg-white dark:bg-slate-800 border border-slate-200 dark:border-white/10 rounded-xl px-3 py-2 text-xs sm:text-sm font-mono font-bold text-emerald-500 focus:ring-2 focus:ring-emerald-500 transition">
-            </div>
-          </div>
-        </div>
-      `).join('');
-    }
-
-    function recordUserActivity(accId, action, details) {
+    function loadProfileData() {
       try {
-        const key = `game_user_logs_${accId}`;
-        const existing = JSON.parse(localStorage.getItem(key) || "[]");
-        existing.unshift({ timestamp: Date.now(), action, details });
-        if (existing.length > 50) existing.pop();
-        localStorage.setItem(key, JSON.stringify(existing));
-      } catch (e) {}
-    }
-
-    function initAccountSession() {
-      try {
-        const savedSession = localStorage.getItem('game_auth_session');
-        if (savedSession) currentAccount = JSON.parse(savedSession);
-      } catch (e) {}
-      updateAccountHeaderUI();
-    }
-
-    function saveAccountSession() {
-      try {
-        localStorage.setItem('game_auth_session', JSON.stringify(currentAccount));
-      } catch (e) {}
-      updateAccountHeaderUI();
-    }
-
-    function getProfileStorageKey(accId = null) {
-      const targetId = accId || currentAccount.id;
-      return `game_user_profile_${targetId}`;
-    }
-
-    function updateAccountHeaderUI() {
-      const authBox = document.getElementById('authHeaderBox');
-      const badge = document.getElementById('userAccountBadge');
-      const adminTabBtn = document.getElementById('tabAdminPanelBtn');
-      const isAdminLoggedIn = (currentAccount && currentAccount.type === 'admin' && currentAccount.id === 'admin_master_account');
-
-      if (!currentAccount || currentAccount.id === 'guest_default') {
-        badge.innerText = 'ยังไม่ Login';
-        badge.className = 'text-[10px] font-black px-2 py-0.5 rounded-full bg-slate-200 dark:bg-slate-700 text-slate-700 dark:text-slate-300 uppercase shrink-0';
-        authBox.innerHTML = `
-          <button type="button" onclick="openLoginModal()" class="px-3 py-2 rounded-xl text-xs sm:text-sm font-black transition-all flex items-center gap-1.5 bg-blue-600 hover:bg-blue-700 text-white shadow-md">
-            <i class="fa-solid fa-right-to-bracket text-xs"></i>
-            <span>เข้าสู่ระบบ</span>
-          </button>
-        `;
-        if (adminTabBtn) adminTabBtn.classList.add('hidden');
-        switchMainTab('profile');
-      } else {
-        let badgeColor = 'bg-blue-500 text-white';
-        if (isAdminLoggedIn) badgeColor = 'bg-amber-500 text-white';
-        if (currentAccount.type === 'google') badgeColor = 'bg-emerald-500 text-white';
-
-        badge.innerText = `${currentAccount.name} (${currentAccount.type.toUpperCase()})`;
-        badge.className = `text-[10px] font-black px-2 py-0.5 rounded-full ${badgeColor} uppercase shrink-0 shadow-sm`;
-
-        authBox.innerHTML = `
-          <button type="button" onclick="handleLogout()" class="px-2.5 sm:px-3 py-2 rounded-xl text-xs font-bold transition flex items-center gap-1.5 border border-red-200 dark:border-red-900/40 text-red-500 hover:bg-red-50 dark:hover:bg-red-950/30">
-            <i class="fa-solid fa-arrow-right-from-bracket text-xs"></i>
-            <span class="hidden sm:inline">ออก</span>
-          </button>
-        `;
-
-        if (isAdminLoggedIn) {
-          if (adminTabBtn) adminTabBtn.classList.remove('hidden');
-        } else {
-          if (adminTabBtn) adminTabBtn.classList.add('hidden');
-          switchMainTab('profile');
-        }
-      }
-    }
-
-    function switchMainTab(tab) {
-      const vProfile = document.getElementById('viewMainProfile');
-      const vAdmin = document.getElementById('viewAdminPanel');
-      const tProfile = document.getElementById('tabMainProfileBtn');
-      const tAdmin = document.getElementById('tabAdminPanelBtn');
-      const isAdminLoggedIn = (currentAccount && currentAccount.type === 'admin' && currentAccount.id === 'admin_master_account');
-
-      if (tab === 'admin' && isAdminLoggedIn) {
-        vProfile.classList.add('hidden');
-        vAdmin.classList.remove('hidden');
-        if (tAdmin) tAdmin.className = "px-4 py-2 rounded-2xl font-black text-sm transition-all bg-amber-500 text-white shadow-md flex items-center gap-2";
-        tProfile.className = "px-4 py-2 rounded-2xl font-black text-sm transition-all bg-slate-200 dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:text-red-500 flex items-center gap-2";
-        renderAdminUserList();
-      } else {
-        vProfile.classList.remove('hidden');
-        vAdmin.classList.add('hidden');
-        tProfile.className = "px-4 py-2 rounded-2xl font-black text-sm transition-all bg-red-600 text-white shadow-md flex items-center gap-2";
-        if (tAdmin) tAdmin.className = "px-4 py-2 rounded-2xl font-black text-sm transition-all bg-slate-200 dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:text-amber-500 flex items-center gap-2";
-      }
-    }
-
-    function openLoginModal() {
-      switchLoginTab('guest');
-      document.getElementById('loginModal').classList.remove('hidden');
-    }
-
-    function closeLoginModal() {
-      document.getElementById('loginModal').classList.add('hidden');
-    }
-
-    function switchLoginTab(tab) {
-      const gForm = document.getElementById('guestLoginForm');
-      const ggForm = document.getElementById('googleLoginForm');
-      const aForm = document.getElementById('adminLoginForm');
-      const tGuest = document.getElementById('tabGuestBtn');
-      const tGoogle = document.getElementById('tabGoogleBtn');
-      const tAdmin = document.getElementById('tabAdminBtn');
-
-      [gForm, ggForm, aForm].forEach(el => el.classList.add('hidden'));
-      [tGuest, tGoogle, tAdmin].forEach(el => {
-        el.className = "py-2 rounded-xl transition text-slate-500 hover:text-slate-800 dark:hover:text-white";
-      });
-
-      if (tab === 'guest') {
-        gForm.classList.remove('hidden');
-        tGuest.className = "py-2 rounded-xl transition bg-white dark:bg-slate-800 text-blue-600 dark:text-white shadow-sm";
-      } else if (tab === 'google') {
-        ggForm.classList.remove('hidden');
-        tGoogle.className = "py-2 rounded-xl transition bg-white dark:bg-slate-800 text-emerald-600 dark:text-white shadow-sm";
-      } else if (tab === 'admin') {
-        aForm.classList.remove('hidden');
-        tAdmin.className = "py-2 rounded-xl transition bg-white dark:bg-slate-800 text-amber-600 dark:text-white shadow-sm";
-      }
-    }
-
-    function registerAccountToDirectory(accId, accType, name, contact) {
-      try {
-        const directory = JSON.parse(localStorage.getItem('game_accounts_directory') || "[]");
-        const idx = directory.findIndex(a => a.id === accId);
-        const item = { id: accId, type: accType, name, contact, lastActive: Date.now() };
-        if (idx !== -1) directory[idx] = item;
-        else directory.push(item);
-        localStorage.setItem('game_accounts_directory', JSON.stringify(directory));
-      } catch (e) {}
-    }
-
-    function handleGuestLogin(e) {
-      e.preventDefault();
-      const name = document.getElementById('guestNameInput').value.trim();
-      const phone = document.getElementById('guestPhoneInput').value.trim();
-      if (!name || !phone) return;
-
-      const accId = `guest_${phone.replace(/\D/g, '') || Date.now()}`;
-      currentAccount = { type: "guest", id: accId, name, phone };
-      registerAccountToDirectory(accId, "guest", name, phone);
-      recordUserActivity(accId, "เข้าสู่ระบบ (Guest)", `เข้าใช้งานด้วยชื่อ ${name} (${phone})`);
-      saveAccountSession();
-      closeLoginModal();
-      loadProfileData();
-      showToast(`เข้าสู่ระบบในชื่อ ${name} เรียบร้อย 🎉`, 'success');
-    }
-
-    function handleGoogleLogin() {
-      const dummyGoogleEmail = prompt("กรุณาระบุบัญชี Google Email สำหรับเข้าใช้งาน:", "user@gmail.com");
-      if (!dummyGoogleEmail || !dummyGoogleEmail.trim()) return;
-
-      const cleanEmail = dummyGoogleEmail.trim();
-      const gName = cleanEmail.split('@')[0];
-      const accId = `google_${cleanEmail.replace(/[^a-zA-Z0-9]/g, '_')}`;
-
-      currentAccount = { type: "google", id: accId, name: gName, email: cleanEmail };
-      registerAccountToDirectory(accId, "google", gName, cleanEmail);
-      recordUserActivity(accId, "เข้าสู่ระบบ (Google)", `เข้าใช้งานด้วยอีเมล ${cleanEmail}`);
-      saveAccountSession();
-      closeLoginModal();
-      loadProfileData();
-      showToast(`เข้าสู่ระบบด้วย Google (${cleanEmail}) สำเร็จ 🌐`, 'success');
-    }
-
-    function handleAdminLogin(e) {
-      e.preventDefault();
-      const u = document.getElementById('adminUserInput').value.trim();
-      const p = document.getElementById('adminPassInput').value.trim();
-
-      if (u === "admin" && p === "9799") {
-        currentAccount = { type: "admin", id: "admin_master_account", name: "ผู้ดูแลระบบ (Admin)", phone: "000-000-0000" };
-        saveAccountSession();
-        closeLoginModal();
-        loadProfileData();
-        showToast("เข้าสู่ระบบ Admin สำเร็จเรียบร้อย ปลดล็อคแผงควบคุมแล้ว 🛡️", "success");
-        switchMainTab('admin');
-      } else {
-        showToast("ชื่อผู้ใช้หรือรหัสผ่านไม่ถูกต้อง", "warning");
-      }
-    }
-
-    function handleLogout() {
-      if (confirm("คุณต้องการออกจากระบบหรือไม่?")) {
-        currentAccount = { type: "guest", id: "guest_default", name: "ผู้เยี่ยมชม", phone: "" };
-        saveAccountSession();
-        loadProfileData();
-        showToast("ออกจากระบบเรียบร้อย", "info");
-      }
-    }
-
-    function getAllRegisteredAccounts() {
-      let directory = [];
-      try {
-        directory = JSON.parse(localStorage.getItem('game_accounts_directory') || "[]");
+        const rawC = localStorage.getItem('game_careers_database');
+        careersDB = rawC ? JSON.parse(rawC) : [];
+        const rawQ = localStorage.getItem('game_qualifications_database');
+        qualificationsDB = rawQ ? JSON.parse(rawQ) : [];
+        const rawP = localStorage.getItem('game_user_profile_guest_default');
+        if (rawP) userProfile = JSON.parse(rawP);
       } catch (e) {}
 
-      for (let i = 0; i < localStorage.length; i++) {
-        const key = localStorage.key(i);
-        if (key && key.startsWith('game_user_profile_') && !key.includes('admin_master_account')) {
-          const accId = key.replace('game_user_profile_', '');
-          if (!directory.some(d => d.id === accId)) {
-            try {
-              const prof = JSON.parse(localStorage.getItem(key));
-              directory.push({
-                id: accId,
-                type: prof.accountType || "guest",
-                name: prof.fullName || accId,
-                contact: prof.phone || prof.email || "-",
-                lastActive: Date.now()
-              });
-            } catch (err) {}
-          }
-        }
-      }
-      return directory;
+      document.getElementById('profCash').value = userProfile.cash || 0;
+      document.getElementById('profSalary').value = userProfile.salary || 0;
+      document.getElementById('profExpense').value = userProfile.expense || 0;
+      renderTables();
     }
 
-    function renderAdminUserList() {
-      const tbody = document.getElementById('adminUserTableBody');
-      const badge = document.getElementById('userTotalCountBadge');
-      if (!tbody) return;
+    function saveProfile() {
+      userProfile.cash = parseFloat(document.getElementById('profCash').value) || 0;
+      userProfile.salary = parseFloat(document.getElementById('profSalary').value) || 0;
+      userProfile.expense = parseFloat(document.getElementById('profExpense').value) || 0;
+      localStorage.setItem('game_user_profile_guest_default', JSON.stringify(userProfile));
+    }
 
-      const q = (document.getElementById('adminSearchInput')?.value || '').toLowerCase().trim();
-      const accounts = getAllRegisteredAccounts();
-      if (badge) badge.innerText = accounts.length;
+    function receiveMonthlyCash() {
+      const net = (userProfile.salary || 0) - (userProfile.expense || 0);
+      userProfile.cash = (userProfile.cash || 0) + net;
+      document.getElementById('profCash').value = userProfile.cash;
+      saveProfile();
+      confetti({ particleCount: 30, spread: 50, origin: { y: 0.7 } });
+      showToast(`รับเงินเดือนสุทธิ ฿${net.toLocaleString()} เรียบร้อย!`);
+    }
 
-      const filtered = accounts.filter(acc => 
-        !q || acc.name.toLowerCase().includes(q) || acc.contact.toLowerCase().includes(q) || acc.id.toLowerCase().includes(q)
-      );
+    function renderTables() {
+      document.getElementById('careerCountBadge').innerText = careersDB.length;
+      document.getElementById('qualCountBadge').innerText = qualificationsDB.length;
 
-      if (filtered.length === 0) {
-        tbody.innerHTML = `<tr><td colspan="8" class="text-center py-6 text-slate-400 text-xs">ไม่พบข้อมูลบัญชีผู้ใช้งาน</td></tr>`;
-        return;
-      }
-
-      tbody.innerHTML = filtered.map((acc, idx) => {
-        let prof = {};
-        try {
-          prof = JSON.parse(localStorage.getItem(`game_user_profile_${acc.id}`) || "{}");
-        } catch (e) {}
-
-        const careerName = careersDB.find(c => c.id === prof.careerId)?.name || '<span class="text-slate-400">ยังไม่เลือก</span>';
-        let totalPV = parseFloat(prof.personalAmway?.pv) || 0;
-        let totalActive = parseFloat(prof.personalAmway?.active) || 0;
-        let totalPassive = parseFloat(prof.personalAmway?.passive) || 0;
-
-        if (prof.legs) {
-          LEGS.forEach(leg => {
-            totalPV += parseFloat(prof.legs[leg]?.pv) || 0;
-            totalActive += parseFloat(prof.legs[leg]?.active) || 0;
-            totalPassive += parseFloat(prof.legs[leg]?.passive) || 0;
-          });
-        }
-
-        let typeBadge = `<span class="px-2 py-0.5 rounded-full bg-blue-100 dark:bg-blue-950 text-blue-600 dark:text-blue-400 font-bold text-[10px]">GUEST</span>`;
-        if (acc.type === 'google') typeBadge = `<span class="px-2 py-0.5 rounded-full bg-emerald-100 dark:bg-emerald-950 text-emerald-600 dark:text-emerald-400 font-bold text-[10px]">GOOGLE</span>`;
-
-        return `
-          <tr class="hover:bg-slate-50 dark:hover:bg-slate-800/40 transition">
-            <td class="py-3 px-3 text-center text-slate-400 font-mono">${idx + 1}</td>
-            <td class="py-3 px-3">
-              <div class="font-bold text-slate-800 dark:text-white">${escapeHTML(acc.name)}</div>
-              <div class="text-[10px] text-slate-400 font-mono">${escapeHTML(acc.contact)}</div>
-            </td>
-            <td class="py-3 px-3">${typeBadge}</td>
-            <td class="py-3 px-3">${careerName}</td>
-            <td class="py-3 px-3 text-right font-mono font-bold text-blue-500">${totalPV.toLocaleString()}</td>
-            <td class="py-3 px-3 text-right font-mono font-bold text-green-500">฿${totalActive.toLocaleString()}</td>
-            <td class="py-3 px-3 text-right font-mono font-bold text-emerald-500">฿${totalPassive.toLocaleString()}</td>
-            <td class="py-3 px-4 text-center space-x-1 whitespace-nowrap">
-              <button type="button" onclick="adminEditUserProfile('${acc.id}', '${escapeHTML(acc.name)}')" class="px-2.5 py-1 rounded-lg bg-amber-500/10 hover:bg-amber-500/20 text-amber-600 dark:text-amber-400 font-bold text-[11px] border border-amber-500/30 transition">
-                <i class="fa-solid fa-pen mr-1"></i>แก้ไข
-              </button>
-              <button type="button" onclick="openActivityLogModal('${acc.id}', '${escapeHTML(acc.name)}')" class="px-2.5 py-1 rounded-lg bg-purple-500/10 hover:bg-purple-500/20 text-purple-600 dark:text-purple-400 font-bold text-[11px] border border-purple-500/30 transition">
-                <i class="fa-solid fa-clock-rotate-left mr-1"></i>กิจกรรม
-              </button>
-            </td>
+      const tbC = document.getElementById('careersTableBody');
+      if (tbC) {
+        tbC.innerHTML = careersDB.map(c => `
+          <tr class="hover:bg-slate-50 dark:hover:bg-slate-800">
+            <td class="p-3 font-mono text-slate-400">${c.id}</td>
+            <td class="p-3 font-bold">${c.name}</td>
+            <td class="p-3 text-right font-mono font-bold text-green-600">฿${Number(c.salary).toLocaleString()}</td>
+            <td class="p-3 text-right font-mono font-bold text-red-500">฿${Number(c.expense).toLocaleString()}</td>
+            <td class="p-3 text-right font-mono font-bold text-amber-500">฿${Number(c.cash).toLocaleString()}</td>
+            <td class="p-3 text-center"><button onclick="deleteCareer('${c.id}')" class="text-slate-400 hover:text-red-500"><i class="fa-solid fa-trash-can"></i></button></td>
           </tr>
-        `;
-      }).join('');
-    }
-
-    function adminEditUserProfile(accId, name) {
-      currentAccount.id = accId;
-      currentAccount.name = name;
-      updateAccountHeaderUI();
-      loadProfileData();
-      switchMainTab('profile');
-      isEditMode = true;
-      applyLockState();
-      showToast(`โหลดโปรไฟล์ของ ${name} พร้อมให้แก้ไขแล้ว ✍️`, 'info');
-    }
-
-    function openActivityLogModal(accId, name) {
-      const container = document.getElementById('activityLogContainer');
-      const titleEl = document.getElementById('activityModalUserTitle');
-      titleEl.innerText = `ประวัติกิจกรรม: ${name}`;
-
-      let logs = [];
-      try {
-        logs = JSON.parse(localStorage.getItem(`game_user_logs_${accId}`) || "[]");
-      } catch (e) {}
-
-      if (logs.length === 0) {
-        container.innerHTML = `<div class="text-center py-8 text-slate-400 text-xs">ยังไม่มีบันทึกประวัติกิจกรรมของบัญชีนี้</div>`;
-      } else {
-        container.innerHTML = logs.map(l => {
-          const dateStr = new Date(l.timestamp).toLocaleString('th-TH', { dateStyle: 'short', timeStyle: 'short' });
-          return `
-            <div class="p-3 rounded-2xl bg-slate-50 dark:bg-slate-900/60 border border-slate-200 dark:border-white/5 space-y-1 text-xs">
-              <div class="flex items-center justify-between">
-                <span class="font-bold text-slate-800 dark:text-white flex items-center gap-1.5">
-                  <i class="fa-solid fa-circle-check text-purple-500 text-[10px]"></i>
-                  <span>${escapeHTML(l.action)}</span>
-                </span>
-                <span class="text-[10px] text-slate-400 font-mono">${dateStr}</span>
-              </div>
-              <p class="text-[11px] text-slate-500 dark:text-slate-400">${escapeHTML(l.details)}</p>
-            </div>
-          `;
-        }).join('');
-      }
-      document.getElementById('activityLogModal').classList.remove('hidden');
-    }
-
-    function closeActivityLogModal() {
-      document.getElementById('activityLogModal').classList.add('hidden');
-    }
-
-    /* ==========================================================================
-       จัดการการติ๊กถูก: ผูกติดกับ Account Profile เท่านั้น ไม่แตะต้อง Master DB
-       ========================================================================== */
-    function syncCheckboxHighlight(checkbox) {
-      if (!checkbox) return;
-      const row = document.getElementById(`wrap_${checkbox.id}`);
-      if (!row) return;
-
-      if (checkbox.checked) {
-        row.classList.add('bg-emerald-100', 'border-emerald-500', 'text-emerald-900', 'dark:bg-emerald-950/70', 'dark:border-emerald-500', 'dark:text-emerald-200');
-        row.classList.remove('bg-white/70', 'dark:bg-slate-800/60', 'border-slate-200/80', 'dark:border-white/5');
-      } else {
-        row.classList.remove('bg-emerald-100', 'border-emerald-500', 'text-emerald-900', 'dark:bg-emerald-950/70', 'dark:border-emerald-500', 'dark:text-emerald-200');
-        row.classList.add('bg-white/70', 'dark:bg-slate-800/60', 'border-slate-200/80', 'dark:border-white/5');
-      }
-
-      if (isEditMode) {
-        savePlayerAccountQualificationState();
-      }
-    }
-
-    function savePlayerAccountQualificationState() {
-      try {
-        const key = getProfileStorageKey();
-        const profile = JSON.parse(localStorage.getItem(key) || "{}");
-        if (!profile.qualificationsChecked) profile.qualificationsChecked = {};
-
-        qualificationsDB.forEach(q => {
-          const cb = document.getElementById(q.id);
-          if (cb) profile.qualificationsChecked[q.id] = cb.checked;
-        });
-
-        localStorage.setItem(key, JSON.stringify(profile));
-      } catch (e) {}
-    }
-
-    function toggleEditMode() {
-      if (isEditMode) {
-        const isSaved = saveProfileData(true);
-        if (isSaved) {
-          isEditMode = false;
-          applyLockState();
-          showToast('บันทึกข้อมูลและล็อคเรียบร้อยแล้ว 🔒💾', 'success');
-        }
-      } else {
-        isEditMode = true;
-        applyLockState();
-        showToast('ปลดล็อคแล้ว สามารถแก้ไขข้อมูลได้ ✍️', 'info');
-      }
-    }
-
-    function applyLockState() {
-      const fieldset = document.getElementById('profileFieldset');
-      if (fieldset) fieldset.disabled = !isEditMode;
-
-      const topBtn = document.getElementById('toggleEditBtn');
-      const dockBtn = document.getElementById('dockToggleEditBtn');
-      const updateButtonUI = (btn, isDock = false) => {
-        if (!btn) return;
-        if (isEditMode) {
-          btn.className = "px-3.5 sm:px-4 py-2 sm:py-2.5 rounded-xl text-xs sm:text-sm font-black transition-all flex items-center gap-1.5 shadow-md bg-emerald-500 hover:bg-emerald-600 text-white";
-          btn.innerHTML = `<i class="fa-solid fa-lock-open"></i><span>กำลังแก้ไข (${isDock ? 'กดล็อค & บันทึก' : 'กดล็อค'})</span>`;
-        } else {
-          btn.className = "px-3.5 sm:px-4 py-2 sm:py-2.5 rounded-xl text-xs sm:text-sm font-bold transition-all flex items-center gap-1.5 border border-slate-200 dark:border-white/10 bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-200 shadow-sm hover:border-slate-300";
-          btn.innerHTML = `<i class="fa-solid fa-lock text-slate-400"></i><span>ปลดล็อคแก้ไข</span>`;
-        }
-      };
-
-      updateButtonUI(topBtn, false);
-      updateButtonUI(dockBtn, true);
-
-      const saveBtn = document.getElementById('saveProfileBtn');
-      const resetBtn = document.getElementById('resetBtn');
-
-      if (saveBtn) {
-        saveBtn.disabled = !isEditMode;
-        saveBtn.classList.toggle('opacity-50', !isEditMode);
-        saveBtn.classList.toggle('cursor-not-allowed', !isEditMode);
-      }
-      if (resetBtn) {
-        resetBtn.disabled = !isEditMode;
-        resetBtn.classList.toggle('opacity-50', !isEditMode);
-      }
-    }
-
-    /* ==========================================================================
-       ฐานข้อมูลคุณสมบัติหลัก (Master Qualifications DB)
-       ========================================================================== */
-    async function loadQualificationsDB() {
-      try {
-        const saved = localStorage.getItem('game_qualifications_database');
-        qualificationsDB = saved ? JSON.parse(saved) : [...DEFAULT_QUALIFICATIONS];
-      } catch (e) {
-        qualificationsDB = [...DEFAULT_QUALIFICATIONS];
-      }
-      renderQualificationsDisplay();
-      renderQualManagerTable();
-      await fetchQualificationsFromCloud(false);
-    }
-
-    async function fetchQualificationsFromCloud(isManual = false) {
-      if (!GOOGLE_SHEET_API_URL || GOOGLE_SHEET_API_URL.includes("PLACEHOLDER")) return;
-      try {
-        const res = await fetch(`${GOOGLE_SHEET_API_URL}?action=getQualifications`);
-        const cloudData = await res.json();
-        if (Array.isArray(cloudData) && cloudData.length > 0) {
-          qualificationsDB = cloudData;
-          localStorage.setItem('game_qualifications_database', JSON.stringify(qualificationsDB));
-          renderQualificationsDisplay();
-          renderQualManagerTable();
-          loadProfileData();
-        }
-      } catch (e) {}
-    }
-
-    async function saveQualificationsDB() {
-      localStorage.setItem('game_qualifications_database', JSON.stringify(qualificationsDB));
-      renderQualificationsDisplay();
-      renderQualManagerTable();
-      loadProfileData();
-
-      if (!GOOGLE_SHEET_API_URL || GOOGLE_SHEET_API_URL.includes("PLACEHOLDER")) return;
-      try {
-        await fetch(GOOGLE_SHEET_API_URL, {
-          method: 'POST',
-          mode: 'no-cors',
-          headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-          body: JSON.stringify({ action: 'saveQualifications', qualifications: qualificationsDB })
-        });
-        showToast('บันทึกฐานข้อมูลคุณสมบัติหลักลงชีตเรียบร้อย ☁️', 'success');
-      } catch (err) {}
-    }
-
-    function renderQualificationsDisplay() {
-      const container = document.getElementById('qualificationsDisplayContainer');
-      if (!container) return;
-
-      const categoriesMap = {};
-      qualificationsDB.forEach(item => {
-        const cat = item.category || 'ทั่วไป';
-        if (!categoriesMap[cat]) {
-          categoriesMap[cat] = {
-            color: item.color || 'emerald',
-            items: []
-          };
-        }
-        categoriesMap[cat].items.push(item);
-      });
-
-      const colorClasses = {
-        red: { border: 'border-red-200 dark:border-red-500/20 bg-red-50/20 dark:bg-red-950/10', badge: 'bg-red-500 text-white', countBadge: 'text-red-500 bg-red-100 dark:bg-red-950' },
-        blue: { border: 'border-blue-200 dark:border-blue-500/20 bg-blue-50/20 dark:bg-blue-950/10', badge: 'bg-blue-500 text-white', countBadge: 'text-blue-500 bg-blue-100 dark:bg-blue-950' },
-        emerald: { border: 'border-emerald-200 dark:border-emerald-500/20 bg-emerald-50/20 dark:bg-emerald-950/10', badge: 'bg-emerald-500 text-white', countBadge: 'text-emerald-500 bg-emerald-100 dark:bg-emerald-950' },
-        purple: { border: 'border-purple-200 dark:border-purple-500/20 bg-purple-50/20 dark:bg-purple-950/10', badge: 'bg-purple-500 text-white', countBadge: 'text-purple-500 bg-purple-100 dark:bg-purple-950' },
-        amber: { border: 'border-amber-200 dark:border-amber-500/20 bg-amber-50/20 dark:bg-amber-950/10', badge: 'bg-amber-500 text-white', countBadge: 'text-amber-500 bg-amber-100 dark:bg-amber-950' }
-      };
-
-      const keys = Object.keys(categoriesMap);
-      if (keys.length === 0) {
-        container.innerHTML = `<div class="col-span-3 text-center py-6 text-slate-400 text-xs">ยังไม่มีคุณสมบัติในระบบ</div>`;
-        return;
-      }
-
-      container.innerHTML = keys.map(catKey => {
-        const group = categoriesMap[catKey];
-        const theme = colorClasses[group.color] || colorClasses.emerald;
-
-        const itemsHTML = group.items.map((it, idx) => `
-          <label id="wrap_${it.id}" class="checkbox-row flex items-center gap-3 cursor-pointer p-2.5 sm:p-3 rounded-xl border border-slate-200/80 dark:border-white/5 bg-white/70 dark:bg-slate-800/60 transition-all duration-200">
-            <input type="checkbox" id="${it.id}" onchange="syncCheckboxHighlight(this)" class="w-5 h-5 rounded text-emerald-600 focus:ring-emerald-500 accent-emerald-500 shrink-0">
-            <span class="font-medium flex-1 text-xs sm:text-sm">${idx + 1}. ${escapeHTML(it.text)}</span>
-          </label>
         `).join('');
-
-        return `
-          <div class="p-4 sm:p-5 rounded-2xl border ${theme.border} space-y-3.5">
-            <div class="flex items-center justify-between border-b border-slate-200 dark:border-white/10 pb-2.5">
-              <span class="text-base font-black text-slate-900 dark:text-white flex items-center gap-2">
-                <span class="px-2 py-0.5 rounded-lg ${theme.badge} text-xs font-mono">${escapeHTML(catKey)}</span>
-                <span>คุณสมบัติ ${escapeHTML(catKey)}</span>
-              </span>
-              <span class="text-xs font-bold ${theme.countBadge} px-2.5 py-0.5 rounded-full">${group.items.length} ข้อ</span>
-            </div>
-            <div class="space-y-2.5 text-sm">
-              ${itemsHTML}
-            </div>
-          </div>
-        `;
-      }).join('');
-    }
-
-    function openQualManagerModal() {
-      resetQualCrudForm();
-      renderQualManagerTable();
-      updateQualCategoryDatalist();
-      document.getElementById('qualManagerModal').classList.remove('hidden');
-    }
-
-    function closeQualManagerModal() {
-      document.getElementById('qualManagerModal').classList.add('hidden');
-    }
-
-    function updateQualCategoryDatalist() {
-      const datalist = document.getElementById('qualCategoryList');
-      if (!datalist) return;
-      const cats = [...new Set(qualificationsDB.map(q => q.category))];
-      datalist.innerHTML = cats.map(c => `<option value="${escapeHTML(c)}"></option>`).join('');
-    }
-
-    function resetQualCrudForm() {
-      document.getElementById('crudQualId').value = '';
-      document.getElementById('crudQualCategory').value = '';
-      document.getElementById('crudQualText').value = '';
-      document.getElementById('crudQualColor').value = 'emerald';
-
-      document.getElementById('crudQualFormTitle').innerHTML = '<i class="fa-solid fa-plus-circle"></i> เพิ่มข้อคุณสมบัติใหม่ (Master DB)';
-      document.getElementById('crudQualSubmitBtn').innerHTML = '<i class="fa-solid fa-cloud-arrow-up"></i> บันทึกคุณสมบัติลงฐานข้อมูลหลัก';
-      document.getElementById('cancelEditQualBtn').classList.add('hidden');
-    }
-
-    async function handleQualFormSubmit(e) {
-      e.preventDefault();
-      const id = document.getElementById('crudQualId').value;
-      const category = document.getElementById('crudQualCategory').value.trim();
-      const text = document.getElementById('crudQualText').value.trim();
-      const color = document.getElementById('crudQualColor').value;
-
-      if (!category || !text) return;
-
-      if (id) {
-        const idx = qualificationsDB.findIndex(q => q.id === id);
-        if (idx !== -1) {
-          qualificationsDB[idx] = { ...qualificationsDB[idx], category, text, color };
-          showToast(`แก้ไขคุณสมบัติในฐานข้อมูลหลักสำเร็จ`, 'success');
-        }
-      } else {
-        const newId = `q_${Date.now()}`;
-        qualificationsDB.push({ id: newId, category, text, color });
-        showToast(`เพิ่มคุณสมบัติใหม่ในฐานข้อมูลหลักสำเร็จ`, 'success');
       }
 
-      await saveQualificationsDB();
-      resetQualCrudForm();
-    }
-
-    function startEditQual(id) {
-      const it = qualificationsDB.find(q => q.id === id);
-      if (!it) return;
-      document.getElementById('crudQualId').value = it.id;
-      document.getElementById('crudQualCategory').value = it.category;
-      document.getElementById('crudQualText').value = it.text;
-      document.getElementById('crudQualColor').value = it.color || 'emerald';
-
-      document.getElementById('crudQualFormTitle').innerHTML = '<i class="fa-solid fa-pen"></i> กำลังแก้ไขคุณสมบัติหลัก';
-      document.getElementById('crudQualSubmitBtn').innerHTML = '<i class="fa-solid fa-check"></i> บันทึกการแก้ไขลงฐานข้อมูลหลัก';
-      document.getElementById('cancelEditQualBtn').classList.remove('hidden');
-    }
-
-    async function deleteQual(id, text) {
-      if (confirm(`คุณต้องการลบข้อคุณสมบัติ "${text}" ออกจากฐานข้อมูลหลักหรือไม่?`)) {
-        qualificationsDB = qualificationsDB.filter(q => q.id !== id);
-        await saveQualificationsDB();
-        showToast(`ลบคุณสมบัติออกจากฐานข้อมูลหลักเรียบร้อยแล้ว`, 'info');
+      const tbQ = document.getElementById('qualsTableBody');
+      if (tbQ) {
+        tbQ.innerHTML = qualificationsDB.map((q, i) => `
+          <tr class="hover:bg-slate-50 dark:hover:bg-slate-800">
+            <td class="p-3 font-mono text-slate-400">${i + 1}</td>
+            <td class="p-3 font-bold">${q.title}</td>
+            <td class="p-3 text-slate-400">${q.desc || '-'}</td>
+            <td class="p-3 text-center"><button onclick="deleteQual('${q.id}')" class="text-slate-400 hover:text-red-500"><i class="fa-solid fa-trash-can"></i></button></td>
+          </tr>
+        `).join('');
       }
     }
 
-    function renderQualManagerTable() {
-      const container = document.getElementById('qualListTableContainer');
-      const badge = document.getElementById('qualTotalCountBadge');
-      if (badge) badge.innerText = qualificationsDB.length;
-      if (!container) return;
+    async function syncAllFromGoogleSheets(isManual = false) {
+      if (!GOOGLE_SHEET_API_URL) return;
+      const icon = document.getElementById('syncIcon');
+      if (icon) icon.classList.add('animate-spin');
 
-      container.innerHTML = qualificationsDB.map((it, idx) => `
-        <div class="pt-2 flex items-center justify-between gap-2 text-xs sm:text-sm">
-          <div class="min-w-0 flex-1">
-            <div class="flex items-center gap-2">
-              <span class="px-2 py-0.5 rounded text-[10px] font-mono font-bold bg-slate-200 dark:bg-slate-700">${escapeHTML(it.category)}</span>
-              <span class="font-bold text-slate-800 dark:text-white truncate">${idx + 1}. ${escapeHTML(it.text)}</span>
-            </div>
-          </div>
-          <div class="flex items-center gap-1 shrink-0">
-            <button type="button" onclick="startEditQual('${it.id}')" class="p-1.5 rounded-lg text-slate-400 hover:text-amber-500 hover:bg-slate-100 dark:hover:bg-slate-800 transition" title="แก้ไข">
-              <i class="fa-solid fa-pen"></i>
-            </button>
-            <button type="button" onclick="deleteQual('${it.id}', '${escapeHTML(it.text)}')" class="p-1.5 rounded-lg text-slate-400 hover:text-red-500 hover:bg-slate-100 dark:hover:bg-slate-800 transition" title="ลบ">
-              <i class="fa-solid fa-trash-can"></i>
-            </button>
-          </div>
-        </div>
-      `).join('');
-    }
-
-    /* ==========================================================================
-       ฐานข้อมูลอาชีพต้นแบบ (Master Careers DB)
-       ========================================================================== */
-    async function loadCareersDB() {
       try {
-        const savedCareers = localStorage.getItem('game_careers_database');
-        careersDB = savedCareers ? JSON.parse(savedCareers) : [...DEFAULT_CAREERS];
+        const ts = Date.now();
+        const [resC, resQ] = await Promise.all([
+          fetch(`${GOOGLE_SHEET_API_URL}?action=getCareers&nocache=${ts}`),
+          fetch(`${GOOGLE_SHEET_API_URL}?action=getQualifications&nocache=${ts}`)
+        ]);
+        careersDB = await resC.json();
+        qualificationsDB = await resQ.json();
+
+        localStorage.setItem('game_careers_database', JSON.stringify(careersDB));
+        localStorage.setItem('game_qualifications_database', JSON.stringify(qualificationsDB));
+
+        renderTables();
+        if (isManual) showToast(`ซิงก์สำเร็จ! (อาชีพ ${careersDB.length} | คุณสมบัติ ${qualificationsDB.length})`);
       } catch (e) {
-        careersDB = [...DEFAULT_CAREERS];
-      }
-      renderCareersDropdown();
-      renderCareerListTable();
-      await fetchCareersFromCloud(false);
-    }
-
-    async function fetchCareersFromCloud(isManual = false) {
-      if (!GOOGLE_SHEET_API_URL || GOOGLE_SHEET_API_URL.includes("PLACEHOLDER")) {
-        setCloudCareersStatus('ใช้ออฟไลน์', 'text-slate-400');
-        return;
-      }
-      const syncIcon = document.getElementById('syncCareersIcon');
-      if (syncIcon) syncIcon.classList.add('animate-spin');
-      setCloudCareersStatus('กำลังซิงก์...', 'text-amber-500');
-
-      try {
-        const res = await fetch(`${GOOGLE_SHEET_API_URL}?action=getCareers`);
-        const cloudCareers = await res.json();
-        if (Array.isArray(cloudCareers) && cloudCareers.length > 0) {
-          careersDB = cloudCareers.map(c => ({
-            id: c.id,
-            name: c.name,
-            cash: Number(c.cash) || 0,
-            salary: Number(c.salary) || 0,
-            expense: Number(c.expense) || 0,
-            heart: c.heart !== undefined ? Number(c.heart) : 5,
-            time: c.time !== undefined ? Number(c.time) : 5,
-            knowledge: c.knowledge !== undefined ? Number(c.knowledge) : 5
-          }));
-          localStorage.setItem('game_careers_database', JSON.stringify(careersDB));
-          renderCareersDropdown();
-          renderCareerListTable();
-          setCloudCareersStatus('ออนไลน์ (ซิงก์แล้ว)', 'text-emerald-500');
-          if (isManual) showToast('ดึงข้อมูลอาชีพล่าสุดจาก Google Sheets สำเร็จ ☁️', 'success');
-        } else {
-          setCloudCareersStatus('พร้อมใช้งาน', 'text-emerald-500');
-        }
-      } catch (err) {
-        setCloudCareersStatus('ใช้ออฟไลน์', 'text-amber-500');
+        if (isManual) showToast('ไม่สามารถดึงข้อมูลจาก Cloud ได้');
       } finally {
-        if (syncIcon) syncIcon.classList.remove('animate-spin');
+        if (icon) icon.classList.remove('animate-spin');
       }
     }
 
-    async function saveCareersDB() {
-      localStorage.setItem('game_careers_database', JSON.stringify(careersDB));
-      renderCareersDropdown();
-      renderCareerListTable();
-
-      if (!GOOGLE_SHEET_API_URL || GOOGLE_SHEET_API_URL.includes("PLACEHOLDER")) return;
-      setCloudCareersStatus('กำลังบันทึกลงชีต...', 'text-amber-500');
+    async function pushAllMasterDataToCloud() {
+      showProgress('กำลังอัปโหลด', 'กำลังส่งขึ้น Cloud...');
       try {
+        updateProgress(40, 'กำลังส่งอาชีพ...');
         await fetch(GOOGLE_SHEET_API_URL, {
           method: 'POST',
           mode: 'no-cors',
           headers: { 'Content-Type': 'text/plain;charset=utf-8' },
           body: JSON.stringify({ action: 'saveCareers', careers: careersDB })
         });
-        setCloudCareersStatus('บันทึกอาชีพออนไลน์สำเร็จ', 'text-emerald-500');
-        showToast('บันทึกฐานข้อมูลอาชีพต้นแบบลงชีตเรียบร้อย ☁️', 'success');
-      } catch (err) {
-        setCloudCareersStatus('บันทึกลงชีตไม่สำเร็จ', 'text-red-500');
-      }
-    }
 
-    function setCloudCareersStatus(msg, colorClass) {
-      const el = document.getElementById('cloudCareersStatus');
-      if (el) el.innerHTML = `<i class="fa-solid fa-circle text-[7px] ${colorClass}"></i> ${msg}`;
-    }
-
-    function renderCareersDropdown() {
-      const select = document.getElementById('gameCareerSelect');
-      if (!select) return;
-      const currentSelected = select.value;
-      select.innerHTML = `<option value="">-- เลือกอาชีพในเกม --</option>` +
-        careersDB.map(c => `<option value="${c.id}">${escapeHTML(c.name)}</option>`).join('');
-      if (currentSelected && careersDB.some(c => c.id === currentSelected)) {
-        select.value = currentSelected;
-      }
-    }
-
-    function onCareerSelected(careerId) {
-      const career = careersDB.find(c => c.id === careerId);
-      if (career) {
-        document.getElementById('careerCash').value = career.cash || 0;
-        document.getElementById('careerSalary').value = career.salary || 0;
-        document.getElementById('careerExpense').value = career.expense || 0;
-
-        updateStatBadge('Heart', career.heart !== undefined ? career.heart : 5);
-        updateStatBadge('Time', career.time !== undefined ? career.time : 5);
-        updateStatBadge('Knowledge', career.knowledge !== undefined ? career.knowledge : 5);
-
-        calculateTotalSummary();
-        showToast(`เลือกอาชีพ "${career.name}" (ดึงค่าเริ่มต้นเข้าสู่บัญชีของคุณ)`, 'info');
-      }
-    }
-
-    function openCareerManagerModal() {
-      resetCareerCrudForm();
-      renderCareerListTable();
-      document.getElementById('careerManagerModal').classList.remove('hidden');
-    }
-
-    function closeCareerManagerModal() {
-      document.getElementById('careerManagerModal').classList.add('hidden');
-    }
-
-    function resetCareerCrudForm() {
-      document.getElementById('crudCareerId').value = '';
-      document.getElementById('crudCareerName').value = '';
-      document.getElementById('crudCareerCash').value = '';
-      document.getElementById('crudCareerSalary').value = '';
-      document.getElementById('crudCareerExpense').value = '';
-
-      document.getElementById('crudCareerHeart').value = 5;
-      document.getElementById('crudHeartBadge').innerText = '5';
-      document.getElementById('crudCareerTime').value = 5;
-      document.getElementById('crudTimeBadge').innerText = '5';
-      document.getElementById('crudCareerKnowledge').value = 5;
-      document.getElementById('crudKnowledgeBadge').innerText = '5';
-
-      document.getElementById('crudFormTitle').innerHTML = '<i class="fa-solid fa-plus-circle"></i> เพิ่มอาชีพใหม่';
-      document.getElementById('crudSubmitBtn').innerHTML = '<i class="fa-solid fa-cloud-arrow-up"></i> บันทึกอาชีพลงชีตออนไลน์';
-      document.getElementById('cancelEditCareerBtn').classList.add('hidden');
-    }
-
-    async function handleCareerFormSubmit(e) {
-      e.preventDefault();
-      const id = document.getElementById('crudCareerId').value;
-      const name = document.getElementById('crudCareerName').value.trim();
-      const cash = parseFloat(document.getElementById('crudCareerCash').value) || 0;
-      const salary = parseFloat(document.getElementById('crudCareerSalary').value) || 0;
-      const expense = parseFloat(document.getElementById('crudCareerExpense').value) || 0;
-
-      const heart = parseInt(document.getElementById('crudCareerHeart').value, 10) || 0;
-      const time = parseInt(document.getElementById('crudCareerTime').value, 10) || 0;
-      const knowledge = parseInt(document.getElementById('crudCareerKnowledge').value, 10) || 0;
-
-      if (!name) return;
-
-      if (id) {
-        const idx = careersDB.findIndex(c => c.id === id);
-        if (idx !== -1) {
-          careersDB[idx] = { ...careersDB[idx], name, cash, salary, expense, heart, time, knowledge };
-          showToast(`แก้ไขอาชีพต้นแบบ "${name}" สำเร็จ`, 'success');
-        }
-      } else {
-        careersDB.push({ id: `career_${Date.now()}`, name, cash, salary, expense, heart, time, knowledge });
-        showToast(`เพิ่มอาชีพต้นแบบ "${name}" สำเร็จ`, 'success');
-      }
-
-      await saveCareersDB();
-      resetCareerCrudForm();
-    }
-
-    function startEditCareer(id) {
-      const career = careersDB.find(c => c.id === id);
-      if (!career) return;
-      document.getElementById('crudCareerId').value = career.id;
-      document.getElementById('crudCareerName').value = career.name;
-      document.getElementById('crudCareerCash').value = career.cash || 0;
-      document.getElementById('crudCareerSalary').value = career.salary || 0;
-      document.getElementById('crudCareerExpense').value = career.expense || 0;
-
-      const h = career.heart !== undefined ? career.heart : 5;
-      const t = career.time !== undefined ? career.time : 5;
-      const k = career.knowledge !== undefined ? career.knowledge : 5;
-
-      document.getElementById('crudCareerHeart').value = h;
-      document.getElementById('crudHeartBadge').innerText = h;
-      document.getElementById('crudCareerTime').value = t;
-      document.getElementById('crudTimeBadge').innerText = t;
-      document.getElementById('crudCareerKnowledge').value = k;
-      document.getElementById('crudKnowledgeBadge').innerText = k;
-
-      document.getElementById('crudFormTitle').innerHTML = '<i class="fa-solid fa-pen"></i> กำลังแก้ไขอาชีพต้นแบบ';
-      document.getElementById('crudSubmitBtn').innerHTML = '<i class="fa-solid fa-check"></i> บันทึกการแก้ไขลงชีต';
-      document.getElementById('cancelEditCareerBtn').classList.remove('hidden');
-    }
-
-    async function deleteCareer(id, name) {
-      if (careersDB.length <= 1) {
-        showToast('ต้องมีอาชีพในฐานข้อมูลอย่างน้อย 1 รายการ', 'warning');
-        return;
-      }
-      if (confirm(`คุณต้องการลบอาชีพต้นแบบ "${name}" ออกจากระบบหรือไม่?`)) {
-        careersDB = careersDB.filter(c => c.id !== id);
-        await saveCareersDB();
-        showToast(`ลบอาชีพ "${name}" เรียบร้อยแล้ว`, 'info');
-      }
-    }
-
-    function renderCareerListTable() {
-      const container = document.getElementById('careerListContainer');
-      const countBadge = document.getElementById('careerCountBadge');
-      if (countBadge) countBadge.innerText = careersDB.length;
-      if (!container) return;
-
-      container.innerHTML = careersDB.map((c, idx) => `
-        <div class="pt-2 flex items-center justify-between gap-2 text-xs sm:text-sm">
-          <div class="min-w-0 flex-1">
-            <div class="font-bold text-slate-800 dark:text-white truncate">${idx + 1}. ${escapeHTML(c.name)}</div>
-            <div class="flex items-center gap-2 text-[11px] font-mono text-slate-400 mt-0.5 flex-wrap">
-              <span class="text-amber-500">เงินสด: ฿${(c.cash || 0).toLocaleString()}</span>
-              <span>|</span>
-              <span class="text-green-500">เงินเดือน: ฿${(c.salary || 0).toLocaleString()}</span>
-              <span>|</span>
-              <span class="text-red-500">รายจ่าย: ฿${(c.expense || 0).toLocaleString()}</span>
-              <span>|</span>
-              <span class="text-red-500"><i class="fa-solid fa-heart"></i> ${c.heart ?? 5}</span>
-              <span class="text-blue-500"><i class="fa-solid fa-clock"></i> ${c.time ?? 5}</span>
-              <span class="text-purple-500"><i class="fa-solid fa-book"></i> ${c.knowledge ?? 5}</span>
-            </div>
-          </div>
-          <div class="flex items-center gap-1 shrink-0">
-            <button type="button" onclick="startEditCareer('${c.id}')" class="p-1.5 rounded-lg text-slate-400 hover:text-amber-500 hover:bg-slate-100 dark:hover:bg-slate-800 transition" title="แก้ไข">
-              <i class="fa-solid fa-pen"></i>
-            </button>
-            <button type="button" onclick="deleteCareer('${c.id}', '${escapeHTML(c.name)}')" class="p-1.5 rounded-lg text-slate-400 hover:text-red-500 hover:bg-slate-100 dark:hover:bg-slate-800 transition" title="ลบ">
-              <i class="fa-solid fa-trash-can"></i>
-            </button>
-          </div>
-        </div>
-      `).join('');
-    }
-
-    function updateStatBadge(type, value) {
-      const val = parseInt(value, 10) || 0;
-      const slider = document.getElementById(`slider${type}`);
-      const textVal = document.getElementById(`stat${type}Val`);
-      const bar = document.getElementById(`bar${type}`);
-
-      if (slider) slider.value = val;
-      if (textVal) textVal.innerText = val;
-      if (bar) bar.style.width = `${val * 10}%`;
-    }
-
-    function calculateTotalSummary() {
-      const cash = parseFloat(document.getElementById('careerCash')?.value) || 0;
-      const salary = parseFloat(document.getElementById('careerSalary')?.value) || 0;
-      const expense = parseFloat(document.getElementById('careerExpense')?.value) || 0;
-
-      let totalActive = parseFloat(document.getElementById('personalActive')?.value) || 0;
-      let totalPassive = parseFloat(document.getElementById('personalPassive')?.value) || 0;
-
-      LEGS.forEach(leg => {
-        totalActive += parseFloat(document.getElementById(`leg_${leg}_active`)?.value) || 0;
-        totalPassive += parseFloat(document.getElementById(`leg_${leg}_passive`)?.value) || 0;
-      });
-
-      const netSurplus = (salary + totalActive + totalPassive) - expense;
-
-      const kpiCashEl = document.getElementById('kpiCash');
-      const kpiNetEl = document.getElementById('kpiNetSurplus');
-      const kpiActEl = document.getElementById('kpiTotalActive');
-      const kpiPasEl = document.getElementById('kpiTotalPassive');
-
-      if (kpiCashEl) kpiCashEl.innerText = `฿${cash.toLocaleString()}`;
-      if (kpiNetEl) kpiNetEl.innerText = `฿${netSurplus.toLocaleString()}`;
-      if (kpiActEl) kpiActEl.innerText = `฿${totalActive.toLocaleString()}`;
-      if (kpiPasEl) kpiPasEl.innerText = `฿${totalPassive.toLocaleString()}`;
-    }
-
-    function exportProfileToGoogleSheetCSV() {
-      const profileKey = getProfileStorageKey();
-      const raw = localStorage.getItem(profileKey);
-      if (!raw) {
-        showToast('ยังไม่มีข้อมูลโปรไฟล์สำหรับส่งออก กรุณาบันทึกข้อมูลก่อน', 'warning');
-        return;
-      }
-      const p = JSON.parse(raw);
-
-      const cash = p.cash || 0;
-      const salary = p.salary || 0;
-      const expense = p.expense || 0;
-      let totalActive = p.personalAmway?.active || 0;
-      let totalPassive = p.personalAmway?.passive || 0;
-
-      if (p.legs) {
-        LEGS.forEach(leg => {
-          totalActive += Number(p.legs[leg]?.active) || 0;
-          totalPassive += Number(p.legs[leg]?.passive) || 0;
+        updateProgress(70, 'กำลังส่งคุณสมบัติ...');
+        await fetch(GOOGLE_SHEET_API_URL, {
+          method: 'POST',
+          mode: 'no-cors',
+          headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+          body: JSON.stringify({ action: 'saveQualifications', qualifications: qualificationsDB })
         });
+
+        updateProgress(90, 'กำลังตรวจสอบผลลัพธ์...');
+        await new Promise(r => setTimeout(r, 1500));
+        await syncAllFromGoogleSheets(false);
+
+        updateProgress(100, 'อัปโหลดสำเร็จ 100%!');
+        confetti({ particleCount: 30, spread: 50, origin: { y: 0.7 } });
+        setTimeout(closeProgress, 1200);
+        showToast('อัปโหลดอาชีพและคุณสมบัติขึ้นชีตสำเร็จ ☁️');
+      } catch (e) {
+        closeProgress();
+        showToast('อัปโหลดไม่สำเร็จ');
       }
-      const netSurplus = (salary + totalActive + totalPassive) - expense;
+    }
 
-      const careerObj = careersDB.find(c => c.id === p.careerId);
-      const careerName = careerObj ? careerObj.name : (p.careerId || '-');
+    function openCareerModal() {
+      const name = prompt("ระบุชื่ออาชีพใหม่:");
+      if (!name) return;
+      const salary = parseFloat(prompt("ระบุเงินเดือน:", "30000")) || 0;
+      careersDB.push({ id: `car-${Date.now().toString().slice(-4)}`, name, salary, expense: salary * 0.7, cash: 15000 });
+      localStorage.setItem('game_careers_database', JSON.stringify(careersDB));
+      renderTables();
+    }
 
-      const rows = [
-        ["=== สรุปสถานะการเงิน (FINANCIAL DASHBOARD) ===", "", "", ""],
-        ["เงินสด", "เงินคงเหลือต่อเดือน (*รับเมื่อเจอการ์ดเงินเดือน)", "Active Income รวม", "Passive Income รวม"],
-        [cash, netSurplus, totalActive, totalPassive],
-        ["", "", "", ""],
-        ["=== 1. ข้อมูลส่วนบุคคล & อาชีพในเกม ===", "", "", ""],
-        ["ชื่อ - นามสกุล", `"${(p.fullName || '-').replace(/"/g, '""')}"`, "อาชีพในเกม", `"${careerName.replace(/"/g, '""')}"`],
-        ["เบอร์โทรศัพท์", `"${p.phone || '-'}"`, "เงินเดือน (฿/ด.)", salary],
-        ["อีเมล", `"${p.email || '-'}"`, "รายจ่ายประจำ (฿/ด.)", expense],
-        ["หัวใจ (สุขภาพ)", p.stats?.heart ?? 5, "เวลา (เวลาว่าง)", p.stats?.time ?? 5],
-        ["ความรู้ (ทักษะ)", p.stats?.knowledge ?? 5, "", ""],
-        ["", "", "", ""],
-        ["=== 2. ยอดส่วนตัว AMWAY (PERSONAL) ===", "", "", ""],
-        ["PV รวมส่วนตัว", "Active Income (฿)", "Passive Income (฿)", ""],
-        [p.personalAmway?.pv || 0, p.personalAmway?.active || 0, p.personalAmway?.passive || 0, ""],
-        ["", "", "", ""],
-        ["=== 3. ข้อมูล 6 สายงาน (LEGS A - F) ===", "", "", ""],
-        ["สายงาน", "PV รวม", "Active Income (฿)", "Passive Income (฿)"]
-      ];
+    function deleteCareer(id) {
+      careersDB = careersDB.filter(c => c.id !== id);
+      localStorage.setItem('game_careers_database', JSON.stringify(careersDB));
+      renderTables();
+    }
 
-      LEGS.forEach(leg => {
-        rows.push([
-          `สายงาน ${leg}`,
-          p.legs?.[leg]?.pv || 0,
-          p.legs?.[leg]?.active || 0,
-          p.legs?.[leg]?.passive || 0
-        ]);
+    function openQualModal() {
+      const title = prompt("ระบุชื่อคุณสมบัติ/เข็มใหม่:");
+      if (!title) return;
+      qualificationsDB.push({ id: `q-${Date.now().toString().slice(-4)}`, title, desc: "" });
+      localStorage.setItem('game_qualifications_database', JSON.stringify(qualificationsDB));
+      renderTables();
+    }
+
+    function deleteQual(id) {
+      qualificationsDB = qualificationsDB.filter(q => q.id !== id);
+      localStorage.setItem('game_qualifications_database', JSON.stringify(qualificationsDB));
+      renderTables();
+    }
+
+    function showProgress(t, s) {
+      document.getElementById('syncProgressTitle').innerText = t;
+      document.getElementById('syncProgressStatusText').innerText = s;
+      document.getElementById('syncProgressBar').style.width = '0%';
+      document.getElementById('syncProgressPercent').innerText = '0%';
+      document.getElementById('syncProgressModal').classList.remove('hidden');
+    }
+    function updateProgress(p, s) {
+      document.getElementById('syncProgressBar').style.width = `${p}%`;
+      document.getElementById('syncProgressPercent').innerText = `${p}%`;
+      if (s) document.getElementById('syncProgressStatusText').innerText = s;
+    }
+    function closeProgress() { document.getElementById('syncProgressModal').classList.add('hidden'); }
+
+    function switchTab(t) {
+      ['dashboard', 'careers', 'quals'].forEach(v => {
+        document.getElementById(`tab-${v}`).classList.toggle('hidden', v !== t);
+        const b = document.getElementById(`tabBtn-${v}`);
+        if (b) b.className = (v === t) ? "pb-2 border-b-2 border-red-600 text-red-600" : "pb-2 text-slate-400";
       });
-
-      rows.push(["", "", "", ""]);
-      rows.push(["=== 4. เช็คลิสต์คุณสมบัติ (QUALIFICATIONS CHECKLIST) ===", "", "", ""]);
-      rows.push(["หมวดหมู่", "รายละเอียดเงื่อนไข", "สถานะ", ""]);
-
-      qualificationsDB.forEach(q => {
-        const isPassed = p.qualificationsChecked?.[q.id] ? "ผ่านแล้ว (Checked)" : "ยังไม่ผ่าน";
-        rows.push([
-          `"${q.category}"`,
-          `"${(q.text || '').replace(/"/g, '""')}"`,
-          `"${isPassed}"`,
-          ""
-        ]);
-      });
-
-      const csvContent = "\uFEFF" + rows.map(e => e.join(",")).join("\r\n");
-      const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
-      const url = URL.createObjectURL(blob);
-      const link = document.createElement("a");
-      link.setAttribute("href", url);
-      link.setAttribute("download", `Profile_${(p.fullName || 'User').replace(/\s+/g, '_')}_${new Date().toISOString().slice(0, 10)}.csv`);
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
-      URL.revokeObjectURL(url);
-
-      showToast('ส่งออก Layout โปรไฟล์สำหรับ Google Sheets สำเร็จ 📊', 'success');
     }
 
-    function exportProfileJSONBackup() {
-      const backupData = {
-        app: "ProfileHub",
-        version: "1.0",
-        exportDate: new Date().toISOString(),
-        currentAccount: currentAccount,
-        profile: JSON.parse(localStorage.getItem(getProfileStorageKey()) || "{}"),
-        careersDB: careersDB,
-        qualificationsDB: qualificationsDB
-      };
-
-      const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(backupData, null, 2));
-      const a = document.createElement('a');
-      a.setAttribute("href", dataStr);
-      a.setAttribute("download", `Profile_Backup_${new Date().toISOString().slice(0, 10)}.json`);
-      document.body.appendChild(a);
-      a.click();
-      a.remove();
-      showToast('ส่งออกไฟล์สำรอง JSON สำเร็จ 📥', 'success');
-    }
-
-    function triggerImportProfileBackup() {
-      document.getElementById('profileImportFileInput').click();
-    }
-
-    function handleImportProfileBackup(event) {
-      const file = event.target.files[0];
-      if (!file) return;
-
-      const reader = new FileReader();
-      reader.onload = async function(e) {
-        try {
-          const imported = JSON.parse(e.target.result);
-          if (!imported || typeof imported !== 'object') {
-            showToast('ไฟล์สำรองไม่ถูกต้อง', 'warning');
-            return;
-          }
-
-          if (confirm('คุณต้องการนำเข้าและกู้คืนข้อมูลใช่หรือไม่? ข้อมูลปัจจุบันจะถูกแทนที่')) {
-            if (imported.profile) {
-              localStorage.setItem(getProfileStorageKey(), JSON.stringify(imported.profile));
-            }
-            if (Array.isArray(imported.careersDB) && imported.careersDB.length > 0) {
-              careersDB = imported.careersDB;
-              await saveCareersDB();
-            }
-            if (Array.isArray(imported.qualificationsDB) && imported.qualificationsDB.length > 0) {
-              qualificationsDB = imported.qualificationsDB;
-              await saveQualificationsDB();
-            }
-
-            loadProfileData();
-            closeSettingModal();
-            showToast('กู้คืนข้อมูลสำเร็จเรียบร้อย 📤✅', 'success');
-          }
-        } catch (err) {
-          showToast('ไม่สามารถอ่านไฟล์ JSON ได้', 'danger');
-        }
-      };
-      reader.readAsText(file);
-      event.target.value = '';
-    }
-
-    function openSettingModal() {
-      updateSettingModalUI();
-      document.getElementById('settingModal').classList.remove('hidden');
-    }
-
-    function closeSettingModal() {
-      document.getElementById('settingModal').classList.add('hidden');
-    }
-
-    function updateSettingModalUI() {
-      const isDark = document.documentElement.classList.contains('dark');
-      const icon = document.getElementById('settingThemeIcon');
-      const text = document.getElementById('settingThemeStatusText');
-      if (icon && text) {
-        icon.className = isDark ? "fa-solid fa-moon text-red-500" : "fa-solid fa-sun text-amber-500";
-        text.innerText = isDark ? "Night Mode (โหมดมืด)" : "Light Mode (โหมดสว่าง)";
-      }
-    }
-
-    function saveProfileData(isAutoSave = false) {
-      const fullNameInput = document.getElementById('userFullName');
-      const careerSelect = document.getElementById('gameCareerSelect');
-
-      if (!fullNameInput.value.trim()) {
-        if (!isAutoSave) {
-          fullNameInput.focus();
-          showToast('กรุณากรอกชื่อ - นามสกุล', 'warning');
-        }
-        return false;
-      }
-      if (!careerSelect.value) {
-        if (!isAutoSave) {
-          careerSelect.focus();
-          showToast('กรุณาเลือกอาชีพในเกม', 'warning');
-        }
-        return false;
-      }
-
-      const checkedQuals = {};
-      qualificationsDB.forEach(q => {
-        const cb = document.getElementById(q.id);
-        if (cb) checkedQuals[q.id] = cb.checked;
-      });
-
-      const profileData = {
-        accountId: currentAccount.id,
-        accountType: currentAccount.type,
-        fullName: fullNameInput.value.trim(),
-        phone: document.getElementById('userPhone').value.trim(),
-        email: document.getElementById('userEmail').value.trim(),
-        careerId: careerSelect.value,
-        cash: parseFloat(document.getElementById('careerCash').value) || 0,
-        salary: parseFloat(document.getElementById('careerSalary').value) || 0,
-        expense: parseFloat(document.getElementById('careerExpense').value) || 0,
-        stats: {
-          heart: parseInt(document.getElementById('sliderHeart').value, 10),
-          time: parseInt(document.getElementById('sliderTime').value, 10),
-          knowledge: parseInt(document.getElementById('sliderKnowledge').value, 10)
-        },
-        qualificationsChecked: checkedQuals,
-        personalAmway: {
-          pv: parseFloat(document.getElementById('personalPV').value) || 0,
-          active: parseFloat(document.getElementById('personalActive').value) || 0,
-          passive: parseFloat(document.getElementById('personalPassive').value) || 0
-        },
-        legs: {}
-      };
-
-      LEGS.forEach(leg => {
-        profileData.legs[leg] = {
-          pv: parseFloat(document.getElementById(`leg_${leg}_pv`)?.value) || 0,
-          active: parseFloat(document.getElementById(`leg_${leg}_active`)?.value) || 0,
-          passive: parseFloat(document.getElementById(`leg_${leg}_passive`)?.value) || 0
-        };
-      });
-
-      localStorage.setItem(getProfileStorageKey(), JSON.stringify(profileData));
-      registerAccountToDirectory(currentAccount.id, currentAccount.type, profileData.fullName, profileData.phone || profileData.email);
-      recordUserActivity(currentAccount.id, "บันทึกข้อมูลโปรไฟล์", `อัปเดตสเตตัส อาชีพ: ${document.getElementById('gameCareerSelect').selectedOptions[0]?.text || ''} (เงินสด: ฿${profileData.cash.toLocaleString()})`);
-
-      return true;
-    }
-
-    function handleProfileSubmit(e) {
-      e.preventDefault();
-      const isSaved = saveProfileData(false);
-      if (isSaved) {
-        showToast('บันทึกข้อมูลโปรไฟล์เรียบร้อยแล้ว ✅', 'success');
-        isEditMode = false;
-        applyLockState();
-      }
-    }
-
-    function loadProfileData() {
-      document.getElementById('profileForm').reset();
-      updateStatBadge('Heart', 5);
-      updateStatBadge('Time', 5);
-      updateStatBadge('Knowledge', 5);
-
-      if (currentAccount.name && currentAccount.id !== 'guest_default') {
-        document.getElementById('userFullName').value = currentAccount.name;
-        if (currentAccount.phone) document.getElementById('userPhone').value = currentAccount.phone;
-        if (currentAccount.email) document.getElementById('userEmail').value = currentAccount.email;
-      }
-
-      try {
-        const saved = localStorage.getItem(getProfileStorageKey());
-        if (!saved) {
-          calculateTotalSummary();
-          document.querySelectorAll('#profileForm input[type="checkbox"]').forEach(syncCheckboxHighlight);
-          return;
-        }
-        const data = JSON.parse(saved);
-
-        if (data.fullName) document.getElementById('userFullName').value = data.fullName;
-        if (data.phone) document.getElementById('userPhone').value = data.phone;
-        if (data.email) document.getElementById('userEmail').value = data.email;
-
-        if (data.careerId) {
-          document.getElementById('gameCareerSelect').value = data.careerId;
-          document.getElementById('careerCash').value = data.cash !== undefined ? data.cash : '';
-          document.getElementById('careerSalary').value = data.salary !== undefined ? data.salary : '';
-          document.getElementById('careerExpense').value = data.expense !== undefined ? data.expense : '';
-        }
-
-        if (data.stats) {
-          updateStatBadge('Heart', data.stats.heart ?? 5);
-          updateStatBadge('Time', data.stats.time ?? 5);
-          updateStatBadge('Knowledge', data.stats.knowledge ?? 5);
-        } else if (data.careerId) {
-          const c = careersDB.find(item => item.id === data.careerId);
-          if (c) {
-            updateStatBadge('Heart', c.heart ?? 5);
-            updateStatBadge('Time', c.time ?? 5);
-            updateStatBadge('Knowledge', c.knowledge ?? 5);
-          }
-        }
-
-        if (data.qualificationsChecked) {
-          Object.keys(data.qualificationsChecked).forEach(qId => {
-            const cb = document.getElementById(qId);
-            if (cb) cb.checked = !!data.qualificationsChecked[qId];
-          });
-        }
-
-        document.querySelectorAll('#profileForm input[type="checkbox"]').forEach(syncCheckboxHighlight);
-
-        if (data.personalAmway) {
-          document.getElementById('personalPV').value = data.personalAmway.pv || '';
-          document.getElementById('personalActive').value = data.personalAmway.active || '';
-          document.getElementById('personalPassive').value = data.personalAmway.passive || '';
-        }
-
-        if (data.legs) {
-          LEGS.forEach(leg => {
-            if (data.legs[leg]) {
-              const elPv = document.getElementById(`leg_${leg}_pv`);
-              const elAct = document.getElementById(`leg_${leg}_active`);
-              const elPas = document.getElementById(`leg_${leg}_passive`);
-              if (elPv) elPv.value = data.legs[leg].pv || '';
-              if (elAct) elAct.value = data.legs[leg].active || '';
-              if (elPas) elPas.value = data.legs[leg].passive || '';
-            }
-          });
-        }
-
-        calculateTotalSummary();
-      } catch (err) {}
-    }
-
-    function checkDrawResultParams() {
-      try {
-        const rawLastDraw = localStorage.getItem('last_drawn_card_result');
-        if (rawLastDraw) {
-          const card = JSON.parse(rawLastDraw);
-          if (card.activeIncome > 0) {
-            const current = parseFloat(document.getElementById('personalActive').value) || 0;
-            document.getElementById('personalActive').value = current + card.activeIncome;
-          }
-          if (card.passiveIncome > 0) {
-            const current = parseFloat(document.getElementById('personalPassive').value) || 0;
-            document.getElementById('personalPassive').value = current + card.passiveIncome;
-          }
-          calculateTotalSummary();
-          recordUserActivity(currentAccount.id, "สุ่มได้การ์ด", `จั่วได้ "${card.title}" (Active +${card.activeIncome || 0}, Passive +${card.passiveIncome || 0})`);
-          localStorage.removeItem('last_drawn_card_result');
-          showToast(`นำผลลัพธ์จากการสุ่ม "${card.title}" มาอัปเดตแล้ว! 🎉`, 'success');
-        }
-      } catch (e) {}
-    }
-
-    function confirmResetProfile() {
-      if (!isEditMode) {
-        showToast('กรุณากด "ปลดล็อคแก้ไข" ก่อนทำการล้างข้อมูล', 'warning');
-        return;
-      }
-      document.getElementById('resetConfirmModal').classList.remove('hidden');
-    }
-
-    function closeResetModal() {
-      document.getElementById('resetConfirmModal').classList.add('hidden');
-    }
-
-    function executeResetProfile() {
-      localStorage.removeItem(getProfileStorageKey());
-      document.getElementById('profileForm').reset();
-      updateStatBadge('Heart', 5);
-      updateStatBadge('Time', 5);
-      updateStatBadge('Knowledge', 5);
-      document.querySelectorAll('#profileForm input[type="checkbox"]').forEach(syncCheckboxHighlight);
-      calculateTotalSummary();
-      recordUserActivity(currentAccount.id, "ล้างข้อมูลโปรไฟล์", "รีเซ็ตข้อมูลโปรไฟล์และ 6 สายงานเป็นค่าเริ่มต้น");
-      closeResetModal();
-      showToast('ล้างข้อมูลบัญชีปัจจุบันเรียบร้อยแล้ว', 'info');
-    }
-
-    function toggleTheme() {
-      const isDark = document.documentElement.classList.toggle('dark');
-      localStorage.setItem('rnd_theme_dark', isDark ? 'true' : 'false');
-      updateSettingModalUI();
-    }
-
-    function initTheme() {
-      const isDark = localStorage.getItem('rnd_theme_dark') !== 'false';
-      document.documentElement.classList.toggle('dark', isDark);
-      updateSettingModalUI();
-    }
-
-    function showToast(msg, type = 'info') {
-      const toast = document.getElementById('toastNotification');
+    function showToast(msg) {
+      const t = document.getElementById('toastNotification');
       document.getElementById('toastMessage').innerText = msg;
-      toast.classList.remove('translate-x-full', 'opacity-0');
-      setTimeout(() => toast.classList.add('translate-x-full', 'opacity-0'), 2500);
-    }
-
-    function escapeHTML(str) {
-      if (!str) return '';
-      return String(str).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+      t.classList.remove('translate-x-full', 'opacity-0');
+      setTimeout(() => t.classList.add('translate-x-full', 'opacity-0'), 2500);
     }
   </script>
 </body>
