@@ -195,7 +195,7 @@
 
       <!-- Sync Button & Settings -->
       <div class="flex items-center space-x-2">
-        <button onclick="forceSyncFromCloud()" title="ดึงข้อมูลล่าสุดจาก Google Sheets มาแทนที่ข้อมูลในเครื่อง" class="px-2.5 py-1.5 rounded-lg border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-200 hover:bg-slate-50 text-xs font-bold transition flex items-center gap-1.5 shadow-sm">
+        <button onclick="forceSyncFromCloud()" title="ล้างแคชเก่าและดึงข้อมูลล่าสุดจาก Google Sheets มาแทนที่ 100%" class="px-2.5 py-1.5 rounded-lg border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-200 hover:bg-slate-50 text-xs font-bold transition flex items-center gap-1.5 shadow-sm">
           <i id="syncIcon" class="fa-solid fa-rotate text-xs"></i>
           <span class="hidden sm:inline">Sync Cloud</span>
         </button>
@@ -369,8 +369,8 @@
           <button onclick="openAddEditModal()" class="flex-1 sm:flex-none px-4 py-2 text-white font-semibold text-xs sm:text-sm rounded-xl shadow-md transition flex items-center justify-center gap-2 btn-theme-action">
             <i class="fa-solid fa-plus"></i><span>สร้างการ์ดใหม่</span>
           </button>
-          <button onclick="forceSyncFromCloud()" title="ดึงข้อมูลจาก Google Sheets และแทนที่ข้อมูลในเครื่อง" class="p-2 sm:px-3.5 sm:py-2 bg-slate-100 dark:bg-slate-700 border border-slate-300 dark:border-slate-600 text-xs sm:text-sm font-semibold rounded-xl hover:bg-slate-200 transition flex items-center justify-center gap-1.5">
-            <i class="fa-solid fa-arrows-rotate"></i><span class="hidden sm:inline">รีเฟรช</span>
+          <button onclick="forceSyncFromCloud()" title="ล้างแคชเก่าและดึงข้อมูลจาก Google Sheets ทันที" class="p-2 sm:px-3.5 sm:py-2 bg-slate-100 dark:bg-slate-700 border border-slate-300 dark:border-slate-600 text-xs sm:text-sm font-semibold rounded-xl hover:bg-slate-200 transition flex items-center justify-center gap-1.5">
+            <i class="fa-solid fa-arrows-rotate"></i><span class="hidden sm:inline">รีเฟรชชีต</span>
           </button>
         </div>
       </div>
@@ -884,9 +884,7 @@
     </div>
   </div>
 
-  <!-- ============================================================ -->
-  <!-- CATEGORY MANAGER MODAL (กู้คืนปุ่มเลือกสีและไอคอนครบถ้วน) -->
-  <!-- ============================================================ -->
+  <!-- CATEGORY MANAGER MODAL -->
   <div id="categoryModal" class="hidden fixed inset-0 z-50 bg-slate-950/70 backdrop-blur-sm flex items-center justify-center p-3 sm:p-4 overflow-y-auto">
     <div class="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-3xl max-w-lg w-full p-5 sm:p-6 shadow-2xl relative my-auto animate-pop-in space-y-4">
       <div class="flex items-center justify-between pb-3 border-b border-slate-100 dark:border-slate-700">
@@ -900,7 +898,6 @@
         <button onclick="closeCategoryModal()" class="w-8 h-8 rounded-lg text-slate-400 hover:text-slate-700"><i class="fa-solid fa-xmark"></i></button>
       </div>
 
-      <!-- ส่วนเพิ่มหมวดหมู่ใหม่ พร้อมเลือกสีและไอคอน -->
       <div class="p-3 rounded-2xl bg-slate-50 dark:bg-slate-900/60 border border-slate-200 dark:border-slate-700 space-y-2">
         <span class="text-xs font-bold uppercase text-slate-500 block">เพิ่มหมวดหมู่ใหม่</span>
         <div class="flex items-center gap-2">
@@ -924,7 +921,7 @@
     </div>
   </div>
 
-  <!-- COLOR PICKER MODAL (24 เฉดสี) -->
+  <!-- COLOR PICKER MODAL -->
   <div id="colorPickerModal" class="hidden fixed inset-0 z-50 bg-slate-950/70 backdrop-blur-sm flex items-center justify-center p-4">
     <div class="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-3xl max-w-lg w-full p-5 shadow-2xl relative animate-pop-in space-y-4">
       <div class="flex items-center justify-between pb-2 border-b border-slate-100 dark:border-slate-700">
@@ -943,7 +940,7 @@
     </div>
   </div>
 
-  <!-- ICON PICKER MODAL (40 ไอคอน) -->
+  <!-- ICON PICKER MODAL -->
   <div id="iconPickerModal" class="hidden fixed inset-0 z-50 bg-slate-950/70 backdrop-blur-sm flex items-center justify-center p-4">
     <div class="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-3xl max-w-md w-full p-5 shadow-2xl relative animate-pop-in space-y-3">
       <div class="flex items-center justify-between pb-2 border-b border-slate-100 dark:border-slate-700">
@@ -959,7 +956,7 @@
     </div>
   </div>
 
-  <!-- SETTING MODAL (รวมแท็บทั่วไป และ แท็บฐานข้อมูล Data Base) -->
+  <!-- SETTING MODAL -->
   <div id="settingModal" class="hidden fixed inset-0 z-50 bg-slate-950/75 backdrop-blur-sm flex items-center justify-center p-3 sm:p-4 overflow-y-auto">
     <div class="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-3xl max-w-xl w-full p-5 sm:p-6 shadow-2xl relative animate-pop-in space-y-4 my-auto">
       
@@ -1068,7 +1065,7 @@
             <span>คำอธิบาย:</span>
           </p>
           <p>• <strong>เลือกใช้:</strong> โหลดชุดข้อมูลเวอร์ชันนั้นมาใช้งานในเครื่องนี้ทันที</p>
-          <p>• <strong>Push:</strong> ตั้งชื่อ Version ใหม่ และอัปโหลดชุดข้อมูลนั้นขึ้น Google Sheets พร้อมแสดงแถบ %</p>
+          <p>• <strong>Push:</strong> ตั้งชื่อ Version ใหม่ และอัปโหลดชุดข้อมูลนั้นขึ้น Google Sheets ให้ทุกเครื่องใช้ข้อมูลชุดเดียวกัน</p>
         </div>
       </div>
 
@@ -1165,6 +1162,7 @@
     let lastCloudCardCount = 0;
     let dbSnapshots = [];
     let activeSnapshotId = "cloud_active";
+    let isCloudSyncedSession = false; // ป้องกันเครื่องที่ยังไม่ได้ซิงก์เผลอส่งข้อมูลเก่าทับ Cloud
 
     // พาเลท 24 เฉดสีครบชุด
     const COLOR_PALETTES = {
@@ -1530,78 +1528,82 @@
       document.getElementById('syncProgressModal').classList.add('hidden');
     }
 
+    /* ==========================================================================
+       FETCH FROM GOOGLE SHEETS (ระบบ Cloud Master 100% ไม่นำของเก่ามาปน)
+       ========================================================================== */
     async function fetchFromGoogleSheets(isManual = false) {
       if (!GOOGLE_SHEET_API_URL || GOOGLE_SHEET_API_URL.includes("PLACEHOLDER")) {
         setCloudStatus('ใช้งานแบบออฟไลน์', 'text-slate-400');
         return;
       }
 
-      setCloudStatus('กำลังตรวจสอบ...', 'text-amber-500');
+      setCloudStatus('กำลังดึงข้อมูลจาก Cloud...', 'text-amber-500');
       const syncIcon = document.getElementById('syncIcon');
       if (syncIcon) syncIcon.classList.add('animate-spin');
 
       try {
+        // ใส่ nocache บังคับไม่ให้เบราว์เซอร์จำค่าเก่า
         const freshUrl = `${GOOGLE_SHEET_API_URL}${GOOGLE_SHEET_API_URL.includes('?') ? '&' : '?'}nocache=${Date.now()}`;
-        const res = await fetch(freshUrl, { method: 'GET', cache: 'no-store' });
+        const res = await fetch(freshUrl, { 
+          method: 'GET', 
+          cache: 'no-store'
+        });
         const data = await res.json();
 
-        if (data) {
-          let updated = false;
+        if (data && Array.isArray(data.items) && data.items.length > 0) {
+          lastCloudCardCount = data.items.length;
+          if (data.dbVersion) currentDbVersion = parseInt(data.dbVersion, 10);
+          if (data.dbVersionName) currentDbVersionName = data.dbVersionName;
 
-          if (Array.isArray(data.items) && data.items.length > 0) {
-            lastCloudCardCount = data.items.length;
-            if (data.dbVersion) currentDbVersion = parseInt(data.dbVersion, 10);
-            if (data.dbVersionName) currentDbVersionName = data.dbVersionName;
-
-            const cloudItems = data.items.map(it => ({ ...it, syncStatus: "synced" }));
-            const cloudIds = new Set(cloudItems.map(i => i.id));
-            const pendingLocalItems = items.filter(i => i.syncStatus === 'local_only' && !cloudIds.has(i.id));
-
-            items = [...cloudItems, ...pendingLocalItems];
-            updated = true;
-
-            const nowTime = data.timestamp || Date.now();
-            registerDbSnapshot({
-              id: "cloud_active",
-              name: data.dbTitle || "Google Sheets (Cloud Master)",
-              version: currentDbVersionName,
-              timestamp: nowTime,
-              dateStr: new Date(nowTime).toLocaleString('th-TH', { dateStyle: 'short', timeStyle: 'short' }),
-              count: items.length,
-              items: JSON.parse(JSON.stringify(items)),
-              categories: JSON.parse(JSON.stringify(categories))
-            });
-          }
-
-          if (Array.isArray(data.snapshotsHistory) && data.snapshotsHistory.length > 0) {
-            dbSnapshots = data.snapshotsHistory.map(s => ({
-              ...s,
-              timestamp: s.timestamp || (s.dateStr ? new Date(s.dateStr).getTime() : Date.now())
-            }));
-            saveDbSnapshotsList();
-          }
+          // ⭐️ ยึดข้อมูลจาก Cloud 100% ทับข้อมูลในเครื่องทันที (ไม่เอาของเก่าในเครื่องมาปน)
+          items = data.items.map(it => ({ ...it, syncStatus: "synced" }));
 
           if (Array.isArray(data.categories) && data.categories.length > 0) {
             categories = normalizeCategories(data.categories);
-            updated = true;
           }
 
-          if (Array.isArray(data.historyLog) && data.historyLog.length > 0) {
+          if (Array.isArray(data.historyLog)) {
             historyLog = data.historyLog;
           }
 
-          lastCloudSyncedTime = new Date().toLocaleTimeString('th-TH', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
-
-          if (updated) {
-            saveLocalCache();
-            setCloudStatus(`ออนไลน์ (${currentDbVersionName} | ${items.length} ใบ)`, 'text-emerald-500');
-            if (isManual) showToast(`ซิงก์สำเร็จ! (${items.length} รายการ) ☁️`, 'success');
-          } else {
-            setCloudStatus('พร้อมใช้งาน (แคชในเครื่อง)', 'text-emerald-500');
+          // ยึดตารางประวัติ Snapshot จาก Cloud เป็นหลัก
+          if (Array.isArray(data.snapshotsHistory) && data.snapshotsHistory.length > 0) {
+            dbSnapshots = data.snapshotsHistory.map(s => ({
+              ...s,
+              timestamp: s.timestamp || Date.now()
+            }));
           }
+
+          const nowTime = data.timestamp || Date.now();
+          registerDbSnapshot({
+            id: "cloud_active",
+            name: data.dbTitle || "Google Sheets (Cloud Master)",
+            version: currentDbVersionName,
+            timestamp: nowTime,
+            dateStr: new Date(nowTime).toLocaleString('th-TH', { dateStyle: 'short', timeStyle: 'short' }),
+            count: items.length,
+            items: JSON.parse(JSON.stringify(items)),
+            categories: JSON.parse(JSON.stringify(categories))
+          });
+
+          activeSnapshotId = "cloud_active";
+          lastCloudSyncedTime = new Date().toLocaleTimeString('th-TH', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+          isCloudSyncedSession = true; // ยืนยันว่าเครื่องนี้ได้ข้อมูลตรงกับ Cloud แล้ว
+
+          saveLocalCache();
+          saveDbSnapshotsList();
+
+          setCloudStatus(`ออนไลน์ (${currentDbVersionName} | ${items.length} ใบ)`, 'text-emerald-500');
+          if (isManual) {
+            showToast(`ซิงก์ข้อมูลตรงกับ Cloud แล้ว! (${currentDbVersionName}: ${items.length} รายการ) ☁️`, 'success');
+          }
+        } else {
+          setCloudStatus('เชื่อมต่อแล้ว (ยังไม่มีข้อมูลบนชีต)', 'text-amber-500');
         }
       } catch (err) {
-        setCloudStatus('ใช้ออฟไลน์ (ติดต่อชีตไม่ได้)', 'text-amber-500');
+        console.error("Sync Error:", err);
+        setCloudStatus('ออฟไลน์ (ใช้ข้อมูลแคชในเครื่อง)', 'text-red-500');
+        if (isManual) showToast('ไม่สามารถดึงข้อมูลจาก Cloud ได้ กรุณาเช็คอินเทอร์เน็ต', 'danger');
       } finally {
         updateCategoryDropdowns();
         renderCategoryHomeCards();
@@ -1613,8 +1615,14 @@
       }
     }
 
+    /* ล้างแคชเก่าในเครื่องทิ้งก่อนดึงจาก Cloud เสมอ */
     async function forceSyncFromCloud() {
-      if (!confirm("คุณต้องการดึงข้อมูลล่าสุดจาก Google Sheets มาแทนที่ข้อมูลในเครื่องนี้ใช่หรือไม่?")) return;
+      if (!confirm("ต้องการดึงข้อมูลชุดล่าสุดจาก Cloud มาแทนที่ข้อมูลในเครื่องนี้ทั้งหมดใช่หรือไม่?")) return;
+      
+      localStorage.removeItem('rnd_cache_items');
+      localStorage.removeItem('rnd_cache_categories');
+      localStorage.removeItem('rnd_db_snapshots');
+      
       await fetchFromGoogleSheets(true);
     }
 
@@ -1626,6 +1634,12 @@
     async function pushToGoogleSheets() {
       saveLocalCache();
       if (!GOOGLE_SHEET_API_URL || GOOGLE_SHEET_API_URL.includes("PLACEHOLDER")) return;
+
+      // ป้องกันเครื่องที่เพิ่งเปิดแล้วยังซิงก์ไม่เสร็จ เผลอเอาแคชเก่าไปทับ Cloud
+      if (!isCloudSyncedSession) {
+        const confirmOverwrite = confirm("⚠️ เครื่องของคุณยังไม่ได้ซิงก์ข้อมูลล่าสุดจาก Cloud!\nหากบันทึกตอนนี้ ข้อมูลในเครื่องนี้อาจไปทับข้อมูลบน Cloud ได้\n\nต้องการส่งข้อมูลชุดนี้ขึ้นไปทับบน Cloud จริงหรือไม่?");
+        if (!confirmOverwrite) return;
+      }
 
       setCloudStatus('กำลังบันทึกลงชีต...', 'text-amber-500');
       try {
@@ -1650,10 +1664,11 @@
         });
 
         items.forEach(it => it.syncStatus = "synced");
+        isCloudSyncedSession = true;
         saveLocalCache();
         renderDataTable();
 
-        setCloudStatus(`ออนไลน์ (${currentDbVersionName})`, 'text-emerald-500');
+        setCloudStatus(`ออนไลน์ (${currentDbVersionName} | ${items.length} ใบ)`, 'text-emerald-500');
       } catch (e) {
         setCloudStatus('บันทึกไม่สำเร็จ (ค้างในเครื่อง)', 'text-red-500');
       }
@@ -1735,6 +1750,7 @@
         items = uploadItems;
         lastCloudSyncedTime = new Date().toLocaleTimeString('th-TH', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
         lastCloudCardCount = items.length;
+        isCloudSyncedSession = true;
 
         registerDbSnapshot({
           id: `snap_${nowTime}`,
@@ -1757,7 +1773,7 @@
         document.getElementById('syncProgressIcon').className = "fa-solid fa-circle-check text-emerald-500 text-3xl";
         confetti({ particleCount: 50, spread: 60, origin: { y: 0.6 } });
 
-        setCloudStatus(`ออนไลน์ (${newVerName})`, 'text-emerald-500');
+        setCloudStatus(`ออนไลน์ (${newVerName} | ${items.length} ใบ)`, 'text-emerald-500');
         showToast(`อัปโหลด "${newTitleName}" สำเร็จ ☁️`, 'success');
 
         setTimeout(() => { closeSyncProgressModal(); }, 1500);
@@ -3003,6 +3019,7 @@
               currentDbVersionName = importedData.dbVersionName;
             }
 
+            isCloudSyncedSession = true;
             saveLocalCache();
             pushToGoogleSheets();
 
