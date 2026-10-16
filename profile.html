@@ -5,11 +5,18 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
   <title>Player Profile & Business Dashboard</title>
 
+  <!-- Google Fonts: Prompt & Inter -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Prompt:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+  <!-- Font Awesome Icons 6.5 -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+  <!-- Tailwind CSS CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- Canvas Confetti -->
   <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.2/dist/confetti.browser.min.js"></script>
 
   <script>
@@ -30,10 +37,16 @@
             }
           },
           animation: {
+            'shimmer': 'shimmer 2.2s infinite linear',
             'pulse-subtle': 'pulseSubtle 2s infinite ease-in-out',
             'pop-in': 'popIn 0.3s cubic-bezier(0.16, 1, 0.3, 1)',
+            'card-flip': 'cardFlip 0.5s cubic-bezier(0.34, 1.56, 0.64, 1)',
           },
           keyframes: {
+            shimmer: {
+              '0%': { backgroundPosition: '-200% 0' },
+              '100%': { backgroundPosition: '200% 0' }
+            },
             pulseSubtle: {
               '0%, 100%': { opacity: '1', transform: 'scale(1)' },
               '50%': { opacity: '0.9', transform: 'scale(0.98)' }
@@ -41,6 +54,10 @@
             popIn: {
               '0%': { opacity: '0', transform: 'scale(0.94) translateY(10px)' },
               '100%': { opacity: '1', transform: 'scale(1) translateY(0)' }
+            },
+            cardFlip: {
+              '0%': { opacity: '0', transform: 'scale(0.85) rotateY(-80deg)' },
+              '100%': { opacity: '1', transform: 'scale(1) rotateY(0deg)' }
             }
           }
         }
@@ -54,34 +71,46 @@
       --fluid-title: clamp(1.35rem, 2.5vw + 0.8rem, 2.25rem);
       --fluid-body: clamp(0.92rem, 0.8vw + 0.75rem, 1.15rem);
     }
+
     html {
       font-size: 16px;
       line-height: 1.5;
       -webkit-text-size-adjust: 100%;
     }
+
     body {
       touch-action: manipulation;
       -webkit-tap-highlight-color: transparent;
       background-color: #F8FAFC;
       font-size: var(--fluid-body);
     }
+
     .dark body {
       background-color: #080E1A;
     }
+
     *, ::before, ::after {
       box-sizing: border-box;
       word-break: break-word;
       overflow-wrap: break-word;
     }
+
+    .responsive-title {
+      font-size: var(--fluid-title) !important;
+      line-height: 1.35 !important;
+    }
+
     .card-vibrant-glow {
       box-shadow: 0 10px 30px -5px rgba(0, 0, 0, 0.08), 0 0 0 1px rgba(226, 232, 240, 0.8);
     }
     .dark .card-vibrant-glow {
       box-shadow: 0 15px 35px -8px rgba(0, 0, 0, 0.6), 0 0 0 1px rgba(51, 65, 85, 0.6);
     }
+
     .btn-theme-action {
       background: var(--theme-btn-gradient);
     }
+
     .icon-vibrant {
       filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.15));
     }
@@ -91,25 +120,29 @@
 
   <!-- BLOCKING SYNC OVERLAY BANNER -->
   <div id="syncBlockingBanner" class="hidden fixed inset-0 z-50 bg-slate-950/85 backdrop-blur-md flex flex-col items-center justify-center p-4 select-none pointer-events-auto">
-    <div class="relative max-w-md w-full bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-3xl p-6 sm:p-8 text-center shadow-2xl space-y-6 animate-pop-in">
+    <div class="relative max-w-md w-full bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl p-6 sm:p-8 text-center shadow-2xl space-y-6">
       <div class="relative w-24 h-24 mx-auto flex items-center justify-center">
         <div class="absolute inset-0 rounded-3xl bg-amber-400/20 dark:bg-amber-400/10 animate-ping"></div>
-        <div class="relative w-20 h-20 rounded-2xl bg-gradient-to-tr from-rose-500 via-amber-500 to-emerald-400 text-white flex items-center justify-center text-4xl shadow-xl icon-vibrant">
+        <div id="syncBannerIconWrapper" class="relative w-20 h-20 rounded-2xl bg-gradient-to-tr from-rose-500 via-amber-500 to-emerald-400 text-white flex items-center justify-center text-4xl shadow-xl icon-vibrant">
           <i id="syncBannerIcon" class="fa-solid fa-arrows-rotate animate-spin"></i>
         </div>
       </div>
       <div class="space-y-2">
-        <h3 id="syncBannerTitle" class="text-xl sm:text-2xl font-black text-slate-900 dark:text-white tracking-tight">กำลังซิงก์ข้อมูล Cloud...</h3>
-        <p id="syncBannerDetail" class="text-sm text-slate-500 dark:text-slate-400 font-medium">กรุณารอสักครู่ ระบบกำลังอัปเดตข้อมูลบัญชี</p>
+        <h3 id="syncBannerTitle" class="text-xl sm:text-2xl font-black text-slate-900 dark:text-white tracking-tight">กำลังซิงก์ข้อมูลกับ Cloud...</h3>
+        <p id="syncBannerDetail" class="text-sm text-slate-500 dark:text-slate-400 font-medium">ระบบกำลังตรวจสอบข้อมูลบัญชีผู้เล่น กรุณารอสักครู่</p>
       </div>
       <div class="space-y-2">
-        <div class="w-full bg-slate-100 dark:bg-slate-700 rounded-full h-3.5 p-0.5 overflow-hidden border border-slate-200 dark:border-slate-600">
-          <div id="syncBannerProgressBar" class="h-full rounded-full bg-gradient-to-r from-rose-500 via-amber-400 to-emerald-400 transition-all duration-300" style="width: 30%;"></div>
+        <div class="w-full bg-slate-100 dark:bg-slate-800 rounded-full h-3.5 p-0.5 overflow-hidden border border-slate-200 dark:border-slate-700">
+          <div id="syncBannerProgressBar" class="h-full rounded-full bg-gradient-to-r from-rose-500 via-amber-400 to-emerald-400 transition-all duration-300" style="width: 25%;"></div>
         </div>
         <div class="flex items-center justify-between text-xs sm:text-sm font-mono font-bold text-slate-400 px-1">
           <span id="syncBannerStepText">ขั้นตอน: ตรวจสอบบัญชี</span>
-          <span id="syncBannerPercentText" class="text-rose-500 dark:text-rose-400 font-black">30%</span>
+          <span id="syncBannerPercentText" class="text-rose-500 dark:text-rose-400 font-black">25%</span>
         </div>
+      </div>
+      <div class="inline-flex items-center gap-2 px-3.5 py-2 rounded-xl bg-amber-50 dark:bg-amber-950/50 border border-amber-300 dark:border-amber-700 text-amber-800 dark:text-amber-200 text-xs font-bold">
+        <i class="fa-solid fa-shield-halved text-amber-500 text-sm"></i>
+        <span>ระบบถูกล็อกชั่วคราว ป้องกันข้อมูลทับซ้อน</span>
       </div>
       <button type="button" id="syncBannerErrorBtn" onclick="hideSyncBanner()" class="hidden w-full py-3 rounded-2xl text-sm font-black bg-rose-600 hover:bg-rose-700 text-white transition shadow-lg">
         ปิดหน้าต่างนี้
@@ -135,7 +168,7 @@
         </div>
       </div>
 
-      <!-- Navigation Tabs -->
+      <!-- Navigation Tabs (Desktop & Tablet) -->
       <nav class="hidden lg:flex items-center space-x-1.5 bg-slate-100 dark:bg-slate-800/80 p-1.5 rounded-2xl border border-slate-200 dark:border-slate-700">
         <a href="index.html" class="px-4 py-2 rounded-xl text-sm font-bold transition-all flex items-center space-x-2.5 text-slate-600 dark:text-slate-300 hover:text-rose-500">
           <i class="fa-solid fa-shapes text-base text-amber-500 icon-vibrant"></i><span>หน้าสุ่มการ์ด</span>
@@ -143,7 +176,6 @@
         <button id="nav-btn-profile" onclick="switchProfileTab('profile')" class="px-4 py-2 rounded-xl text-sm font-bold transition-all flex items-center space-x-2.5 bg-white dark:bg-slate-700 shadow text-rose-500 dark:text-white">
           <i class="fa-solid fa-id-card text-base text-rose-500 icon-vibrant"></i><span>ข้อมูลตัวละคร</span>
         </button>
-        <!-- ปุ่มจัดการอาชีพ & คุณสมบัติ (เฉพาะ Admin เท่านั้น) -->
         <button id="nav-btn-careers" onclick="switchProfileTab('careers')" class="hidden px-4 py-2 rounded-xl text-sm font-bold transition-all flex items-center space-x-2.5 text-slate-600 dark:text-slate-300 hover:text-rose-500">
           <i class="fa-solid fa-user-tie text-base text-purple-500 icon-vibrant"></i><span>จัดการอาชีพ (Admin)</span>
         </button>
@@ -167,7 +199,7 @@
     </div>
   </header>
 
-  <!-- Bottom Navigation Bar (มือถือ) -->
+  <!-- Mobile Bottom Nav Bar -->
   <nav class="lg:hidden fixed bottom-0 left-0 right-0 z-40 bg-white/95 dark:bg-slate-900/95 backdrop-blur-md border-t border-slate-200 dark:border-slate-800 px-3 py-2 flex items-center justify-around shadow-lg">
     <a href="index.html" class="flex flex-col items-center gap-1 text-slate-400">
       <i class="fa-solid fa-shapes text-xl"></i><span class="text-[10px] font-black">หน้าสุ่ม</span>
@@ -192,7 +224,7 @@
     <!-- VIEW 1: ข้อมูลตัวละคร & ทรัพยากร & สายงาน & คุณสมบัติ -->
     <section id="view-profile" class="space-y-6 animate-pop-in">
       
-      <!-- Player Banner + ปุ่มเลือกอาชีพ -->
+      <!-- Player Banner -->
       <div class="bg-gradient-to-r from-rose-500/15 via-amber-500/10 to-indigo-500/10 p-5 sm:p-7 rounded-[2.5rem] border border-rose-500/20 card-vibrant-glow flex flex-col md:flex-row items-start md:items-center justify-between gap-5">
         <div class="flex items-center gap-4">
           <div class="w-16 h-16 sm:w-20 sm:h-20 rounded-3xl bg-gradient-to-tr from-rose-500 via-amber-500 to-emerald-400 text-white flex items-center justify-center text-3xl sm:text-4xl shadow-xl icon-vibrant shrink-0">
@@ -225,7 +257,7 @@
         </div>
       </div>
 
-      <!-- แบนเนอร์เตือนกรณีไม่เลือกอาชีพ -->
+      <!-- Warning Banner ถ้ายังไม่เลือกอาชีพ -->
       <div id="unselectedCareerBanner" class="hidden p-4 rounded-3xl bg-amber-50 dark:bg-amber-950/40 border border-amber-300 dark:border-amber-700 text-amber-800 dark:text-amber-200 text-xs sm:text-sm font-bold flex items-center gap-3">
         <i class="fa-solid fa-circle-exclamation text-xl text-amber-500 shrink-0"></i>
         <span>คุณยังไม่ได้เลือกอาชีพ! ข้อมูลธุรกิจ ทรัพยากร และสายงานทั้งหมดจะแสดงเป็น 0 จนกว่าคุณจะกด <strong>"เลือกอาชีพ"</strong></span>
@@ -265,19 +297,19 @@
             <input type="number" id="inputPersonalPv" onchange="updatePlayerFinance()" value="0" class="w-full text-[11px] font-mono bg-slate-50 dark:bg-slate-900 border rounded-lg p-1 outline-none dark:border-slate-700">
           </div>
           <div class="bg-white dark:bg-slate-800 p-3.5 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm space-y-1">
-            <span class="text-[11px] text-emerald-500 font-bold block">Active Income</span>
+            <span class="text-[11px] text-emerald-500 font-bold block"><i class="fa-solid fa-hand-holding-dollar mr-1"></i>Active</span>
             <div class="text-base sm:text-lg font-black text-emerald-500 font-mono" id="statActiveIncome">฿0</div>
             <input type="number" id="inputActiveIncome" onchange="updatePlayerFinance()" value="0" class="w-full text-[11px] font-mono bg-slate-50 dark:bg-slate-900 border rounded-lg p-1 outline-none dark:border-slate-700">
           </div>
           <div class="bg-white dark:bg-slate-800 p-3.5 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm space-y-1 col-span-2 sm:col-span-1">
-            <span class="text-[11px] text-teal-400 font-bold block">Passive Income</span>
+            <span class="text-[11px] text-teal-400 font-bold block"><i class="fa-solid fa-seedling mr-1"></i>Passive</span>
             <div class="text-base sm:text-lg font-black text-teal-400 font-mono" id="statPassiveIncome">฿0</div>
             <input type="number" id="inputPassiveIncome" onchange="updatePlayerFinance()" value="0" class="w-full text-[11px] font-mono bg-slate-50 dark:bg-slate-900 border rounded-lg p-1 outline-none dark:border-slate-700">
           </div>
         </div>
       </div>
 
-      <!-- คลังทรัพยากรตัวละคร -->
+      <!-- คลังทรัพยากรตัวละคร: สุขภาพ ❤️, เวลา ⏳, ความรู้ 💡 (ค่าพลัง 1-10) -->
       <div class="bg-white dark:bg-slate-800 p-5 sm:p-6 rounded-3xl border border-slate-200 dark:border-slate-700 shadow-sm space-y-4">
         <h3 class="font-black text-base sm:text-lg text-slate-900 dark:text-white flex items-center gap-2">
           <i class="fa-solid fa-battery-three-quarters text-emerald-500 text-xl"></i><span>คลังทรัพยากรตัวละคร (ค่าพลัง 1 - 10)</span>
@@ -299,7 +331,7 @@
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6 gap-3.5" id="legsGridContainer"></div>
       </div>
 
-      <!-- เกณฑ์คุณสมบัติ (แยกหมวดหมู่ + Checkbox) -->
+      <!-- เกณฑ์คุณสมบัติ (Checkbox) -->
       <div class="bg-white dark:bg-slate-800 p-5 sm:p-6 rounded-3xl border border-slate-200 dark:border-slate-700 shadow-sm space-y-4">
         <div>
           <h3 class="font-black text-base sm:text-lg text-slate-900 dark:text-white flex items-center gap-2">
@@ -328,7 +360,7 @@
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4" id="careersListContainer"></div>
     </section>
 
-    <!-- VIEW 3: คุณสมบัติ (เฉพาะ ADMIN - รองรับหมวดหมู่และรหัส ID) -->
+    <!-- VIEW 3: คุณสมบัติ (เฉพาะ ADMIN) -->
     <section id="view-qualifications" class="hidden space-y-5 animate-pop-in">
       <div class="bg-white/90 dark:bg-slate-800/90 backdrop-blur border border-slate-200 dark:border-slate-700 rounded-3xl p-5 shadow-sm flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
         <div>
@@ -346,7 +378,6 @@
           </button>
         </div>
       </div>
-
       <div class="space-y-6" id="adminQualificationsContainer"></div>
     </section>
 
@@ -408,12 +439,11 @@
           <i class="fa-solid fa-xmark text-lg"></i>
         </button>
       </div>
-
       <div class="grid grid-cols-1 sm:grid-cols-2 gap-3.5 max-h-[60vh] overflow-y-auto pr-1" id="playerCareerModalGrid"></div>
     </div>
   </div>
 
-  <!-- CAREER MODAL (Admin เพิ่ม/แก้ไขอาชีพหลัก) -->
+  <!-- CAREER MODAL -->
   <div id="careerModal" class="hidden fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-md flex items-center justify-center p-4 overflow-y-auto">
     <div class="relative max-w-md w-full bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl p-6 shadow-2xl space-y-4 my-auto">
       <div class="flex items-center justify-between border-b pb-3">
@@ -475,7 +505,7 @@
     </div>
   </div>
 
-  <!-- QUALIFICATION MODAL (Admin เพิ่ม/แก้ไขคุณสมบัติหลัก พร้อมเลือกหมวดหมู่และรหัส ID) -->
+  <!-- QUALIFICATION MODAL -->
   <div id="qualificationModal" class="hidden fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-md flex items-center justify-center p-4 overflow-y-auto">
     <div class="relative max-w-md w-full bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl p-6 shadow-2xl space-y-4 my-auto">
       <div class="flex items-center justify-between border-b pb-3">
@@ -524,7 +554,7 @@
     </div>
   </div>
 
-  <!-- CATEGORY MODAL (Admin จัดการหมวดหมู่คุณสมบัติ) -->
+  <!-- CATEGORY MODAL -->
   <div id="categoryQualModal" class="hidden fixed inset-0 z-50 bg-slate-950/70 backdrop-blur-sm flex items-center justify-center p-4 overflow-y-auto">
     <div class="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-3xl max-w-md w-full p-6 space-y-4">
       <div class="flex justify-between items-center border-b pb-3">
@@ -536,6 +566,51 @@
         <button onclick="handleAddQualCategory()" class="px-4 py-2 text-white rounded-2xl text-xs font-black btn-theme-action shrink-0">เพิ่ม</button>
       </div>
       <div id="qualCategoryListContainer" class="divide-y max-h-56 overflow-y-auto pr-1"></div>
+    </div>
+  </div>
+
+  <!-- ADMIN EDIT PLAYER MODAL -->
+  <div id="adminEditModal" class="hidden fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-md flex items-center justify-center p-4 overflow-y-auto">
+    <div class="relative max-w-md w-full bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl p-6 shadow-2xl space-y-4 my-auto">
+      <div class="flex items-center justify-between border-b pb-3">
+        <h3 class="font-black text-base text-slate-900 dark:text-white flex items-center gap-2">
+          <i class="fa-solid fa-user-pen text-amber-500"></i>
+          <span>แก้ไขข้อมูลผู้เล่น</span>
+        </h3>
+        <button type="button" onclick="closeAdminEditModal()" class="w-8 h-8 rounded-xl text-slate-400 hover:text-slate-600"><i class="fa-solid fa-xmark text-lg"></i></button>
+      </div>
+
+      <form id="adminEditForm" onsubmit="handleSaveAdminEdit(event)" class="space-y-3 text-xs font-bold">
+        <input type="hidden" id="editPlayerAccountId">
+        <div>
+          <label class="text-slate-500">ชื่อผู้เล่น</label>
+          <input type="text" id="editPlayerName" class="w-full mt-1 p-2 rounded-xl border dark:bg-slate-800">
+        </div>
+        <div class="grid grid-cols-2 gap-2">
+          <div>
+            <label class="text-amber-500">เงินสด (฿)</label>
+            <input type="number" id="editPlayerCash" class="w-full mt-1 p-2 rounded-xl border font-mono dark:bg-slate-800">
+          </div>
+          <div>
+            <label class="text-cyan-400">PV ส่วนตัว</label>
+            <input type="number" id="editPlayerPersonalPv" class="w-full mt-1 p-2 rounded-xl border font-mono dark:bg-slate-800">
+          </div>
+        </div>
+        <div class="grid grid-cols-2 gap-2">
+          <div>
+            <label class="text-emerald-500">Active Income (฿)</label>
+            <input type="number" id="editPlayerActive" class="w-full mt-1 p-2 rounded-xl border font-mono dark:bg-slate-800">
+          </div>
+          <div>
+            <label class="text-teal-400">Passive Income (฿)</label>
+            <input type="number" id="editPlayerPassive" class="w-full mt-1 p-2 rounded-xl border font-mono dark:bg-slate-800">
+          </div>
+        </div>
+        <div class="flex justify-end gap-2 pt-2 border-t">
+          <button type="button" onclick="closeAdminEditModal()" class="px-4 py-2 rounded-xl border text-slate-500">ยกเลิก</button>
+          <button type="submit" class="px-5 py-2 rounded-xl text-white font-black btn-theme-action shadow">บันทึกการแก้ไข</button>
+        </div>
+      </form>
     </div>
   </div>
 
@@ -583,51 +658,6 @@
         <button type="submit" class="w-full py-3 rounded-2xl text-white font-black text-sm btn-theme-action shadow-md hover:scale-[1.02] transition">
           เข้าสู่ระบบ
         </button>
-      </form>
-    </div>
-  </div>
-
-  <!-- ADMIN EDIT PLAYER MODAL -->
-  <div id="adminEditModal" class="hidden fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-md flex items-center justify-center p-4 overflow-y-auto">
-    <div class="relative max-w-md w-full bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl p-6 shadow-2xl space-y-4 my-auto">
-      <div class="flex items-center justify-between border-b pb-3">
-        <h3 class="font-black text-base text-slate-900 dark:text-white flex items-center gap-2">
-          <i class="fa-solid fa-user-pen text-amber-500"></i>
-          <span>แก้ไขข้อมูลผู้เล่น</span>
-        </h3>
-        <button type="button" onclick="closeAdminEditModal()" class="w-8 h-8 rounded-xl text-slate-400 hover:text-slate-600"><i class="fa-solid fa-xmark text-lg"></i></button>
-      </div>
-
-      <form id="adminEditForm" onsubmit="handleSaveAdminEdit(event)" class="space-y-3 text-xs font-bold">
-        <input type="hidden" id="editPlayerAccountId">
-        <div>
-          <label class="text-slate-500">ชื่อผู้เล่น</label>
-          <input type="text" id="editPlayerName" class="w-full mt-1 p-2 rounded-xl border dark:bg-slate-800">
-        </div>
-        <div class="grid grid-cols-2 gap-2">
-          <div>
-            <label class="text-amber-500">เงินสด (฿)</label>
-            <input type="number" id="editPlayerCash" class="w-full mt-1 p-2 rounded-xl border font-mono dark:bg-slate-800">
-          </div>
-          <div>
-            <label class="text-cyan-400">PV ส่วนตัว</label>
-            <input type="number" id="editPlayerPersonalPv" class="w-full mt-1 p-2 rounded-xl border font-mono dark:bg-slate-800">
-          </div>
-        </div>
-        <div class="grid grid-cols-2 gap-2">
-          <div>
-            <label class="text-emerald-500">Active Income (฿)</label>
-            <input type="number" id="editPlayerActive" class="w-full mt-1 p-2 rounded-xl border font-mono dark:bg-slate-800">
-          </div>
-          <div>
-            <label class="text-teal-400">Passive Income (฿)</label>
-            <input type="number" id="editPlayerPassive" class="w-full mt-1 p-2 rounded-xl border font-mono dark:bg-slate-800">
-          </div>
-        </div>
-        <div class="flex justify-end gap-2 pt-2 border-t">
-          <button type="button" onclick="closeAdminEditModal()" class="px-4 py-2 rounded-xl border text-slate-500">ยกเลิก</button>
-          <button type="submit" class="px-5 py-2 rounded-xl text-white font-black btn-theme-action shadow">บันทึกการแก้ไข</button>
-        </div>
       </form>
     </div>
   </div>
@@ -1113,9 +1143,8 @@
       }).join('');
     }
 
-    // เรนเดอร์คุณสมบัติในหน้า Dashboard ผู้เล่น (จัดกลุ่มตามหมวดหมู่ พร้อม Checkbox)
     function renderPlayerDashboardQualifications() {
-      const container = document.getElementById('playerDashboardQualificationsGrid');
+      const container = document.getElementById('playerDashboardQualificationsContainer');
       if (!container) return;
 
       if (!profileData.unlockedQualifications) profileData.unlockedQualifications = {};
@@ -1199,7 +1228,6 @@
       `).join('');
     }
 
-    // เรนเดอร์หน้า Admin จัดการคุณสมบัติ (แสดงรหัส ID เฉพาะ Admin + หมวดหมู่)
     function renderAdminQualificationsTab() {
       const container = document.getElementById('adminQualificationsContainer');
       if (!container) return;
@@ -1220,7 +1248,6 @@
               ${catQuals.length === 0 ? '<p class="text-xs text-slate-400 italic py-2">ยังไม่มีเกณฑ์คุณสมบัติในหมวดนี้</p>' : catQuals.map(qual => `
                 <div class="p-3.5 rounded-2xl bg-slate-50 dark:bg-slate-900/60 border border-slate-200 dark:border-slate-700/80 space-y-2">
                   <div class="flex items-center justify-between">
-                    <!-- แสดงรหัส ID เฉพาะ Admin -->
                     <span class="font-mono text-xs font-black px-2 py-0.5 rounded bg-indigo-50 dark:bg-indigo-950/60 text-indigo-400 border border-indigo-200 dark:border-indigo-800">
                       ${escapeHTML(qual.code || 'Q-000')}
                     </span>
@@ -1304,7 +1331,7 @@
       showToast("รีเซ็ตสถานะเรียบร้อยแล้ว (เลือกอาชีพใหม่เพื่อเริ่มเล่น)");
     }
 
-    /* Admin CRUD: Careers & Qualifications & Categories */
+    /* Admin CRUD & Categories */
     function openAddCategoryModal() {
       if (currentAuth.accountType !== "admin") return;
       renderQualCategoryModalList();
