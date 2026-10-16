@@ -118,41 +118,34 @@
 </head>
 <body class="text-slate-800 dark:text-slate-100 min-h-screen flex flex-col font-sans transition-colors duration-200 pb-24 md:pb-8">
 
-  <!-- =========================================================================
-       BLOCKING SYNC OVERLAY BANNER
-       ========================================================================= -->
+  <!-- BLOCKING SYNC OVERLAY BANNER -->
   <div id="syncBlockingBanner" class="hidden fixed inset-0 z-50 bg-slate-950/85 backdrop-blur-md flex flex-col items-center justify-center p-4 select-none pointer-events-auto">
     <div class="relative max-w-md w-full bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-3xl p-6 sm:p-8 text-center shadow-2xl space-y-6">
-      
       <div class="relative w-24 h-24 mx-auto flex items-center justify-center">
         <div class="absolute inset-0 rounded-3xl bg-amber-400/20 dark:bg-amber-400/10 animate-ping"></div>
         <div id="syncBannerIconWrapper" class="relative w-20 h-20 rounded-2xl bg-gradient-to-tr from-rose-500 via-amber-500 to-emerald-400 text-white flex items-center justify-center text-4xl shadow-xl icon-vibrant">
           <i id="syncBannerIcon" class="fa-solid fa-arrows-rotate animate-spin"></i>
         </div>
       </div>
-
       <div class="space-y-2">
         <h3 id="syncBannerTitle" class="text-xl sm:text-2xl font-black text-slate-900 dark:text-white tracking-tight">กำลังซิงก์ข้อมูลกับ Cloud...</h3>
-        <p id="syncBannerDetail" class="text-sm text-slate-500 dark:text-slate-400 font-medium">ระบบกำลังเชื่อมต่อและตรวจสอบข้อมูล กรุณารอสักครู่</p>
+        <p id="syncBannerDetail" class="text-sm text-slate-500 dark:text-slate-400 font-medium">ระบบกำลังจัดคิวตรวจสอบข้อมูล ไม่ให้ข้อมูลเขียนทับกัน</p>
       </div>
-
       <div class="space-y-2">
         <div class="w-full bg-slate-100 dark:bg-slate-700 rounded-full h-3.5 p-0.5 overflow-hidden border border-slate-200 dark:border-slate-600">
           <div id="syncBannerProgressBar" class="h-full rounded-full bg-gradient-to-r from-rose-500 via-amber-400 to-emerald-400 transition-all duration-300" style="width: 20%;"></div>
         </div>
         <div class="flex items-center justify-between text-xs sm:text-sm font-mono font-bold text-slate-400 px-1">
-          <span id="syncBannerStepText">ขั้นตอน: ตรวจสอบความถูกต้อง</span>
+          <span id="syncBannerStepText">ขั้นตอน: ตรวจสอบสถานะคิว</span>
           <span id="syncBannerPercentText" class="text-rose-500 dark:text-rose-400 font-black">20%</span>
         </div>
       </div>
-
       <div class="inline-flex items-center gap-2 px-3.5 py-2 rounded-xl bg-amber-50 dark:bg-amber-950/50 border border-amber-300 dark:border-amber-700 text-amber-800 dark:text-amber-200 text-xs font-bold">
-        <i class="fa-solid fa-bolt-lightning text-amber-500 text-sm"></i>
-        <span>ระบบถูกล็อกชั่วคราว ห้ามปิดหรือรีเฟรชหน้านี้</span>
+        <i class="fa-solid fa-shield-halved text-amber-500 text-sm"></i>
+        <span>ระบบป้องกัน Concurrency กำลังทำงาน</span>
       </div>
-
       <button type="button" id="syncBannerErrorBtn" onclick="hideSyncBanner()" class="hidden w-full py-3 rounded-2xl text-sm font-black bg-rose-600 hover:bg-rose-700 text-white transition shadow-lg">
-        ปิดหน้าต่างนี้ (กรณีติด Error)
+        ปิดหน้าต่างนี้
       </button>
     </div>
   </div>
@@ -160,7 +153,6 @@
   <!-- Header -->
   <header class="sticky top-0 z-40 bg-white/95 dark:bg-slate-900/95 backdrop-blur-md border-b border-slate-200 dark:border-slate-800 shadow-sm transition-colors">
     <div class="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 h-18 py-2 flex items-center justify-between gap-2">
-      
       <div class="flex items-center space-x-3 cursor-pointer group shrink-0" onclick="switchTab('categories')">
         <div class="w-12 h-12 rounded-2xl flex items-center justify-center text-white shadow-md transform transition group-hover:scale-105 shrink-0 btn-theme-action icon-vibrant">
           <i class="fa-solid fa-sparkles text-2xl animate-pulse-subtle"></i>
@@ -168,7 +160,7 @@
         <div>
           <div class="flex items-center space-x-2">
             <span class="font-black text-xl sm:text-2xl tracking-tight text-slate-900 dark:text-white">RANDOM HUB</span>
-            <span class="text-[11px] font-black px-2 py-0.5 rounded-full text-white uppercase tracking-wider btn-theme-action shadow-sm">PRO</span>
+            <span class="text-[11px] font-black px-2 py-0.5 rounded-full text-white uppercase tracking-wider btn-theme-action shadow-sm">CONCURRENT</span>
           </div>
           <p id="cloudSyncStatus" class="text-xs text-slate-500 dark:text-slate-400 font-semibold flex items-center gap-1.5 pt-0.5">
             <i class="fa-solid fa-circle text-[9px] text-emerald-400 shadow-[0_0_8px_rgba(52,211,153,0.8)]"></i> ออนไลน์พร้อมใช้งาน
@@ -176,7 +168,6 @@
         </div>
       </div>
 
-      <!-- Navigation Tabs (Desktop & Tablet) -->
       <nav class="hidden lg:flex items-center space-x-1.5 bg-slate-100 dark:bg-slate-800/80 p-1.5 rounded-2xl border border-slate-200 dark:border-slate-700">
         <button id="nav-btn-categories" onclick="switchTab('categories')" class="px-4 py-2 rounded-xl text-sm font-bold transition-all flex items-center space-x-2.5 bg-white dark:bg-slate-700 shadow text-rose-500 dark:text-white">
           <i class="fa-solid fa-folder-open text-base text-amber-500 icon-vibrant"></i><span>หมวดหมู่การ์ด</span>
@@ -195,17 +186,14 @@
         </a>
       </nav>
 
-      <!-- Action Buttons -->
       <div class="flex items-center space-x-2 shrink-0">
-        <button onclick="forceSyncFromCloud()" title="ดึงข้อมูลจาก Cloud มาแทนที่ในเครื่อง 100%" class="px-3.5 py-2.5 rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-200 hover:bg-slate-50 text-xs sm:text-sm font-black transition flex items-center gap-2 shadow-sm">
+        <button onclick="forceSyncFromCloud()" title="ดึงข้อมูลล่าสุดจาก Cloud 100%" class="px-3.5 py-2.5 rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-200 hover:bg-slate-50 text-xs sm:text-sm font-black transition flex items-center gap-2 shadow-sm">
           <i id="syncIcon" class="fa-solid fa-cloud-arrow-down text-blue-500 text-sm sm:text-base"></i><span class="hidden sm:inline">Sync Cloud</span>
         </button>
-
         <button onclick="openSettingModal()" class="w-10 h-10 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:text-rose-500 flex items-center justify-center transition shadow-sm">
           <i class="fa-solid fa-gear text-lg text-amber-500"></i>
         </button>
       </div>
-
     </div>
   </header>
 
@@ -220,7 +208,7 @@
             <i class="fa-solid fa-shapes text-rose-500 text-2xl icon-vibrant"></i>
             <span>หมวดหมู่การ์ดกิจกรรม</span>
           </h2>
-          <p class="text-xs sm:text-sm text-slate-500 dark:text-slate-400 pt-1 font-medium">เลือกหมวดหมู่ที่ต้องการเพื่อเริ่มสุ่มข้อมูล หรือปรับแต่งหมวดหมู่ใหม่</p>
+          <p class="text-xs sm:text-sm text-slate-500 dark:text-slate-400 pt-1 font-medium">ระบบซิงก์แบบ Concurrency-Safe แยกอัปเดตรายตัว ไม่เขียนทับกัน</p>
         </div>
         <button onclick="openCategoryModal()" class="w-full sm:w-auto text-xs sm:text-sm font-black flex items-center justify-center gap-2 px-5 py-3 rounded-2xl bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-700 text-slate-800 dark:text-white shadow hover:scale-105 transition">
           <i class="fa-solid fa-sliders text-rose-500 text-base"></i> จัดการหมวดหมู่
@@ -268,7 +256,7 @@
       </div>
     </section>
 
-    <!-- VIEW 3: คลังข้อมูลการ์ด (อัปเดตไอคอน: เงินสดเหรียญทอง, Active แขนพลัง, Passive ต้นไม้, PV ไร้ไอคอน) -->
+    <!-- VIEW 3: คลังข้อมูลการ์ด -->
     <section id="view-data" class="hidden space-y-4 animate-pop-in">
       <div class="bg-white/90 dark:bg-slate-800/90 backdrop-blur border border-slate-200 dark:border-slate-700 rounded-3xl p-4 sm:p-5 shadow-sm flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3">
         <div class="flex flex-wrap items-center gap-2.5 flex-1">
@@ -335,43 +323,35 @@
   <!-- Mobile Bottom Nav Bar -->
   <nav class="lg:hidden fixed bottom-0 left-0 right-0 z-40 bg-white/95 dark:bg-slate-900/95 backdrop-blur-md border-t border-slate-200 dark:border-slate-800 px-3 py-2 flex items-center justify-around shadow-lg">
     <button onclick="switchTab('categories')" id="m-nav-categories" class="flex flex-col items-center gap-1 text-rose-500">
-      <i class="fa-solid fa-shapes text-xl"></i>
-      <span class="text-[10px] font-black">หมวดหมู่</span>
+      <i class="fa-solid fa-shapes text-xl"></i><span class="text-[10px] font-black">หมวดหมู่</span>
     </button>
     <button onclick="switchTab('draw')" id="m-nav-draw" class="flex flex-col items-center gap-1 text-slate-400">
-      <i class="fa-solid fa-dice-d20 text-xl"></i>
-      <span class="text-[10px] font-black">หน้าสุ่ม</span>
+      <i class="fa-solid fa-dice-d20 text-xl"></i><span class="text-[10px] font-black">หน้าสุ่ม</span>
     </button>
     <button onclick="switchTab('data')" id="m-nav-data" class="flex flex-col items-center gap-1 text-slate-400">
-      <i class="fa-solid fa-layer-group text-xl"></i>
-      <span class="text-[10px] font-black">คลังข้อมูล</span>
+      <i class="fa-solid fa-layer-group text-xl"></i><span class="text-[10px] font-black">คลังข้อมูล</span>
     </button>
     <button onclick="switchTab('history')" id="m-nav-history" class="flex flex-col items-center gap-1 text-slate-400">
-      <i class="fa-solid fa-clock-rotate-left text-xl"></i>
-      <span class="text-[10px] font-black">ประวัติ</span>
+      <i class="fa-solid fa-clock-rotate-left text-xl"></i><span class="text-[10px] font-black">ประวัติ</span>
     </button>
     <a href="profile.html" class="flex flex-col items-center gap-1 text-slate-400">
-      <i class="fa-solid fa-circle-user text-xl"></i>
-      <span class="text-[10px] font-black">โปรไฟล์</span>
+      <i class="fa-solid fa-circle-user text-xl"></i><span class="text-[10px] font-black">โปรไฟล์</span>
     </a>
   </nav>
 
-  <!-- MODAL แสดงการ์ดที่สุ่มได้ (พร้อมไอคอนชุดใหม่) -->
+  <!-- MODAL แสดงการ์ดที่สุ่มได้ -->
   <div id="drawResultModal" class="hidden fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-md flex items-center justify-center p-4 overflow-y-auto">
     <div class="relative max-w-sm sm:max-w-md w-full bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-[2.5rem] p-6 sm:p-8 text-center shadow-2xl animate-card-flip space-y-6 my-auto">
-      
       <div class="flex items-center justify-between border-b pb-4 border-slate-100 dark:border-slate-700">
         <span id="drawResultCategoryBadge" class="text-xs sm:text-sm font-black px-4 py-1.5 rounded-full border shadow-sm">หมวดหมู่</span>
         <span id="drawResultTargetBadge" class="text-xs sm:text-sm font-bold text-indigo-500 bg-indigo-50 dark:bg-indigo-950/60 px-3 py-1 rounded-xl border border-indigo-200 dark:border-indigo-800">ส่วนตัว</span>
       </div>
-
       <div class="space-y-3">
         <div id="drawResultIconBox" class="w-20 h-20 rounded-3xl mx-auto flex items-center justify-center text-4xl text-white shadow-xl btn-theme-action icon-vibrant">
           <i id="drawResultIcon" class="fa-solid fa-star"></i>
         </div>
         <h3 id="drawResultTitle" class="text-xl sm:text-2xl font-black text-slate-900 dark:text-white leading-snug">ชื่อการ์ด</h3>
       </div>
-
       <div class="grid grid-cols-2 gap-3 bg-slate-50 dark:bg-slate-900/70 p-4 rounded-3xl border border-slate-200 dark:border-slate-700 text-xs sm:text-sm font-mono">
         <div class="text-left">PV: <strong id="drawResultPv" class="text-cyan-400 text-base sm:text-lg font-black block">0</strong></div>
         <div class="text-right flex flex-col items-end">
@@ -387,7 +367,6 @@
           <strong id="drawResultPassive" class="text-teal-400 font-black block text-sm sm:text-base">฿0</strong>
         </div>
       </div>
-
       <div id="drawResultResourceSection" class="p-3.5 bg-amber-50/70 dark:bg-amber-950/30 rounded-2xl border border-amber-300 dark:border-amber-800/60 text-xs sm:text-sm space-y-2 text-left">
         <div class="flex items-center justify-between font-bold text-slate-700 dark:text-slate-300">
           <span>ทรัพยากรที่ต้องใช้:</span>
@@ -398,14 +377,13 @@
           <span id="drawResultRewardText" class="font-mono text-emerald-500 font-black text-sm">-</span>
         </div>
       </div>
-
       <button type="button" onclick="closeDrawResultModal()" class="w-full py-4 rounded-2xl text-white font-black text-base sm:text-lg btn-theme-action shadow-xl hover:scale-[1.02] transition">
         ยอมรับ / ปิดหน้าต่าง
       </button>
     </div>
   </div>
 
-  <!-- Modal ฟอร์ม สร้าง / แก้ไข การ์ด (ใช้ไอคอน นาฬิกา สมุด เหรียญทอง) -->
+  <!-- Modal ฟอร์ม สร้าง / แก้ไข การ์ด -->
   <div id="cardModal" class="hidden fixed inset-0 z-50 bg-slate-950/75 backdrop-blur-sm flex items-center justify-center p-3 sm:p-5 overflow-y-auto">
     <div class="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-3xl max-w-xl w-full p-6 sm:p-7 shadow-2xl relative space-y-5 my-auto">
       <div class="flex items-center justify-between pb-3.5 border-b border-slate-100 dark:border-slate-700">
@@ -463,7 +441,6 @@
           </div>
         </div>
 
-        <!-- รายการทรัพยากร (หัวใจ, นาฬิกา, สมุด) -->
         <div class="p-4 bg-slate-50 dark:bg-slate-900/60 rounded-3xl border border-slate-200 dark:border-slate-700 space-y-3">
           <span class="text-slate-400 block font-black text-xs uppercase tracking-wider">ทรัพยากรที่เกี่ยวข้อง (Cost & Reward)</span>
           <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -507,7 +484,6 @@
         <button type="button" id="tabSettingDatabaseBtn" onclick="switchSettingTab('database')" class="py-2.5 rounded-xl transition text-slate-500 hover:text-slate-800 dark:hover:text-white">ฐานข้อมูล (Data Base)</button>
       </div>
 
-      <!-- Tab General -->
       <div id="settingTabContentGeneral" class="space-y-4">
         <div class="p-4 bg-slate-50 dark:bg-slate-900/60 rounded-3xl border border-slate-200 dark:border-slate-700 flex items-center justify-between">
           <span class="text-sm font-bold flex items-center gap-2"><i class="fa-solid fa-moon text-indigo-400"></i>โหมดสว่าง / มืด</span>
@@ -537,7 +513,6 @@
         </div>
       </div>
 
-      <!-- Tab Data Base -->
       <div id="settingTabContentDatabase" class="hidden space-y-4">
         <div class="flex items-center justify-between">
           <span class="text-xs sm:text-sm font-black uppercase text-slate-400">ตารางประวัติบนชีต (<span id="dbSnapTotalCount">0</span>)</span>
@@ -586,7 +561,7 @@
     </div>
   </div>
 
-  <!-- Color Picker Modal -->
+  <!-- Color & Icon Picker Modals -->
   <div id="colorPickerModal" class="hidden fixed inset-0 z-50 bg-slate-950/70 backdrop-blur-sm flex items-center justify-center p-4">
     <div class="bg-white dark:bg-slate-800 border rounded-3xl max-w-lg w-full p-6 space-y-4">
       <div class="flex justify-between items-center border-b pb-3">
@@ -597,7 +572,6 @@
     </div>
   </div>
 
-  <!-- Icon Picker Modal -->
   <div id="iconPickerModal" class="hidden fixed inset-0 z-50 bg-slate-950/70 backdrop-blur-sm flex items-center justify-center p-4">
     <div class="bg-white dark:bg-slate-800 border rounded-3xl max-w-md w-full p-6 space-y-4">
       <div class="flex justify-between items-center border-b pb-3">
@@ -614,7 +588,7 @@
     <span id="toastMessage">แจ้งเตือน</span>
   </div>
 
-  <!-- JavaScript Engine -->
+  <!-- JavaScript Engine (Multi-Device Mutation Safe) -->
   <script>
     const GOOGLE_SHEET_API_URL = "https://script.google.com/macros/s/AKfycbzq9oD33K3nf_r2JRq5RjCafAQIvt2o9ywvJ1EvXvVg4l9QyUalIuQvxxT7zQ890nR1/exec";
 
@@ -822,7 +796,6 @@
       updatePoolBadge();
     }
 
-    // ทรัพยากร: หัวใจ ❤️, เวลา (นาฬิกา), ความรู้ (สมุด)
     function formatResourceBadge(res) {
       if (!res) return "-";
       let parts = [];
@@ -842,7 +815,6 @@
         return matchesQuery && matchesCat;
       });
 
-      // Desktop Table
       const desktopTbody = document.getElementById('tableBodyDesktop');
       if (desktopTbody) {
         desktopTbody.innerHTML = filtered.map((item, idx) => `
@@ -883,7 +855,6 @@
         `).join('');
       }
 
-      // Mobile Card Layout
       const mobileList = document.getElementById('tableBodyMobile');
       if (mobileList) {
         mobileList.innerHTML = filtered.map(item => `
@@ -1081,7 +1052,10 @@
       document.getElementById('cardModal').classList.add('hidden');
     }
 
-    function handleSaveCard(e) {
+    /* ------------------------------------------------------------------------
+       บันทึกการ์ดแบบแยกรายการ (Item-Level Mutation ป้องกันทับซ้อน)
+       ------------------------------------------------------------------------ */
+    async function handleSaveCard(e) {
       e.preventDefault();
       const id = document.getElementById('cardEditId').value;
       const title = document.getElementById('cardTitleInput').value.trim();
@@ -1107,33 +1081,55 @@
       const targetType = (targetVal === 'personal') ? 'personal' : 'leg';
       const targetLeg = (targetVal === 'personal') ? '' : targetVal;
 
+      const cardObj = {
+        id: id || `c-${Date.now().toString().slice(-6)}`,
+        title, category, targetType, targetLeg, pv, price, activeIncome, passiveIncome,
+        cost, reward, syncStatus: "synced", updatedAt: Date.now()
+      };
+
+      // บันทึกลงหน่วยความจำของเครื่องนี้ก่อนทันที
       if (id) {
         const index = items.findIndex(i => i.id === id);
-        if (index !== -1) {
-          items[index] = {
-            ...items[index],
-            title, category, targetType, targetLeg, pv, price, activeIncome, passiveIncome,
-            cost, reward, syncStatus: "synced"
-          };
-          showToast(`แก้ไขการ์ด "${title}" เรียบร้อยแล้ว`);
-        }
+        if (index !== -1) items[index] = cardObj;
       } else {
-        const newCard = {
-          id: `c-${Date.now().toString().slice(-6)}`,
-          title, category, targetType, targetLeg, pv, price, activeIncome, passiveIncome,
-          cost, reward, syncStatus: "synced"
-        };
-        items.unshift(newCard);
-        showToast(`สร้างการ์ด "${title}" สำเร็จ`);
+        items.unshift(cardObj);
       }
-
       saveLocalCache();
       renderAllUI();
       resetDrawPool();
       closeCardModal();
+
+      // ยิงอัปเดตเฉพาะรายการนี้ขึ้น Cloud (Mutex Queue)
+      showSyncBanner("กำลังซิงก์การ์ดขึ้น Cloud", `กำลังบันทึก "${cardObj.title}"...`, "ขั้นตอน: อัปเดตเฉพาะรายการ", 40);
+
+      try {
+        const res = await fetch(GOOGLE_SHEET_API_URL, {
+          method: "POST",
+          headers: { "Content-Type": "text/plain;charset=utf-8" },
+          body: JSON.stringify({
+            action: "upsertItem",
+            item: cardObj,
+            timestamp: Date.now()
+          })
+        });
+
+        const result = await res.json();
+        if (result && result.status === "success") {
+          currentDbVersion = result.dbVersion;
+          currentDbVersionName = result.dbVersionName;
+          saveLocalCache();
+          updateSyncBannerProgress(100, "บันทึกข้อมูลเรียบร้อยโดยไม่ทับซ้อน!", "เสร็จสิ้น");
+          setTimeout(hideSyncBanner, 500);
+          showToast(`บันทึก "${cardObj.title}" ขึ้น Cloud สำเร็จ ☁️`);
+        } else {
+          throw new Error(result?.message || "บันทึกไม่สำเร็จ");
+        }
+      } catch (err) {
+        setSyncBannerError(err.message);
+      }
     }
 
-    function cloneItem(id) {
+    async function cloneItem(id) {
       const original = items.find(i => i.id === id);
       if (!original) return;
 
@@ -1141,19 +1137,42 @@
         ...JSON.parse(JSON.stringify(original)),
         id: `c-${Date.now().toString().slice(-6)}`,
         title: `${original.title} (Copy)`,
-        syncStatus: "synced"
+        syncStatus: "synced",
+        updatedAt: Date.now()
       };
 
       const originalIndex = items.findIndex(i => i.id === id);
       items.splice(originalIndex + 1, 0, clonedCard);
-
       saveLocalCache();
       renderAllUI();
       resetDrawPool();
-      showToast(`โคลนการ์ด "${clonedCard.title}" เรียบร้อยแล้ว 📋`);
+
+      showSyncBanner("กำลังโคลนการ์ดขึ้น Cloud", `กำลังบันทึก "${clonedCard.title}"...`, "ขั้นตอน: อัปเดตเฉพาะรายการ", 40);
+      try {
+        const res = await fetch(GOOGLE_SHEET_API_URL, {
+          method: "POST",
+          headers: { "Content-Type": "text/plain;charset=utf-8" },
+          body: JSON.stringify({
+            action: "upsertItem",
+            item: clonedCard,
+            timestamp: Date.now()
+          })
+        });
+        const result = await res.json();
+        if (result && result.status === "success") {
+          currentDbVersion = result.dbVersion;
+          currentDbVersionName = result.dbVersionName;
+          saveLocalCache();
+          updateSyncBannerProgress(100, "โคลนการ์ดสำเร็จ!", "เสร็จสิ้น");
+          setTimeout(hideSyncBanner, 500);
+          showToast(`โคลน "${clonedCard.title}" เรียบร้อยแล้ว 📋`);
+        }
+      } catch (err) {
+        setSyncBannerError(err.message);
+      }
     }
 
-    function confirmDeleteItem(id) {
+    async function confirmDeleteItem(id) {
       const item = items.find(i => i.id === id);
       if (!item) return;
       if (!confirm(`คุณต้องการลบการ์ด "${item.title}" ใช่หรือไม่?`)) return;
@@ -1162,10 +1181,113 @@
       saveLocalCache();
       renderAllUI();
       resetDrawPool();
-      showToast('ลบการ์ดเรียบร้อยแล้ว');
+
+      showSyncBanner("กำลังลบการ์ดบน Cloud", `กำลังลบ "${item.title}"...`, "ขั้นตอน: ลบเฉพาะรายการ", 40);
+      try {
+        const res = await fetch(GOOGLE_SHEET_API_URL, {
+          method: "POST",
+          headers: { "Content-Type": "text/plain;charset=utf-8" },
+          body: JSON.stringify({
+            action: "deleteItem",
+            id: id,
+            timestamp: Date.now()
+          })
+        });
+        const result = await res.json();
+        if (result && result.status === "success") {
+          currentDbVersion = result.dbVersion;
+          currentDbVersionName = result.dbVersionName;
+          saveLocalCache();
+          updateSyncBannerProgress(100, "ลบข้อมูลสำเร็จ!", "เสร็จสิ้น");
+          setTimeout(hideSyncBanner, 500);
+          showToast('ลบการ์ดออกจาก Cloud สำเร็จ');
+        }
+      } catch (err) {
+        setSyncBannerError(err.message);
+      }
     }
 
-    /* Hybrid Fetch & Sync Engine */
+    /* ------------------------------------------------------------------------
+       Push Snapshot ทั้งก้อน พร้อม Optimistic Conflict Guard
+       ------------------------------------------------------------------------ */
+    async function pushSnapshotToCloudById(snapId) {
+      let targetSnap = dbSnapshots.find(s => s.id === snapId);
+      if (!targetSnap || snapId === 'cloud_active') {
+        targetSnap = {
+          name: `Database Master (${items.length} ใบ)`,
+          version: currentDbVersionName,
+          items: items,
+          categories: categories
+        };
+      }
+
+      const defaultVer = currentDbVersionName.startsWith('v') 
+        ? `v${(parseFloat(currentDbVersionName.replace('v','')) + 0.1).toFixed(1)}` 
+        : `v${currentDbVersion + 1}.0`;
+      
+      const inputVersion = prompt("ระบุชื่อ Version สำหรับอัปโหลดขึ้น Google Sheets:", defaultVer);
+      if (!inputVersion || !inputVersion.trim()) return;
+
+      const inputTitle = prompt("ระบุชื่อฐานข้อมูลชุดนี้:", targetSnap.name || `Database Master (${items.length} ใบ)`);
+      if (!inputTitle || !inputTitle.trim()) return;
+
+      const newVerName = inputVersion.trim();
+      const newTitleName = inputTitle.trim();
+
+      closeSettingModal();
+      showSyncBanner(`กำลังอัปโหลด ${newVerName} ขึ้น Cloud`, `กำลังตรวจสอบความขัดแย้งของเวอร์ชัน...`, "ขั้นตอน 1/3: ตรวจสอบ Conflict Guard", 20);
+
+      try {
+        const payload = {
+          action: 'saveData',
+          saveSnapshot: true,
+          items: items.map(it => ({ ...it, syncStatus: "synced" })),
+          categories: categories,
+          historyLog: historyLog.slice(0, 20),
+          dbVersion: currentDbVersion + 1,
+          dbVersionName: newVerName,
+          dbTitle: newTitleName,
+          expectedDbVersion: currentDbVersion, // ส่งเลขเวอร์ชันที่เครื่องถืออยู่ไปเทียบ
+          timestamp: Date.now()
+        };
+
+        updateSyncBannerProgress(55, "กำลังส่งข้อมูลไปยัง Google Sheets...", "ขั้นตอน 2/3: ส่งข้อมูลขึ้น Cloud");
+
+        const response = await fetch(GOOGLE_SHEET_API_URL, {
+          method: 'POST',
+          headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+          body: JSON.stringify(payload)
+        });
+
+        const result = await response.json();
+
+        // ตรวจพบ Conflict จากอุปกรณ์อื่น
+        if (result && result.status === 'conflict') {
+          setSyncBannerError(result.message);
+          alert(result.message);
+          return;
+        }
+
+        if (result && result.status === 'success') {
+          currentDbVersion = result.dbVersion;
+          currentDbVersionName = result.dbVersionName;
+          updateSyncBannerProgress(85, "กำลังตรวจสอบผลลัพธ์และยืนยันข้อมูลจากชีต...", "ขั้นตอน 3/3: ดึงข้อมูลยืนยันผล");
+          await fetchFromGoogleSheets(false);
+
+          updateSyncBannerProgress(100, `บันทึกเวอร์ชัน ${newVerName} สำเร็จ 100%!`, "เสร็จสมบูรณ์");
+          confetti({ particleCount: 50, spread: 60, origin: { y: 0.6 } });
+          showToast(`อัปโหลด "${newTitleName}" (${newVerName}) ขึ้นชีตสำเร็จ ☁️`);
+          setTimeout(hideSyncBanner, 1000);
+        } else {
+          throw new Error(result?.message || 'เซิร์ฟเวอร์ปฏิเสธการบันทึก');
+        }
+
+      } catch (err) {
+        setSyncBannerError(`ผิดพลาด: ${err.message}`);
+        showToast('อัปโหลดไม่สำเร็จ กรุณาดูข้อความแจ้งเตือน');
+      }
+    }
+
     async function fetchFromGoogleSheets(isManual = false) {
       if (!GOOGLE_SHEET_API_URL || GOOGLE_SHEET_API_URL.includes("PLACEHOLDER")) return;
       const syncIcon = document.getElementById('syncIcon');
@@ -1184,7 +1306,7 @@
           updateSyncBannerProgress(75, "ประมวลผลข้อมูลและอัปเดตแคชในเครื่อง...", "ขั้นตอน 2/2: จัดเรียงข้อมูล");
         }
 
-        if (data && Array.isArray(data.items) && data.items.length > 0) {
+        if (data && Array.isArray(data.items)) {
           currentDbVersion = Number(data.dbVersion) || 1;
           currentDbVersionName = data.dbVersionName || `v${currentDbVersion}.0`;
           items = data.items.map(it => ({ ...it, syncStatus: "synced" }));
@@ -1217,91 +1339,17 @@
         }
       } catch (err) {
         document.getElementById('cloudSyncStatus').innerHTML = `<i class="fa-solid fa-circle text-[9px] text-rose-500"></i> ออฟไลน์`;
-        if (isManual) {
-          setSyncBannerError(`ไม่สามารถดึงข้อมูลได้: ${err.message}`);
-        }
+        if (isManual) setSyncBannerError(`ไม่สามารถดึงข้อมูลได้: ${err.message}`);
       } finally {
         if (syncIcon) syncIcon.classList.remove('animate-spin');
       }
     }
 
     async function forceSyncFromCloud() {
-      if (!confirm("ต้องการล้างแคชในเครื่องนี้ แล้วดึงข้อมูลจาก Cloud มาแทนที่ 100% ใช่หรือไม่?")) return;
+      if (!confirm("ต้องการล้างแคชในเครื่องนี้ แล้วดึงข้อมูลล่าสุดจาก Cloud มาแทนที่ 100% ใช่หรือไม่?")) return;
       localStorage.removeItem('rnd_cache_items');
       localStorage.removeItem('rnd_cache_categories');
       await fetchFromGoogleSheets(true);
-    }
-
-    async function pushSnapshotToCloudById(snapId) {
-      let targetSnap = dbSnapshots.find(s => s.id === snapId);
-      if (!targetSnap || snapId === 'cloud_active') {
-        targetSnap = {
-          name: `Database Master (${items.length} ใบ)`,
-          version: currentDbVersionName,
-          items: items,
-          categories: categories
-        };
-      }
-
-      const defaultVer = currentDbVersionName.startsWith('v') 
-        ? `v${(parseFloat(currentDbVersionName.replace('v','')) + 0.1).toFixed(1)}` 
-        : `v${currentDbVersion + 1}.0`;
-      
-      const inputVersion = prompt("ระบุชื่อ Version สำหรับอัปโหลดขึ้น Google Sheets:", defaultVer);
-      if (!inputVersion || !inputVersion.trim()) return;
-
-      const inputTitle = prompt("ระบุชื่อฐานข้อมูลชุดนี้:", targetSnap.name || `Database Master (${items.length} ใบ)`);
-      if (!inputTitle || !inputTitle.trim()) return;
-
-      const newVerName = inputVersion.trim();
-      const newTitleName = inputTitle.trim();
-
-      closeSettingModal();
-      showSyncBanner(`กำลังอัปโหลด ${newVerName} ขึ้น Cloud`, `กำลังเตรียมแพ็กข้อมูลการ์ด ${items.length} ใบ...`, "ขั้นตอน 1/3: แพ็กเกจข้อมูล", 20);
-
-      try {
-        currentDbVersion++;
-        currentDbVersionName = newVerName;
-
-        const payload = {
-          action: 'saveData',
-          saveSnapshot: true,
-          items: items.map(it => ({ ...it, syncStatus: "synced" })),
-          categories: categories,
-          historyLog: historyLog.slice(0, 20),
-          dbVersion: currentDbVersion,
-          dbVersionName: newVerName,
-          dbTitle: newTitleName,
-          timestamp: Date.now()
-        };
-
-        updateSyncBannerProgress(55, "กำลังส่งข้อมูลไปยัง Google Sheets...", "ขั้นตอน 2/3: ส่งข้อมูลขึ้น Cloud");
-
-        const response = await fetch(GOOGLE_SHEET_API_URL, {
-          method: 'POST',
-          headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-          body: JSON.stringify(payload)
-        });
-
-        const result = await response.json();
-
-        if (result && result.status === 'success') {
-          updateSyncBannerProgress(85, "กำลังตรวจสอบผลลัพธ์และยืนยันข้อมูลจากชีต...", "ขั้นตอน 3/3: ดึงข้อมูลยืนยันผล");
-          await fetchFromGoogleSheets(false);
-
-          updateSyncBannerProgress(100, `บันทึกเวอร์ชัน ${newVerName} สำเร็จ 100%!`, "เสร็จสมบูรณ์");
-          confetti({ particleCount: 50, spread: 60, origin: { y: 0.6 } });
-          showToast(`อัปโหลด "${newTitleName}" (${newVerName}) ขึ้นชีตสำเร็จ ☁️`);
-          setTimeout(hideSyncBanner, 1000);
-        } else {
-          throw new Error(result?.message || 'เซิร์ฟเวอร์ปฏิเสธการบันทึก');
-        }
-
-      } catch (err) {
-        console.error("Upload Error:", err);
-        setSyncBannerError(`ผิดพลาด: ${err.message}`);
-        showToast('อัปโหลดไม่สำเร็จ กรุณาดูข้อความแจ้งเตือน');
-      }
     }
 
     function renderDbSnapshotsTable() {
