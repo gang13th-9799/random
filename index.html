@@ -340,7 +340,7 @@
     </div>
   </div>
 
-  <!-- Setting Modal -->
+  <!-- Setting Modal (Tab General [พร้อมปุ่ม Backup / Export / Import] + Tab Data Base) -->
   <div id="settingModal" class="hidden fixed inset-0 z-50 bg-slate-950/75 backdrop-blur-sm flex items-center justify-center p-3 sm:p-4 overflow-y-auto">
     <div class="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-3xl max-w-xl w-full p-5 sm:p-6 shadow-2xl relative space-y-4 my-auto">
       <div class="flex items-center justify-between pb-3 border-b border-slate-100 dark:border-slate-700">
@@ -353,554 +353,37 @@
         <button type="button" id="tabSettingDatabaseBtn" onclick="switchSettingTab('database')" class="py-2 rounded-xl transition text-slate-500 hover:text-slate-800 dark:hover:text-white">ฐานข้อมูล (Data Base)</button>
       </div>
 
+      <!-- Tab General (กู้คืนปุ่ม Backup, CSV และ Import) -->
       <div id="settingTabContentGeneral" class="space-y-4">
         <div class="p-3 bg-slate-50 dark:bg-slate-900/60 rounded-2xl border border-slate-200 dark:border-slate-700/80 flex items-center justify-between">
           <span class="text-xs font-bold">โหมดสว่าง / มืด</span>
           <button onclick="toggleTheme()" class="px-3 py-1.5 rounded-xl text-xs font-bold border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-800">สลับโหมด</button>
         </div>
-      </div>
 
-      <div id="settingTabContentDatabase" class="hidden space-y-3.5">
-        <div class="flex items-center justify-between">
-          <span class="text-xs font-bold uppercase text-slate-500">ตารางฐานข้อมูลบนชีต (<span id="dbSnapTotalCount">0</span>)</span>
-          <div class="flex gap-1.5">
-            <button onclick="fetchFromGoogleSheets(true)" class="px-2.5 py-1.5 rounded-xl bg-slate-100 dark:bg-slate-700 border text-xs font-bold"><i class="fa-solid fa-rotate mr-1"></i>ซิงก์ตาราง</button>
-            <button onclick="pushSnapshotToCloudById('cloud_active')" class="px-2.5 py-1.5 rounded-xl bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold shadow"><i class="fa-solid fa-cloud-arrow-up mr-1"></i>Push Master</button>
+        <div class="p-3.5 bg-slate-50 dark:bg-slate-900/60 rounded-2xl border border-slate-200 dark:border-slate-700/80 space-y-3">
+          <div class="flex items-center gap-2">
+            <i class="fa-solid fa-database text-xs text-amber-500"></i>
+            <span class="text-xs font-bold text-slate-800 dark:text-white">สำรองและส่งออกฐานข้อมูล (Backup & Export)</span>
           </div>
-        </div>
-
-        <div class="border border-slate-200 dark:border-slate-700 rounded-2xl overflow-hidden bg-slate-50 dark:bg-slate-900/60 max-h-72 overflow-y-auto">
-          <table class="w-full text-left text-xs">
-            <thead class="bg-white dark:bg-slate-800 border-b text-[10px] uppercase font-bold text-slate-400 sticky top-0">
-              <tr>
-                <th class="py-2.5 px-3">ชื่อฐานข้อมูล</th>
-                <th class="py-2.5 px-2 text-center w-14">Ver</th>
-                <th class="py-2.5 px-2 text-center w-24">วันเวลา</th>
-                <th class="py-2.5 px-2 text-right w-14">จำนวน</th>
-                <th class="py-2.5 px-3 text-center w-28">จัดการ</th>
-              </tr>
-            </thead>
-            <tbody id="databaseListTableBody" class="divide-y divide-slate-100 dark:divide-slate-800 font-medium"></tbody>
-          </table>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- Category Manager Modal (กู้คืนปุ่มดินสอและปุ่มขึ้นลง) -->
-  <div id="categoryModal" class="hidden fixed inset-0 z-50 bg-slate-950/70 backdrop-blur-sm flex items-center justify-center p-4 overflow-y-auto">
-    <div class="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-3xl max-w-lg w-full p-5 space-y-4">
-      <div class="flex justify-between items-center border-b pb-3">
-        <h3 class="font-bold text-base"><i class="fa-solid fa-folder-tree mr-2 text-red-600"></i>จัดการหมวดหมู่การ์ด</h3>
-        <button onclick="closeCategoryModal()"><i class="fa-solid fa-xmark"></i></button>
-      </div>
-      <div class="flex gap-2">
-        <button type="button" onclick="openColorPicker(-1)" class="w-9 h-9 rounded-xl border flex items-center justify-center" id="newCatColorBtn">
-          <span id="newCatColorPill" class="w-5 h-5 rounded-full bg-red-600"></span>
-        </button>
-        <button type="button" onclick="openIconPicker(-1)" class="w-9 h-9 rounded-xl border flex items-center justify-center text-sm">
-          <i id="newCatIconPreview" class="fa-solid fa-folder"></i>
-        </button>
-        <input type="text" id="newCategoryInput" placeholder="ชื่อหมวดหมู่ใหม่..." class="flex-1 border rounded-xl px-3 text-xs font-bold dark:bg-slate-900 outline-none">
-        <button onclick="handleAddCategory()" class="px-4 py-2 text-white rounded-xl text-xs font-bold btn-theme-action">เพิ่ม</button>
-      </div>
-      <div id="categoryListContainer" class="divide-y max-h-64 overflow-y-auto"></div>
-    </div>
-  </div>
-
-  <!-- Color Picker Modal -->
-  <div id="colorPickerModal" class="hidden fixed inset-0 z-50 bg-slate-950/70 backdrop-blur-sm flex items-center justify-center p-4">
-    <div class="bg-white dark:bg-slate-800 border rounded-3xl max-w-lg w-full p-5 space-y-4">
-      <div class="flex justify-between items-center border-b pb-2">
-        <h4 class="font-bold text-sm">เลือกสีประจำหมวด</h4>
-        <button onclick="closeColorPicker()"><i class="fa-solid fa-xmark"></i></button>
-      </div>
-      <div id="colorPickerGrid" class="space-y-2 max-h-80 overflow-y-auto"></div>
-    </div>
-  </div>
-
-  <!-- Icon Picker Modal -->
-  <div id="iconPickerModal" class="hidden fixed inset-0 z-50 bg-slate-950/70 backdrop-blur-sm flex items-center justify-center p-4">
-    <div class="bg-white dark:bg-slate-800 border rounded-3xl max-w-md w-full p-5 space-y-3">
-      <div class="flex justify-between items-center border-b pb-2">
-        <h4 class="font-bold text-sm">เลือกไอคอน</h4>
-        <button onclick="closeIconPicker()"><i class="fa-solid fa-xmark"></i></button>
-      </div>
-      <div id="iconPickerGrid" class="grid grid-cols-6 sm:grid-cols-8 gap-2 max-h-64 overflow-y-auto"></div>
-    </div>
-  </div>
-
-  <!-- Toast Notification -->
-  <div id="toastNotification" class="fixed top-20 right-4 z-50 transform translate-x-full opacity-0 transition-all duration-300 bg-slate-900 text-white px-4 py-2.5 rounded-xl shadow-xl flex items-center gap-2 text-xs font-bold pointer-events-none">
-    <i class="fa-solid fa-check text-emerald-400"></i>
-    <span id="toastMessage">แจ้งเตือน</span>
-  </div>
-
-  <!-- JavaScript -->
-  <script>
-    const GOOGLE_SHEET_API_URL = "https://script.google.com/macros/s/AKfycbzq9oD33K3nf_r2JRq5RjCafAQIvt2o9ywvJ1EvXvVg4l9QyUalIuQvxxT7zQ890nR1/exec";
-
-    const DEFAULT_INITIAL_CATEGORIES = [
-      { name: "ทั่วไป", icon: "fa-folder", color: "red" },
-      { name: "การทำงาน", icon: "fa-briefcase", color: "blue" },
-      { name: "สุขภาพ", icon: "fa-heart", color: "emerald" },
-      { name: "ความรู้", icon: "fa-book", color: "purple" },
-      { name: "การเงิน", icon: "fa-coins", color: "amber" }
-    ];
-
-    const DEFAULT_INITIAL_ITEMS = [
-      { id: "c-1001", title: "วางแผนเป้าหมายประจำสัปดาห์", targetType: "personal", targetLeg: "", category: "การทำงาน", price: 350, pv: 500, weight: 70, activeIncome: 15000, passiveIncome: 0, forceAccept: false, syncStatus: "synced", cost: { heart: 2, time: 3, knowledge: 0 }, reward: { heart: 4, time: 5, knowledge: 4 } }
-    ];
-
-    let items = [];
-    let categories = [];
-    let selectedCategory = "ALL";
-    let historyLog = [];
-    let drawPool = [];
-    let currentDbVersion = 1;
-    let currentDbVersionName = "v1.0";
-    let lastCloudSyncedTime = null;
-    let dbSnapshots = [];
-    let activeSnapshotId = "cloud_active";
-    let isCloudSyncedSession = false;
-
-    const COLOR_PALETTES = {
-      red: { id: "red", name: "แดงทับทิม", hex: "#EF4444", gradient: "linear-gradient(135deg, #EF4444 0%, #DC2626 50%, #991B1B 100%)", badge: "bg-red-100 text-red-800" },
-      blue: { id: "blue", name: "น้ำเงินรอยัล", hex: "#2563EB", gradient: "linear-gradient(135deg, #3B82F6 0%, #2563EB 50%, #1E40AF 100%)", badge: "bg-blue-100 text-blue-800" },
-      purple: { id: "purple", name: "ม่วงไวโอเล็ต", hex: "#9333EA", gradient: "linear-gradient(135deg, #A855F7 0%, #9333EA 50%, #581C87 100%)", badge: "bg-purple-100 text-purple-800" },
-      emerald: { id: "emerald", name: "เขียวมรกต", hex: "#059669", gradient: "linear-gradient(135deg, #10B981 0%, #059669 50%, #064E3B 100%)", badge: "bg-emerald-100 text-emerald-800" },
-      amber: { id: "amber", name: "ส้มอำพัน", hex: "#D97706", gradient: "linear-gradient(135deg, #F59E0B 0%, #D97706 50%, #78350F 100%)", badge: "bg-amber-100 text-amber-800" }
-    };
-
-    const ICON_PRESETS = [
-      "fa-folder", "fa-book", "fa-heart", "fa-briefcase", "fa-coins", "fa-dice", "fa-lightbulb", "fa-star",
-      "fa-graduation-cap", "fa-dumbbell", "fa-cart-shopping", "fa-wallet", "fa-chart-line", "fa-plane"
-    ];
-
-    let colorPickerTargetIdx = -1;
-    let iconPickerTargetIdx = -1;
-    let newCategorySelectedColor = "red";
-    let newCategorySelectedIcon = "fa-folder";
-
-    window.addEventListener('DOMContentLoaded', () => {
-      initTheme();
-      loadLocalCache();
-      renderColorPickerGrid();
-      renderIconPickerGrid();
-      fetchFromGoogleSheets(false);
-    });
-
-    function loadLocalCache() {
-      try {
-        const cItems = localStorage.getItem('rnd_cache_items');
-        items = cItems ? JSON.parse(cItems) : [...DEFAULT_INITIAL_ITEMS];
-        const cCats = localStorage.getItem('rnd_cache_categories');
-        categories = cCats ? JSON.parse(cCats) : [...DEFAULT_INITIAL_CATEGORIES];
-        const cHist = localStorage.getItem('rnd_cache_history');
-        historyLog = cHist ? JSON.parse(cHist) : [];
-        currentDbVersion = parseInt(localStorage.getItem('rnd_db_version') || '1', 10);
-        currentDbVersionName = localStorage.getItem('rnd_db_version_name') || `v${currentDbVersion}.0`;
-      } catch (e) {
-        items = [...DEFAULT_INITIAL_ITEMS];
-        categories = [...DEFAULT_INITIAL_CATEGORIES];
-      }
-      renderAllUI();
-    }
-
-    function saveLocalCache() {
-      try {
-        localStorage.setItem('rnd_cache_items', JSON.stringify(items));
-        localStorage.setItem('rnd_cache_categories', JSON.stringify(categories));
-        localStorage.setItem('rnd_cache_history', JSON.stringify(historyLog));
-        localStorage.setItem('rnd_db_version', currentDbVersion.toString());
-        localStorage.setItem('rnd_db_version_name', currentDbVersionName);
-      } catch (e) {}
-    }
-
-    function renderAllUI() {
-      const elCount = document.getElementById('total-badge-count');
-      if (elCount) elCount.innerText = items.length;
-      renderCategoryHomeCards();
-      renderDataTable();
-      renderCategoryDropdowns();
-    }
-
-    function renderCategoryDropdowns() {
-      const tableSel = document.getElementById('tableCategoryFilter');
-      if (tableSel) {
-        tableSel.innerHTML = `<option value="ALL">ทุกหมวดหมู่</option>` + categories.map(c => `<option value="${escapeHTML(c.name)}">${escapeHTML(c.name)}</option>`).join('');
-      }
-    }
-
-    function renderCategoryHomeCards() {
-      const grid = document.getElementById('categoryCardsGrid');
-      if (!grid) return;
-      let html = `
-        <div onclick="selectCategoryAndDraw('ALL')" class="cursor-pointer rounded-3xl p-6 text-white shadow-lg flex flex-col justify-between" style="background: linear-gradient(135deg, #1E293B 0%, #0F172A 100%);สาเหตุที่ปุ่มแก้ไขชื่อหมวดหมู่ (รูปดินสอ `fa-pen`) หายไป เกิดจากการย่อฟังก์ชัน `renderCategoryModalList()` ในรอบก่อนหน้า ทำให้ปุ่มเลื่อนลำดับขึ้น-ลง และปุ่มดินสอสำหรับเปลี่ยนชื่อถูกตัดทอนออกไป
-
-ด้านล่างนี้คือโค้ด **`index.html` ฉบับเต็ม** ที่นำปุ่มดินสอแก้ไขชื่อหมวดหมู่ พร้อมปุ่มเลื่อนลำดับและระบบจัดการหมวดหมู่ครบวงจรกลับมาเรียบร้อยแล้ว:
-
-```html
-<!DOCTYPE html>
-<html lang="th" class="dark">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-  <title>Random Data Card Hub</title>
-
-  <!-- Google Fonts: Prompt & Inter -->
-  <link rel="preconnect" href="[https://fonts.googleapis.com](https://fonts.googleapis.com)">
-  <link rel="preconnect" href="[https://fonts.gstatic.com](https://fonts.gstatic.com)" crossorigin>
-  <link href="[https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Prompt:wght@300;400;500;600;700;800&display=swap](https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Prompt:wght@300;400;500;600;700;800&display=swap)" rel="stylesheet">
-
-  <!-- Font Awesome Icons -->
-  <link rel="stylesheet" href="[https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css](https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css)">
-
-  <!-- Tailwind CSS CDN -->
-  <script src="[https://cdn.tailwindcss.com](https://cdn.tailwindcss.com)"></script>
-
-  <!-- Canvas Confetti -->
-  <script src="[https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.2/dist/confetti.browser.min.js](https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.2/dist/confetti.browser.min.js)"></script>
-
-  <script>
-    tailwind.config = {
-      darkMode: 'class',
-      theme: {
-        extend: {
-          fontFamily: {
-            sans: ['Prompt', 'Inter', 'sans-serif'],
-            mono: ['Inter', 'monospace'],
-          },
-          colors: {
-            brand: {
-              primary: '#FFFFFF',
-              accentRed: '#DC2626',
-              accentRedHover: '#B91C1C',
-              neutralGray: '#64748B'
-            }
-          },
-          animation: {
-            'shimmer': 'shimmer 2.2s infinite linear',
-            'pulse-subtle': 'pulseSubtle 2s infinite ease-in-out',
-            'pop-in': 'popIn 0.3s cubic-bezier(0.16, 1, 0.3, 1)',
-          },
-          keyframes: {
-            shimmer: {
-              '0%': { backgroundPosition: '-200% 0' },
-              '100%': { backgroundPosition: '200% 0' }
-            },
-            pulseSubtle: {
-              '0%, 100%': { opacity: '1', transform: 'scale(1)' },
-              '50%': { opacity: '0.88', transform: 'scale(0.98)' }
-            },
-            popIn: {
-              '0%': { opacity: '0', transform: 'scale(0.92) translateY(12px)' },
-              '100%': { opacity: '1', transform: 'scale(1) translateY(0)' }
-            }
-          }
-        }
-      }
-    }
-  </script>
-
-  <style>
-    :root {
-      --app-content-font-size: 26px;
-      --app-desc-font-size: 22px;
-      --theme-btn-gradient: linear-gradient(135deg, #DC2626 0%, #EF4444 50%, #F87171 100%);
-    }
-
-    html {
-      font-size: 16px;
-      line-height: 1.5;
-      -webkit-text-size-adjust: 100%;
-    }
-
-    body {
-      touch-action: manipulation;
-      -webkit-tap-highlight-color: transparent;
-      background-color: #F8FAFC;
-    }
-
-    .dark body {
-      background-color: #0F172A;
-    }
-
-    body, h1, h2, h3, h4, p, span, div, li, button {
-      word-break: break-word;
-      overflow-wrap: break-word;
-    }
-
-    .app-title-text, .dynamic-title-scale {
-      font-size: var(--app-content-font-size) !important;
-      line-height: 1.35 !important;
-    }
-
-    .app-desc-text, .dynamic-desc-scale {
-      font-size: var(--app-desc-font-size) !important;
-      line-height: 1.6 !important;
-    }
-
-    .card-vibrant-glow {
-      box-shadow: 0 0 0 1px rgba(226, 232, 240, 0.8),
-                  0 20px 45px -10px rgba(0, 0, 0, 0.08);
-    }
-    .dark .card-vibrant-glow {
-      box-shadow: 0 0 0 1px rgba(51, 65, 85, 0.7),
-                  0 25px 50px -12px rgba(0, 0, 0, 0.8);
-    }
-
-    .btn-theme-action {
-      background: var(--theme-btn-gradient);
-    }
-
-    input[type=range] {
-      -webkit-appearance: none;
-      background: transparent;
-    }
-    input[type=range]:focus {
-      outline: none;
-    }
-    input[type=range]::-webkit-slider-thumb {
-      -webkit-appearance: none;
-      height: 20px;
-      width: 20px;
-      border-radius: 50%;
-      background: #FFFFFF;
-      border: 3.5px solid #DC2626;
-      box-shadow: 0 2px 5px rgba(0,0,0,0.25);
-      cursor: pointer;
-      margin-top: -7px;
-      transition: transform 0.15s ease;
-    }
-    input[type=range]::-webkit-slider-thumb:hover {
-      transform: scale(1.15);
-    }
-    input[type=range]::-webkit-slider-runnable-track {
-      width: 100%;
-      height: 6px;
-      cursor: pointer;
-      background: #E2E8F0;
-      border-radius: 9999px;
-    }
-    .dark input[type=range]::-webkit-slider-runnable-track {
-      background: #334155;
-    }
-  </style>
-</head>
-<body class="text-slate-800 dark:text-slate-100 min-h-screen flex flex-col font-sans transition-colors duration-200 pb-20 md:pb-6">
-
-  <!-- Header -->
-  <header class="sticky top-0 z-40 bg-white/95 dark:bg-slate-900/95 backdrop-blur-md border-b border-slate-200 dark:border-slate-800 shadow-sm transition-colors">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
-      
-      <div class="flex items-center space-x-3 cursor-pointer group" onclick="switchTab('categories')">
-        <div id="brandLogoIconBox" class="w-10 h-10 rounded-xl flex items-center justify-center text-white shadow-md transform transition group-hover:scale-105 shrink-0 btn-theme-action">
-          <i class="fa-solid fa-cloud-arrow-up text-xl animate-pulse-subtle"></i>
-        </div>
-        <div>
-          <div class="flex items-center space-x-1.5">
-            <span class="font-extrabold text-lg tracking-tight text-slate-900 dark:text-white">RANDOM HUB</span>
-            <span id="brandPillBadge" class="text-[10px] font-bold px-1.5 py-0.5 rounded text-white uppercase tracking-wider btn-theme-action">Pro</span>
-          </div>
-          <p id="cloudSyncStatus" class="text-[11px] text-slate-500 dark:text-slate-400 font-medium hidden sm:flex items-center gap-1">
-            <i class="fa-solid fa-circle text-[8px] text-emerald-500"></i> พร้อมใช้งาน
+          <p class="text-[11px] text-slate-400 leading-relaxed">
+            นำเข้าไฟล์สำรอง (.JSON) ที่มีอยู่เพื่อกู้คืนข้อมูลเข้าเครื่อง แล้วกด Push ขึ้น Cloud ได้ทันที
           </p>
-        </div>
-      </div>
 
-      <!-- Nav Tabs -->
-      <nav class="hidden md:flex items-center space-x-1 bg-slate-100 dark:bg-slate-800/80 p-1 rounded-xl border border-slate-200 dark:border-slate-700">
-        <button id="nav-btn-categories" onclick="switchTab('categories')" class="px-3.5 py-1.5 rounded-lg text-sm font-semibold transition-all flex items-center space-x-2 bg-white dark:bg-slate-700 shadow-sm text-red-600 dark:text-white">
-          <i class="fa-solid fa-folder-tree text-sm"></i><span>หมวดหมู่การ์ด</span>
-        </button>
-        <button id="nav-btn-draw" onclick="switchTab('draw')" class="px-3.5 py-1.5 rounded-lg text-sm font-semibold transition-all flex items-center space-x-2 text-slate-600 dark:text-slate-300 hover:text-red-600 dark:hover:text-white">
-          <i class="fa-solid fa-shuffle text-sm"></i><span>หน้าสุ่ม</span>
-        </button>
-        <button id="nav-btn-data" onclick="switchTab('data')" class="px-3.5 py-1.5 rounded-lg text-sm font-semibold transition-all flex items-center space-x-2 text-slate-600 dark:text-slate-300 hover:text-red-600 dark:hover:text-white">
-          <i class="fa-solid fa-layer-group text-sm"></i><span>คลังข้อมูล (<span id="total-badge-count">0</span>)</span>
-        </button>
-        <button id="nav-btn-history" onclick="switchTab('history')" class="px-3.5 py-1.5 rounded-lg text-sm font-semibold transition-all flex items-center space-x-2 text-slate-600 dark:text-slate-300 hover:text-red-600 dark:hover:text-white">
-          <i class="fa-solid fa-clock-rotate-left text-sm"></i><span>ประวัติ</span>
-        </button>
-        <a href="profile.html" class="px-3.5 py-1.5 rounded-lg text-sm font-semibold transition-all flex items-center space-x-2 text-slate-600 dark:text-slate-300 hover:text-red-600 dark:hover:text-white border-l border-slate-200 dark:border-slate-700 pl-2.5 ml-1">
-          <i class="fa-solid fa-id-card text-sm text-red-500"></i><span>ข้อมูลส่วนตัว</span>
-        </a>
-      </nav>
-
-      <!-- Sync Controls -->
-      <div class="flex items-center space-x-2">
-        <button onclick="forceSyncFromCloud()" title="ดึงข้อมูลจาก Cloud มาแทนที่ในเครื่อง 100%" class="px-2.5 py-1.5 rounded-lg border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-200 hover:bg-slate-50 text-xs font-bold transition flex items-center gap-1.5 shadow-sm">
-          <i id="syncIcon" class="fa-solid fa-rotate text-xs"></i><span class="hidden sm:inline">Sync Cloud</span>
-        </button>
-
-        <button id="soundToggleBtn" onclick="toggleSound()" class="w-8 h-8 rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:text-red-600 flex items-center justify-center transition shadow-sm">
-          <i id="soundIcon" class="fa-solid fa-volume-high text-xs"></i>
-        </button>
-
-        <button onclick="openSettingModal()" class="w-8 h-8 rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:text-red-600 flex items-center justify-center transition shadow-sm">
-          <i class="fa-solid fa-gear text-sm"></i>
-        </button>
-      </div>
-
-    </div>
-  </header>
-
-  <!-- Main Container -->
-  <main class="flex-1 max-w-7xl w-full mx-auto px-3 sm:px-6 lg:px-8 py-4 sm:py-6">
-    
-    <!-- VIEW 1: หมวดหมู่การ์ด -->
-    <section id="view-categories" class="space-y-5 animate-pop-in">
-      <div class="space-y-3 pt-1">
-        <div class="flex items-center justify-between">
-          <h2 class="text-base font-bold text-slate-800 dark:text-white flex items-center gap-2">
-            <i class="fa-solid fa-layer-group text-slate-500"></i>
-            <span>หมวดหมู่การ์ดทั้งหมด</span>
-          </h2>
-          <button onclick="openCategoryModal()" class="text-xs font-bold hover:underline flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-700 text-slate-700 dark:text-slate-200 shadow-sm">
-            <i class="fa-solid fa-sliders text-red-500"></i> จัดการหมวดหมู่การ์ด
-          </button>
-        </div>
-        <div id="categoryCardsGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3.5 sm:gap-4"></div>
-      </div>
-    </section>
-
-    <!-- VIEW 2: RANDOM DRAW VIEW -->
-    <section id="view-draw" class="hidden space-y-6 animate-pop-in">
-      <div class="max-w-xl mx-auto flex items-center justify-between">
-        <button onclick="switchTab('categories')" class="px-3.5 py-2 text-xs font-semibold text-slate-700 dark:text-slate-200 bg-white dark:bg-slate-800 hover:bg-slate-100 rounded-xl transition flex items-center gap-2 border border-slate-200 dark:border-slate-700 shadow-sm">
-          <i class="fa-solid fa-arrow-left"></i><span>เปลี่ยนหมวดหมู่การ์ด</span>
-        </button>
-        <label class="flex items-center gap-2 cursor-pointer select-none bg-white dark:bg-slate-800 px-3 py-1.5 rounded-xl border border-slate-200 dark:border-slate-700 shadow-sm">
-          <input type="checkbox" id="uniqueDrawToggle" onchange="toggleUniqueDrawMode()" class="sr-only peer">
-          <div class="w-8 h-4 bg-slate-300 rounded-full peer dark:bg-slate-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border after:rounded-full after:h-3 after:w-3 after:transition-all peer-checked:bg-red-600 relative"></div>
-          <span class="text-xs font-semibold text-slate-700 dark:text-slate-300">สุ่มไม่ซ้ำ</span>
-        </label>
-      </div>
-
-      <div class="relative max-w-xl mx-auto">
-        <div class="relative bg-white dark:bg-slate-800 rounded-3xl border border-slate-200 dark:border-slate-700 card-vibrant-glow p-8 sm:p-12 text-center shadow-xl space-y-8">
-          <div class="space-y-3">
-            <div class="inline-flex items-center justify-center p-3.5 rounded-2xl shadow-sm text-2xl text-white" id="stageCategoryIconWrapper">
-              <i id="stageCategoryIcon" class="fa-solid fa-dice"></i>
-            </div>
-            <div>
-              <span class="text-xs font-bold uppercase tracking-wider text-slate-400 block mb-1">หมวดหมู่การ์ดที่เลือก</span>
-              <h2 id="stageCategoryTitle" class="app-title-text font-extrabold text-slate-900 dark:text-white">ทุกหมวดหมู่</h2>
-            </div>
-            <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-slate-100 dark:bg-slate-700/80 text-xs font-mono font-semibold text-slate-600 dark:text-slate-300">
-              <i class="fa-solid fa-layer-group text-[10px]"></i>
-              <span>คงเหลือในกอง: <strong id="poolRemainingBadge" class="text-red-500 font-bold">0/0</strong></span>
-            </div>
-          </div>
-          <div class="pt-2">
-            <button onclick="triggerRandomDraw()" class="w-full btn-theme-action text-white py-5 px-8 rounded-2xl font-extrabold text-xl sm:text-2xl shadow-xl hover:scale-[1.02] active:scale-[0.98] transition-all flex items-center justify-center gap-3">
-              <i class="fa-solid fa-dice-five text-3xl"></i><span>สุ่มข้อมูลการ์ด</span>
+          <div class="grid grid-cols-3 gap-2 pt-1">
+            <button onclick="exportDatabaseToCSV()" class="w-full py-2.5 px-2 rounded-xl bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-300 dark:border-emerald-700 hover:bg-emerald-100 text-emerald-700 dark:text-emerald-300 text-xs font-bold flex flex-col items-center justify-center gap-1 shadow-sm transition">
+              <i class="fa-solid fa-file-excel text-base text-emerald-600"></i>
+              <span>Sheets (.CSV)</span>
             </button>
+            <button onclick="exportDatabase()" class="w-full py-2.5 px-2 rounded-xl bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-600 hover:border-slate-400 text-slate-700 dark:text-slate-200 text-xs font-bold flex flex-col items-center justify-center gap-1 shadow-sm transition">
+              <i class="fa-solid fa-download text-base text-blue-500"></i>
+              <span>Backup (.JSON)</span>
+            </button>
+            <button onclick="triggerImportDatabase()" class="w-full py-2.5 px-2 rounded-xl bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-600 hover:border-blue-500 text-slate-700 dark:text-slate-200 text-xs font-bold flex flex-col items-center justify-center gap-1 shadow-sm transition">
+              <i class="fa-solid fa-upload text-base text-purple-500"></i>
+              <span>Import</span>
+            </button>
+            <input type="file" id="importFileInput" accept=".json" onchange="handleImportFile(event)" class="hidden">
           </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- VIEW 3: คลังข้อมูลการ์ด -->
-    <section id="view-data" class="hidden space-y-4 animate-pop-in">
-      <div class="bg-white/80 dark:bg-slate-800/80 backdrop-blur border border-slate-200 dark:border-slate-700 rounded-2xl p-4 shadow-sm flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3">
-        <div class="flex flex-wrap items-center gap-2 flex-1">
-          <div class="relative flex-1 min-w-[180px]">
-            <input type="text" id="searchInput" oninput="renderDataTable()" placeholder="ค้นหาการ์ด..." class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-300 dark:border-slate-700 text-sm rounded-xl pl-9 pr-3 py-2 outline-none">
-            <i class="fa-solid fa-magnifying-glass absolute left-3 top-3 text-slate-400 text-xs"></i>
-          </div>
-          <div class="relative w-full sm:w-44">
-            <select id="tableCategoryFilter" onchange="renderDataTable()" class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-300 dark:border-slate-700 text-sm rounded-xl px-3 py-2 pr-8 outline-none"></select>
-          </div>
-        </div>
-        <div class="flex items-center gap-2 justify-end">
-          <button onclick="openAddEditModal()" class="px-4 py-2 text-white font-semibold text-xs sm:text-sm rounded-xl shadow btn-theme-action flex items-center gap-2">
-            <i class="fa-solid fa-plus"></i><span>สร้างการ์ดใหม่</span>
-          </button>
-          <button onclick="forceSyncFromCloud()" class="p-2 sm:px-3.5 sm:py-2 bg-slate-100 dark:bg-slate-700 border border-slate-300 dark:border-slate-600 text-xs sm:text-sm font-semibold rounded-xl hover:bg-slate-200 transition">
-            <i class="fa-solid fa-arrows-rotate"></i>
-          </button>
-        </div>
-      </div>
-
-      <div class="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-2xl shadow-sm overflow-hidden">
-        <div class="hidden sm:block overflow-x-auto">
-          <table class="w-full text-left text-xs sm:text-sm text-slate-600 dark:text-slate-300 border-collapse">
-            <thead class="bg-slate-50 dark:bg-slate-900/60 border-b border-slate-200 dark:border-slate-700 text-[11px] uppercase font-bold text-slate-500 whitespace-nowrap">
-              <tr>
-                <th class="py-3 px-3 text-center w-10">#</th>
-                <th class="py-3 px-3 w-20 text-center">สถานะ</th>
-                <th class="py-3 px-4 min-w-[180px]">ชื่อการ์ด</th>
-                <th class="py-3 px-3 text-indigo-500 min-w-[110px]">ใช้กับ</th>
-                <th class="py-3 px-3 text-blue-500 text-right min-w-[80px]">PV</th>
-                <th class="py-3 px-3 text-red-600 text-right min-w-[80px]">ราคา</th>
-                <th class="py-3 px-3 text-green-500 text-right min-w-[90px]">Active</th>
-                <th class="py-3 px-3 text-emerald-500 text-right min-w-[90px]">Passive</th>
-                <th class="py-3 px-3 text-center min-w-[90px]">หมวดหมู่</th>
-                <th class="py-3 px-3 text-center w-28 sticky right-0 bg-slate-50 dark:bg-slate-900 shadow-l">จัดการ</th>
-              </tr>
-            </thead>
-            <tbody id="tableBodyDesktop" class="divide-y divide-slate-100 dark:divide-slate-700/60"></tbody>
-          </table>
-        </div>
-        <div id="tableBodyMobile" class="sm:hidden p-3 space-y-3"></div>
-      </div>
-    </section>
-
-    <!-- VIEW 4: ประวัติการสุ่ม -->
-    <section id="view-history" class="hidden space-y-4 animate-pop-in">
-      <div class="bg-white/80 dark:bg-slate-800/80 backdrop-blur border border-slate-200 dark:border-slate-700 rounded-2xl p-4 shadow-sm flex items-center justify-between">
-        <h3 class="font-bold text-slate-800 dark:text-white flex items-center gap-2"><i class="fa-solid fa-clock-rotate-left"></i><span>ประวัติการสุ่ม</span></h3>
-        <button onclick="clearHistoryLog()" class="px-3 py-1.5 text-xs font-semibold text-red-600 hover:bg-rose-50 rounded-xl transition border border-rose-200">Clear</button>
-      </div>
-      <div class="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-2xl shadow-sm overflow-hidden">
-        <ul id="historyListContainer" class="divide-y divide-slate-100 dark:divide-slate-700/60"></ul>
-      </div>
-    </section>
-  </main>
-
-  <!-- Progress Overlay Modal -->
-  <div id="syncProgressModal" class="hidden fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-md flex items-center justify-center p-4">
-    <div class="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-3xl max-w-sm w-full p-6 text-center shadow-2xl relative space-y-4">
-      <div class="w-16 h-16 rounded-2xl bg-blue-50 dark:bg-blue-950/60 border border-blue-200 dark:border-blue-800 text-blue-600 dark:text-blue-400 flex items-center justify-center mx-auto text-2xl shadow-inner">
-        <i id="syncProgressIcon" class="fa-solid fa-cloud-arrow-up animate-bounce"></i>
-      </div>
-      <div class="space-y-1">
-        <h3 id="syncProgressTitle" class="text-base font-extrabold text-slate-900 dark:text-white">กำลังส่งข้อมูลขึ้น Cloud</h3>
-        <p id="syncProgressStatusText" class="text-xs text-slate-500 dark:text-slate-400 font-medium">กำลังเตรียมแพ็กเกจ...</p>
-      </div>
-      <div class="space-y-1.5">
-        <div class="w-full bg-slate-100 dark:bg-slate-700/80 rounded-full h-3 p-0.5 overflow-hidden border border-slate-200 dark:border-slate-600">
-          <div id="syncProgressBar" class="h-full rounded-full bg-gradient-to-r from-blue-500 via-indigo-500 to-emerald-500 transition-all duration-300" style="width: 0%;"></div>
-        </div>
-        <div class="flex items-center justify-between text-[11px] font-mono text-slate-400 font-bold px-1">
-          <span id="syncProgressStep">ขั้นตอน 1/3</span>
-          <span id="syncProgressPercent" class="text-indigo-600 dark:text-indigo-400 text-xs">0%</span>
-        </div>
-      </div>
-      <button type="button" id="syncProgressCloseBtn" onclick="closeSyncProgressModal()" class="hidden w-full py-2.5 rounded-xl text-xs font-bold bg-slate-100 dark:bg-slate-700 hover:bg-slate-200 transition">ปิด</button>
-    </div>
-  </div>
-
-  <!-- Setting Modal (Tab General + Data Base) -->
-  <div id="settingModal" class="hidden fixed inset-0 z-50 bg-slate-950/75 backdrop-blur-sm flex items-center justify-center p-3 sm:p-4 overflow-y-auto">
-    <div class="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-3xl max-w-xl w-full p-5 sm:p-6 shadow-2xl relative space-y-4 my-auto">
-      <div class="flex items-center justify-between pb-3 border-b border-slate-100 dark:border-slate-700">
-        <h3 class="font-bold text-base text-slate-900 dark:text-white flex items-center gap-2"><i class="fa-solid fa-gear"></i><span>การตั้งค่า & ฐานข้อมูล</span></h3>
-        <button onclick="closeSettingModal()" class="w-8 h-8 rounded-lg text-slate-400 hover:text-slate-700 flex items-center justify-center"><i class="fa-solid fa-xmark text-lg"></i></button>
-      </div>
-
-      <div class="grid grid-cols-2 gap-1 bg-slate-100 dark:bg-slate-900/60 p-1 rounded-2xl border border-slate-200 dark:border-slate-700 text-xs font-bold text-center">
-        <button type="button" id="tabSettingGeneralBtn" onclick="switchSettingTab('general')" class="py-2 rounded-xl transition bg-white dark:bg-slate-800 text-red-600 dark:text-white shadow-sm">ทั่วไป (General)</button>
-        <button type="button" id="tabSettingDatabaseBtn" onclick="switchSettingTab('database')" class="py-2 rounded-xl transition text-slate-500 hover:text-slate-800 dark:hover:text-white">ฐานข้อมูล (Data Base)</button>
-      </div>
-
-      <!-- Tab General -->
-      <div id="settingTabContentGeneral" class="space-y-4">
-        <div class="p-3 bg-slate-50 dark:bg-slate-900/60 rounded-2xl border border-slate-200 dark:border-slate-700/80 flex items-center justify-between">
-          <span class="text-xs font-bold">โหมดสว่าง / มืด</span>
-          <button onclick="toggleTheme()" class="px-3 py-1.5 rounded-xl text-xs font-bold border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-800">สลับโหมด</button>
         </div>
       </div>
 
@@ -932,7 +415,7 @@
     </div>
   </div>
 
-  <!-- Category Manager Modal (พร้อมปุ่มดินสอแก้ไขชื่อ และเลื่อนลำดับ) -->
+  <!-- Category Manager Modal -->
   <div id="categoryModal" class="hidden fixed inset-0 z-50 bg-slate-950/70 backdrop-blur-sm flex items-center justify-center p-4 overflow-y-auto">
     <div class="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-3xl max-w-lg w-full p-5 space-y-4">
       <div class="flex justify-between items-center border-b pb-3">
@@ -983,7 +466,7 @@
 
   <!-- JavaScript -->
   <script>
-    const GOOGLE_SHEET_API_URL = "[https://script.google.com/macros/s/AKfycbzq9oD33K3nf_r2JRq5RjCafAQIvt2o9ywvJ1EvXvVg4l9QyUalIuQvxxT7zQ890nR1/exec](https://script.google.com/macros/s/AKfycbzq9oD33K3nf_r2JRq5RjCafAQIvt2o9ywvJ1EvXvVg4l9QyUalIuQvxxT7zQ890nR1/exec)";
+    const GOOGLE_SHEET_API_URL = "https://script.google.com/macros/s/AKfycbzq9oD33K3nf_r2JRq5RjCafAQIvt2o9ywvJ1EvXvVg4l9QyUalIuQvxxT7zQ890nR1/exec";
 
     const DEFAULT_INITIAL_CATEGORIES = [
       { name: "ทั่วไป", icon: "fa-folder", color: "red" },
@@ -1017,7 +500,10 @@
       amber: { id: "amber", name: "ส้มอำพัน", hex: "#D97706", gradient: "linear-gradient(135deg, #F59E0B 0%, #D97706 50%, #78350F 100%)", badge: "bg-amber-100 text-amber-800" }
     };
 
-    const ICON_PRESETS = ["fa-folder", "fa-book", "fa-heart", "fa-briefcase", "fa-coins", "fa-dice", "fa-lightbulb", "fa-star"];
+    const ICON_PRESETS = [
+      "fa-folder", "fa-book", "fa-heart", "fa-briefcase", "fa-coins", "fa-dice", "fa-lightbulb", "fa-star",
+      "fa-graduation-cap", "fa-dumbbell", "fa-cart-shopping", "fa-wallet", "fa-chart-line", "fa-plane"
+    ];
 
     let colorPickerTargetIdx = -1;
     let iconPickerTargetIdx = -1;
@@ -1299,9 +785,7 @@
     }
     function closeCategoryModal() { document.getElementById('categoryModal').classList.add('hidden'); }
 
-    /* ==========================================================================
-       จัดการหมวดหมู่การ์ด (มีปุ่มดินสอแก้ไขชื่อ และปุ่มเลื่อนลำดับขึ้นลง)
-       ========================================================================== */
+    /* จัดการหมวดหมู่การ์ด (มีปุ่มดินสอแก้ไขชื่อ และปุ่มเลื่อนลำดับขึ้นลง) */
     function renderCategoryModalList() {
       const container = document.getElementById('categoryListContainer');
       if (!container) return;
@@ -1408,6 +892,105 @@
       renderAllUI();
       renderCategoryModalList();
       showToast('ลบหมวดหมู่เรียบร้อยแล้ว');
+    }
+
+    /* Backup, Export & Import Database */
+    function exportDatabaseToCSV() {
+      if (!items || items.length === 0) {
+        showToast('ไม่มีข้อมูลการ์ดในระบบสำหรับส่งออก');
+        return;
+      }
+      const headers = ["ID", "ชื่อการ์ด (Title)", "เป้าหมาย (Target)", "PV", "ราคา", "หมวดหมู่", "Active", "Passive"];
+      const rows = items.map(item => [
+        `"${item.id || ''}"`,
+        `"${(item.title || '').replace(/"/g, '""')}"`,
+        `"${item.targetLeg ? 'สายงาน ' + item.targetLeg : 'ส่วนตัว'}"`,
+        item.pv || 0,
+        item.price || 0,
+        `"${item.category || ''}"`,
+        item.activeIncome || 0,
+        item.passiveIncome || 0
+      ].join(","));
+
+      const csvContent = "\uFEFF" + [headers.join(","), ...rows].join("\r\n");
+      const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement("a");
+      link.setAttribute("href", url);
+      link.setAttribute("download", `Cards_Database_${new Date().toISOString().slice(0, 10)}.csv`);
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      URL.revokeObjectURL(url);
+      showToast('ส่งออกไฟล์ CSV สำเร็จ 📊');
+    }
+
+    function exportDatabase() {
+      const dbPayload = {
+        app: "RandomDataCardHub",
+        version: "1.0",
+        dbVersion: currentDbVersion,
+        dbVersionName: currentDbVersionName,
+        exportDate: new Date().toISOString(),
+        categories: categories,
+        items: items,
+        historyLog: historyLog
+      };
+
+      const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(dbPayload, null, 2));
+      const downloadAnchor = document.createElement('a');
+      downloadAnchor.setAttribute("href", dataStr);
+      downloadAnchor.setAttribute("download", `database_backup_${currentDbVersionName}_${new Date().toISOString().slice(0,10)}.json`);
+      document.body.appendChild(downloadAnchor);
+      downloadAnchor.click();
+      downloadAnchor.remove();
+      showToast('ส่งออกไฟล์สำรองฐานข้อมูลสำเร็จ 📥');
+    }
+
+    function triggerImportDatabase() {
+      document.getElementById('importFileInput').click();
+    }
+
+    function handleImportFile(event) {
+      const file = event.target.files[0];
+      if (!file) return;
+
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        try {
+          const importedData = JSON.parse(e.target.result);
+          if (!importedData || !Array.isArray(importedData.items)) {
+            showToast('รูปแบบไฟล์สำรองไม่ถูกต้อง');
+            return;
+          }
+
+          if (confirm(`พบข้อมูล ${importedData.items.length} รายการ ต้องการนำเข้าข้อมูลใช่หรือไม่?`)) {
+            items = importedData.items;
+            if (Array.isArray(importedData.categories) && importedData.categories.length > 0) {
+              categories = importedData.categories;
+            }
+            if (Array.isArray(importedData.historyLog)) {
+              historyLog = importedData.historyLog;
+            }
+            if (importedData.dbVersion) {
+              currentDbVersion = importedData.dbVersion;
+            }
+            if (importedData.dbVersionName) {
+              currentDbVersionName = importedData.dbVersionName;
+            }
+
+            isCloudSyncedSession = true;
+            saveLocalCache();
+            renderAllUI();
+            closeSettingModal();
+            showToast('นำเข้าฐานข้อมูลสำเร็จแล้ว! สามารถกด Push เพื่อส่งขึ้น Cloud ได้ทันที 📤✅');
+          }
+        } catch (err) {
+          showToast('ไม่สามารถอ่านไฟล์ JSON ได้');
+        }
+      };
+      reader.readAsText(file);
+      event.target.value = '';
     }
 
     function renderColorPickerGrid() {
