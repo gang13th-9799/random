@@ -143,7 +143,6 @@
         <button id="nav-btn-profile" onclick="switchProfileTab('profile')" class="px-4 py-2 rounded-xl text-sm font-bold transition-all flex items-center space-x-2.5 bg-white dark:bg-slate-700 shadow text-rose-500 dark:text-white">
           <i class="fa-solid fa-id-card text-base text-rose-500 icon-vibrant"></i><span>ข้อมูลตัวละคร</span>
         </button>
-        <!-- ซ่อนปุ่มจัดการอาชีพ & คุณสมบัติ สำหรับผู้เล่นทั่วไป (Admin เท่านั้น) -->
         <button id="nav-btn-careers" onclick="switchProfileTab('careers')" class="hidden px-4 py-2 rounded-xl text-sm font-bold transition-all flex items-center space-x-2.5 text-slate-600 dark:text-slate-300 hover:text-rose-500">
           <i class="fa-solid fa-user-tie text-base text-purple-500 icon-vibrant"></i><span>จัดการอาชีพ (Admin)</span>
         </button>
@@ -189,7 +188,7 @@
   <!-- Main Container -->
   <main class="flex-1 max-w-7xl w-full mx-auto px-3 sm:px-6 lg:px-8 py-5">
     
-    <!-- VIEW 1: ข้อมูลตัวละคร & ทรัพยากร & สายงาน & คุณสมบัติ (หน้า Dashboard ผู้เล่น) -->
+    <!-- VIEW 1: ข้อมูลตัวละคร & ทรัพยากร & สายงาน & คุณสมบัติ -->
     <section id="view-profile" class="space-y-6 animate-pop-in">
       
       <!-- Player Banner + ปุ่มเลือกอาชีพ -->
@@ -225,56 +224,67 @@
         </div>
       </div>
 
-      <!-- แถบแจ้งเตือนกรณีผู้เล่นยังไม่ได้เลือกอาชีพ -->
+      <!-- แบนเนอร์เตือนกรณีไม่เลือกอาชีพ -->
       <div id="unselectedCareerBanner" class="hidden p-4 rounded-3xl bg-amber-50 dark:bg-amber-950/40 border border-amber-300 dark:border-amber-700 text-amber-800 dark:text-amber-200 text-xs sm:text-sm font-bold flex items-center gap-3">
         <i class="fa-solid fa-circle-exclamation text-xl text-amber-500 shrink-0"></i>
         <span>คุณยังไม่ได้เลือกอาชีพ! ข้อมูลธุรกิจ ทรัพยากร และสายงานทั้งหมดจะแสดงเป็น 0 จนกว่าคุณจะกด <strong>"เลือกอาชีพ"</strong></span>
       </div>
 
-      <!-- แถบข้อมูลธุรกิจส่วนตัว (Personal Business Stats Bar) -->
+      <!-- แถบข้อมูลธุรกิจส่วนตัว (เงินเดือน, รายจ่ายประจำ, เงินคงเหลือ, เงินสด, PV, Active, Passive) -->
       <div class="space-y-3">
         <div class="flex items-center justify-between">
           <h3 class="font-black text-base sm:text-lg text-slate-900 dark:text-white flex items-center gap-2">
             <i class="fa-solid fa-briefcase text-amber-500 text-xl"></i>
             <span>ข้อมูลธุรกิจส่วนตัว (Personal Business)</span>
           </h3>
-          <span class="text-xs font-mono font-bold text-slate-400">สถานะปัจจุบัน</span>
+          <span class="text-xs font-mono font-bold text-slate-400">อัปเดตตามอาชีพหลัก</span>
         </div>
 
-        <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3.5">
-          <!-- 1. เงินสดคงเหลือ -->
-          <div class="bg-white dark:bg-slate-800 p-4 rounded-3xl border border-slate-200 dark:border-slate-700 shadow-sm space-y-1.5">
-            <span class="text-xs text-slate-400 font-bold block flex items-center gap-1.5"><i class="fa-solid fa-wallet text-amber-500"></i>เงินสดคงเหลือ</span>
-            <div class="text-lg sm:text-xl font-black text-amber-500 font-mono" id="statCash">฿0</div>
-            <input type="number" id="inputCash" onchange="updatePlayerFinance()" value="0" class="w-full text-xs font-mono bg-slate-50 dark:bg-slate-900 border rounded-xl p-1.5 outline-none dark:border-slate-700">
+        <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-7 gap-3">
+          <!-- 1. เงินเดือน -->
+          <div class="bg-white dark:bg-slate-800 p-3.5 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm space-y-1">
+            <span class="text-[11px] text-slate-400 font-bold block">เงินเดือน (Salary)</span>
+            <div class="text-base sm:text-lg font-black text-blue-500 font-mono" id="statSalary">฿0</div>
           </div>
 
-          <!-- 2. ยอดธุรกิจส่วนตัว (บาท) -->
-          <div class="bg-white dark:bg-slate-800 p-4 rounded-3xl border border-slate-200 dark:border-slate-700 shadow-sm space-y-1.5">
-            <span class="text-xs text-slate-400 font-bold block flex items-center gap-1.5"><i class="fa-solid fa-bag-shopping text-rose-500"></i>ยอดส่วนตัว (บาท)</span>
-            <div class="text-lg sm:text-xl font-black text-rose-500 font-mono" id="statPersonalVolumeBaht">฿0</div>
-            <input type="number" id="inputPersonalVolumeBaht" onchange="updatePlayerFinance()" value="0" class="w-full text-xs font-mono bg-slate-50 dark:bg-slate-900 border rounded-xl p-1.5 outline-none dark:border-slate-700">
+          <!-- 2. รายจ่ายประจำ -->
+          <div class="bg-white dark:bg-slate-800 p-3.5 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm space-y-1">
+            <span class="text-[11px] text-slate-400 font-bold block">รายจ่ายประจำ</span>
+            <div class="text-base sm:text-lg font-black text-rose-500 font-mono" id="statExpenses">฿0</div>
           </div>
 
-          <!-- 3. PV ส่วนตัว -->
-          <div class="bg-white dark:bg-slate-800 p-4 rounded-3xl border border-slate-200 dark:border-slate-700 shadow-sm space-y-1.5">
-            <span class="text-xs text-cyan-400 font-black block flex items-center gap-1.5">PV ส่วนตัว</span>
-            <div class="text-lg sm:text-xl font-black text-cyan-400 font-mono" id="statPersonalPv">0</div>
-            <input type="number" id="inputPersonalPv" onchange="updatePlayerFinance()" value="0" class="w-full text-xs font-mono bg-slate-50 dark:bg-slate-900 border rounded-xl p-1.5 outline-none dark:border-slate-700">
+          <!-- 3. เงินคงเหลือต่อเดือน -->
+          <div class="bg-white dark:bg-slate-800 p-3.5 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm space-y-1">
+            <span class="text-[11px] text-slate-400 font-bold block" title="(Active + Passive + เงินเดือน) - รายจ่าย">เงินเหลือ/เดือน</span>
+            <div class="text-base sm:text-lg font-black text-emerald-400 font-mono" id="statNetMonthly">฿0</div>
           </div>
 
-          <!-- 4. Active Income ส่วนตัว -->
-          <div class="bg-white dark:bg-slate-800 p-4 rounded-3xl border border-slate-200 dark:border-slate-700 shadow-sm space-y-1.5">
-            <span class="text-xs text-emerald-500 font-bold block flex items-center gap-1.5"><i class="fa-solid fa-hand-holding-dollar text-emerald-400"></i>Active ส่วนตัว</span>
-            <div class="text-lg sm:text-xl font-black text-emerald-500 font-mono" id="statActiveIncome">฿0</div>
-            <input type="number" id="inputActiveIncome" onchange="updatePlayerFinance()" value="0" class="w-full text-xs font-mono bg-slate-50 dark:bg-slate-900 border rounded-xl p-1.5 outline-none dark:border-slate-700">
+          <!-- 4. เงินสด -->
+          <div class="bg-white dark:bg-slate-800 p-3.5 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm space-y-1">
+            <span class="text-[11px] text-slate-400 font-bold block">เงินสดคงเหลือ</span>
+            <div class="text-base sm:text-lg font-black text-amber-500 font-mono" id="statCash">฿0</div>
+            <input type="number" id="inputCash" onchange="updatePlayerFinance()" value="0" class="w-full text-[11px] font-mono bg-slate-50 dark:bg-slate-900 border rounded-lg p-1 outline-none dark:border-slate-700">
           </div>
 
-          <!-- 5. Passive Income ส่วนตัว -->
-          <div class="bg-white dark:bg-slate-800 p-4 rounded-3xl border border-slate-200 dark:border-slate-700 shadow-sm space-y-1.5 col-span-2 sm:col-span-1">
-            <span class="text-xs text-teal-400 font-bold block flex items-center gap-1.5"><i class="fa-solid fa-seedling text-teal-400"></i>Passive ส่วนตัว</span>
-            <div class="text-lg sm:text-xl font-black text-teal-400 font-mono" id="statPassiveIncome">฿0</div>
-            <input type="number" id="inputPassiveIncome" onchange="updatePlayerFinance()" value="0" class="w-full text-xs font-mono bg-slate-50 dark:bg-slate-900 border rounded-xl p-1.5 outline-none dark:border-slate-700">
+          <!-- 5. PV ส่วนตัว -->
+          <div class="bg-white dark:bg-slate-800 p-3.5 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm space-y-1">
+            <span class="text-[11px] text-cyan-400 font-black block">PV ส่วนตัว</span>
+            <div class="text-base sm:text-lg font-black text-cyan-400 font-mono" id="statPersonalPv">0</div>
+            <input type="number" id="inputPersonalPv" onchange="updatePlayerFinance()" value="0" class="w-full text-[11px] font-mono bg-slate-50 dark:bg-slate-900 border rounded-lg p-1 outline-none dark:border-slate-700">
+          </div>
+
+          <!-- 6. Active Income -->
+          <div class="bg-white dark:bg-slate-800 p-3.5 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm space-y-1">
+            <span class="text-[11px] text-emerald-500 font-bold block">Active Income</span>
+            <div class="text-base sm:text-lg font-black text-emerald-500 font-mono" id="statActiveIncome">฿0</div>
+            <input type="number" id="inputActiveIncome" onchange="updatePlayerFinance()" value="0" class="w-full text-[11px] font-mono bg-slate-50 dark:bg-slate-900 border rounded-lg p-1 outline-none dark:border-slate-700">
+          </div>
+
+          <!-- 7. Passive Income -->
+          <div class="bg-white dark:bg-slate-800 p-3.5 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm space-y-1 col-span-2 sm:col-span-1">
+            <span class="text-[11px] text-teal-400 font-bold block">Passive Income</span>
+            <div class="text-base sm:text-lg font-black text-teal-400 font-mono" id="statPassiveIncome">฿0</div>
+            <input type="number" id="inputPassiveIncome" onchange="updatePlayerFinance()" value="0" class="w-full text-[11px] font-mono bg-slate-50 dark:bg-slate-900 border rounded-lg p-1 outline-none dark:border-slate-700">
           </div>
         </div>
       </div>
@@ -284,32 +294,30 @@
         <h3 class="font-black text-base sm:text-lg text-slate-900 dark:text-white flex items-center gap-2">
           <i class="fa-solid fa-battery-three-quarters text-emerald-500 text-xl"></i><span>คลังทรัพยากรตัวละคร (ค่าพลัง 1 - 10)</span>
         </h3>
-        
         <div class="grid grid-cols-1 sm:grid-cols-3 gap-4" id="dashboardResourcesContainer"></div>
       </div>
 
-      <!-- ผังสายงาน 6 สาย (Leg A-F: PV, ระดับ %, Active income, Passive income) -->
+      <!-- ผังสายงาน A-F (PV, ระดับ %, Active income, Passive income) -->
       <div class="bg-white dark:bg-slate-800 p-5 sm:p-6 rounded-3xl border border-slate-200 dark:border-slate-700 shadow-sm space-y-4">
         <div class="flex items-center justify-between">
           <div>
             <h3 class="font-black text-base sm:text-lg text-slate-900 dark:text-white flex items-center gap-2">
               <i class="fa-solid fa-sitemap text-indigo-400 text-xl"></i><span>โครงสร้างสายงาน A - F (ตารางเกณฑ์ % Amway)</span>
             </h3>
-            <p class="text-xs text-slate-500 dark:text-slate-400 pt-0.5">PV, ระดับ % (3%-21%), Active Income และ Passive Income แยกตามแต่ละสาย</p>
+            <p class="text-xs text-slate-500 dark:text-slate-400 pt-0.5">PV, ระดับ %, Active Income และ Passive Income ของแต่ละสาย</p>
           </div>
           <span class="text-xs font-mono font-bold text-slate-400">อัปเดตอัตโนมัติ</span>
         </div>
-
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6 gap-3.5" id="legsGridContainer"></div>
       </div>
 
-      <!-- รายการคุณสมบัติที่ดึงจากฐานข้อมูลหลัก -->
+      <!-- เกณฑ์คุณสมบัติ (Checkbox) -->
       <div class="bg-white dark:bg-slate-800 p-5 sm:p-6 rounded-3xl border border-slate-200 dark:border-slate-700 shadow-sm space-y-4">
         <div>
           <h3 class="font-black text-base sm:text-lg text-slate-900 dark:text-white flex items-center gap-2">
             <i class="fa-solid fa-certificate text-emerald-500 text-xl"></i><span>เกณฑ์คุณสมบัติ & ความสำเร็จของผู้เล่น</span>
           </h3>
-          <p class="text-xs text-slate-500 dark:text-slate-400 pt-0.5">ดึงเกณฑ์จากฐานข้อมูลหลัก แสดงทันทีแม้ยังไม่เลือกอาชีพ และมี Checkbox เพื่อบันทึกสถานะ</p>
+          <p class="text-xs text-slate-500 dark:text-slate-400 pt-0.5">ดึงเกณฑ์จากฐานข้อมูลหลัก แสดงทันทีและมี Checkbox เพื่อบันทึกสถานะ</p>
         </div>
         <div class="grid grid-cols-1 md:grid-cols-2 gap-3.5" id="playerDashboardQualificationsGrid"></div>
       </div>
@@ -323,10 +331,10 @@
           <h3 class="font-black text-lg text-slate-900 dark:text-white flex items-center gap-2">
             <i class="fa-solid fa-user-tie text-purple-500 text-xl"></i><span>ฐานข้อมูลอาชีพหลัก (Master Careers)</span>
           </h3>
-          <p class="text-xs text-slate-400 font-medium">เฉพาะ Admin ที่สามารถเพิ่ม ลบ หรือแก้ไขฐานข้อมูลหลักนี้ได้</p>
+          <p class="text-xs text-slate-400 font-medium">เฉพาะ Admin ที่สามารถเพิ่ม ลบ หรือแก้ไขชื่ออาชีพ เงินเดือน รายจ่ายประจำ และทรัพยากรเริ่มต้นได้</p>
         </div>
         <button id="addCareerBtn" onclick="openAddCareerModal()" class="px-5 py-2.5 rounded-2xl text-white font-black text-xs sm:text-sm btn-theme-action shadow hover:scale-105 transition flex items-center gap-1.5">
-          <i class="fa-solid fa-plus-circle"></i><span>เพิ่มอาชีพใหม่</span>
+          <i class="fa-solid fa-plus-circle"></i><span>เพิ่มอาชีพหลัก</span>
         </button>
       </div>
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4" id="careersListContainer"></div>
@@ -339,7 +347,7 @@
           <h3 class="font-black text-lg text-slate-900 dark:text-white flex items-center gap-2">
             <i class="fa-solid fa-certificate text-emerald-500 text-xl"></i><span>ฐานข้อมูลคุณสมบัติหลัก (Master Qualifications)</span>
           </h3>
-          <p class="text-xs text-slate-400 font-medium">เฉพาะ Admin ที่สามารถเพิ่ม ลบ หรือแก้ไขเกณฑ์หลักนี้ได้</p>
+          <p class="text-xs text-slate-400 font-medium">เฉพาะ Admin ที่สามารถจัดการเกณฑ์หลักนี้ได้</p>
         </div>
         <button id="addQualificationBtn" onclick="openAddQualificationModal()" class="px-5 py-2.5 rounded-2xl text-white font-black text-xs sm:text-sm btn-theme-action shadow hover:scale-105 transition flex items-center gap-1.5">
           <i class="fa-solid fa-plus-circle"></i><span>เพิ่มเกณฑ์คุณสมบัติ</span>
@@ -400,7 +408,7 @@
             <i class="fa-solid fa-user-tie text-purple-500"></i>
             <span>เลือกสายอาชีพของคุณ</span>
           </h3>
-          <p class="text-xs text-slate-400">เลือกอาชีพเพื่อเปิดใช้งาน Dashboard ธุรกิจ และรับเงินรายได้ประจำเดือน</p>
+          <p class="text-xs text-slate-400">เลือกอาชีพเพื่อกำหนดเงินเดือน รายจ่ายประจำ และทรัพยากรเริ่มต้น</p>
         </div>
         <button type="button" onclick="closePlayerCareerSelectModal()" class="w-8 h-8 rounded-xl text-slate-400 hover:text-slate-600 flex items-center justify-center">
           <i class="fa-solid fa-xmark text-lg"></i>
@@ -408,6 +416,68 @@
       </div>
 
       <div class="grid grid-cols-1 sm:grid-cols-2 gap-3.5 max-h-[60vh] overflow-y-auto pr-1" id="playerCareerModalGrid"></div>
+    </div>
+  </div>
+
+  <!-- CAREER MODAL (Admin เพิ่ม/แก้ไขอาชีพหลัก พร้อม เงินเดือน รายจ่าย เงินสด ทรัพยากร) -->
+  <div id="careerModal" class="hidden fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-md flex items-center justify-center p-4 overflow-y-auto">
+    <div class="relative max-w-md w-full bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl p-6 shadow-2xl space-y-4 my-auto">
+      <div class="flex items-center justify-between border-b pb-3">
+        <h3 id="careerModalTitle" class="font-black text-base text-slate-900 dark:text-white flex items-center gap-2">
+          <i class="fa-solid fa-briefcase text-purple-500"></i>
+          <span>จัดการฐานข้อมูลอาชีพหลัก</span>
+        </h3>
+        <button type="button" onclick="closeCareerModal()" class="w-8 h-8 rounded-xl text-slate-400 hover:text-slate-600"><i class="fa-solid fa-xmark text-lg"></i></button>
+      </div>
+
+      <form id="careerForm" onsubmit="handleSaveCareer(event)" class="space-y-3 text-xs font-bold">
+        <input type="hidden" id="careerEditId">
+        <div>
+          <label class="text-slate-500">ชื่ออาชีพ</label>
+          <input type="text" id="careerTitleInput" required placeholder="เช่น นักธุรกิจ, พนักงานบริษัท" class="w-full mt-1 p-2 rounded-xl border dark:bg-slate-800">
+        </div>
+        <div class="grid grid-cols-2 gap-2">
+          <div>
+            <label class="text-blue-500">เงินเดือน (Salary)</label>
+            <input type="number" id="careerSalaryInput" value="20000" class="w-full mt-1 p-2 rounded-xl border font-mono dark:bg-slate-800">
+          </div>
+          <div>
+            <label class="text-rose-500">รายจ่ายประจำ</label>
+            <input type="number" id="careerExpensesInput" value="10000" class="w-full mt-1 p-2 rounded-xl border font-mono dark:bg-slate-800">
+          </div>
+        </div>
+        <div class="grid grid-cols-2 gap-2">
+          <div>
+            <label class="text-amber-500">เงินสดเริ่มต้น</label>
+            <input type="number" id="careerCashInput" value="50000" class="w-full mt-1 p-2 rounded-xl border font-mono dark:bg-slate-800">
+          </div>
+          <div>
+            <label class="text-cyan-400">เกณฑ์ขั้นต่ำ PV</label>
+            <input type="number" id="careerMinPvInput" value="0" class="w-full mt-1 p-2 rounded-xl border font-mono dark:bg-slate-800">
+          </div>
+        </div>
+        <div class="p-3 bg-slate-50 dark:bg-slate-800/80 rounded-2xl border space-y-2">
+          <span class="text-slate-400 block font-black text-[11px]">ทรัพยากรเริ่มต้น (1 - 10)</span>
+          <div class="grid grid-cols-3 gap-2 font-mono">
+            <div>
+              <span class="text-red-500">❤️ สุขภาพ</span>
+              <input type="number" min="1" max="10" id="careerHeartInput" value="10" class="w-full p-1.5 border rounded-lg text-center dark:bg-slate-900">
+            </div>
+            <div>
+              <span class="text-slate-300">⏳ เวลา</span>
+              <input type="number" min="1" max="10" id="careerTimeInput" value="10" class="w-full p-1.5 border rounded-lg text-center dark:bg-slate-900">
+            </div>
+            <div>
+              <span class="text-blue-400">💡 ความรู้</span>
+              <input type="number" min="1" max="10" id="careerKnowledgeInput" value="10" class="w-full p-1.5 border rounded-lg text-center dark:bg-slate-900">
+            </div>
+          </div>
+        </div>
+        <div class="flex justify-end gap-2 pt-2 border-t">
+          <button type="button" onclick="closeCareerModal()" class="px-4 py-2 rounded-xl border text-slate-500">ยกเลิก</button>
+          <button type="submit" class="px-5 py-2 rounded-xl text-white font-black btn-theme-action shadow">บันทึกอาชีพหลัก</button>
+        </div>
+      </form>
     </div>
   </div>
 
@@ -496,65 +566,9 @@
             <input type="number" id="editPlayerPassive" class="w-full mt-1 p-2 rounded-xl border font-mono dark:bg-slate-800">
           </div>
         </div>
-        <div class="p-3 bg-slate-50 dark:bg-slate-800/80 rounded-2xl border space-y-2">
-          <span class="text-slate-400 block font-black text-[11px]">ระดับทรัพยากร (1 - 10)</span>
-          <div class="grid grid-cols-3 gap-2 font-mono">
-            <div>
-              <span class="text-red-500">❤️ สุขภาพ</span>
-              <input type="number" min="1" max="10" id="editPlayerHeart" class="w-full p-1.5 border rounded-lg text-center dark:bg-slate-900">
-            </div>
-            <div>
-              <span class="text-slate-300">⏳ เวลา</span>
-              <input type="number" min="1" max="10" id="editPlayerTime" class="w-full p-1.5 border rounded-lg text-center dark:bg-slate-900">
-            </div>
-            <div>
-              <span class="text-blue-400">💡 ความรู้</span>
-              <input type="number" min="1" max="10" id="editPlayerKnowledge" class="w-full p-1.5 border rounded-lg text-center dark:bg-slate-900">
-            </div>
-          </div>
-        </div>
         <div class="flex justify-end gap-2 pt-2 border-t">
           <button type="button" onclick="closeAdminEditModal()" class="px-4 py-2 rounded-xl border text-slate-500">ยกเลิก</button>
           <button type="submit" class="px-5 py-2 rounded-xl text-white font-black btn-theme-action shadow">บันทึกการแก้ไข</button>
-        </div>
-      </form>
-    </div>
-  </div>
-
-  <!-- CAREER MODAL (Admin เพิ่ม/แก้ไขอาชีพ) -->
-  <div id="careerModal" class="hidden fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-md flex items-center justify-center p-4 overflow-y-auto">
-    <div class="relative max-w-md w-full bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl p-6 shadow-2xl space-y-4 my-auto">
-      <div class="flex items-center justify-between border-b pb-3">
-        <h3 id="careerModalTitle" class="font-black text-base text-slate-900 dark:text-white flex items-center gap-2">
-          <i class="fa-solid fa-briefcase text-purple-500"></i>
-          <span>จัดการข้อมูลอาชีพ</span>
-        </h3>
-        <button type="button" onclick="closeCareerModal()" class="w-8 h-8 rounded-xl text-slate-400 hover:text-slate-600"><i class="fa-solid fa-xmark text-lg"></i></button>
-      </div>
-
-      <form id="careerForm" onsubmit="handleSaveCareer(event)" class="space-y-3 text-xs font-bold">
-        <input type="hidden" id="careerEditId">
-        <div>
-          <label class="text-slate-500">ชื่อตำแหน่ง / อาชีพ</label>
-          <input type="text" id="careerTitleInput" required placeholder="เช่น Emerald Director" class="w-full mt-1 p-2 rounded-xl border dark:bg-slate-800">
-        </div>
-        <div>
-          <label class="text-cyan-400">เกณฑ์ขั้นต่ำ PV</label>
-          <input type="number" id="careerMinPvInput" value="0" class="w-full mt-1 p-2 rounded-xl border font-mono dark:bg-slate-800">
-        </div>
-        <div class="grid grid-cols-2 gap-2">
-          <div>
-            <label class="text-emerald-500">Active Income (฿)</label>
-            <input type="number" id="careerActiveInput" value="0" class="w-full mt-1 p-2 rounded-xl border font-mono dark:bg-slate-800">
-          </div>
-          <div>
-            <label class="text-teal-400">Passive Income (฿)</label>
-            <input type="number" id="careerPassiveInput" value="0" class="w-full mt-1 p-2 rounded-xl border font-mono dark:bg-slate-800">
-          </div>
-        </div>
-        <div class="flex justify-end gap-2 pt-2 border-t">
-          <button type="button" onclick="closeCareerModal()" class="px-4 py-2 rounded-xl border text-slate-500">ยกเลิก</button>
-          <button type="submit" class="px-5 py-2 rounded-xl text-white font-black btn-theme-action shadow">บันทึกอาชีพ</button>
         </div>
       </form>
     </div>
@@ -566,7 +580,7 @@
       <div class="flex items-center justify-between border-b pb-3">
         <h3 id="qualificationModalTitle" class="font-black text-base text-slate-900 dark:text-white flex items-center gap-2">
           <i class="fa-solid fa-certificate text-emerald-500"></i>
-          <span>จัดการเกณฑ์คุณสมบัติ</span>
+          <span>จัดการเกณฑ์คุณสมบัติหลัก</span>
         </h3>
         <button type="button" onclick="closeQualificationModal()" class="w-8 h-8 rounded-xl text-slate-400 hover:text-slate-600"><i class="fa-solid fa-xmark text-lg"></i></button>
       </div>
@@ -609,7 +623,6 @@
   <script>
     const GOOGLE_SHEET_API_URL = "https://script.google.com/macros/s/AKfycbzq9oD33K3nf_r2JRq5RjCafAQIvt2o9ywvJ1EvXvVg4l9QyUalIuQvxxT7zQ890nR1/exec";
 
-    // ฟังก์ชันคำนวณระดับ % อ้างอิงตารางธุรกิจ Amway
     function calculateAmwayLevel(pv) {
       const p = parseFloat(pv) || 0;
       if (p >= 150000) return "21%";
@@ -631,10 +644,11 @@
       { id: "F", name: "สายงาน F", pv: 0, level: "0%", activeIncome: 0, passiveIncome: 0 }
     ];
 
+    // ฐานข้อมูลหลักของอาชีพ (ชื่ออาชีพ, เงินเดือน, รายจ่ายประจำ, เงินสด, ทรัพยากร)
     const DEFAULT_CAREERS = [
-      { id: "car-1", title: "นักธุรกิจเริ่มต้น", minPv: 0, activeIncome: 15000, passiveIncome: 0, icon: "fa-seedling" },
-      { id: "car-2", title: "Silver Producer", minPv: 150000, activeIncome: 35000, passiveIncome: 5000, icon: "fa-award" },
-      { id: "car-3", title: "Platinum Leader", minPv: 450000, activeIncome: 75000, passiveIncome: 25000, icon: "fa-crown" }
+      { id: "car-1", title: "พนักงานประจำ", salary: 25000, expenses: 12000, cash: 40000, minPv: 0, activeIncome: 15000, passiveIncome: 0, resources: { heart: 8, time: 6, knowledge: 7 }, icon: "fa-briefcase" },
+      { id: "car-2", title: "เจ้าของธุรกิจ", salary: 45000, expenses: 25000, cash: 80000, minPv: 150000, activeIncome: 35000, passiveIncome: 5000, resources: { heart: 6, time: 5, knowledge: 9 }, icon: "fa-store" },
+      { id: "car-3", title: "นักลงทุนอิสระ", salary: 70000, expenses: 40000, cash: 150000, minPv: 450000, activeIncome: 75000, passiveIncome: 25000, resources: { heart: 9, time: 8, knowledge: 10 }, icon: "fa-chart-line" }
     ];
 
     const DEFAULT_QUALIFICATIONS = [
@@ -656,7 +670,7 @@
     let careersList = [...DEFAULT_CAREERS];
     let qualificationsList = [...DEFAULT_QUALIFICATIONS];
 
-    // สร้างข้อมูลผู้เล่นเริ่มต้น (ถ้ายังไม่ได้เลือกอาชีพ ค่าจะเป็น 0)
+    // สร้างข้อมูลเริ่มต้น (ถ้ายังไม่ได้เลือกอาชีพ ค่าจะเป็น 0 ทั้งหมด)
     function createDefaultPlayerProfile(name, accId) {
       return {
         accountId: accId,
@@ -700,10 +714,7 @@
       if (stepText) document.getElementById('syncBannerStepText').innerText = stepText;
     }
 
-    function hideSyncBanner() {
-      document.getElementById('syncBlockingBanner').classList.add('hidden');
-    }
-
+    function hideSyncBanner() { document.getElementById('syncBlockingBanner').classList.add('hidden'); }
     function openLoginModal() { document.getElementById('loginModal').classList.remove('hidden'); }
     function closeLoginModal() { document.getElementById('loginModal').classList.add('hidden'); }
 
@@ -722,7 +733,6 @@
     function loginWithGoogle() {
       const dummyEmail = prompt("กรุณาระบุ Google Email ของคุณ:", "player@gmail.com");
       if (!dummyEmail || !dummyEmail.includes("@")) return;
-
       const userName = dummyEmail.split("@")[0];
       currentAuth = {
         isLoggedIn: true,
@@ -767,14 +777,12 @@
     function finishLogin() {
       closeLoginModal();
       saveAuthLocal();
-      
       if (currentAuth.accountType !== "admin") {
         if (!allPlayersDatabase[currentAuth.accountId]) {
           allPlayersDatabase[currentAuth.accountId] = createDefaultPlayerProfile(currentAuth.name, currentAuth.accountId);
         }
         profileData = allPlayersDatabase[currentAuth.accountId];
       }
-
       saveProfileLocalCache();
       renderAllProfileUI();
       saveAllToCloud(false);
@@ -798,9 +806,7 @@
     }
 
     function saveAuthLocal() {
-      try {
-        localStorage.setItem('rnd_current_auth', JSON.stringify(currentAuth));
-      } catch (e) {}
+      try { localStorage.setItem('rnd_current_auth', JSON.stringify(currentAuth)); } catch (e) {}
     }
 
     function loadAuthAndProfile() {
@@ -838,7 +844,7 @@
       } catch (e) {}
     }
 
-    /* ระบบเลือกอาชีพของผู้เล่น */
+    /* ผู้เล่นเลือกอาชีพ (Decoupled Clone จากฐานข้อมูลหลัก) */
     function openPlayerCareerSelectModal() {
       const modal = document.getElementById('playerCareerSelectModal');
       const grid = document.getElementById('playerCareerModalGrid');
@@ -848,11 +854,11 @@
         <div class="p-4 rounded-2xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800/80 space-y-2.5">
           <div class="flex items-center justify-between">
             <span class="font-black text-slate-900 dark:text-white text-base">${escapeHTML(car.title)}</span>
-            <span class="text-xs font-mono text-slate-400">เกณฑ์: ${(car.minPv || 0).toLocaleString()} PV</span>
+            <span class="text-xs font-mono text-slate-400">เงินสด: ฿${(car.cash || 0).toLocaleString()}</span>
           </div>
           <div class="grid grid-cols-2 gap-2 text-xs font-mono bg-white dark:bg-slate-900/60 p-2.5 rounded-xl border border-slate-200/60 dark:border-slate-800">
-            <div>Active: <strong class="text-emerald-500 font-bold block">฿${(car.activeIncome || 0).toLocaleString()}</strong></div>
-            <div>Passive: <strong class="text-teal-400 font-bold block">฿${(car.passiveIncome || 0).toLocaleString()}</strong></div>
+            <div>เงินเดือน: <strong class="text-blue-400 block">฿${(car.salary || 0).toLocaleString()}</strong></div>
+            <div>รายจ่ายประจำ: <strong class="text-rose-400 block">฿${(car.expenses || 0).toLocaleString()}</strong></div>
           </div>
           <button type="button" onclick="selectPlayerCareerClone('${car.id}')" class="w-full py-2 rounded-xl text-xs font-black ${profileData.careerId === car.id ? 'bg-emerald-500 text-white' : 'btn-theme-action text-white shadow hover:scale-[1.01]'} transition">
             ${profileData.careerId === car.id ? 'อาชีพปัจจุบัน' : 'เลือกอาชีพนี้'}
@@ -871,26 +877,23 @@
       const targetMaster = careersList.find(c => c.id === careerId);
       if (!targetMaster) return;
 
+      // คัดลอกข้อมูลอาชีพมาเป็นของบัญชีนี้ (ไม่กระทบฐานข้อมูลหลัก)
       profileData.careerId = targetMaster.id;
       profileData.career = JSON.parse(JSON.stringify(targetMaster));
       
-      // เมื่อเลือกอาชีพ เริ่มต้นให้มีเงินสดและทรัพยากรพื้นฐาน
-      if (!profileData.cash) profileData.cash = 50000;
+      profileData.cash = targetMaster.cash || 0;
       profileData.activeIncome = targetMaster.activeIncome || 15000;
       profileData.passiveIncome = targetMaster.passiveIncome || 0;
-      if (!profileData.resources || profileData.resources.heart === 0) {
-        profileData.resources = { heart: 10, time: 10, knowledge: 10 };
-      }
+      profileData.resources = targetMaster.resources ? JSON.parse(JSON.stringify(targetMaster.resources)) : { heart: 10, time: 10, knowledge: 10 };
 
       saveProfileLocalCache();
       renderAllProfileUI();
       closePlayerCareerSelectModal();
       saveAllToCloud(false);
-      showToast(`เลือกอาชีพ "${targetMaster.title}" สำเร็จ! เปิดใช้งาน Dashboard แล้ว 🎯`);
+      showToast(`เลือกอาชีพ "${targetMaster.title}" สำเร็จ! เริ่มต้นเกมธุรกิจแล้ว 🎯`);
       confetti({ particleCount: 50, spread: 60, origin: { y: 0.6 } });
     }
 
-    // ฟังก์ชันสร้างแถบพลังแบบแบ่ง 1-10 ขีด
     function renderPowerSegmentBar(val, colorClass, emptyClass = "bg-slate-200 dark:bg-slate-700/80") {
       const safeVal = Math.max(0, Math.min(10, parseInt(val) || 0));
       let segments = '';
@@ -907,13 +910,13 @@
     }
 
     /* ------------------------------------------------------------------------
-       เรนเดอร์ UI: รองรับเงื่อนไขยังไม่เลือกอาชีพ (Zero State) และเกณฑ์ Amway
+       เรนเดอร์ UI
        ------------------------------------------------------------------------ */
     function renderAllProfileUI() {
       const isAdmin = currentAuth.accountType === "admin";
       const hasCareer = Boolean(profileData.careerId && profileData.career);
 
-      // เมนู Admin
+      // Role Guard Nav
       const navCareersBtn = document.getElementById('nav-btn-careers');
       const navQualBtn = document.getElementById('nav-btn-qualifications');
       const mNavCareersBtn = document.getElementById('m-nav-careers');
@@ -933,7 +936,6 @@
       if (addCareerBtn) addCareerBtn.classList.toggle('hidden', !isAdmin);
       if (addQualBtn) addQualBtn.classList.toggle('hidden', !isAdmin);
 
-      // Header Account
       const typeBadge = document.getElementById('accountTypeBadge');
       const accountText = document.getElementById('currentUserAccountText');
       const loginBtn = document.getElementById('loginActionBtn');
@@ -954,39 +956,43 @@
         loginBtn.onclick = openLoginModal;
       }
 
-      // แสดงหรือซ่อนแบนเนอร์แจ้งเตือนถ้ายังไม่เลือกอาชีพ
       const unselectedBanner = document.getElementById('unselectedCareerBanner');
       if (unselectedBanner) unselectedBanner.classList.toggle('hidden', hasCareer);
 
-      // อาชีพปัจจุบัน
-      document.getElementById('currentCareerDisplay').innerText = hasCareer ? profileData.career.title : "ยังไม่ได้เลือกอาชีพ (ค่าเป็น 0)";
+      const careerTitle = hasCareer ? profileData.career.title : "ยังไม่ได้เลือกอาชีพ (ค่าเป็น 0)";
+      document.getElementById('currentCareerDisplay').innerText = careerTitle;
 
-      // ถ้ายังไม่เลือกอาชีพ ให้แสดงค่าทั้งหมดเป็น 0 หรือว่างเปล่า
+      // ถ้ายังไม่เลือกอาชีพ ให้ค่าเป็น 0 ทั้งหมด
+      const salaryVal = hasCareer ? (profileData.career.salary || 0) : 0;
+      const expensesVal = hasCareer ? (profileData.career.expenses || 0) : 0;
+      const activeIncVal = hasCareer ? (profileData.activeIncome || 0) : 0;
+      const passiveIncVal = hasCareer ? (profileData.passiveIncome || 0) : 0;
+      
+      // เงินคงเหลือต่อเดือน = (Active Income + Passive Income + เงินเดือน) - รายจ่ายประจำ
+      // (หมายเหตุ: เงินคงเหลือจะได้รับเมื่อเปิดเจอการ์ดเงินเดือน แต่สามารถแสดงยอดสุทธิเตรียมไว้ได้)
+      const netMonthly = (activeIncVal + passiveIncVal + salaryVal) - expensesVal;
+
       const cashVal = hasCareer ? (profileData.cash || 0) : 0;
       const pvBahtVal = hasCareer ? (profileData.personalVolumeBaht || 0) : 0;
       const personalPvVal = hasCareer ? (profileData.personalPv || 0) : 0;
-      const activeIncomeVal = hasCareer ? (profileData.activeIncome || 0) : 0;
-      const passiveIncomeVal = hasCareer ? (profileData.passiveIncome || 0) : 0;
 
       document.getElementById('playerNameInput').value = profileData.name || "ผู้เล่นทั่วไป";
+      document.getElementById('statSalary').innerText = `฿${salaryVal.toLocaleString()}`;
+      document.getElementById('statExpenses').innerText = `฿${expensesVal.toLocaleString()}`;
+      document.getElementById('statNetMonthly').innerText = `฿${netMonthly.toLocaleString()}`;
       document.getElementById('statCash').innerText = `฿${cashVal.toLocaleString()}`;
       document.getElementById('inputCash').value = cashVal;
       document.getElementById('statPersonalVolumeBaht').innerText = `฿${pvBahtVal.toLocaleString()}`;
       document.getElementById('inputPersonalVolumeBaht').value = pvBahtVal;
       document.getElementById('statPersonalPv').innerText = personalPvVal.toLocaleString();
       document.getElementById('inputPersonalPv').value = personalPvVal;
-      document.getElementById('statActiveIncome').innerText = `฿${activeIncomeVal.toLocaleString()}`;
-      document.getElementById('inputActiveIncome').value = activeIncomeVal;
-      document.getElementById('statPassiveIncome').innerText = `฿${passiveIncomeVal.toLocaleString()}`;
-      document.getElementById('inputPassiveIncome').value = passiveIncomeVal;
+      document.getElementById('statActiveIncome').innerText = `฿${activeIncVal.toLocaleString()}`;
+      document.getElementById('inputActiveIncome').value = activeIncVal;
+      document.getElementById('statPassiveIncome').innerText = `฿${passiveIncVal.toLocaleString()}`;
+      document.getElementById('inputPassiveIncome').value = passiveIncVal;
 
-      // เรนเดอร์ทรัพยากร 3 ช่องแบบค่าพลัง 1 - 10
       renderDashboardResources(hasCareer);
-
-      // เรนเดอร์สายงาน A - F (เกณฑ์ Amway)
       renderLegsCards(hasCareer);
-
-      // เรนเดอร์คุณสมบัติ
       renderPlayerDashboardQualifications();
 
       if (isAdmin) {
@@ -996,7 +1002,7 @@
       }
     }
 
-    // เรนเดอร์ทรัพยากร (สุขภาพ ❤️, เวลา ⏳, ความรู้ 💡) แบบขีดพลัง 1-10
+    // ทรัพยากร 1-10 ขีด
     function renderDashboardResources(hasCareer) {
       const container = document.getElementById('dashboardResourcesContainer');
       if (!container) return;
@@ -1004,7 +1010,6 @@
       const res = hasCareer && profileData.resources ? profileData.resources : { heart: 0, time: 0, knowledge: 0 };
 
       container.innerHTML = `
-        <!-- สุขภาพ: หัวใจสีแดง -->
         <div class="p-4 rounded-2xl bg-rose-50 dark:bg-rose-950/30 border border-rose-200 dark:border-rose-900/50 flex flex-col justify-between space-y-3">
           <div class="flex items-center justify-between">
             <span class="text-xs font-black text-rose-600 dark:text-rose-400 uppercase flex items-center gap-1.5">
@@ -1019,7 +1024,6 @@
           </div>
         </div>
 
-        <!-- เวลา: นาฬิกาสีขาว/ดำ -->
         <div class="p-4 rounded-2xl bg-slate-100 dark:bg-slate-900/80 border border-slate-300 dark:border-slate-700 flex flex-col justify-between space-y-3">
           <div class="flex items-center justify-between">
             <span class="text-xs font-black text-slate-700 dark:text-slate-300 uppercase flex items-center gap-1.5">
@@ -1034,7 +1038,6 @@
           </div>
         </div>
 
-        <!-- ความรู้: สมุดสีน้ำเงิน/ขาว -->
         <div class="p-4 rounded-2xl bg-blue-50 dark:bg-blue-950/30 border border-blue-200 dark:border-blue-900/50 flex flex-col justify-between space-y-3">
           <div class="flex items-center justify-between">
             <span class="text-xs font-black text-blue-600 dark:text-blue-400 uppercase flex items-center gap-1.5">
@@ -1051,7 +1054,7 @@
       `;
     }
 
-    // เรนเดอร์สายงาน A-F พร้อมคำนวณ % ตามเกณฑ์ Amway + Active / Passive
+    // สายงาน A-F (PV, ระดับ %, Active income, Passive income)
     function renderLegsCards(hasCareer) {
       const container = document.getElementById('legsGridContainer');
       if (!container) return;
@@ -1073,13 +1076,11 @@
               </span>
             </div>
 
-            <!-- PV -->
             <div class="space-y-0.5 text-center">
               <span class="text-[10px] text-slate-400 block font-mono">PV สายงาน</span>
               <div class="text-sm font-black text-cyan-400 font-mono">${pvVal.toLocaleString()}</div>
             </div>
 
-            <!-- Active & Passive ของแต่ละสาย -->
             <div class="grid grid-cols-2 gap-1 text-[11px] font-mono bg-white dark:bg-slate-800/80 p-2 rounded-xl border border-slate-100 dark:border-slate-700 text-center">
               <div>
                 <span class="text-[9px] text-emerald-500 block">Active</span>
@@ -1091,7 +1092,6 @@
               </div>
             </div>
 
-            <!-- Input ปรับค่า PV -->
             <input type="number" value="${pvVal}" ${!hasCareer ? 'disabled' : ''} onchange="updateLegPv('${leg.id}', this.value)" class="w-full text-[11px] font-mono text-center p-1.5 rounded-lg border dark:bg-slate-800 dark:border-slate-700 outline-none disabled:opacity-40">
           </div>
         `;
@@ -1102,9 +1102,7 @@
       const container = document.getElementById('playerDashboardQualificationsGrid');
       if (!container) return;
 
-      if (!profileData.unlockedQualifications) {
-        profileData.unlockedQualifications = {};
-      }
+      if (!profileData.unlockedQualifications) profileData.unlockedQualifications = {};
 
       container.innerHTML = qualificationsList.map(qual => {
         const isChecked = profileData.unlockedQualifications[qual.id] === true;
@@ -1161,7 +1159,7 @@
           </div>
           <div>
             <h4 class="font-black text-lg text-slate-900 dark:text-white">${escapeHTML(car.title)}</h4>
-            <span class="text-xs text-slate-400 font-mono">เกณฑ์ขั้นต่ำ: ${(car.minPv || 0).toLocaleString()} PV</span>
+            <span class="text-xs text-slate-400 font-mono">เงินเดือน: ฿${(car.salary || 0).toLocaleString()} | รายจ่าย: ฿${(car.expenses || 0).toLocaleString()}</span>
           </div>
           <div class="grid grid-cols-2 gap-2 text-xs font-mono pt-2 border-t border-slate-100 dark:border-slate-700">
             <div>Active: <strong class="text-emerald-400 block font-bold">฿${(car.activeIncome || 0).toLocaleString()}</strong></div>
@@ -1233,10 +1231,9 @@
       if (leg) {
         leg.pv = parseFloat(val) || 0;
         leg.level = calculateAmwayLevel(leg.pv);
-        // จำลองรายได้อัตโนมัติของสายงานตามระดับ %
         const pctNumber = parseFloat(leg.level) || 0;
         leg.activeIncome = Math.round(leg.pv * (pctNumber / 100) * 3);
-        leg.passiveIncome = pctNumber >= 21 ? 15000 : 0; // เกณฑ์โบนัสผู้นำ 21%
+        leg.passiveIncome = pctNumber >= 21 ? 15000 : 0;
         saveProfileLocalCache();
         renderAllProfileUI();
       }
@@ -1261,17 +1258,19 @@
       showToast("รีเซ็ตสถานะเรียบร้อยแล้ว (เลือกอาชีพใหม่เพื่อเริ่มเล่น)");
     }
 
-    /* ------------------------------------------------------------------------
-       ADMIN CRUD & DASHBOARD
-       ------------------------------------------------------------------------ */
+    /* ADMIN CRUD: Master Careers */
     function openAddCareerModal() {
       if (currentAuth.accountType !== "admin") return;
       document.getElementById('careerModalTitle').innerHTML = `<i class="fa-solid fa-plus-circle text-purple-500"></i><span>เพิ่มอาชีพหลัก</span>`;
       document.getElementById('careerEditId').value = "";
       document.getElementById('careerTitleInput').value = "";
+      document.getElementById('careerSalaryInput').value = 25000;
+      document.getElementById('careerExpensesInput').value = 12000;
+      document.getElementById('careerCashInput').value = 50000;
       document.getElementById('careerMinPvInput').value = 0;
-      document.getElementById('careerActiveInput').value = 0;
-      document.getElementById('careerPassiveInput').value = 0;
+      document.getElementById('careerHeartInput').value = 10;
+      document.getElementById('careerTimeInput').value = 10;
+      document.getElementById('careerKnowledgeInput').value = 10;
       document.getElementById('careerModal').classList.remove('hidden');
     }
 
@@ -1282,9 +1281,13 @@
       document.getElementById('careerModalTitle').innerHTML = `<i class="fa-solid fa-pen text-purple-500"></i><span>แก้ไขอาชีพหลัก</span>`;
       document.getElementById('careerEditId').value = c.id;
       document.getElementById('careerTitleInput').value = c.title;
+      document.getElementById('careerSalaryInput').value = c.salary || 0;
+      document.getElementById('careerExpensesInput').value = c.expenses || 0;
+      document.getElementById('careerCashInput').value = c.cash || 0;
       document.getElementById('careerMinPvInput').value = c.minPv || 0;
-      document.getElementById('careerActiveInput').value = c.activeIncome || 0;
-      document.getElementById('careerPassiveInput').value = c.passiveIncome || 0;
+      document.getElementById('careerHeartInput').value = c.resources?.heart || 10;
+      document.getElementById('careerTimeInput').value = c.resources?.time || 10;
+      document.getElementById('careerKnowledgeInput').value = c.resources?.knowledge || 10;
       document.getElementById('careerModal').classList.remove('hidden');
     }
 
@@ -1296,20 +1299,26 @@
 
       const id = document.getElementById('careerEditId').value;
       const title = document.getElementById('careerTitleInput').value.trim();
+      const salary = parseFloat(document.getElementById('careerSalaryInput').value) || 0;
+      const expenses = parseFloat(document.getElementById('careerExpensesInput').value) || 0;
+      const cash = parseFloat(document.getElementById('careerCashInput').value) || 0;
       const minPv = parseFloat(document.getElementById('careerMinPvInput').value) || 0;
-      const activeIncome = parseFloat(document.getElementById('careerActiveInput').value) || 0;
-      const passiveIncome = parseFloat(document.getElementById('careerPassiveInput').value) || 0;
+      const resources = {
+        heart: parseInt(document.getElementById('careerHeartInput').value) || 10,
+        time: parseInt(document.getElementById('careerTimeInput').value) || 10,
+        knowledge: parseInt(document.getElementById('careerKnowledgeInput').value) || 10
+      };
 
       if (id) {
         const idx = careersList.findIndex(c => c.id === id);
         if (idx !== -1) {
-          careersList[idx] = { ...careersList[idx], title, minPv, activeIncome, passiveIncome };
+          careersList[idx] = { ...careersList[idx], title, salary, expenses, cash, minPv, resources };
           showToast(`แก้ไขอาชีพ "${title}" สำเร็จ`);
         }
       } else {
         careersList.push({
           id: `car-${Date.now().toString().slice(-5)}`,
-          title, minPv, activeIncome, passiveIncome, icon: "fa-award"
+          title, salary, expenses, cash, minPv, activeIncome: 15000, passiveIncome: 0, resources, icon: "fa-award"
         });
         showToast(`เพิ่มอาชีพ "${title}" สำเร็จ`);
       }
@@ -1335,7 +1344,7 @@
 
     function openAddQualificationModal() {
       if (currentAuth.accountType !== "admin") return;
-      document.getElementById('qualificationModalTitle').innerHTML = `<i class="fa-solid fa-plus-circle text-emerald-500"></i><span>เพิ่มเกณฑ์คุณสมบัติ</span>`;
+      document.getElementById('qualificationModalTitle').innerHTML = `<i class="fa-solid fa-plus-circle text-emerald-500"></i><span>เพิ่มเกณฑ์คุณสมบัติหลัก</span>`;
       document.getElementById('qualEditId').value = "";
       document.getElementById('qualTitleInput').value = "";
       document.getElementById('qualPersonalPvInput').value = 0;
@@ -1348,7 +1357,7 @@
       if (currentAuth.accountType !== "admin") return;
       const q = qualificationsList.find(item => item.id === id);
       if (!q) return;
-      document.getElementById('qualificationModalTitle').innerHTML = `<i class="fa-solid fa-pen text-emerald-500"></i><span>แก้ไขเกณฑ์คุณสมบัติ</span>`;
+      document.getElementById('qualificationModalTitle').innerHTML = `<i class="fa-solid fa-pen text-emerald-500"></i><span>แก้ไขเกณฑ์คุณสมบัติหลัก</span>`;
       document.getElementById('qualEditId').value = q.id;
       document.getElementById('qualTitleInput').value = q.title;
       document.getElementById('qualPersonalPvInput').value = q.personalPv || 0;
@@ -1468,11 +1477,6 @@
       document.getElementById('editPlayerActive').value = p.activeIncome || 0;
       document.getElementById('editPlayerPassive').value = p.passiveIncome || 0;
 
-      const res = p.resources || { heart: 1, time: 1, knowledge: 1 };
-      document.getElementById('editPlayerHeart').value = res.heart;
-      document.getElementById('editPlayerTime').value = res.time;
-      document.getElementById('editPlayerKnowledge').value = res.knowledge;
-
       document.getElementById('adminEditModal').classList.remove('hidden');
     }
 
@@ -1488,12 +1492,6 @@
       allPlayersDatabase[accId].personalPv = parseFloat(document.getElementById('editPlayerPersonalPv').value) || 0;
       allPlayersDatabase[accId].activeIncome = parseFloat(document.getElementById('editPlayerActive').value) || 0;
       allPlayersDatabase[accId].passiveIncome = parseFloat(document.getElementById('editPlayerPassive').value) || 0;
-
-      allPlayersDatabase[accId].resources = {
-        heart: parseInt(document.getElementById('editPlayerHeart').value) || 1,
-        time: parseInt(document.getElementById('editPlayerTime').value) || 1,
-        knowledge: parseInt(document.getElementById('editPlayerKnowledge').value) || 1
-      };
 
       closeAdminEditModal();
       saveProfileLocalCache();
