@@ -351,7 +351,7 @@
           <h3 class="font-black text-lg text-slate-900 dark:text-white flex items-center gap-2">
             <i class="fa-solid fa-user-tie text-purple-500 text-xl"></i><span>ฐานข้อมูลอาชีพหลัก (Master Careers)</span>
           </h3>
-          <p class="text-xs text-slate-400 font-medium">กำหนดเงินเดือน รายจ่าย เงินสด และทรัพยากรเริ่มต้น (สุขภาพ เวลา ความรู้) พร้อมเรียงลำดับได้</p>
+          <p class="text-xs text-slate-400 font-medium">กำหนดเงินเดือน รายจ่าย เงินสด ไอคอน สี และทรัพยากรเริ่มต้น (สุขภาพ เวลา ความรู้)</p>
         </div>
         
         <div class="flex items-center gap-2.5 self-stretch sm:self-auto justify-end">
@@ -507,7 +507,7 @@
     </div>
   </div>
 
-  <!-- CAREER MODAL (Admin กำหนดไอคอน, สีไอคอน, รูปภาพ และทรัพยากรเริ่มต้น) -->
+  <!-- CAREER MODAL -->
   <div id="careerModal" class="hidden fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-md flex items-center justify-center p-4 overflow-y-auto">
     <div class="relative max-w-md w-full bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl p-6 shadow-2xl space-y-4 my-auto">
       <div class="flex items-center justify-between border-b pb-3">
@@ -529,14 +529,14 @@
         <!-- ตัวเลือกไอคอนและสีไอคอนประจำอาชีพ -->
         <div class="p-3 bg-slate-50 dark:bg-slate-800/60 rounded-2xl border space-y-2">
           <span class="text-slate-400 block font-black text-[11px]">ไอคอนและโทนสีประจำอาชีพ</span>
-          <div class="flex items-center gap-2">
-            <button type="button" onclick="openCareerColorPicker()" id="careerColorPreviewBtn" class="w-10 h-10 rounded-xl border flex items-center justify-center shadow-sm shrink-0" title="เลือกสีไอคอน">
-              <span id="careerColorPill" class="w-6 h-6 rounded-full bg-rose-500"></span>
+          <div class="flex items-center gap-2.5">
+            <button type="button" onclick="openCareerColorPicker()" id="careerColorPreviewBtn" class="w-10 h-10 rounded-xl border flex items-center justify-center shadow-sm shrink-0 bg-white dark:bg-slate-900" title="คลิกเพื่อเลือกสีไอคอน">
+              <span id="careerColorPill" class="w-6 h-6 rounded-full bg-purple-500"></span>
             </button>
-            <button type="button" onclick="openCareerIconPicker()" id="careerIconPreviewBtn" class="w-10 h-10 rounded-xl bg-white dark:bg-slate-900 border flex items-center justify-center text-lg text-slate-700 dark:text-slate-200 hover:scale-105 transition shrink-0" title="เลือกไอคอนอาชีพ">
+            <button type="button" onclick="openCareerIconPicker()" id="careerIconPreviewBtn" class="w-10 h-10 rounded-xl bg-white dark:bg-slate-900 border flex items-center justify-center text-lg text-slate-700 dark:text-slate-200 hover:scale-105 transition shrink-0" title="คลิกเพื่อเลือกไอคอนอาชีพ">
               <i id="careerIconPreview" class="fa-solid fa-user-tie"></i>
             </button>
-            <span class="text-xs text-slate-400 font-medium">คลิกที่ปุ่มเพื่อเลือกไอคอนอาชีพ (>20 แบบ) และโทนสี</span>
+            <span class="text-xs text-slate-400 font-medium">กดเพื่อเลือกไอคอน (>20 แบบ) และโทนสี</span>
           </div>
         </div>
 
@@ -601,25 +601,25 @@
     </div>
   </div>
 
-  <!-- CAREER ICON PICKER MODAL (มีมากกว่า 20 ไอคอนเกี่ยวกับอาชีพ) -->
-  <div id="careerIconPickerModal" class="hidden fixed inset-0 z-50 bg-slate-950/70 backdrop-blur-sm flex items-center justify-center p-4">
-    <div class="bg-white dark:bg-slate-800 border rounded-3xl max-w-md w-full p-6 space-y-4">
+  <!-- [FIXED Z-INDEX: z-[70]] CAREER ICON PICKER MODAL -->
+  <div id="careerIconPickerModal" class="hidden fixed inset-0 z-[70] bg-slate-950/75 backdrop-blur-sm flex items-center justify-center p-4">
+    <div class="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-3xl max-w-md w-full p-6 space-y-4 shadow-2xl">
       <div class="flex justify-between items-center border-b pb-3">
-        <h4 class="font-black text-base">เลือกไอคอนประจำอาชีพ</h4>
-        <button onclick="closeCareerIconPicker()"><i class="fa-solid fa-xmark text-lg text-slate-400"></i></button>
+        <h4 class="font-black text-base text-slate-900 dark:text-white">เลือกไอคอนประจำอาชีพ</h4>
+        <button type="button" onclick="closeCareerIconPicker()"><i class="fa-solid fa-xmark text-lg text-slate-400 hover:text-rose-500"></i></button>
       </div>
       <div id="careerIconPickerGrid" class="grid grid-cols-5 sm:grid-cols-6 gap-3 max-h-72 overflow-y-auto p-1"></div>
     </div>
   </div>
 
-  <!-- CAREER COLOR PICKER MODAL -->
-  <div id="careerColorPickerModal" class="hidden fixed inset-0 z-50 bg-slate-950/70 backdrop-blur-sm flex items-center justify-center p-4">
-    <div class="bg-white dark:bg-slate-800 border rounded-3xl max-w-lg w-full p-6 space-y-4">
+  <!-- [FIXED Z-INDEX: z-[70]] CAREER COLOR PICKER MODAL -->
+  <div id="careerColorPickerModal" class="hidden fixed inset-0 z-[70] bg-slate-950/75 backdrop-blur-sm flex items-center justify-center p-4">
+    <div class="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-3xl max-w-md w-full p-6 space-y-4 shadow-2xl">
       <div class="flex justify-between items-center border-b pb-3">
-        <h4 class="font-black text-base">เลือกโทนสีประจำอาชีพ</h4>
-        <button onclick="closeCareerColorPicker()"><i class="fa-solid fa-xmark text-lg text-slate-400"></i></button>
+        <h4 class="font-black text-base text-slate-900 dark:text-white">เลือกโทนสีประจำอาชีพ</h4>
+        <button type="button" onclick="closeCareerColorPicker()"><i class="fa-solid fa-xmark text-lg text-slate-400 hover:text-rose-500"></i></button>
       </div>
-      <div id="careerColorPickerGrid" class="space-y-2.5 max-h-80 overflow-y-auto"></div>
+      <div id="careerColorPickerGrid" class="space-y-2.5 max-h-80 overflow-y-auto p-1"></div>
     </div>
   </div>
 
@@ -672,32 +672,32 @@
     </div>
   </div>
 
-  <!-- CATEGORY QUALIFICATION MODAL (เพิ่ม/แก้ไขหมวดหมู่ พร้อมเปลี่ยนสีประจำหมวดหมู่) -->
+  <!-- CATEGORY QUALIFICATION MODAL -->
   <div id="categoryQualModal" class="hidden fixed inset-0 z-50 bg-slate-950/70 backdrop-blur-sm flex items-center justify-center p-4 overflow-y-auto">
-    <div class="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-3xl max-w-lg w-full p-6 space-y-4">
+    <div class="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-3xl max-w-lg w-full p-6 space-y-4 shadow-2xl">
       <div class="flex justify-between items-center border-b pb-3">
         <h3 class="font-black text-base text-slate-900 dark:text-white flex items-center gap-2"><i class="fa-solid fa-folder-open text-indigo-500"></i><span>จัดการหมวดหมู่คุณสมบัติ & สีพื้นหลัง</span></h3>
-        <button onclick="closeCategoryQualModal()"><i class="fa-solid fa-xmark text-lg text-slate-400"></i></button>
+        <button type="button" onclick="closeCategoryQualModal()"><i class="fa-solid fa-xmark text-lg text-slate-400 hover:text-rose-500"></i></button>
       </div>
       <div class="flex gap-2">
-        <button type="button" onclick="openQualCatColorPicker(-1)" class="w-10 h-10 rounded-2xl border flex items-center justify-center shrink-0 shadow-sm" id="newQualCatColorBtn" title="เลือกสีหมวดหมู่">
+        <button type="button" onclick="openQualCatColorPicker(-1)" class="w-10 h-10 rounded-2xl border flex items-center justify-center shrink-0 shadow-sm bg-white dark:bg-slate-900" id="newQualCatColorBtn" title="เลือกสีหมวดหมู่">
           <span id="newQualCatColorPill" class="w-6 h-6 rounded-full bg-rose-500"></span>
         </button>
         <input type="text" id="newQualCategoryInput" placeholder="ชื่อหมวดหมู่ใหม่..." class="flex-1 border rounded-2xl px-3.5 py-2 text-xs font-bold dark:bg-slate-900 outline-none">
-        <button onclick="handleAddQualCategory()" class="px-4 py-2 text-white rounded-2xl text-xs font-black btn-theme-action shrink-0">เพิ่ม</button>
+        <button type="button" onclick="handleAddQualCategory()" class="px-4 py-2 text-white rounded-2xl text-xs font-black btn-theme-action shrink-0">เพิ่ม</button>
       </div>
       <div id="qualCategoryListContainer" class="divide-y max-h-60 overflow-y-auto pr-1"></div>
     </div>
   </div>
 
-  <!-- QUALIFICATION CATEGORY COLOR PICKER MODAL -->
-  <div id="qualCatColorPickerModal" class="hidden fixed inset-0 z-50 bg-slate-950/70 backdrop-blur-sm flex items-center justify-center p-4">
-    <div class="bg-white dark:bg-slate-800 border rounded-3xl max-w-lg w-full p-6 space-y-4">
+  <!-- [FIXED Z-INDEX: z-[70]] QUALIFICATION CATEGORY COLOR PICKER MODAL -->
+  <div id="qualCatColorPickerModal" class="hidden fixed inset-0 z-[70] bg-slate-950/75 backdrop-blur-sm flex items-center justify-center p-4">
+    <div class="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-3xl max-w-md w-full p-6 space-y-4 shadow-2xl">
       <div class="flex justify-between items-center border-b pb-3">
-        <h4 class="font-black text-base">เลือกโทนสีประจำหมวดหมู่คุณสมบัติ</h4>
-        <button onclick="closeQualCatColorPicker()"><i class="fa-solid fa-xmark text-lg text-slate-400"></i></button>
+        <h4 class="font-black text-base text-slate-900 dark:text-white">เลือกโทนสีประจำหมวดหมู่คุณสมบัติ</h4>
+        <button type="button" onclick="closeQualCatColorPicker()"><i class="fa-solid fa-xmark text-lg text-slate-400 hover:text-rose-500"></i></button>
       </div>
-      <div id="qualCatColorPickerGrid" class="space-y-2.5 max-h-80 overflow-y-auto"></div>
+      <div id="qualCatColorPickerGrid" class="space-y-2.5 max-h-80 overflow-y-auto p-1"></div>
     </div>
   </div>
 
@@ -823,11 +823,10 @@
     <span id="toastMessage">แจ้งเตือน</span>
   </div>
 
-  <!-- JavaScript Engine -->
+  <!-- JavaScript Engine with Concurrency-Safe Sync -->
   <script>
     const GOOGLE_SHEET_API_URL = "https://script.google.com/macros/s/AKfycbzq9oD33K3nf_r2JRq5RjCafAQIvt2o9ywvJ1EvXvVg4l9QyUalIuQvxxT7zQ890nR1/exec";
 
-    // โทนสีและ Gradient มาตรฐานเดียวกับ index.html
     const COLOR_PALETTES = {
       red: { 
         id: "red", 
@@ -871,7 +870,6 @@
       }
     };
 
-    // ชุดไอคอนเกี่ยวกับอาชีพ 25 ไอคอน
     const CAREER_ICON_PRESETS = [
       "fa-user-tie", "fa-user-doctor", "fa-user-ninja", "fa-user-graduate", "fa-user-astronaut",
       "fa-helmet-safety", "fa-briefcase", "fa-store", "fa-laptop-code", "fa-chart-line",
@@ -946,7 +944,6 @@
       }
     ];
 
-    // หมวดหมู่คุณสมบัติ: เก็บชื่อและสีประจำหมวดหมู่
     const DEFAULT_QUAL_CATEGORIES = [
       { name: "พื้นฐานธุรกิจ", color: "blue" },
       { name: "การสร้างเครือข่าย", color: "emerald" },
@@ -976,11 +973,10 @@
     let careerViewMode = "cards";
     let qualViewMode = "cards";
 
-    // ตัวแปรสำหรับเลือกไอคอนและสีตอนแก้ไขอาชีพและหมวดหมู่
     let careerModalSelectedIcon = "fa-user-tie";
     let careerModalSelectedColor = "purple";
     let qualCatModalTargetIdx = -1;
-    let newQualCatSelectedColor = "rose";
+    let newQualCatSelectedColor = "red";
 
     function createDefaultPlayerProfile(name, accId) {
       return {
@@ -1175,7 +1171,6 @@
         const rawQualCats = localStorage.getItem('rnd_cache_qual_categories');
         if (rawQualCats) {
           const parsed = JSON.parse(rawQualCats);
-          // รองรับ backward compatibility ทั้ง array of string และ array of object
           qualificationCategories = parsed.map(c => typeof c === 'string' ? { name: c, color: 'blue' } : c);
         }
 
@@ -1245,7 +1240,6 @@
       showToast("ปรับลำดับคุณสมบัติเรียบร้อย 🔁");
     }
 
-    /* ผู้เล่นเลือกอาชีพ */
     function openPlayerCareerSelectModal() {
       const modal = document.getElementById('playerCareerSelectModal');
       const grid = document.getElementById('playerCareerModalGrid');
@@ -1544,7 +1538,6 @@
       }).join('');
     }
 
-    // เรนเดอร์คุณสมบัติในหน้า Dashboard ผู้เล่น (เอาสีของหมวดหมู่มาทำเป็นสีพื้นหลังการ์ด)
     function renderPlayerDashboardQualifications() {
       const container = document.getElementById('playerDashboardQualificationsContainer');
       if (!container) return;
@@ -1611,7 +1604,6 @@
       showToast(checked ? "บันทึกสถานะคุณสมบัติแล้ว! 🎉" : "ยกเลิกสถานะคุณสมบัติแล้ว");
     }
 
-    /* เรนเดอร์การ์ด/ตารางอาชีพ */
     function renderCareersCards() {
       const container = document.getElementById('careersListContainer');
       const tableContainer = document.getElementById('careersTableContainer');
@@ -1729,7 +1721,6 @@
       }
     }
 
-    /* เรนเดอร์คุณสมบัติของ Admin (เอาสีของหมวดหมู่มาทำเป็นสีพื้นหลังการ์ด) */
     function renderAdminQualificationsTab() {
       const cardsContainer = document.getElementById('adminQualificationsCardsContainer');
       const tableContainer = document.getElementById('adminQualificationsTableContainer');
@@ -1909,19 +1900,20 @@
     }
 
     /* ------------------------------------------------------------------------
-       ระบบเลือกไอคอน & สีประจำอาชีพ
+       ระบบจัดการไอคอน & สีประจำอาชีพ (เปิด Modal ได้อย่างแม่นยำ)
        ------------------------------------------------------------------------ */
     function renderCareerIconPickerGrid() {
       const g = document.getElementById('careerIconPickerGrid');
       if (!g) return;
       g.innerHTML = CAREER_ICON_PRESETS.map(icon => `
-        <button type="button" onclick="selectCareerIcon('${icon}')" class="w-12 h-12 border rounded-2xl flex items-center justify-center text-xl text-slate-700 dark:text-slate-200 hover:scale-110 transition shadow-xs dark:bg-slate-900">
+        <button type="button" onclick="selectCareerIcon('${icon}')" class="w-12 h-12 border border-slate-200 dark:border-slate-700 rounded-2xl flex items-center justify-center text-xl text-slate-700 dark:text-slate-200 hover:scale-110 hover:border-purple-500 transition shadow-xs bg-slate-50 dark:bg-slate-900">
           <i class="fa-solid ${icon}"></i>
         </button>
       `).join('');
     }
 
     function openCareerIconPicker() {
+      renderCareerIconPickerGrid();
       document.getElementById('careerIconPickerModal')?.classList.remove('hidden');
     }
     function closeCareerIconPicker() {
@@ -1938,7 +1930,7 @@
       const g = document.getElementById('careerColorPickerGrid');
       if (!g) return;
       g.innerHTML = Object.values(COLOR_PALETTES).map(p => `
-        <button type="button" onclick="selectCareerColor('${p.id}')" class="w-full p-3 border rounded-2xl flex items-center gap-3.5 hover:scale-[1.01] transition dark:bg-slate-900">
+        <button type="button" onclick="selectCareerColor('${p.id}')" class="w-full p-3 border border-slate-200 dark:border-slate-700 rounded-2xl flex items-center gap-3.5 hover:scale-[1.01] hover:border-purple-500 transition bg-slate-50 dark:bg-slate-900">
           <span class="w-7 h-7 rounded-full shadow-md" style="background: ${p.hex}"></span>
           <span class="text-sm font-black text-slate-800 dark:text-white">${p.name}</span>
         </button>
@@ -1946,6 +1938,7 @@
     }
 
     function openCareerColorPicker() {
+      renderCareerColorPickerGrid();
       document.getElementById('careerColorPickerModal')?.classList.remove('hidden');
     }
     function closeCareerColorPicker() {
@@ -1981,22 +1974,48 @@
         return `
           <div class="py-2.5 flex items-center justify-between text-xs font-black">
             <div class="flex items-center gap-2.5">
-              <button type="button" onclick="openQualCatColorPicker(${idx})" class="w-7 h-7 rounded-xl border flex items-center justify-center shadow-xs" title="เปลี่ยนสีหมวดหมู่">
+              <button type="button" onclick="openQualCatColorPicker(${idx})" class="w-7 h-7 rounded-xl border flex items-center justify-center shadow-xs" title="คลิกเพื่อเปลี่ยนสีหมวดหมู่">
                 <span class="w-4 h-4 rounded-full" style="background: ${palette.hex};"></span>
               </button>
               <span class="text-slate-800 dark:text-white">${escapeHTML(cat.name)}</span>
             </div>
-            <button onclick="deleteQualCategory(${idx})" class="text-rose-500 hover:underline"><i class="fa-solid fa-trash-can"></i> ลบ</button>
+            <div class="flex items-center gap-2">
+              <button type="button" onclick="promptRenameQualCategory(${idx})" class="text-cyan-500 hover:underline"><i class="fa-solid fa-pen"></i> แก้ไขชื่อ</button>
+              <button type="button" onclick="deleteQualCategory(${idx})" class="text-rose-500 hover:underline"><i class="fa-solid fa-trash-can"></i> ลบ</button>
+            </div>
           </div>
         `;
       }).join('');
+    }
+
+    function promptRenameQualCategory(idx) {
+      const current = qualificationCategories[idx];
+      const newName = prompt("ระบุชื่อหมวดหมู่ใหม่:", current.name);
+      if (!newName || !newName.trim() || newName.trim() === current.name) return;
+
+      const clean = newName.trim();
+      if (qualificationCategories.some((c, i) => i !== idx && c.name === clean)) {
+        showToast("มีหมวดหมู่นี้อยู่แล้ว");
+        return;
+      }
+
+      const oldName = current.name;
+      current.name = clean;
+      qualificationsList.forEach(q => { if (q.category === oldName) q.category = clean; });
+
+      saveProfileLocalCache();
+      renderQualCategoryModalList();
+      renderAdminQualificationsTab();
+      renderPlayerDashboardQualifications();
+      syncProfileAndMasterToCloud(true);
+      showToast(`เปลี่ยนชื่อเป็น "${clean}" เรียบร้อยแล้ว`);
     }
 
     function renderQualCatColorPickerGrid() {
       const g = document.getElementById('qualCatColorPickerGrid');
       if (!g) return;
       g.innerHTML = Object.values(COLOR_PALETTES).map(p => `
-        <button type="button" onclick="selectQualCatColor('${p.id}')" class="w-full p-3 border rounded-2xl flex items-center gap-3.5 hover:scale-[1.01] transition dark:bg-slate-900">
+        <button type="button" onclick="selectQualCatColor('${p.id}')" class="w-full p-3 border border-slate-200 dark:border-slate-700 rounded-2xl flex items-center gap-3.5 hover:scale-[1.01] hover:border-emerald-500 transition bg-slate-50 dark:bg-slate-900">
           <span class="w-7 h-7 rounded-full shadow-md" style="background: ${p.hex}"></span>
           <span class="text-sm font-black text-slate-800 dark:text-white">${p.name}</span>
         </button>
@@ -2005,6 +2024,7 @@
 
     function openQualCatColorPicker(idx) {
       qualCatModalTargetIdx = idx;
+      renderQualCatColorPickerGrid();
       document.getElementById('qualCatColorPickerModal')?.classList.remove('hidden');
     }
     function closeQualCatColorPicker() {
@@ -2060,7 +2080,6 @@
       showToast("ลบหมวดหมู่เรียบร้อยแล้ว");
     }
 
-    /* Modal Form อาชีพ */
     function openAddCareerModal() {
       if (currentAuth.accountType !== "admin") return;
       setSafeInnerText('careerModalTitle', 'เพิ่มอาชีพหลัก');
@@ -2302,7 +2321,7 @@
 
         return `
           <tr class="hover:bg-slate-50 dark:hover:bg-slate-700/40 transition">
-            <td class="py-3 px-3 text-center font-mono text-slate-400">${idx + 1}</td>
+            <td class="py-3 px-3 text-center font-mono text-xs text-slate-400 font-bold">${idx + 1}</td>
             <td class="py-3 px-3">
               <span class="font-black text-slate-900 dark:text-white block">${escapeHTML(p.name)}</span>
               <span class="text-[10px] font-mono text-slate-400">${escapeHTML(p.accountId || key)}</span>
