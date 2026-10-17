@@ -188,17 +188,18 @@
   </header>
 
   <!-- ==============================================================
-       MAIN LAYOUT: ซ้าย 30% (ข้อมูลผู้เล่น) | ขวา 70% (เนื้อหาหลัก)
+       MAIN LAYOUT: ซ้าย 30% (ข้อมูลผู้เล่น พร้อมปุ่มซ่อนติดขอบขวา) | ขวา 70%
        ============================================================== -->
-  <div class="max-w-[1600px] w-full mx-auto px-3 sm:px-6 lg:px-8 pt-4 flex-1 flex flex-col lg:flex-row items-start gap-4 relative">
+  <div class="max-w-[1600px] w-full mx-auto px-3 sm:px-6 lg:px-8 pt-4 flex-1 flex flex-col lg:flex-row items-start gap-4">
     
-    <!-- ปุ่มซ่อน/แสดงข้อมูลผู้เล่น: วางติดขอบขวาของ Sidebar เป็นแนวยาว เล็กและบางลง 50% -->
-    <button onclick="toggleLeftSidebar()" id="sidebarToggleBtn" class="absolute top-4 -right-3.5 z-30 w-4 h-14 rounded-r-xl bg-slate-800 hover:bg-rose-600 dark:bg-slate-700 dark:hover:bg-rose-600 text-white shadow-md flex items-center justify-center transition border-y border-r border-slate-600" title="ซ่อน/แสดงข้อมูลผู้เล่น">
-      <i id="sidebarToggleIcon" class="fa-solid fa-chevron-left text-[10px]"></i>
-    </button>
+    <!-- ฝั่งซ้าย (30%): แถบแสดงข้อมูลอาชีพ & ทรัพยากรตัวละคร พร้อมปุ่มซ่อนติดขอบขวา -->
+    <aside id="leftSidebarContainer" class="w-full lg:w-[30%] shrink-0 pt-2 relative transition-all duration-300">
+      
+      <!-- ปุ่มซ่อน/แสดง: อยู่ที่ขอบขวาของ Layout ข้อมูลผู้เล่น เป็นแนวยาวลงมา เล็กและบางลง 50% ไม่มีตัวหนังสือ มีแค่ลูกศร << / >> -->
+      <button onclick="toggleLeftSidebar()" id="sidebarToggleBtn" class="absolute top-4 -right-2 z-30 w-4 h-14 rounded-r-xl bg-slate-800 hover:bg-rose-600 dark:bg-slate-700 dark:hover:bg-rose-600 text-white shadow-md flex items-center justify-center transition border-y border-r border-slate-600" title="ซ่อน/แสดงข้อมูลผู้เล่น">
+        <i id="sidebarToggleIcon" class="fa-solid fa-chevron-left text-[9px]"></i>
+      </button>
 
-    <!-- ฝั่งซ้าย (30%): แถบแสดงข้อมูลอาชีพ & ทรัพยากรตัวละคร -->
-    <aside id="leftSidebarContainer" class="w-full lg:w-[30%] shrink-0 pt-2 transition-all duration-300 relative">
       <div id="playerHudWidget" class="w-full p-4 rounded-3xl bg-white/95 dark:bg-slate-800/95 border border-slate-200 dark:border-slate-700 shadow-md card-vibrant-glow space-y-3">
         <div class="flex items-center justify-between gap-3 border-b border-slate-100 dark:border-slate-700/80 pb-2.5">
           <div class="flex items-center gap-2.5 min-w-0">
@@ -247,7 +248,7 @@
           </div>
         </div>
 
-        <!-- ส่วนทรัพยากรตัวละคร: ไอคอน + แถบค่าพลัง + ตัวเลขกำกับ เรียงลงมาทีละบรรทัด -->
+        <!-- ส่วนทรัพยากรตัวละคร: มีแต่ไอคอน กับแถบค่าพลัง และตัวเลขกำกับ เรียงลงมาทีละบรรทัด -->
         <div class="pt-2 border-t border-slate-100 dark:border-slate-700/80 space-y-2">
           <span class="text-[10px] font-sans font-bold text-slate-400 block uppercase tracking-wider px-1">ทรัพยากรตัวละคร</span>
           
@@ -919,19 +920,23 @@
       setFontSizeScale(saved);
     }
 
-    // ฟังก์ชันซ่อน/แสดงแถบซ้าย พร้อมสลับลูกศรเป็น << และ >>
+    // ฟังก์ชันย่อ/ขยาย ซ่อนแถบซ้าย พร้อมเปลี่ยนไอคอนลูกศรระหว่าง << และ >>
     function toggleLeftSidebar() {
       const sidebar = document.getElementById('leftSidebarContainer');
+      const toggleBtn = document.getElementById('sidebarToggleBtn');
       const icon = document.getElementById('sidebarToggleIcon');
       
       if (sidebar.classList.contains('hidden') || sidebar.style.display === 'none') {
         sidebar.style.display = 'block';
         setTimeout(() => sidebar.style.opacity = '1', 10);
-        icon.className = "fa-solid fa-chevron-left text-[10px]";
+        toggleBtn.className = "absolute top-4 -right-3.5 z-30 w-4 h-14 rounded-r-xl bg-slate-800 hover:bg-rose-600 dark:bg-slate-700 dark:hover:bg-rose-600 text-white shadow-md flex items-center justify-center transition border-y border-r border-slate-600";
+        icon.className = "fa-solid fa-chevron-left text-[9px]";
       } else {
         sidebar.style.opacity = '0';
         setTimeout(() => sidebar.style.display = 'none', 300);
-        icon.className = "fa-solid fa-chevron-right text-[10px]";
+        // เมื่อซ่อนไปแล้ว ย้ายปุ่มมาติดชิดขอบซ้ายสุดของจอเพื่อให้กางกลับออกมาได้
+        toggleBtn.className = "fixed top-24 left-0 z-50 w-4 h-14 rounded-r-xl bg-rose-600 hover:bg-rose-700 text-white shadow-2xl flex items-center justify-center transition border-y border-r border-rose-500";
+        icon.className = "fa-solid fa-chevron-right text-[9px]";
       }
     }
 
