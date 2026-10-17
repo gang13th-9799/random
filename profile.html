@@ -123,7 +123,7 @@
     <div class="relative max-w-md w-full bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl p-6 sm:p-8 text-center shadow-2xl space-y-6 animate-pop-in">
       <div class="relative w-24 h-24 mx-auto flex items-center justify-center">
         <div class="absolute inset-0 rounded-3xl bg-amber-400/20 dark:bg-amber-400/10 animate-ping"></div>
-        <div class="relative w-20 h-20 rounded-2xl bg-gradient-to-tr from-rose-500 via-amber-500 to-emerald-400 text-white flex items-center justify-center text-4xl shadow-xl icon-vibrant">
+        <div id="syncBannerIconWrapper" class="relative w-20 h-20 rounded-2xl bg-gradient-to-tr from-rose-500 via-amber-500 to-emerald-400 text-white flex items-center justify-center text-4xl shadow-xl icon-vibrant">
           <i id="syncBannerIcon" class="fa-solid fa-arrows-rotate animate-spin"></i>
         </div>
       </div>
@@ -331,13 +331,13 @@
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6 gap-3.5" id="legsGridContainer"></div>
       </div>
 
-      <!-- เกณฑ์คุณสมบัติ (Checkbox) -->
+      <!-- เกณฑ์คุณสมบัติ (ดึงสีประจำหมวดหมู่มาเป็นสีพื้นหลังการ์ด) -->
       <div class="bg-white dark:bg-slate-800 p-5 sm:p-6 rounded-3xl border border-slate-200 dark:border-slate-700 shadow-sm space-y-4">
         <div>
           <h3 class="font-black text-base sm:text-lg text-slate-900 dark:text-white flex items-center gap-2">
             <i class="fa-solid fa-certificate text-emerald-500 text-xl"></i><span>เกณฑ์คุณสมบัติ & ความสำเร็จของผู้เล่น</span>
           </h3>
-          <p class="text-xs text-slate-500 dark:text-slate-400 pt-0.5">แบ่งตามหมวดหมู่ พร้อม Checkbox บันทึกสถานะส่วนตัว</p>
+          <p class="text-xs text-slate-500 dark:text-slate-400 pt-0.5">แสดงตามหมวดหมู่และสีประจำหมวดหมู่ พร้อม Checkbox บันทึกสถานะ</p>
         </div>
         <div class="space-y-5" id="playerDashboardQualificationsContainer"></div>
       </div>
@@ -355,7 +355,6 @@
         </div>
         
         <div class="flex items-center gap-2.5 self-stretch sm:self-auto justify-end">
-          <!-- ปุ่มสลับมุมมอง การ์ด vs ตาราง ของอาชีพ -->
           <div class="inline-flex p-1 bg-slate-100 dark:bg-slate-900/80 rounded-2xl border border-slate-200 dark:border-slate-700">
             <button type="button" id="careerModeCardBtn" onclick="setCareerViewMode('cards')" class="px-3 py-1.5 rounded-xl text-xs font-black transition flex items-center gap-1.5 bg-white dark:bg-slate-800 text-purple-500 shadow-xs">
               <i class="fa-solid fa-table-cells-large"></i><span>การ์ด</span>
@@ -371,10 +370,8 @@
         </div>
       </div>
 
-      <!-- คอนเทนเนอร์การ์ดอาชีพ -->
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4" id="careersListContainer"></div>
 
-      <!-- คอนเทนเนอร์ตารางอาชีพแบบกระชับ -->
       <div id="careersTableContainer" class="hidden bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-3xl shadow-sm overflow-hidden">
         <div class="overflow-x-auto">
           <table class="w-full text-left text-xs sm:text-sm border-collapse">
@@ -403,11 +400,10 @@
           <h3 class="font-black text-lg text-slate-900 dark:text-white flex items-center gap-2">
             <i class="fa-solid fa-certificate text-emerald-500 text-xl"></i><span>ฐานข้อมูลคุณสมบัติหลัก & หมวดหมู่</span>
           </h3>
-          <p class="text-xs text-slate-400 font-medium">เฉพาะ Admin สามารถจัดการหมวดหมู่, ดูรหัส ID กำกับ และเรียงลำดับเกณฑ์คุณสมบัติได้</p>
+          <p class="text-xs text-slate-400 font-medium">เฉพาะ Admin สามารถจัดการหมวดหมู่, แก้ไขสีหมวดหมู่, ดูรหัส ID และเรียงลำดับเกณฑ์ได้</p>
         </div>
         
         <div class="flex items-center gap-2.5 self-stretch sm:self-auto justify-end">
-          <!-- ปุ่มสลับมุมมอง การ์ด vs ตาราง ของคุณสมบัติ -->
           <div class="inline-flex p-1 bg-slate-100 dark:bg-slate-900/80 rounded-2xl border border-slate-200 dark:border-slate-700">
             <button type="button" id="qualModeCardBtn" onclick="setQualViewMode('cards')" class="px-3 py-1.5 rounded-xl text-xs font-black transition flex items-center gap-1.5 bg-white dark:bg-slate-800 text-emerald-500 shadow-xs">
               <i class="fa-solid fa-table-cells-large"></i><span>การ์ด</span>
@@ -426,10 +422,8 @@
         </div>
       </div>
 
-      <!-- คอนเทนเนอร์การ์ดคุณสมบัติ -->
       <div class="space-y-6" id="adminQualificationsCardsContainer"></div>
 
-      <!-- คอนเทนเนอร์ตารางคุณสมบัติแบบกระชับ -->
       <div id="adminQualificationsTableContainer" class="hidden bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-3xl shadow-sm overflow-hidden">
         <div class="overflow-x-auto">
           <table class="w-full text-left text-xs sm:text-sm border-collapse">
@@ -513,7 +507,7 @@
     </div>
   </div>
 
-  <!-- CAREER MODAL -->
+  <!-- CAREER MODAL (Admin กำหนดไอคอน, สีไอคอน, รูปภาพ และทรัพยากรเริ่มต้น) -->
   <div id="careerModal" class="hidden fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-md flex items-center justify-center p-4 overflow-y-auto">
     <div class="relative max-w-md w-full bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl p-6 shadow-2xl space-y-4 my-auto">
       <div class="flex items-center justify-between border-b pb-3">
@@ -529,13 +523,27 @@
         
         <div>
           <label class="text-slate-500">ชื่ออาชีพ <span class="text-rose-500">*</span></label>
-          <input type="text" id="careerTitleInput" required placeholder="เช่น นักธุรกิจ, พนักงานบริษัท" class="w-full mt-1 p-2 rounded-xl border dark:bg-slate-800">
+          <input type="text" id="careerTitleInput" required placeholder="เช่น แพทย์, วิศวกร, นักธุรกิจ" class="w-full mt-1 p-2 rounded-xl border dark:bg-slate-800">
+        </div>
+
+        <!-- ตัวเลือกไอคอนและสีไอคอนประจำอาชีพ -->
+        <div class="p-3 bg-slate-50 dark:bg-slate-800/60 rounded-2xl border space-y-2">
+          <span class="text-slate-400 block font-black text-[11px]">ไอคอนและโทนสีประจำอาชีพ</span>
+          <div class="flex items-center gap-2">
+            <button type="button" onclick="openCareerColorPicker()" id="careerColorPreviewBtn" class="w-10 h-10 rounded-xl border flex items-center justify-center shadow-sm shrink-0" title="เลือกสีไอคอน">
+              <span id="careerColorPill" class="w-6 h-6 rounded-full bg-rose-500"></span>
+            </button>
+            <button type="button" onclick="openCareerIconPicker()" id="careerIconPreviewBtn" class="w-10 h-10 rounded-xl bg-white dark:bg-slate-900 border flex items-center justify-center text-lg text-slate-700 dark:text-slate-200 hover:scale-105 transition shrink-0" title="เลือกไอคอนอาชีพ">
+              <i id="careerIconPreview" class="fa-solid fa-user-tie"></i>
+            </button>
+            <span class="text-xs text-slate-400 font-medium">คลิกที่ปุ่มเพื่อเลือกไอคอนอาชีพ (>20 แบบ) และโทนสี</span>
+          </div>
         </div>
 
         <div>
           <label class="text-slate-500 flex items-center gap-1.5">
             <i class="fa-solid fa-image text-purple-500"></i>
-            <span>URL รูปภาพตัวละคร (Image URL)</span>
+            <span>URL รูปภาพตัวละคร (Image URL) [ตัวเลือกเสริม]</span>
           </label>
           <input type="url" id="careerAvatarInput" placeholder="https://example.com/character.png" class="w-full mt-1 p-2 rounded-xl border dark:bg-slate-800 text-xs font-mono">
         </div>
@@ -593,6 +601,28 @@
     </div>
   </div>
 
+  <!-- CAREER ICON PICKER MODAL (มีมากกว่า 20 ไอคอนเกี่ยวกับอาชีพ) -->
+  <div id="careerIconPickerModal" class="hidden fixed inset-0 z-50 bg-slate-950/70 backdrop-blur-sm flex items-center justify-center p-4">
+    <div class="bg-white dark:bg-slate-800 border rounded-3xl max-w-md w-full p-6 space-y-4">
+      <div class="flex justify-between items-center border-b pb-3">
+        <h4 class="font-black text-base">เลือกไอคอนประจำอาชีพ</h4>
+        <button onclick="closeCareerIconPicker()"><i class="fa-solid fa-xmark text-lg text-slate-400"></i></button>
+      </div>
+      <div id="careerIconPickerGrid" class="grid grid-cols-5 sm:grid-cols-6 gap-3 max-h-72 overflow-y-auto p-1"></div>
+    </div>
+  </div>
+
+  <!-- CAREER COLOR PICKER MODAL -->
+  <div id="careerColorPickerModal" class="hidden fixed inset-0 z-50 bg-slate-950/70 backdrop-blur-sm flex items-center justify-center p-4">
+    <div class="bg-white dark:bg-slate-800 border rounded-3xl max-w-lg w-full p-6 space-y-4">
+      <div class="flex justify-between items-center border-b pb-3">
+        <h4 class="font-black text-base">เลือกโทนสีประจำอาชีพ</h4>
+        <button onclick="closeCareerColorPicker()"><i class="fa-solid fa-xmark text-lg text-slate-400"></i></button>
+      </div>
+      <div id="careerColorPickerGrid" class="space-y-2.5 max-h-80 overflow-y-auto"></div>
+    </div>
+  </div>
+
   <!-- QUALIFICATION MODAL -->
   <div id="qualificationModal" class="hidden fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-md flex items-center justify-center p-4 overflow-y-auto">
     <div class="relative max-w-md w-full bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl p-6 shadow-2xl space-y-4 my-auto">
@@ -642,18 +672,32 @@
     </div>
   </div>
 
-  <!-- CATEGORY MODAL -->
+  <!-- CATEGORY QUALIFICATION MODAL (เพิ่ม/แก้ไขหมวดหมู่ พร้อมเปลี่ยนสีประจำหมวดหมู่) -->
   <div id="categoryQualModal" class="hidden fixed inset-0 z-50 bg-slate-950/70 backdrop-blur-sm flex items-center justify-center p-4 overflow-y-auto">
-    <div class="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-3xl max-w-md w-full p-6 space-y-4">
+    <div class="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-3xl max-w-lg w-full p-6 space-y-4">
       <div class="flex justify-between items-center border-b pb-3">
-        <h3 class="font-black text-base text-slate-900 dark:text-white flex items-center gap-2"><i class="fa-solid fa-folder-open text-indigo-500"></i><span>จัดการหมวดหมู่คุณสมบัติ</span></h3>
+        <h3 class="font-black text-base text-slate-900 dark:text-white flex items-center gap-2"><i class="fa-solid fa-folder-open text-indigo-500"></i><span>จัดการหมวดหมู่คุณสมบัติ & สีพื้นหลัง</span></h3>
         <button onclick="closeCategoryQualModal()"><i class="fa-solid fa-xmark text-lg text-slate-400"></i></button>
       </div>
       <div class="flex gap-2">
+        <button type="button" onclick="openQualCatColorPicker(-1)" class="w-10 h-10 rounded-2xl border flex items-center justify-center shrink-0 shadow-sm" id="newQualCatColorBtn" title="เลือกสีหมวดหมู่">
+          <span id="newQualCatColorPill" class="w-6 h-6 rounded-full bg-rose-500"></span>
+        </button>
         <input type="text" id="newQualCategoryInput" placeholder="ชื่อหมวดหมู่ใหม่..." class="flex-1 border rounded-2xl px-3.5 py-2 text-xs font-bold dark:bg-slate-900 outline-none">
         <button onclick="handleAddQualCategory()" class="px-4 py-2 text-white rounded-2xl text-xs font-black btn-theme-action shrink-0">เพิ่ม</button>
       </div>
-      <div id="qualCategoryListContainer" class="divide-y max-h-56 overflow-y-auto pr-1"></div>
+      <div id="qualCategoryListContainer" class="divide-y max-h-60 overflow-y-auto pr-1"></div>
+    </div>
+  </div>
+
+  <!-- QUALIFICATION CATEGORY COLOR PICKER MODAL -->
+  <div id="qualCatColorPickerModal" class="hidden fixed inset-0 z-50 bg-slate-950/70 backdrop-blur-sm flex items-center justify-center p-4">
+    <div class="bg-white dark:bg-slate-800 border rounded-3xl max-w-lg w-full p-6 space-y-4">
+      <div class="flex justify-between items-center border-b pb-3">
+        <h4 class="font-black text-base">เลือกโทนสีประจำหมวดหมู่คุณสมบัติ</h4>
+        <button onclick="closeQualCatColorPicker()"><i class="fa-solid fa-xmark text-lg text-slate-400"></i></button>
+      </div>
+      <div id="qualCatColorPickerGrid" class="space-y-2.5 max-h-80 overflow-y-auto"></div>
     </div>
   </div>
 
@@ -692,6 +736,29 @@
           <div>
             <label class="text-teal-400">Passive Income (฿)</label>
             <input type="number" id="editPlayerPassive" class="w-full mt-1 p-2 rounded-xl border font-mono dark:bg-slate-800">
+          </div>
+        </div>
+        <div class="p-3 bg-slate-50 dark:bg-slate-800/80 rounded-2xl border space-y-2">
+          <span class="text-slate-400 block font-black text-[11px]">ระดับทรัพยากร (1 - 10)</span>
+          <div class="grid grid-cols-3 gap-2 font-mono">
+            <div>
+              <span class="flex items-center gap-1 text-red-500">
+                <i class="fa-solid fa-heart text-red-500"></i> สุขภาพ
+              </span>
+              <input type="number" min="1" max="10" id="editPlayerHeart" class="w-full mt-1 p-1.5 border rounded-lg text-center dark:bg-slate-900">
+            </div>
+            <div>
+              <span class="flex items-center gap-1 text-slate-800 dark:text-white">
+                <i class="fa-solid fa-clock"></i> เวลา
+              </span>
+              <input type="number" min="1" max="10" id="editPlayerTime" class="w-full mt-1 p-1.5 border rounded-lg text-center dark:bg-slate-900">
+            </div>
+            <div>
+              <span class="flex items-center gap-1 text-blue-600 dark:text-blue-400">
+                <i class="fa-solid fa-book-bookmark"></i> ความรู้
+              </span>
+              <input type="number" min="1" max="10" id="editPlayerKnowledge" class="w-full mt-1 p-1.5 border rounded-lg text-center dark:bg-slate-900">
+            </div>
           </div>
         </div>
         <div class="flex justify-end gap-2 pt-2 border-t">
@@ -756,9 +823,62 @@
     <span id="toastMessage">แจ้งเตือน</span>
   </div>
 
-  <!-- JavaScript Engine with Concurrency-Safe Sync -->
+  <!-- JavaScript Engine -->
   <script>
     const GOOGLE_SHEET_API_URL = "https://script.google.com/macros/s/AKfycbzq9oD33K3nf_r2JRq5RjCafAQIvt2o9ywvJ1EvXvVg4l9QyUalIuQvxxT7zQ890nR1/exec";
+
+    // โทนสีและ Gradient มาตรฐานเดียวกับ index.html
+    const COLOR_PALETTES = {
+      red: { 
+        id: "red", 
+        name: "ชมพู-แดงนีออน", 
+        hex: "#FF3366", 
+        gradient: "linear-gradient(135deg, #FF3366 0%, #FF5E62 50%, #FF9966 100%)", 
+        badge: "bg-rose-100 text-rose-800 dark:bg-rose-900/60 dark:text-rose-200 border-rose-300 dark:border-rose-500",
+        cardBgTint: "bg-gradient-to-br from-rose-500/25 via-rose-500/10 to-rose-50/50 dark:from-rose-950/60 dark:via-slate-900/90 dark:to-slate-950 border-rose-400/80 dark:border-rose-500/50"
+      },
+      blue: { 
+        id: "blue", 
+        name: "ฟ้าน้ำทะเลสดใส", 
+        hex: "#00C4FF", 
+        gradient: "linear-gradient(135deg, #00C4FF 0%, #0072FF 50%, #002288 100%)", 
+        badge: "bg-cyan-100 text-cyan-800 dark:bg-cyan-900/60 dark:text-cyan-200 border-cyan-300 dark:border-cyan-500",
+        cardBgTint: "bg-gradient-to-br from-cyan-500/25 via-cyan-500/10 to-cyan-50/50 dark:from-cyan-950/60 dark:via-slate-900/90 dark:to-slate-950 border-cyan-400/80 dark:border-cyan-500/50"
+      },
+      purple: { 
+        id: "purple", 
+        name: "ม่วงไวโอเล็ตนีออน", 
+        hex: "#B026FF", 
+        gradient: "linear-gradient(135deg, #FF61D2 0%, #B026FF 50%, #581C87 100%)", 
+        badge: "bg-purple-100 text-purple-800 dark:bg-purple-900/60 dark:text-purple-200 border-purple-300 dark:border-purple-500",
+        cardBgTint: "bg-gradient-to-br from-purple-500/25 via-purple-500/10 to-purple-50/50 dark:from-purple-950/60 dark:via-slate-900/90 dark:to-slate-950 border-purple-400/80 dark:border-purple-500/50"
+      },
+      emerald: { 
+        id: "emerald", 
+        name: "เขียวมรกตนีออน", 
+        hex: "#00E676", 
+        gradient: "linear-gradient(135deg, #00E676 0%, #00B0FF 50%, #1DE9B6 100%)", 
+        badge: "bg-emerald-100 text-emerald-800 dark:bg-emerald-900/60 dark:text-emerald-200 border-emerald-300 dark:border-emerald-500",
+        cardBgTint: "bg-gradient-to-br from-emerald-500/25 via-emerald-500/10 to-emerald-50/50 dark:from-emerald-950/60 dark:via-slate-900/90 dark:to-slate-950 border-emerald-400/80 dark:border-emerald-500/50"
+      },
+      amber: { 
+        id: "amber", 
+        name: "ส้ม-ทองอำพัน", 
+        hex: "#FF9100", 
+        gradient: "linear-gradient(135deg, #FFE600 0%, #FF9100 50%, #FF3D00 100%)", 
+        badge: "bg-amber-100 text-amber-800 dark:bg-amber-900/60 dark:text-amber-200 border-amber-300 dark:border-amber-500",
+        cardBgTint: "bg-gradient-to-br from-amber-500/25 via-amber-500/10 to-amber-50/50 dark:from-amber-950/60 dark:via-slate-900/90 dark:to-slate-950 border-amber-400/80 dark:border-amber-500/50"
+      }
+    };
+
+    // ชุดไอคอนเกี่ยวกับอาชีพ 25 ไอคอน
+    const CAREER_ICON_PRESETS = [
+      "fa-user-tie", "fa-user-doctor", "fa-user-ninja", "fa-user-graduate", "fa-user-astronaut",
+      "fa-helmet-safety", "fa-briefcase", "fa-store", "fa-laptop-code", "fa-chart-line",
+      "fa-stethoscope", "fa-utensils", "fa-chalkboard-user", "fa-palette", "fa-scale-balanced",
+      "fa-plane-departure", "fa-camera", "fa-music", "fa-wrench", "fa-coins",
+      "fa-shield-halved", "fa-truck-fast", "fa-bullhorn", "fa-flask", "fa-seedling"
+    ];
 
     function calculateAmwayLevel(pv) {
       const p = parseFloat(pv) || 0;
@@ -792,7 +912,8 @@
         activeIncome: 15000, 
         passiveIncome: 0, 
         resources: { heart: 8, time: 4, knowledge: 7 },
-        icon: "fa-briefcase", 
+        icon: "fa-briefcase",
+        color: "blue",
         avatar: "" 
       },
       { 
@@ -805,7 +926,8 @@
         activeIncome: 35000, 
         passiveIncome: 5000, 
         resources: { heart: 6, time: 5, knowledge: 9 },
-        icon: "fa-store", 
+        icon: "fa-store",
+        color: "amber",
         avatar: "" 
       },
       { 
@@ -818,12 +940,18 @@
         activeIncome: 75000, 
         passiveIncome: 25000, 
         resources: { heart: 9, time: 9, knowledge: 10 },
-        icon: "fa-chart-line", 
+        icon: "fa-chart-line",
+        color: "purple",
         avatar: "" 
       }
     ];
 
-    const DEFAULT_QUAL_CATEGORIES = ["พื้นฐานธุรกิจ", "การสร้างเครือข่าย", "ความเป็นผู้นำ"];
+    // หมวดหมู่คุณสมบัติ: เก็บชื่อและสีประจำหมวดหมู่
+    const DEFAULT_QUAL_CATEGORIES = [
+      { name: "พื้นฐานธุรกิจ", color: "blue" },
+      { name: "การสร้างเครือข่าย", color: "emerald" },
+      { name: "ความเป็นผู้นำ", color: "amber" }
+    ];
 
     const DEFAULT_QUALIFICATIONS = [
       { id: "qual-1", code: "Q-001", category: "พื้นฐานธุรกิจ", title: "เกณฑ์ 15% (Bronze)", personalPv: 3000, legsCount: 2, bonus: 5000 },
@@ -845,9 +973,14 @@
     let qualificationsList = [...DEFAULT_QUALIFICATIONS];
     let qualificationCategories = [...DEFAULT_QUAL_CATEGORIES];
 
-    // โหมดการแสดงผล (Cards / Table)
     let careerViewMode = "cards";
     let qualViewMode = "cards";
+
+    // ตัวแปรสำหรับเลือกไอคอนและสีตอนแก้ไขอาชีพและหมวดหมู่
+    let careerModalSelectedIcon = "fa-user-tie";
+    let careerModalSelectedColor = "purple";
+    let qualCatModalTargetIdx = -1;
+    let newQualCatSelectedColor = "rose";
 
     function createDefaultPlayerProfile(name, accId) {
       return {
@@ -871,6 +1004,9 @@
       initTheme();
       loadAuthAndProfile();
       renderAllProfileUI();
+      renderCareerIconPickerGrid();
+      renderCareerColorPickerGrid();
+      renderQualCatColorPickerGrid();
       fetchProfileDataFromCloud(true);
     });
 
@@ -1037,7 +1173,11 @@
         if (rawQuals) qualificationsList = JSON.parse(rawQuals);
 
         const rawQualCats = localStorage.getItem('rnd_cache_qual_categories');
-        if (rawQualCats) qualificationCategories = JSON.parse(rawQualCats);
+        if (rawQualCats) {
+          const parsed = JSON.parse(rawQualCats);
+          // รองรับ backward compatibility ทั้ง array of string และ array of object
+          qualificationCategories = parsed.map(c => typeof c === 'string' ? { name: c, color: 'blue' } : c);
+        }
 
         careerViewMode = localStorage.getItem('rnd_career_view_mode') || 'cards';
         qualViewMode = localStorage.getItem('rnd_qual_view_mode') || 'cards';
@@ -1066,21 +1206,18 @@
       } catch (e) {}
     }
 
-    /* สลับมุมมองอาชีพ (Cards / Table) */
     function setCareerViewMode(mode) {
       careerViewMode = mode;
       saveProfileLocalCache();
       renderCareersCards();
     }
 
-    /* สลับมุมมองคุณสมบัติ (Cards / Table) */
     function setQualViewMode(mode) {
       qualViewMode = mode;
       saveProfileLocalCache();
       renderAdminQualificationsTab();
     }
 
-    /* เรียงลำดับอาชีพ (Move Up / Down) */
     function moveCareerOrder(index, direction) {
       const target = index + direction;
       if (target < 0 || target >= careersList.length) return;
@@ -1093,7 +1230,6 @@
       showToast("ปรับลำดับอาชีพเรียบร้อย 🔁");
     }
 
-    /* เรียงลำดับคุณสมบัติ (Move Up / Down) */
     function moveQualificationOrder(id, direction) {
       const index = qualificationsList.findIndex(q => q.id === id);
       if (index === -1) return;
@@ -1117,13 +1253,14 @@
 
       grid.innerHTML = careersList.map(car => {
         const r = car.resources || { heart: 10, time: 10, knowledge: 10 };
+        const palette = COLOR_PALETTES[car.color] || COLOR_PALETTES.purple;
         return `
           <div class="p-4 rounded-2xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800/80 space-y-3">
             <div class="flex items-center gap-3">
               ${car.avatar ? `
                 <img src="${escapeHTML(car.avatar)}" alt="${escapeHTML(car.title)}" class="w-12 h-12 rounded-2xl object-cover shadow border border-slate-300 dark:border-slate-600 shrink-0">
               ` : `
-                <div class="w-12 h-12 rounded-2xl bg-amber-500/15 text-amber-500 flex items-center justify-center text-2xl icon-vibrant shrink-0">
+                <div class="w-12 h-12 rounded-2xl flex items-center justify-center text-2xl text-white shadow-md shrink-0 icon-vibrant" style="background: ${palette.gradient};">
                   <i class="fa-solid ${car.icon || 'fa-award'}"></i>
                 </div>
               `}
@@ -1266,7 +1403,12 @@
       if (avatarWrapper) {
         if (hasCareer && profileData.career && profileData.career.avatar) {
           avatarWrapper.innerHTML = `<img src="${escapeHTML(profileData.career.avatar)}" class="w-full h-full object-cover">`;
+        } else if (hasCareer && profileData.career && profileData.career.icon) {
+          const pal = COLOR_PALETTES[profileData.career.color] || COLOR_PALETTES.purple;
+          avatarWrapper.style.background = pal.gradient;
+          avatarWrapper.innerHTML = `<i class="fa-solid ${profileData.career.icon}"></i>`;
         } else {
+          avatarWrapper.style.background = "linear-gradient(135deg, #FF3366 0%, #FF6B4A 50%, #FFA033 100%)";
           avatarWrapper.innerHTML = `<i class="fa-solid fa-user-astronaut"></i>`;
         }
       }
@@ -1315,7 +1457,6 @@
       const res = hasCareer && profileData.resources ? profileData.resources : { heart: 0, time: 0, knowledge: 0 };
 
       container.innerHTML = `
-        <!-- สุขภาพ: หัวใจสีแดง -->
         <div class="p-4 rounded-2xl bg-rose-50 dark:bg-rose-950/30 border border-rose-200 dark:border-rose-900/50 flex flex-col justify-between space-y-3">
           <div class="flex items-center justify-between">
             <span class="text-xs font-black text-rose-600 dark:text-rose-400 uppercase flex items-center gap-1.5">
@@ -1330,7 +1471,6 @@
           </div>
         </div>
 
-        <!-- เวลา: นาฬิกาสีขาว/ดำ -->
         <div class="p-4 rounded-2xl bg-slate-100 dark:bg-slate-900/80 border border-slate-300 dark:border-slate-700 flex flex-col justify-between space-y-3">
           <div class="flex items-center justify-between">
             <span class="text-xs font-black text-slate-700 dark:text-slate-300 uppercase flex items-center gap-1.5">
@@ -1345,7 +1485,6 @@
           </div>
         </div>
 
-        <!-- ความรู้: สมุดสีน้ำเงิน/ขาว -->
         <div class="p-4 rounded-2xl bg-blue-50 dark:bg-blue-950/30 border border-blue-200 dark:border-blue-900/50 flex flex-col justify-between space-y-3">
           <div class="flex items-center justify-between">
             <span class="text-xs font-black text-blue-600 dark:text-blue-400 uppercase flex items-center gap-1.5">
@@ -1405,41 +1544,53 @@
       }).join('');
     }
 
+    // เรนเดอร์คุณสมบัติในหน้า Dashboard ผู้เล่น (เอาสีของหมวดหมู่มาทำเป็นสีพื้นหลังการ์ด)
     function renderPlayerDashboardQualifications() {
       const container = document.getElementById('playerDashboardQualificationsContainer');
       if (!container) return;
 
       if (!profileData.unlockedQualifications) profileData.unlockedQualifications = {};
 
-      container.innerHTML = qualificationCategories.map(cat => {
-        const catQuals = qualificationsList.filter(q => (q.category || "ทั่วไป") === cat);
+      container.innerHTML = qualificationCategories.map(catObj => {
+        const catName = typeof catObj === 'string' ? catObj : catObj.name;
+        const catColor = typeof catObj === 'string' ? 'blue' : (catObj.color || 'blue');
+        const palette = COLOR_PALETTES[catColor] || COLOR_PALETTES.blue;
+
+        const catQuals = qualificationsList.filter(q => (q.category || "ทั่วไป") === catName);
         if (catQuals.length === 0) return '';
 
         return `
-          <div class="p-4 rounded-2xl bg-slate-50 dark:bg-slate-900/50 border border-slate-200 dark:border-slate-700 space-y-3">
-            <h4 class="font-black text-sm text-indigo-400 border-b border-slate-200 dark:border-slate-800 pb-2 flex items-center gap-2">
-              <i class="fa-solid fa-folder-open"></i><span>${escapeHTML(cat)}</span>
-            </h4>
+          <div class="p-4 sm:p-5 rounded-3xl border transition duration-200 space-y-3.5 shadow-md ${palette.cardBgTint}">
+            <div class="flex items-center justify-between border-b border-black/5 dark:border-white/5 pb-2">
+              <h4 class="font-black text-sm sm:text-base text-slate-900 dark:text-white flex items-center gap-2">
+                <span class="w-3.5 h-3.5 rounded-full shadow-xs" style="background: ${palette.hex};"></span>
+                <span>${escapeHTML(catName)}</span>
+              </h4>
+              <span class="text-xs px-2.5 py-0.5 rounded-full font-bold border shrink-0 ${palette.badge}">
+                ${catQuals.length} ข้อ
+              </span>
+            </div>
+
             <div class="space-y-2.5">
               ${catQuals.map(qual => {
                 const isChecked = profileData.unlockedQualifications[qual.id] === true;
                 return `
-                  <div class="p-3 rounded-xl border ${isChecked ? 'bg-emerald-50/60 dark:bg-emerald-950/30 border-emerald-300 dark:border-emerald-800/80' : 'bg-white dark:bg-slate-800/80 border-slate-200 dark:border-slate-700'} flex items-start gap-3 transition">
+                  <div class="p-3.5 rounded-2xl border ${isChecked ? 'bg-emerald-500/20 border-emerald-400 dark:border-emerald-600' : 'bg-white/90 dark:bg-slate-900/90 border-slate-200/80 dark:border-slate-800'} flex items-start gap-3 transition shadow-xs">
                     <div class="pt-0.5">
                       <input type="checkbox" id="chk_qual_${qual.id}" onchange="togglePlayerQualification('${qual.id}', this.checked)" ${isChecked ? 'checked' : ''} class="w-5 h-5 rounded-lg text-emerald-500 cursor-pointer accent-emerald-500">
                     </div>
-                    <div class="flex-1 space-y-0.5">
+                    <div class="flex-1 space-y-1">
                       <div class="flex items-center justify-between gap-2">
                         <label for="chk_qual_${qual.id}" class="font-black text-xs sm:text-sm text-slate-900 dark:text-white cursor-pointer select-none">
                           ${escapeHTML(qual.title)}
                         </label>
-                        <span class="text-[11px] font-mono font-bold text-amber-500 bg-amber-50 dark:bg-amber-950/60 px-2 py-0.5 rounded-lg border border-amber-200 dark:border-amber-800/60 shrink-0">
+                        <span class="text-[11px] font-mono font-black text-amber-500 bg-amber-50 dark:bg-amber-950/60 px-2 py-0.5 rounded-lg border border-amber-200 dark:border-amber-800/60 shrink-0">
                           +฿${(qual.bonus || 0).toLocaleString()}
                         </span>
                       </div>
                       <div class="flex items-center gap-3 text-[11px] font-mono text-slate-500 dark:text-slate-400">
-                        <span>PV: <strong class="text-cyan-500 font-bold">${(qual.personalPv || 0).toLocaleString()}</strong></span>
-                        <span>สายงาน: <strong class="text-indigo-400 font-bold">${qual.legsCount || 0} สาย</strong></span>
+                        <span>PV ส่วนตัว: <strong class="text-cyan-500 font-bold">${(qual.personalPv || 0).toLocaleString()}</strong></span>
+                        <span>สายงานที่ผ่าน: <strong class="text-indigo-400 font-bold">${qual.legsCount || 0} สาย</strong></span>
                       </div>
                     </div>
                   </div>
@@ -1460,7 +1611,7 @@
       showToast(checked ? "บันทึกสถานะคุณสมบัติแล้ว! 🎉" : "ยกเลิกสถานะคุณสมบัติแล้ว");
     }
 
-    /* เรนเดอร์การ์ด/ตารางอาชีพ (พร้อมปุ่มจัดเรียงลำดับ) */
+    /* เรนเดอร์การ์ด/ตารางอาชีพ */
     function renderCareersCards() {
       const container = document.getElementById('careersListContainer');
       const tableContainer = document.getElementById('careersTableContainer');
@@ -1483,20 +1634,20 @@
         tableContainer.classList.remove('hidden');
       }
 
-      // 1. โหมดการ์ด
       container.innerHTML = careersList.map((car, idx) => {
         const r = car.resources || { heart: 10, time: 10, knowledge: 10 };
+        const palette = COLOR_PALETTES[car.color] || COLOR_PALETTES.purple;
         const isFirst = idx === 0;
         const isLast = idx === careersList.length - 1;
 
         return `
-          <div class="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-3xl p-5 shadow-sm space-y-3 relative overflow-hidden">
+          <div class="rounded-3xl p-5 shadow-sm space-y-3 relative overflow-hidden border ${palette.cardBgTint}">
             <div class="flex items-center justify-between">
               <div class="flex items-center gap-3">
                 ${car.avatar ? `
                   <img src="${escapeHTML(car.avatar)}" alt="${escapeHTML(car.title)}" class="w-12 h-12 rounded-2xl object-cover shadow border border-slate-300 dark:border-slate-600 shrink-0">
                 ` : `
-                  <div class="w-12 h-12 rounded-2xl bg-amber-500/15 text-amber-500 flex items-center justify-center text-2xl icon-vibrant shrink-0">
+                  <div class="w-12 h-12 rounded-2xl flex items-center justify-center text-2xl text-white shadow-md shrink-0 icon-vibrant" style="background: ${palette.gradient};">
                     <i class="fa-solid ${car.icon || 'fa-award'}"></i>
                   </div>
                 `}
@@ -1509,7 +1660,6 @@
                 </div>
               </div>
 
-              <!-- ปุ่มเรียงลำดับ & แก้ไข/ลบ เฉพาะ Admin -->
               <div class="flex items-center gap-1 shrink-0">
                 ${isAdmin ? `
                   <button onclick="moveCareerOrder(${idx}, -1)" ${isFirst ? 'disabled class="p-1.5 text-slate-300 dark:text-slate-600 cursor-not-allowed"' : 'class="p-1.5 text-slate-400 hover:text-purple-500"'} title="เลื่อนขึ้น"><i class="fa-solid fa-arrow-up text-xs"></i></button>
@@ -1525,8 +1675,7 @@
               <div>รายจ่าย: <strong class="text-rose-400 block font-bold">฿${(car.expenses || 0).toLocaleString()}</strong></div>
             </div>
 
-            <!-- ทรัพยากรเริ่มต้น -->
-            <div class="flex items-center justify-between text-xs font-mono bg-slate-50 dark:bg-slate-900/60 p-2 rounded-xl border border-slate-200/60 dark:border-slate-800 text-center">
+            <div class="flex items-center justify-between text-xs font-mono bg-white/80 dark:bg-slate-900/60 p-2 rounded-xl border border-slate-200/60 dark:border-slate-800 text-center">
               <span class="flex items-center gap-1 text-red-500 font-bold"><i class="fa-solid fa-heart text-red-500"></i> ${r.heart}</span>
               <span class="flex items-center gap-1 text-slate-800 dark:text-white font-bold"><i class="fa-solid fa-clock"></i> ${r.time}</span>
               <span class="flex items-center gap-1 text-blue-600 dark:text-blue-400 font-bold"><i class="fa-solid fa-book-bookmark"></i> ${r.knowledge}</span>
@@ -1535,10 +1684,10 @@
         `;
       }).join('');
 
-      // 2. โหมดตารางกระชับ
       if (tableBody) {
         tableBody.innerHTML = careersList.map((car, idx) => {
           const r = car.resources || { heart: 10, time: 10, knowledge: 10 };
+          const palette = COLOR_PALETTES[car.color] || COLOR_PALETTES.purple;
           const isFirst = idx === 0;
           const isLast = idx === careersList.length - 1;
 
@@ -1550,7 +1699,7 @@
                   ${car.avatar ? `
                     <img src="${escapeHTML(car.avatar)}" alt="${escapeHTML(car.title)}" class="w-8 h-8 rounded-xl object-cover border border-slate-300 dark:border-slate-600 shrink-0">
                   ` : `
-                    <div class="w-8 h-8 rounded-xl bg-amber-500/15 text-amber-500 flex items-center justify-center text-sm icon-vibrant shrink-0">
+                    <div class="w-8 h-8 rounded-xl text-white flex items-center justify-center text-xs shadow-xs shrink-0 icon-vibrant" style="background: ${palette.gradient};">
                       <i class="fa-solid ${car.icon || 'fa-award'}"></i>
                     </div>
                   `}
@@ -1580,7 +1729,7 @@
       }
     }
 
-    /* เรนเดอร์การ์ด/ตารางคุณสมบัติของ Admin (พร้อมปุ่มจัดเรียงลำดับ) */
+    /* เรนเดอร์คุณสมบัติของ Admin (เอาสีของหมวดหมู่มาทำเป็นสีพื้นหลังการ์ด) */
     function renderAdminQualificationsTab() {
       const cardsContainer = document.getElementById('adminQualificationsCardsContainer');
       const tableContainer = document.getElementById('adminQualificationsTableContainer');
@@ -1601,27 +1750,32 @@
         tableContainer.classList.remove('hidden');
       }
 
-      // 1. โหมดการ์ด
-      cardsContainer.innerHTML = qualificationCategories.map(cat => {
-        const catQuals = qualificationsList.filter(q => (q.category || "ทั่วไป") === cat);
+      cardsContainer.innerHTML = qualificationCategories.map(catObj => {
+        const catName = typeof catObj === 'string' ? catObj : catObj.name;
+        const catColor = typeof catObj === 'string' ? 'blue' : (catObj.color || 'blue');
+        const palette = COLOR_PALETTES[catColor] || COLOR_PALETTES.blue;
+        const catQuals = qualificationsList.filter(q => (q.category || "ทั่วไป") === catName);
 
         return `
-          <div class="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-3xl p-5 shadow-sm space-y-3">
-            <div class="flex items-center justify-between border-b pb-2.5">
-              <h4 class="font-black text-base text-indigo-400 flex items-center gap-2">
-                <i class="fa-solid fa-folder-open"></i><span>${escapeHTML(cat)}</span>
+          <div class="rounded-3xl p-5 shadow-sm space-y-3 border ${palette.cardBgTint}">
+            <div class="flex items-center justify-between border-b border-black/5 dark:border-white/5 pb-2.5">
+              <h4 class="font-black text-base text-slate-900 dark:text-white flex items-center gap-2">
+                <span class="w-3.5 h-3.5 rounded-full shadow-xs" style="background: ${palette.hex};"></span>
+                <span>${escapeHTML(catName)}</span>
               </h4>
-              <span class="text-xs font-mono text-slate-400">จำนวนเกณฑ์: ${catQuals.length} ข้อ</span>
+              <span class="text-xs px-2.5 py-0.5 rounded-full font-bold border shrink-0 ${palette.badge}">
+                ${catQuals.length} ข้อ
+              </span>
             </div>
             
             <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
-              ${catQuals.length === 0 ? '<p class="text-xs text-slate-400 italic py-2">ยังไม่มีเกณฑ์คุณสมบัติในหมวดนี้</p>' : catQuals.map((qual, qIdx) => {
+              ${catQuals.length === 0 ? '<p class="text-xs text-slate-400 italic py-2">ยังไม่มีเกณฑ์คุณสมบัติในหมวดนี้</p>' : catQuals.map(qual => {
                 const globalIdx = qualificationsList.findIndex(q => q.id === qual.id);
                 const isFirst = globalIdx === 0;
                 const isLast = globalIdx === qualificationsList.length - 1;
 
                 return `
-                  <div class="p-3.5 rounded-2xl bg-slate-50 dark:bg-slate-900/60 border border-slate-200 dark:border-slate-700/80 space-y-2">
+                  <div class="p-3.5 rounded-2xl bg-white/90 dark:bg-slate-900/90 border border-slate-200/80 dark:border-slate-800 space-y-2 shadow-xs">
                     <div class="flex items-center justify-between">
                       <span class="font-mono text-xs font-black px-2 py-0.5 rounded bg-indigo-50 dark:bg-indigo-950/60 text-indigo-400 border border-indigo-200 dark:border-indigo-800">
                         ${escapeHTML(qual.code || 'Q-000')}
@@ -1649,11 +1803,12 @@
         `;
       }).join('');
 
-      // 2. โหมดตารางกระชับ
       if (tableBody) {
         tableBody.innerHTML = qualificationsList.map((qual, idx) => {
           const isFirst = idx === 0;
           const isLast = idx === qualificationsList.length - 1;
+          const catObj = qualificationCategories.find(c => c.name === qual.category);
+          const palette = COLOR_PALETTES[catObj?.color] || COLOR_PALETTES.blue;
 
           return `
             <tr class="hover:bg-slate-50 dark:hover:bg-slate-700/40 transition">
@@ -1664,7 +1819,7 @@
                 </span>
               </td>
               <td class="py-3 px-3 text-center">
-                <span class="px-2 py-0.5 rounded-lg bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-300 text-xs font-bold">
+                <span class="px-2.5 py-0.5 rounded-full text-xs font-bold border ${palette.badge}">
                   ${escapeHTML(qual.category || 'ทั่วไป')}
                 </span>
               </td>
@@ -1753,7 +1908,59 @@
       showToast("รีเซ็ตสถานะเรียบร้อยแล้ว (เลือกอาชีพใหม่เพื่อเริ่มเล่น)");
     }
 
-    /* Admin CRUD */
+    /* ------------------------------------------------------------------------
+       ระบบเลือกไอคอน & สีประจำอาชีพ
+       ------------------------------------------------------------------------ */
+    function renderCareerIconPickerGrid() {
+      const g = document.getElementById('careerIconPickerGrid');
+      if (!g) return;
+      g.innerHTML = CAREER_ICON_PRESETS.map(icon => `
+        <button type="button" onclick="selectCareerIcon('${icon}')" class="w-12 h-12 border rounded-2xl flex items-center justify-center text-xl text-slate-700 dark:text-slate-200 hover:scale-110 transition shadow-xs dark:bg-slate-900">
+          <i class="fa-solid ${icon}"></i>
+        </button>
+      `).join('');
+    }
+
+    function openCareerIconPicker() {
+      document.getElementById('careerIconPickerModal')?.classList.remove('hidden');
+    }
+    function closeCareerIconPicker() {
+      document.getElementById('careerIconPickerModal')?.classList.add('hidden');
+    }
+    function selectCareerIcon(icon) {
+      careerModalSelectedIcon = icon;
+      const preview = document.getElementById('careerIconPreview');
+      if (preview) preview.className = `fa-solid ${icon}`;
+      closeCareerIconPicker();
+    }
+
+    function renderCareerColorPickerGrid() {
+      const g = document.getElementById('careerColorPickerGrid');
+      if (!g) return;
+      g.innerHTML = Object.values(COLOR_PALETTES).map(p => `
+        <button type="button" onclick="selectCareerColor('${p.id}')" class="w-full p-3 border rounded-2xl flex items-center gap-3.5 hover:scale-[1.01] transition dark:bg-slate-900">
+          <span class="w-7 h-7 rounded-full shadow-md" style="background: ${p.hex}"></span>
+          <span class="text-sm font-black text-slate-800 dark:text-white">${p.name}</span>
+        </button>
+      `).join('');
+    }
+
+    function openCareerColorPicker() {
+      document.getElementById('careerColorPickerModal')?.classList.remove('hidden');
+    }
+    function closeCareerColorPicker() {
+      document.getElementById('careerColorPickerModal')?.classList.add('hidden');
+    }
+    function selectCareerColor(colorId) {
+      careerModalSelectedColor = colorId;
+      const pill = document.getElementById('careerColorPill');
+      if (pill && COLOR_PALETTES[colorId]) pill.style.backgroundColor = COLOR_PALETTES[colorId].hex;
+      closeCareerColorPicker();
+    }
+
+    /* ------------------------------------------------------------------------
+       ระบบจัดการหมวดหมู่คุณสมบัติ & เลือกสีหมวดหมู่
+       ------------------------------------------------------------------------ */
     function openAddCategoryModal() {
       if (currentAuth.accountType !== "admin") return;
       renderQualCategoryModalList();
@@ -1769,23 +1976,65 @@
     function renderQualCategoryModalList() {
       const container = document.getElementById('qualCategoryListContainer');
       if (!container) return;
-      container.innerHTML = qualificationCategories.map((cat, idx) => `
-        <div class="py-2.5 flex items-center justify-between text-xs font-black">
-          <span>${escapeHTML(cat)}</span>
-          <button onclick="deleteQualCategory(${idx})" class="text-rose-500 hover:underline"><i class="fa-solid fa-trash-can"></i> ลบ</button>
-        </div>
+      container.innerHTML = qualificationCategories.map((cat, idx) => {
+        const palette = COLOR_PALETTES[cat.color] || COLOR_PALETTES.blue;
+        return `
+          <div class="py-2.5 flex items-center justify-between text-xs font-black">
+            <div class="flex items-center gap-2.5">
+              <button type="button" onclick="openQualCatColorPicker(${idx})" class="w-7 h-7 rounded-xl border flex items-center justify-center shadow-xs" title="เปลี่ยนสีหมวดหมู่">
+                <span class="w-4 h-4 rounded-full" style="background: ${palette.hex};"></span>
+              </button>
+              <span class="text-slate-800 dark:text-white">${escapeHTML(cat.name)}</span>
+            </div>
+            <button onclick="deleteQualCategory(${idx})" class="text-rose-500 hover:underline"><i class="fa-solid fa-trash-can"></i> ลบ</button>
+          </div>
+        `;
+      }).join('');
+    }
+
+    function renderQualCatColorPickerGrid() {
+      const g = document.getElementById('qualCatColorPickerGrid');
+      if (!g) return;
+      g.innerHTML = Object.values(COLOR_PALETTES).map(p => `
+        <button type="button" onclick="selectQualCatColor('${p.id}')" class="w-full p-3 border rounded-2xl flex items-center gap-3.5 hover:scale-[1.01] transition dark:bg-slate-900">
+          <span class="w-7 h-7 rounded-full shadow-md" style="background: ${p.hex}"></span>
+          <span class="text-sm font-black text-slate-800 dark:text-white">${p.name}</span>
+        </button>
       `).join('');
+    }
+
+    function openQualCatColorPicker(idx) {
+      qualCatModalTargetIdx = idx;
+      document.getElementById('qualCatColorPickerModal')?.classList.remove('hidden');
+    }
+    function closeQualCatColorPicker() {
+      document.getElementById('qualCatColorPickerModal')?.classList.add('hidden');
+    }
+    function selectQualCatColor(colorId) {
+      if (qualCatModalTargetIdx === -1) {
+        newQualCatSelectedColor = colorId;
+        const pill = document.getElementById('newQualCatColorPill');
+        if (pill && COLOR_PALETTES[colorId]) pill.style.backgroundColor = COLOR_PALETTES[colorId].hex;
+      } else {
+        qualificationCategories[qualCatModalTargetIdx].color = colorId;
+        saveProfileLocalCache();
+        renderQualCategoryModalList();
+        renderAdminQualificationsTab();
+        renderPlayerDashboardQualifications();
+        syncProfileAndMasterToCloud(true);
+      }
+      closeQualCatColorPicker();
     }
 
     function handleAddQualCategory() {
       const input = document.getElementById('newQualCategoryInput');
       const val = (input?.value || '').trim();
       if (!val) return;
-      if (qualificationCategories.includes(val)) {
+      if (qualificationCategories.some(c => c.name === val)) {
         showToast("มีหมวดหมู่นี้อยู่แล้ว");
         return;
       }
-      qualificationCategories.push(val);
+      qualificationCategories.push({ name: val, color: newQualCatSelectedColor });
       if (input) input.value = '';
       saveProfileLocalCache();
       renderQualCategoryModalList();
@@ -1800,8 +2049,8 @@
         showToast("ต้องมีหมวดหมู่อย่างน้อย 1 หมวด");
         return;
       }
-      const catName = qualificationCategories[idx];
-      if (!confirm(`ต้องการลบหมวดหมู่ "${catName}" ใช่หรือไม่?`)) return;
+      const cat = qualificationCategories[idx];
+      if (!confirm(`ต้องการลบหมวดหมู่ "${cat.name}" ใช่หรือไม่?`)) return;
       qualificationCategories.splice(idx, 1);
       saveProfileLocalCache();
       renderQualCategoryModalList();
@@ -1811,6 +2060,7 @@
       showToast("ลบหมวดหมู่เรียบร้อยแล้ว");
     }
 
+    /* Modal Form อาชีพ */
     function openAddCareerModal() {
       if (currentAuth.accountType !== "admin") return;
       setSafeInnerText('careerModalTitle', 'เพิ่มอาชีพหลัก');
@@ -1824,6 +2074,14 @@
       setSafeValue('careerHeartInput', 10);
       setSafeValue('careerTimeInput', 10);
       setSafeValue('careerKnowledgeInput', 10);
+
+      careerModalSelectedIcon = "fa-user-tie";
+      careerModalSelectedColor = "purple";
+      const iconPrev = document.getElementById('careerIconPreview');
+      if (iconPrev) iconPrev.className = `fa-solid ${careerModalSelectedIcon}`;
+      const colorPill = document.getElementById('careerColorPill');
+      if (colorPill) colorPill.style.backgroundColor = COLOR_PALETTES.purple.hex;
+
       const m = document.getElementById('careerModal');
       if (m) m.classList.remove('hidden');
     }
@@ -1843,6 +2101,16 @@
       setSafeValue('careerHeartInput', c.resources?.heart || 10);
       setSafeValue('careerTimeInput', c.resources?.time || 10);
       setSafeValue('careerKnowledgeInput', c.resources?.knowledge || 10);
+
+      careerModalSelectedIcon = c.icon || "fa-user-tie";
+      careerModalSelectedColor = c.color || "purple";
+      const iconPrev = document.getElementById('careerIconPreview');
+      if (iconPrev) iconPrev.className = `fa-solid ${careerModalSelectedIcon}`;
+      const colorPill = document.getElementById('careerColorPill');
+      if (colorPill && COLOR_PALETTES[careerModalSelectedColor]) {
+        colorPill.style.backgroundColor = COLOR_PALETTES[careerModalSelectedColor].hex;
+      }
+
       const m = document.getElementById('careerModal');
       if (m) m.classList.remove('hidden');
     }
@@ -1872,13 +2140,34 @@
       if (id) {
         const idx = careersList.findIndex(c => c.id === id);
         if (idx !== -1) {
-          careersList[idx] = { ...careersList[idx], title, avatar, salary, expenses, cash, minPv, resources };
+          careersList[idx] = { 
+            ...careersList[idx], 
+            title, 
+            avatar, 
+            salary, 
+            expenses, 
+            cash, 
+            minPv, 
+            resources,
+            icon: careerModalSelectedIcon,
+            color: careerModalSelectedColor
+          };
           showToast(`แก้ไขอาชีพ "${title}" สำเร็จ`);
         }
       } else {
         careersList.push({
           id: `car-${Date.now().toString().slice(-5)}`,
-          title, avatar, salary, expenses, cash, minPv, activeIncome: 15000, passiveIncome: 0, resources, icon: "fa-award"
+          title, 
+          avatar, 
+          salary, 
+          expenses, 
+          cash, 
+          minPv, 
+          activeIncome: 15000, 
+          passiveIncome: 0, 
+          resources, 
+          icon: careerModalSelectedIcon,
+          color: careerModalSelectedColor
         });
         showToast(`เพิ่มอาชีพ "${title}" สำเร็จ`);
       }
@@ -1924,7 +2213,7 @@
       setSafeInnerText('qualificationModalTitle', 'แก้ไขเกณฑ์คุณสมบัติหลัก');
       setSafeValue('qualEditId', q.id);
       setSafeValue('qualCodeInput', q.code || "Q-001");
-      setSafeValue('qualCategorySelect', q.category || qualificationCategories[0]);
+      setSafeValue('qualCategorySelect', q.category || qualificationCategories[0]?.name);
       setSafeValue('qualTitleInput', q.title);
       setSafeValue('qualPersonalPvInput', q.personalPv || 0);
       setSafeValue('qualLegsCountInput', q.legsCount || 0);
@@ -1941,7 +2230,7 @@
     function renderQualCategorySelectOptions() {
       const sel = document.getElementById('qualCategorySelect');
       if (!sel) return;
-      sel.innerHTML = qualificationCategories.map(cat => `<option value="${escapeHTML(cat)}">${escapeHTML(cat)}</option>`).join('');
+      sel.innerHTML = qualificationCategories.map(cat => `<option value="${escapeHTML(cat.name)}">${escapeHTML(cat.name)}</option>`).join('');
     }
 
     function handleSaveQualification(e) {
@@ -2123,7 +2412,9 @@
         if (data) {
           if (Array.isArray(data.careers) && data.careers.length > 0) careersList = data.careers;
           if (Array.isArray(data.qualifications) && data.qualifications.length > 0) qualificationsList = data.qualifications;
-          if (Array.isArray(data.qualificationCategories) && data.qualificationCategories.length > 0) qualificationCategories = data.qualificationCategories;
+          if (Array.isArray(data.qualificationCategories) && data.qualificationCategories.length > 0) {
+            qualificationCategories = data.qualificationCategories.map(c => typeof c === 'string' ? { name: c, color: 'blue' } : c);
+          }
           
           if (data.allPlayers) {
             allPlayersDatabase = data.allPlayers;
