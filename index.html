@@ -108,10 +108,6 @@
     .icon-vibrant {
       filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.15));
     }
-
-    #leftSidebarContainer {
-      transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.3s ease;
-    }
   </style>
 </head>
 <body class="text-slate-800 dark:text-slate-100 min-h-screen flex flex-col font-sans transition-colors duration-200 pb-24 md:pb-8">
@@ -192,18 +188,17 @@
   </header>
 
   <!-- ==============================================================
-       MAIN LAYOUT: ซ้าย 30% (ข้อมูลผู้เล่น + ปุ่มย่อซ่อนแนวยาวด้านขวา) | ขวา 70%
+       MAIN LAYOUT: ซ้าย 30% (ข้อมูลผู้เล่น) | ขวา 70% (เนื้อหาหลัก)
        ============================================================== -->
   <div class="max-w-[1600px] w-full mx-auto px-3 sm:px-6 lg:px-8 pt-4 flex-1 flex flex-col lg:flex-row items-start gap-4 relative">
     
+    <!-- ปุ่มซ่อน/แสดงข้อมูลผู้เล่น: วางติดขอบขวาของ Sidebar เป็นแนวยาว เล็กและบางลง 50% -->
+    <button onclick="toggleLeftSidebar()" id="sidebarToggleBtn" class="absolute top-4 -right-3.5 z-30 w-4 h-14 rounded-r-xl bg-slate-800 hover:bg-rose-600 dark:bg-slate-700 dark:hover:bg-rose-600 text-white shadow-md flex items-center justify-center transition border-y border-r border-slate-600" title="ซ่อน/แสดงข้อมูลผู้เล่น">
+      <i id="sidebarToggleIcon" class="fa-solid fa-chevron-left text-[10px]"></i>
+    </button>
+
     <!-- ฝั่งซ้าย (30%): แถบแสดงข้อมูลอาชีพ & ทรัพยากรตัวละคร -->
     <aside id="leftSidebarContainer" class="w-full lg:w-[30%] shrink-0 pt-2 transition-all duration-300 relative">
-      
-      <!-- ปุ่มกดซ่อน/แสดงแถบข้อมูลผู้เล่น: วางไว้ที่ขอบด้านขวา เป็นแนวยาวลงมา ไม่มีตัวหนังสือ มีแค่ลูกศร << -->
-      <button onclick="toggleLeftSidebar()" id="sidebarToggleBtn" class="absolute top-2 -right-3.5 sm:-right-4 z-30 w-7 sm:w-8 h-28 rounded-r-2xl bg-slate-800 hover:bg-rose-600 dark:bg-slate-700 dark:hover:bg-rose-600 text-white shadow-xl flex items-center justify-center transition group border-y border-r border-slate-600 dark:border-slate-600" title="ซ่อน/แสดงข้อมูลผู้เล่น">
-        <i id="sidebarToggleIcon" class="fa-solid fa-chevron-left text-sm group-hover:scale-125 transition-transform"></i>
-      </button>
-
       <div id="playerHudWidget" class="w-full p-4 rounded-3xl bg-white/95 dark:bg-slate-800/95 border border-slate-200 dark:border-slate-700 shadow-md card-vibrant-glow space-y-3">
         <div class="flex items-center justify-between gap-3 border-b border-slate-100 dark:border-slate-700/80 pb-2.5">
           <div class="flex items-center gap-2.5 min-w-0">
@@ -252,11 +247,10 @@
           </div>
         </div>
 
-        <!-- ส่วนทรัพยากรตัวละคร: มีแต่ไอคอน กับแถบค่าพลัง และตัวเลขกำกับ เรียงลงมาทีละบรรทัด -->
+        <!-- ส่วนทรัพยากรตัวละคร: ไอคอน + แถบค่าพลัง + ตัวเลขกำกับ เรียงลงมาทีละบรรทัด -->
         <div class="pt-2 border-t border-slate-100 dark:border-slate-700/80 space-y-2">
           <span class="text-[10px] font-sans font-bold text-slate-400 block uppercase tracking-wider px-1">ทรัพยากรตัวละคร</span>
           
-          <!-- สุขภาพ -->
           <div class="p-2 rounded-xl bg-rose-50/70 dark:bg-rose-950/20 border border-rose-200/60 dark:border-rose-900/40 flex items-center justify-between gap-3 font-mono">
             <span class="text-xs font-sans font-bold text-red-500 flex items-center gap-2 shrink-0">
               <i class="fa-solid fa-heart text-base"></i> สุขภาพ
@@ -264,7 +258,6 @@
             <div id="hudResourceBarHeart" class="flex-1 flex items-center justify-end"></div>
           </div>
 
-          <!-- เวลา -->
           <div class="p-2 rounded-xl bg-slate-100/70 dark:bg-slate-900/60 border border-slate-200 dark:border-slate-700/80 flex items-center justify-between gap-3 font-mono">
             <span class="text-xs font-sans font-bold text-slate-700 dark:text-slate-300 flex items-center gap-2 shrink-0">
               <i class="fa-solid fa-clock text-base"></i> เวลา
@@ -272,7 +265,6 @@
             <div id="hudResourceBarTime" class="flex-1 flex items-center justify-end"></div>
           </div>
 
-          <!-- ความรู้ -->
           <div class="p-2 rounded-xl bg-blue-50/70 dark:bg-blue-950/20 border border-blue-200/60 dark:border-blue-900/40 flex items-center justify-between gap-3 font-mono">
             <span class="text-xs font-sans font-bold text-blue-600 dark:text-blue-400 flex items-center gap-2 shrink-0">
               <i class="fa-solid fa-book-bookmark text-base"></i> ความรู้
@@ -283,10 +275,9 @@
       </div>
     </aside>
 
-    <!-- ฝั่งขวา (70%): ส่วนงานอื่นๆ และหมวดหมู่การ์ดย้ายมาอยู่ทางขวา -->
+    <!-- ฝั่งขวา (70%): ส่วนงานอื่นๆ และหมวดหมู่การ์ด -->
     <div id="rightMainContent" class="w-full lg:flex-1 pt-2 transition-all duration-300 min-w-0">
       
-      <!-- ป้ายหมวดหมู่การ์ดกิจกรรมทางขวา -->
       <div class="flex items-center justify-between gap-3 p-3.5 sm:px-5 sm:py-3.5 rounded-3xl bg-white/90 dark:bg-slate-800/90 border border-slate-200 dark:border-slate-700 shadow-sm mb-5">
         <div class="flex items-center gap-2.5">
           <div class="w-9 h-9 rounded-xl bg-rose-500/10 text-rose-500 flex items-center justify-center text-base shrink-0">
@@ -300,7 +291,6 @@
         </button>
       </div>
 
-      <!-- Main Container Views -->
       <main class="w-full">
         
         <!-- VIEW 1: หมวดหมู่การ์ด -->
@@ -929,7 +919,7 @@
       setFontSizeScale(saved);
     }
 
-    // ฟังก์ชันย่อ/ขยาย ซ่อนแถบซ้าย (ข้อมูลผู้เล่น) พร้อมเปลี่ยนลูกศร << และ >>
+    // ฟังก์ชันซ่อน/แสดงแถบซ้าย พร้อมสลับลูกศรเป็น << และ >>
     function toggleLeftSidebar() {
       const sidebar = document.getElementById('leftSidebarContainer');
       const icon = document.getElementById('sidebarToggleIcon');
@@ -937,11 +927,11 @@
       if (sidebar.classList.contains('hidden') || sidebar.style.display === 'none') {
         sidebar.style.display = 'block';
         setTimeout(() => sidebar.style.opacity = '1', 10);
-        icon.className = "fa-solid fa-chevron-left text-sm";
+        icon.className = "fa-solid fa-chevron-left text-[10px]";
       } else {
         sidebar.style.opacity = '0';
         setTimeout(() => sidebar.style.display = 'none', 300);
-        icon.className = "fa-solid fa-chevron-right text-sm";
+        icon.className = "fa-solid fa-chevron-right text-[10px]";
       }
     }
 
@@ -1066,7 +1056,6 @@
       setSafeText('hudTotalActive', `฿${(hasCareer ? totalActive : 0).toLocaleString()}`);
       setSafeText('hudTotalPassive', `฿${(hasCareer ? totalPassive : 0).toLocaleString()}`);
 
-      // อัปเดตแถบพลังทรัพยากรแบบ ไอคอน + แถบพลัง + ตัวเลขกำกับ
       renderHudResourceBar('hudResourceBarHeart', res.heart || 0, 'bg-rose-500 shadow-[0_0_6px_rgba(244,63,94,0.6)]');
       renderHudResourceBar('hudResourceBarTime', res.time || 0, 'bg-slate-700 dark:bg-slate-300');
       renderHudResourceBar('hudResourceBarKnowledge', res.knowledge || 0, 'bg-blue-600 shadow-[0_0_6px_rgba(37,99,235,0.6)]');
