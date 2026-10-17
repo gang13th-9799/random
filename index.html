@@ -104,13 +104,13 @@
 </head>
 <body class="text-slate-800 dark:text-slate-100 min-h-screen flex flex-col font-sans transition-colors duration-200 pb-24 md:pb-8">
 
-  <!-- BLOCKING SYNC OVERLAY BANNER (นำ Logo ไปใส่ตรงกลางตราสถานะ) -->
+  <!-- BLOCKING SYNC OVERLAY BANNER (แก้ไข ID และรองรับ Logo + Icon ให้ไม่เกิด Error) -->
   <div id="syncBlockingBanner" class="hidden fixed inset-0 z-50 bg-slate-950/85 backdrop-blur-md flex flex-col items-center justify-center p-4 select-none pointer-events-auto">
     <div class="relative max-w-md w-full bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl p-6 sm:p-8 text-center shadow-2xl space-y-6">
       <div class="relative w-24 h-24 mx-auto flex items-center justify-center">
         <div class="absolute inset-0 rounded-3xl bg-amber-400/20 dark:bg-amber-400/10 animate-ping"></div>
         <div id="syncBannerIconWrapper" class="relative w-20 h-20 rounded-2xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 flex items-center justify-center p-2.5 shadow-xl icon-vibrant">
-          <img src="logo.png" alt="Logo" class="app-logo-img w-full h-full object-contain animate-pulse-subtle">
+          <i id="syncBannerIcon" class="fa-solid fa-arrows-rotate animate-spin text-4xl text-rose-500"></i>
         </div>
       </div>
       <div class="space-y-2">
@@ -136,7 +136,7 @@
     </div>
   </div>
 
-  <!-- Header (นำ Logo ใส่ในกล่องโลโก้เกมฝั่งซ้ายบน) -->
+  <!-- Header -->
   <header class="sticky top-0 z-40 bg-white/95 dark:bg-slate-900/95 backdrop-blur-md border-b border-slate-200 dark:border-slate-800 shadow-sm transition-colors">
     <div class="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 h-18 py-2 flex items-center justify-between gap-2">
       
@@ -225,7 +225,7 @@
           </div>
 
           <div class="p-1.5 rounded-xl bg-emerald-50 dark:bg-emerald-950/30 border border-emerald-200 dark:border-emerald-800/60">
-            <span class="text-[9px] font-sans font-bold text-emerald-600 dark:text-emerald-400 block truncate">
+            <span class="text-[9px] font-sans font-bold text-emerald-600 dark:text-emerald-400 block truncate" title="(Active + Passive + เงินเดือน) - รายจ่าย">
               <i class="fa-solid fa-sack-dollar mr-0.5"></i>เหลือ/เดือน
             </span>
             <strong id="hudNetMonthly" class="text-[11px] sm:text-xs font-black text-emerald-500 block truncate">฿0</strong>
@@ -281,7 +281,7 @@
 
       </div>
 
-      <!-- ป้ายหมวดหมู่การ์ดกิจกรรม ย้ายไปอยู่มุมขวาบนใต้กลุ่มปุ่ม Setting (ปรับให้เล็กลง ตัดรายละเอียดทิ้ง) -->
+      <!-- ป้ายหมวดหมู่การ์ดกิจกรรม ย้ายไปอยู่มุมขวาบนใต้กลุ่มปุ่ม Setting -->
       <div class="w-full lg:w-auto flex items-center justify-between lg:justify-end gap-2.5 p-2.5 sm:px-4 sm:py-2.5 rounded-2xl bg-white/90 dark:bg-slate-800/90 border border-slate-200 dark:border-slate-700 shadow-sm animate-pop-in shrink-0 self-stretch lg:self-start">
         <div class="flex items-center gap-2">
           <div class="w-8 h-8 rounded-xl bg-rose-500/10 text-rose-500 flex items-center justify-center text-sm shrink-0">
@@ -306,7 +306,7 @@
       <div id="categoryCardsGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3.5 sm:gap-4.5"></div>
     </section>
 
-    <!-- VIEW 2: RANDOM DRAW VIEW (พร้อมลายน้ำ Logo ตรงพื้นหลัง) -->
+    <!-- VIEW 2: RANDOM DRAW VIEW -->
     <section id="view-draw" class="hidden space-y-6 animate-pop-in">
       <div class="max-w-2xl mx-auto flex items-center justify-between gap-3">
         <button onclick="switchTab('categories')" class="px-4 py-2 text-xs sm:text-sm font-black text-slate-700 dark:text-slate-200 bg-white dark:bg-slate-800 hover:bg-slate-100 dark:hover:bg-slate-700 rounded-2xl transition flex items-center gap-2.5 border border-slate-200 dark:border-slate-700 shadow-sm">
@@ -322,7 +322,6 @@
       <div class="relative max-w-2xl mx-auto">
         <div class="relative bg-white dark:bg-slate-800/90 rounded-[2.5rem] border border-slate-200 dark:border-slate-700 card-vibrant-glow p-8 sm:p-14 text-center shadow-2xl space-y-8 overflow-hidden">
           
-          <!-- ลายน้ำ Logo จางๆ ตรงมุมขวาหลังเวทีสุ่ม -->
           <img src="logo.png" alt="Watermark" class="app-logo-img absolute -right-12 -bottom-12 w-52 h-52 object-contain opacity-5 dark:opacity-10 pointer-events-none select-none animate-spin-slow">
 
           <div class="space-y-4 relative z-10">
@@ -746,8 +745,6 @@
   <!-- JavaScript Engine -->
   <script>
     const GOOGLE_SHEET_API_URL = "https://script.google.com/macros/s/AKfycbzq9oD33K3nf_r2JRq5RjCafAQIvt2o9ywvJ1EvXvVg4l9QyUalIuQvxxT7zQ890nR1/exec";
-    
-    // ตั้งค่า Path ของรูปภาพโลโก้หลัก (เปลี่ยนเป็น URL หรือพาทไฟล์ภาพได้ที่นี่)
     const APP_LOGO_SRC = "logo.png";
 
     const DEFAULT_INITIAL_CATEGORIES = [
@@ -871,33 +868,57 @@
       fetchFromGoogleSheets(true);
     });
 
+    // แก้ไข Null-Safe Guard เพื่อป้องกัน Error กรณีหา Element ไม่พบ
     function showSyncBanner(title, detail, stepText = "กำลังดำเนินการ...", percent = 20) {
       const banner = document.getElementById('syncBlockingBanner');
-      document.getElementById('syncBannerTitle').innerText = title;
-      document.getElementById('syncBannerDetail').innerText = detail;
-      document.getElementById('syncBannerStepText').innerText = stepText;
+      if (!banner) return;
+
+      const titleEl = document.getElementById('syncBannerTitle');
+      const detailEl = document.getElementById('syncBannerDetail');
+      const stepEl = document.getElementById('syncBannerStepText');
+      const errBtn = document.getElementById('syncBannerErrorBtn');
+      const icon = document.getElementById('syncBannerIcon');
+
+      if (titleEl) titleEl.innerText = title;
+      if (detailEl) detailEl.innerText = detail;
+      if (stepEl) stepEl.innerText = stepText;
+      if (errBtn) errBtn.classList.add('hidden');
+      if (icon) icon.className = "fa-solid fa-arrows-rotate animate-spin text-4xl text-rose-500";
+
       updateSyncBannerProgress(percent);
-      document.getElementById('syncBannerErrorBtn').classList.add('hidden');
-      document.getElementById('syncBannerIcon').className = "fa-solid fa-arrows-rotate animate-spin";
       banner.classList.remove('hidden');
     }
 
     function updateSyncBannerProgress(percent, detail = null, stepText = null) {
-      document.getElementById('syncBannerProgressBar').style.width = `${percent}%`;
-      document.getElementById('syncBannerPercentText').innerText = `${percent}%`;
-      if (detail) document.getElementById('syncBannerDetail').innerText = detail;
-      if (stepText) document.getElementById('syncBannerStepText').innerText = stepText;
+      const bar = document.getElementById('syncBannerProgressBar');
+      const txt = document.getElementById('syncBannerPercentText');
+      if (bar) bar.style.width = `${percent}%`;
+      if (txt) txt.innerText = `${percent}%`;
+      if (detail) {
+        const d = document.getElementById('syncBannerDetail');
+        if (d) d.innerText = detail;
+      }
+      if (stepText) {
+        const s = document.getElementById('syncBannerStepText');
+        if (s) s.innerText = stepText;
+      }
     }
 
     function hideSyncBanner() {
-      document.getElementById('syncBlockingBanner').classList.add('hidden');
+      const banner = document.getElementById('syncBlockingBanner');
+      if (banner) banner.classList.add('hidden');
     }
 
     function setSyncBannerError(errMsg) {
-      document.getElementById('syncBannerTitle').innerText = "การซิงก์ไม่สำเร็จ";
-      document.getElementById('syncBannerDetail').innerText = errMsg;
-      document.getElementById('syncBannerIcon').className = "fa-solid fa-circle-xmark text-rose-500 text-4xl";
-      document.getElementById('syncBannerErrorBtn').classList.remove('hidden');
+      const titleEl = document.getElementById('syncBannerTitle');
+      const detailEl = document.getElementById('syncBannerDetail');
+      const icon = document.getElementById('syncBannerIcon');
+      const errBtn = document.getElementById('syncBannerErrorBtn');
+
+      if (titleEl) titleEl.innerText = "การซิงก์ไม่สำเร็จ";
+      if (detailEl) detailEl.innerText = errMsg;
+      if (icon) icon.className = "fa-solid fa-circle-xmark text-rose-500 text-4xl";
+      if (errBtn) errBtn.classList.remove('hidden');
     }
 
     function loadLocalCache() {
@@ -2191,7 +2212,6 @@
         updateStageCategoryUI();
       }
     }
-
     function initTheme() {
       const isDark = localStorage.getItem('rnd_theme_dark') !== 'false';
       document.documentElement.classList.toggle('dark', isDark);
