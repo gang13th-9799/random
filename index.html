@@ -4,7 +4,2301 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
   <title>Random Data Card Hub</title>
+<!DOCTYPE html>
+<html lang="th" class="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <title>Random Data Card Hub</title>
 
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Prompt:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.2/dist/confetti.browser.min.js"></script>
+
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Prompt', 'Inter', 'sans-serif'],
+            mono: ['Inter', 'monospace'],
+          },
+          colors: {
+            brand: {
+              primary: '#FFFFFF',
+              accentRed: '#EF4444',
+              accentRedHover: '#DC2626',
+              neutralGray: '#64748B'
+            }
+          },
+          animation: {
+            'shimmer': 'shimmer 2.2s infinite linear',
+            'pulse-subtle': 'pulseSubtle 2s infinite ease-in-out',
+            'pop-in': 'popIn 0.3s cubic-bezier(0.16, 1, 0.3, 1)',
+            'card-flip': 'cardFlip 0.5s cubic-bezier(0.34, 1.56, 0.64, 1)',
+            'spin-slow': 'spin 18s linear infinite',
+          },
+          keyframes: {
+            shimmer: {
+              '0%': { backgroundPosition: '-200% 0' },
+              '100%': { backgroundPosition: '200% 0' }
+            },
+            pulseSubtle: {
+              '0%, 100%': { opacity: '1', transform: 'scale(1)' },
+              '50%': { opacity: '0.9', transform: 'scale(0.98)' }
+            },
+            popIn: {
+              '0%': { opacity: '0', transform: 'scale(0.94) translateY(10px)' },
+              '100%': { opacity: '1', transform: 'scale(1) translateY(0)' }
+            },
+            cardFlip: {
+              '0%': { opacity: '0', transform: 'scale(0.85) rotateY(-80deg)' },
+              '100%': { opacity: '1', transform: 'scale(1) rotateY(0deg)' }
+            }
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    :root {
+      --theme-btn-gradient: linear-gradient(135deg, #FF3366 0%, #FF6B4A 50%, #FFA033 100%);
+      --font-scale: 1; 
+    }
+    html {
+      font-size: calc(16px * var(--font-scale));
+      line-height: 1.5;
+      -webkit-text-size-adjust: 100%;
+    }
+    body {
+      touch-action: manipulation;
+      -webkit-tap-highlight-color: transparent;
+      background-color: #F8FAFC;
+      font-size: 1rem; 
+    }
+    .dark body {
+      background-color: #080E1A;
+    }
+    *, ::before, ::after {
+      box-sizing: border-box;
+      word-break: break-word;
+      overflow-wrap: break-word;
+    }
+    /* ปรับขนาดตัวอักษรขั้นต่ำทั่วระบบให้เริ่มต้นที่ 16px (1rem) */
+    p, span, a, label, input, select, button, th, td, li {
+      font-size: clamp(1rem, 0.95vw + 0.85rem, 1.15rem) !important;
+    }
+    h1, h2, h3, h4, .text-xl, .text-2xl, .text-3xl {
+      font-size: clamp(1.2rem, 1.4vw + 1rem, 1.65rem) !important;
+    }
+    .text-xs, .text-sm {
+      font-size: 0.95rem !important;
+    }
+    .text-[10px], .text-[11px], .text-[9px] {
+      font-size: 0.85rem !important;
+    }
+
+    .card-vibrant-glow {
+      box-shadow: 0 10px 30px -5px rgba(0, 0, 0, 0.08), 0 0 0 1px rgba(226, 232, 240, 0.8);
+    }
+    .dark .card-vibrant-glow {
+      box-shadow: 0 15px 35px -8px rgba(0, 0, 0, 0.6), 0 0 0 1px rgba(51, 65, 85, 0.6);
+    }
+    .btn-theme-action {
+      background: var(--theme-btn-gradient);
+    }
+    .icon-vibrant {
+      filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.15));
+    }
+  </style>
+</head>
+<body class="text-slate-800 dark:text-slate-100 min-h-screen flex flex-col font-sans transition-colors duration-200 pb-24 md:pb-8">
+
+  <!-- BLOCKING SYNC OVERLAY BANNER -->
+  <div id="syncBlockingBanner" class="hidden fixed inset-0 z-50 bg-slate-950/85 backdrop-blur-md flex flex-col items-center justify-center p-4 select-none pointer-events-auto">
+    <div class="relative max-w-md w-full bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl p-6 sm:p-8 text-center shadow-2xl space-y-5">
+      <div class="relative w-24 h-24 mx-auto flex items-center justify-center">
+        <div class="absolute inset-0 rounded-3xl bg-amber-400/20 dark:bg-amber-400/10 animate-ping"></div>
+        <div id="syncBannerIconWrapper" class="relative w-20 h-20 rounded-2xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 flex items-center justify-center p-2.5 shadow-xl icon-vibrant">
+          <i id="syncBannerIcon" class="fa-solid fa-arrows-rotate animate-spin text-4xl text-rose-500"></i>
+        </div>
+      </div>
+      <div class="space-y-2">
+        <h3 id="syncBannerTitle" class="text-xl font-black text-slate-900 dark:text-white tracking-tight">กำลังซิงก์ข้อมูลกับ Cloud...</h3>
+        <p id="syncBannerDetail" class="text-sm text-slate-500 dark:text-slate-400 font-medium">ระบบกำลังดึงข้อมูลล่าสุดจาก Google Sheets กรุณารอสักครู่</p>
+      </div>
+      <div class="space-y-2">
+        <div class="w-full bg-slate-100 dark:bg-slate-800 rounded-full h-3 p-0.5 overflow-hidden border border-slate-200 dark:border-slate-700">
+          <div id="syncBannerProgressBar" class="h-full rounded-full bg-gradient-to-r from-rose-500 via-amber-400 to-emerald-400 transition-all duration-300" style="width: 25%;"></div>
+        </div>
+        <div class="flex items-center justify-between font-mono font-bold text-slate-400 px-1 text-xs">
+          <span id="syncBannerStepText">ขั้นตอน: ดาวน์โหลดข้อมูล</span>
+          <span id="syncBannerPercentText" class="text-rose-500 dark:text-rose-400 font-black">25%</span>
+        </div>
+      </div>
+      <button type="button" id="syncBannerErrorBtn" onclick="hideSyncBanner()" class="hidden w-full py-3 rounded-2xl font-black bg-rose-600 hover:bg-rose-700 text-white transition shadow-lg text-sm">
+        ปิดหน้าต่างนี้
+      </button>
+    </div>
+  </div>
+
+  <!-- Header -->
+  <header class="sticky top-0 z-40 bg-white/95 dark:bg-slate-900/95 backdrop-blur-md border-b border-slate-200 dark:border-slate-800 shadow-sm transition-colors">
+    <div class="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 h-18 py-2 flex items-center justify-between gap-2">
+      <div class="flex items-center space-x-3 cursor-pointer group shrink-0" onclick="switchTab('categories')">
+        <div class="w-11 h-11 rounded-2xl flex items-center justify-center p-1.5 bg-white dark:bg-slate-800 border border-slate-200/80 dark:border-slate-700 shadow-md transform transition group-hover:scale-105 shrink-0 icon-vibrant">
+          <img src="logo.png" alt="Game Logo" class="app-logo-img w-full h-full object-contain">
+        </div>
+        <div>
+          <div class="flex items-center space-x-2">
+            <span class="font-black text-lg sm:text-xl tracking-tight text-slate-900 dark:text-white">RANDOM HUB</span>
+            <span id="brandPillBadge" class="text-[11px] font-black px-2 py-0.5 rounded-full text-white uppercase tracking-wider btn-theme-action shadow-sm">v8.0.0</span>
+          </div>
+          <p id="cloudSyncStatus" class="text-xs text-slate-500 dark:text-slate-400 font-semibold flex items-center gap-1.5 pt-0.5">
+            <i class="fa-solid fa-circle text-[8px] text-emerald-400 shadow-[0_0_8px_rgba(52,211,153,0.8)]"></i> ออนไลน์พร้อมใช้งาน
+          </p>
+        </div>
+      </div>
+
+      <nav class="hidden lg:flex items-center space-x-1.5 bg-slate-100 dark:bg-slate-800/80 p-1.5 rounded-2xl border border-slate-200 dark:border-slate-700">
+        <button id="nav-btn-categories" onclick="switchTab('categories')" class="px-4 py-2 rounded-xl text-sm font-bold transition-all flex items-center space-x-2 bg-white dark:bg-slate-700 shadow text-rose-500 dark:text-white">
+          <i class="fa-solid fa-folder-open text-amber-500 icon-vibrant"></i><span>หมวดหมู่การ์ด</span>
+        </button>
+        <button id="nav-btn-draw" onclick="switchTab('draw')" class="px-4 py-2 rounded-xl text-sm font-bold transition-all flex items-center space-x-2 text-slate-600 dark:text-slate-300 hover:text-rose-500">
+          <i class="fa-solid fa-dice-d20 text-purple-500 icon-vibrant"></i><span>หน้าสุ่ม</span>
+        </button>
+        <button id="nav-btn-data" onclick="switchTab('data')" class="px-4 py-2 rounded-xl text-sm font-bold transition-all flex items-center space-x-2 text-slate-600 dark:text-slate-300 hover:text-rose-500">
+          <i class="fa-solid fa-layer-group text-cyan-500 icon-vibrant"></i><span>คลังข้อมูล (<span id="total-badge-count">0</span>)</span>
+        </button>
+        <button id="nav-btn-history" onclick="switchTab('history')" class="px-4 py-2 rounded-xl text-sm font-bold transition-all flex items-center space-x-2 text-slate-600 dark:text-slate-300 hover:text-rose-500">
+          <i class="fa-solid fa-clock-rotate-left text-emerald-500 icon-vibrant"></i><span>ประวัติ</span>
+        </button>
+        <a href="profile.html" class="px-4 py-2 rounded-xl text-sm font-bold transition-all flex items-center space-x-2 text-slate-600 dark:text-slate-300 hover:text-rose-500 border-l border-slate-200 dark:border-slate-700 ml-1">
+          <i class="fa-solid fa-circle-user text-rose-500 icon-vibrant"></i><span>โปรไฟล์</span>
+        </a>
+      </nav>
+
+      <div class="flex items-center space-x-2 shrink-0">
+        <button onclick="forceSyncFromCloud()" title="ดึงข้อมูลล่าสุดจาก Cloud 100%" class="px-3 py-2 rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-200 hover:bg-slate-50 text-xs font-black transition flex items-center gap-1.5 shadow-sm">
+          <i id="syncIcon" class="fa-solid fa-cloud-arrow-down text-blue-500"></i><span class="hidden sm:inline">Sync Cloud</span>
+        </button>
+        <button onclick="openSettingModal()" class="w-10 h-10 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:text-rose-500 flex items-center justify-center transition shadow-sm" title="ตั้งค่าระบบ">
+          <i class="fa-solid fa-gear text-base text-amber-500"></i>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- TOP BAR SECTION: HUD + ป้ายหมวดหมู่ -->
+  <div class="max-w-7xl w-full mx-auto px-3 sm:px-6 lg:px-8 pt-3">
+    <div class="flex flex-col lg:flex-row items-start justify-between gap-3">
+      
+      <!-- Player Career HUD Widget -->
+      <div id="playerHudWidget" class="w-full lg:max-w-xl p-3 sm:p-3.5 rounded-3xl bg-white/95 dark:bg-slate-800/95 border border-slate-200 dark:border-slate-700 shadow-md card-vibrant-glow space-y-2 animate-pop-in">
+        <div class="flex items-center justify-between gap-3 border-b border-slate-100 dark:border-slate-700/80 pb-2">
+          <div class="flex items-center gap-2.5 min-w-0">
+            <div id="hudAvatarWrapper" class="w-10 h-10 rounded-2xl bg-gradient-to-tr from-rose-500 via-amber-500 to-emerald-400 text-white flex items-center justify-center text-base shadow-md shrink-0 overflow-hidden icon-vibrant">
+              <i class="fa-solid fa-user-astronaut"></i>
+            </div>
+            <div class="min-w-0">
+              <div class="flex items-center gap-1.5">
+                <h4 id="hudPlayerName" class="font-black text-xs sm:text-sm text-slate-900 dark:text-white truncate">ผู้เล่นทั่วไป</h4>
+                <span id="hudRoleBadge" class="text-[9px] font-black px-1.5 py-0.2 rounded-full bg-rose-500 text-white uppercase tracking-wider">PLAYER</span>
+              </div>
+              <span id="hudCareerTitle" class="text-[11px] font-bold text-rose-500 dark:text-rose-400 truncate block">ยังไม่ได้เลือกอาชีพ</span>
+            </div>
+          </div>
+
+          <a href="profile.html" class="px-2.5 py-1 rounded-xl text-[11px] font-black bg-purple-50 dark:bg-purple-950/60 text-purple-600 dark:text-purple-300 border border-purple-200 dark:border-purple-800 hover:scale-105 transition flex items-center gap-1 shrink-0" title="ไปหน้าจัดการโปรไฟล์">
+            <i class="fa-solid fa-id-card"></i>
+            <span class="hidden sm:inline">โปรไฟล์</span>
+          </a>
+        </div>
+
+        <div class="grid grid-cols-2 sm:grid-cols-5 gap-1.5 font-mono text-center text-xs">
+          <div class="p-1.5 rounded-xl bg-amber-50 dark:bg-amber-950/30 border border-amber-200 dark:border-amber-800/60">
+            <span class="text-[9px] font-sans font-bold text-amber-600 dark:text-amber-400 block truncate"><i class="fa-solid fa-coins mr-0.5"></i>เงินสด</span>
+            <strong id="hudCash" class="font-black text-amber-500 block truncate">฿0</strong>
+          </div>
+
+          <div class="p-1.5 rounded-xl bg-emerald-50 dark:bg-emerald-950/30 border border-emerald-200 dark:border-emerald-800/60">
+            <span class="text-[9px] font-sans font-bold text-emerald-600 dark:text-emerald-400 block truncate" title="(Active + Passive + เงินเดือน) - รายจ่าย"><i class="fa-solid fa-sack-dollar mr-0.5"></i>เหลือ/เดือน</span>
+            <strong id="hudNetMonthly" class="font-black text-emerald-500 block truncate">฿0</strong>
+          </div>
+
+          <div class="p-1.5 rounded-xl bg-rose-50 dark:bg-rose-950/30 border border-rose-200 dark:border-rose-900/60">
+            <span class="text-[9px] font-sans font-bold text-rose-600 dark:text-rose-400 block truncate"><i class="fa-solid fa-receipt mr-0.5"></i>รายจ่ายประจำ</span>
+            <strong id="hudExpenses" class="font-black text-rose-500 block truncate">฿0</strong>
+          </div>
+
+          <div class="p-1.5 rounded-xl bg-slate-100 dark:bg-slate-900/70 border border-slate-200 dark:border-slate-700">
+            <span class="text-[9px] font-sans font-bold text-slate-500 dark:text-slate-400 block truncate"><i class="fa-solid fa-hand-holding-dollar text-emerald-400 mr-0.5"></i>Active รวม</span>
+            <strong id="hudTotalActive" class="font-black text-emerald-500 block truncate">฿0</strong>
+          </div>
+
+          <div class="p-1.5 rounded-xl bg-slate-100 dark:bg-slate-900/70 border border-slate-200 dark:border-slate-700 col-span-2 sm:col-span-1">
+            <span class="text-[9px] font-sans font-bold text-slate-500 dark:text-slate-400 block truncate"><i class="fa-solid fa-seedling text-teal-400 mr-0.5"></i>Passive รวม</span>
+            <strong id="hudTotalPassive" class="font-black text-teal-400 block truncate">฿0</strong>
+          </div>
+        </div>
+
+        <div class="pt-1.5 border-t border-slate-100 dark:border-slate-700/80">
+          <div class="grid grid-cols-3 gap-1.5 text-center font-mono text-xs">
+            <div class="py-1 px-1 rounded-xl bg-rose-50/70 dark:bg-rose-950/20 border border-rose-200/60 dark:border-rose-900/40 flex items-center justify-center gap-1.5">
+              <span class="text-[10px] font-sans font-bold text-red-500 flex items-center gap-1"><i class="fa-solid fa-heart"></i> สุขภาพ</span>
+              <strong id="hudResHeart" class="font-black text-slate-800 dark:text-white">0/10</strong>
+            </div>
+
+            <div class="py-1 px-1 rounded-xl bg-slate-100/70 dark:bg-slate-900/60 border border-slate-200 dark:border-slate-700/80 flex items-center justify-center gap-1.5">
+              <span class="text-[10px] font-sans font-bold text-slate-700 dark:text-slate-300 flex items-center gap-1"><i class="fa-solid fa-clock"></i> เวลา</span>
+              <strong id="hudResTime" class="font-black text-slate-800 dark:text-white">0/10</strong>
+            </div>
+
+            <div class="py-1 px-1 rounded-xl bg-blue-50/70 dark:bg-blue-950/20 border border-blue-200/60 dark:border-blue-900/40 flex items-center justify-center gap-1.5">
+              <span class="text-[10px] font-sans font-bold text-blue-600 dark:text-blue-400 flex items-center gap-1"><i class="fa-solid fa-book-bookmark"></i> ความรู้</span>
+              <strong id="hudResKnowledge" class="font-black text-slate-800 dark:text-white">0/10</strong>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ป้ายหมวดหมู่การ์ดกิจกรรม -->
+      <div class="w-full lg:w-auto flex items-center justify-between lg:justify-end gap-2.5 p-2.5 sm:px-4 sm:py-2.5 rounded-2xl bg-white/90 dark:bg-slate-800/90 border border-slate-200 dark:border-slate-700 shadow-sm animate-pop-in shrink-0 self-stretch lg:self-start">
+        <div class="flex items-center gap-2">
+          <div class="w-8 h-8 rounded-xl bg-rose-500/10 text-rose-500 flex items-center justify-center text-sm shrink-0">
+            <i class="fa-solid fa-shapes"></i>
+          </div>
+          <span class="font-black text-xs sm:text-sm text-slate-800 dark:text-white whitespace-nowrap">หมวดหมู่การ์ดกิจกรรม</span>
+        </div>
+        <button onclick="openCategoryModal()" class="text-xs font-black px-3 py-1.5 rounded-xl bg-slate-100 hover:bg-slate-200 dark:bg-slate-700 dark:hover:bg-slate-600 text-slate-700 dark:text-slate-200 transition border border-slate-300 dark:border-slate-600 flex items-center gap-1.5 shadow-2xs shrink-0" title="จัดการหมวดหมู่">
+          <i class="fa-solid fa-sliders text-rose-500 text-xs"></i>
+          <span>จัดการ</span>
+        </button>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Main Container -->
+  <main class="flex-1 max-w-7xl w-full mx-auto px-3 sm:px-6 lg:px-8 py-5">
+    
+    <!-- VIEW 1: หมวดหมู่การ์ด -->
+    <section id="view-categories" class="space-y-6 animate-pop-in">
+      <div id="categoryCardsGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5"></div>
+    </section>
+
+    <!-- VIEW 2: RANDOM DRAW VIEW -->
+    <section id="view-draw" class="hidden space-y-6 animate-pop-in">
+      <div class="max-w-2xl mx-auto flex items-center justify-between gap-3">
+        <button onclick="switchTab('categories')" class="px-4 py-2.5 text-xs sm:text-sm font-black text-slate-700 dark:text-slate-200 bg-white dark:bg-slate-800 hover:bg-slate-100 dark:hover:bg-slate-700 rounded-2xl transition flex items-center gap-2.5 border border-slate-200 dark:border-slate-700 shadow-sm">
+          <i class="fa-solid fa-chevron-left text-rose-500"></i><span>กลับไปเลือกหมวดหมู่</span>
+        </button>
+        <label class="flex items-center gap-2.5 cursor-pointer select-none bg-white dark:bg-slate-800 px-4 py-2.5 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm">
+          <input type="checkbox" id="uniqueDrawToggle" onchange="toggleUniqueDrawMode()" class="sr-only peer">
+          <div class="w-10 h-5 bg-slate-300 rounded-full peer dark:bg-slate-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-emerald-500 relative"></div>
+          <span class="text-xs sm:text-sm font-black text-slate-700 dark:text-slate-300">สุ่มไม่ซ้ำ</span>
+        </label>
+      </div>
+
+      <div class="relative max-w-2xl mx-auto">
+        <div class="relative bg-white dark:bg-slate-800/90 rounded-[2.5rem] border border-slate-200 dark:border-slate-700 card-vibrant-glow p-8 sm:p-14 text-center shadow-2xl space-y-8 overflow-hidden">
+          <img src="logo.png" alt="Watermark" class="app-logo-img absolute -right-12 -bottom-12 w-52 h-52 object-contain opacity-5 dark:opacity-10 pointer-events-none select-none animate-spin-slow">
+          <div class="space-y-4 relative z-10">
+            <div class="inline-flex items-center justify-center p-5 rounded-3xl shadow-xl text-4xl sm:text-5xl text-white icon-vibrant transform hover:scale-110 transition duration-300" id="stageCategoryIconWrapper">
+              <i id="stageCategoryIcon" class="fa-solid fa-dice-d20"></i>
+            </div>
+            <div>
+              <span class="text-xs sm:text-sm font-black uppercase tracking-widest text-slate-400 block mb-1">หมวดหมู่ที่พร้อมสุ่ม</span>
+              <h2 id="stageCategoryTitle" class="responsive-title font-black text-slate-900 dark:text-white">ทุกหมวดหมู่</h2>
+            </div>
+            <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-slate-100 dark:bg-slate-700/80 text-xs sm:text-sm font-mono font-bold text-slate-600 dark:text-slate-300 shadow-inner">
+              <i class="fa-solid fa-layer-group text-amber-500"></i>
+              <span>คงเหลือในกอง: <strong id="poolRemainingBadge" class="text-rose-500 font-black text-sm sm:text-base">0/0</strong></span>
+            </div>
+          </div>
+          <div class="relative z-10">
+            <button onclick="triggerRandomDraw()" class="w-full btn-theme-action text-white py-5 sm:py-6 px-8 rounded-3xl font-black text-xl sm:text-2xl shadow-xl hover:scale-[1.02] active:scale-[0.98] transition-all flex items-center justify-center gap-3.5 icon-vibrant">
+              <i class="fa-solid fa-wand-magic-sparkles text-2xl sm:text-3xl animate-bounce"></i>
+              <span>สุ่มข้อมูลการ์ด</span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- VIEW 3: คลังข้อมูลการ์ด -->
+    <section id="view-data" class="hidden space-y-5 animate-pop-in">
+      <div class="bg-white/90 dark:bg-slate-800/90 backdrop-blur border border-slate-200 dark:border-slate-700 rounded-3xl p-4 sm:p-5 shadow-sm flex flex-col lg:flex-row items-stretch lg:items-center justify-between gap-3">
+        <div class="flex flex-wrap items-center gap-2.5 flex-1">
+          <div class="relative flex-1 min-w-[180px]">
+            <input type="text" id="searchInput" oninput="renderDataTable()" placeholder="ค้นหาชื่อการ์ด หรือ ID..." class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-300 dark:border-slate-700 text-sm sm:text-base rounded-2xl pl-11 pr-4 py-2.5 outline-none font-medium text-slate-800 dark:text-white">
+            <i class="fa-solid fa-magnifying-glass absolute left-4 top-3.5 text-slate-400 text-base"></i>
+          </div>
+          <div class="relative w-full sm:w-48">
+            <select id="tableCategoryFilter" onchange="renderDataTable()" class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-300 dark:border-slate-700 text-sm sm:text-base rounded-2xl px-4 py-2.5 pr-8 outline-none font-bold text-slate-800 dark:text-white"></select>
+          </div>
+        </div>
+
+        <div class="flex items-center gap-2 justify-between sm:justify-end">
+          <div class="inline-flex p-1 bg-slate-100 dark:bg-slate-900/80 rounded-2xl border border-slate-200 dark:border-slate-700">
+            <button type="button" id="viewModeCardBtn" onclick="setDataViewMode('cards')" class="px-3 py-1.5 rounded-xl text-xs sm:text-sm font-black transition flex items-center gap-1.5 bg-white dark:bg-slate-800 text-rose-500 shadow-xs">
+              <i class="fa-solid fa-table-cells-large"></i><span>การ์ด</span>
+            </button>
+            <button type="button" id="viewModeTableBtn" onclick="setDataViewMode('table')" class="px-3 py-1.5 rounded-xl text-xs sm:text-sm font-black transition flex items-center gap-1.5 text-slate-500 dark:text-slate-400 hover:text-slate-800 dark:hover:text-white">
+              <i class="fa-solid fa-table-list"></i><span>ตาราง</span>
+            </button>
+          </div>
+
+          <button onclick="openAddEditModal()" class="px-4 sm:px-5 py-2.5 text-white font-black text-xs sm:text-sm rounded-2xl shadow-md btn-theme-action flex items-center gap-2 hover:scale-105 transition shrink-0">
+            <i class="fa-solid fa-plus-circle text-base"></i><span>สร้างการ์ดใหม่</span>
+          </button>
+          <button onclick="forceSyncFromCloud()" class="p-3 bg-slate-100 dark:bg-slate-700 border border-slate-300 dark:border-slate-600 text-sm font-bold rounded-2xl hover:bg-slate-200 transition shrink-0">
+            <i class="fa-solid fa-arrows-rotate text-blue-500"></i>
+          </button>
+        </div>
+      </div>
+
+      <!-- โหมดการ์ด -->
+      <div id="cardsGridContainer" class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-3.5 sm:gap-4.5"></div>
+
+      <!-- โหมดตารางกระชับ -->
+      <div id="tableCompactContainer" class="hidden bg-white dark:bg-slate-800/90 border border-slate-200 dark:border-slate-700 rounded-3xl shadow-sm overflow-hidden">
+        <div class="overflow-x-auto">
+          <table class="w-full text-left text-xs sm:text-sm border-collapse">
+            <thead class="bg-slate-50 dark:bg-slate-900 border-b border-slate-200 dark:border-slate-700 text-[11px] uppercase font-black text-slate-400 whitespace-nowrap">
+              <tr>
+                <th class="py-3 px-2.5 text-center w-10">#</th>
+                <th class="py-3 px-2.5 w-24 text-center">ID</th>
+                <th class="py-3 px-3 min-w-[160px]">ชื่อการ์ด</th>
+                <th class="py-3 px-2.5 text-indigo-400 text-center min-w-[90px]">สายงาน</th>
+                <th class="py-3 px-2.5 text-cyan-500 text-right min-w-[70px]">PV</th>
+                <th class="py-3 px-2.5 text-red-500 text-right min-w-[85px]"><i class="fa-solid fa-coins mr-1"></i>ราคา</th>
+                <th class="py-3 px-2.5 text-emerald-500 text-right min-w-[90px]"><i class="fa-solid fa-hand-holding-dollar mr-1"></i>Active</th>
+                <th class="py-3 px-2.5 text-teal-400 text-right min-w-[90px]"><i class="fa-solid fa-seedling mr-1"></i>Passive</th>
+                <th class="py-3 px-3 min-w-[190px]">ทรัพยากร (ใช้ / ได้)</th>
+                <th class="py-3 px-2.5 text-center min-w-[90px]">หมวดหมู่</th>
+                <th class="py-3 px-2.5 text-center w-28 sticky right-0 bg-slate-50 dark:bg-slate-900 shadow-l">จัดการ</th>
+              </tr>
+            </thead>
+            <tbody id="tableBodyCompact" class="divide-y divide-slate-100 dark:divide-slate-700/60 font-medium"></tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- VIEW 4: ประวัติการสุ่ม -->
+    <section id="view-history" class="hidden space-y-4 animate-pop-in">
+      <div class="bg-white/90 dark:bg-slate-800/90 backdrop-blur border border-slate-200 dark:border-slate-700 rounded-3xl p-4 sm:p-5 shadow-sm flex items-center justify-between">
+        <h3 class="font-black text-lg text-slate-800 dark:text-white flex items-center gap-2.5">
+          <i class="fa-solid fa-clock-rotate-left text-emerald-500 text-xl icon-vibrant"></i>
+          <span>บันทึกประวัติการสุ่ม (คลิก ID เพื่อดูการ์ด)</span>
+        </h3>
+        <button onclick="clearHistoryLog()" class="px-4 py-2 text-xs sm:text-sm font-black text-rose-600 dark:text-rose-400 hover:bg-rose-50 dark:hover:bg-rose-950/40 rounded-xl transition border border-rose-200 dark:border-rose-800">
+          <i class="fa-solid fa-trash-can mr-1.5"></i>ล้างประวัติ
+        </button>
+      </div>
+      <div class="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-3xl shadow-sm overflow-hidden">
+        <ul id="historyListContainer" class="divide-y divide-slate-100 dark:divide-slate-700/60 font-medium"></ul>
+      </div>
+    </section>
+  </main>
+
+  <!-- Mobile Bottom Nav Bar -->
+  <nav class="lg:hidden fixed bottom-0 left-0 right-0 z-40 bg-white/95 dark:bg-slate-900/95 backdrop-blur-md border-t border-slate-200 dark:border-slate-800 px-3 py-2 flex items-center justify-around shadow-lg">
+    <button onclick="switchTab('categories')" id="m-nav-categories" class="flex flex-col items-center gap-1 text-slate-400">
+      <i class="fa-solid fa-shapes text-xl"></i><span class="text-[10px] font-black">หมวดหมู่</span>
+    </button>
+    <button onclick="switchTab('draw')" id="m-nav-draw" class="flex flex-col items-center gap-1 text-slate-400">
+      <i class="fa-solid fa-dice-d20 text-xl"></i><span class="text-[10px] font-black">หน้าสุ่ม</span>
+    </button>
+    <button onclick="switchTab('data')" id="m-nav-data" class="flex flex-col items-center gap-1 text-rose-500">
+      <i class="fa-solid fa-layer-group text-xl"></i><span class="text-[10px] font-black">คลังข้อมูล</span>
+    </button>
+    <button onclick="switchTab('history')" id="m-nav-history" class="flex flex-col items-center gap-1 text-slate-400">
+      <i class="fa-solid fa-clock-rotate-left text-xl"></i><span class="text-[10px] font-black">ประวัติ</span>
+    </button>
+    <a href="profile.html" class="flex flex-col items-center gap-1 text-slate-400">
+      <i class="fa-solid fa-circle-user text-xl"></i><span class="text-[10px] font-black">โปรไฟล์</span>
+    </a>
+  </nav>
+
+  <!-- MODAL ผลการสุ่มการ์ด -->
+  <div id="drawResultModal" class="hidden fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-md flex items-center justify-center p-2 sm:p-4 overflow-y-auto">
+    <div class="relative max-w-4xl w-[95vw] h-[90vh] sm:h-[88vh] bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-[2.5rem] p-5 sm:p-8 shadow-2xl animate-card-flip flex flex-col justify-between my-auto overflow-y-auto">
+      
+      <div>
+        <div class="flex items-center justify-between border-b pb-3.5 border-slate-200 dark:border-slate-800 gap-2">
+          <div class="flex items-center gap-2.5">
+            <span id="drawResultCategoryBadge" class="text-sm sm:text-base font-black px-4 py-1 rounded-full border shadow-sm">หมวดหมู่</span>
+            <span id="drawResultTargetBadge" class="text-xs sm:text-sm font-bold text-indigo-500 bg-indigo-50 dark:bg-indigo-950/60 px-3 py-1 rounded-xl border border-indigo-200 dark:border-indigo-800">ส่วนตัว</span>
+          </div>
+          <button type="button" id="toggleSimulationBtn" onclick="toggleSimulationPanel()" class="px-3.5 py-1.5 rounded-xl text-xs sm:text-sm font-black bg-purple-50 dark:bg-purple-950/60 text-purple-600 dark:text-purple-300 border border-purple-200 dark:border-purple-800 flex items-center gap-2 shadow-sm hover:scale-105 active:scale-95 transition">
+            <i class="fa-solid fa-calculator text-amber-500 text-sm"></i>
+            <span>จำลองผล</span>
+          </button>
+        </div>
+
+        <!-- Simulation Panel -->
+        <div id="simulationPanel" class="hidden mt-4 bg-slate-900/95 text-white p-4 sm:p-5 rounded-3xl border border-purple-500/40 text-left space-y-3 animate-pop-in font-mono shadow-xl">
+          <div class="flex items-center justify-between border-b border-slate-800 pb-2">
+            <span class="text-xs sm:text-sm font-black text-amber-400 flex items-center gap-2">
+              <i class="fa-solid fa-chart-line text-base"></i> จำลองสถานะเปรียบเทียบหลังรับการ์ด
+            </span>
+            <span id="simAffordStatusBadge" class="text-xs font-bold px-2.5 py-0.5 rounded-full bg-emerald-500 text-white">พอจ่าย</span>
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-3 text-xs sm:text-sm">
+            <div class="bg-slate-800/90 p-3 rounded-2xl border border-slate-700 space-y-1">
+              <span class="text-xs font-sans font-black text-slate-400 block"><i class="fa-solid fa-coins text-amber-400 mr-1"></i> เงินสด (Cash)</span>
+              <div class="flex items-center justify-between pt-1">
+                <span class="text-slate-300 text-xs">เดิม: <strong id="simCurrentCash" class="text-amber-400 text-sm">฿0</strong></span>
+                <i class="fa-solid fa-arrow-right text-slate-500"></i>
+                <span class="text-slate-300 text-xs">หลังรับ: <strong id="simResultCash" class="text-emerald-400 text-sm">฿0</strong></span>
+              </div>
+            </div>
+
+            <div class="bg-slate-800/90 p-3 rounded-2xl border border-slate-700 space-y-1.5 md:col-span-2">
+              <span class="text-xs font-sans font-black text-slate-400 block">ทรัพยากร (❤️ สุขภาพ | ⏳ เวลา | 💡 ความรู้) 1-10</span>
+              <div class="grid grid-cols-3 gap-2 text-center text-xs">
+                <div class="bg-slate-900/80 p-2 rounded-xl border border-slate-800">
+                  <span class="text-red-400 block text-[10px] font-bold"><i class="fa-solid fa-heart mr-0.5"></i> สุขภาพ</span>
+                  <span id="simResHeart" class="font-black text-sm">10 ➔ 10</span>
+                </div>
+                <div class="bg-slate-900/80 p-2 rounded-xl border border-slate-800">
+                  <span class="text-slate-300 block text-[10px] font-bold"><i class="fa-solid fa-clock mr-0.5"></i> เวลา</span>
+                  <span id="simResTime" class="font-black text-sm">10 ➔ 10</span>
+                </div>
+                <div class="bg-slate-900/80 p-2 rounded-xl border border-slate-800">
+                  <span class="text-blue-400 block text-[10px] font-bold"><i class="fa-solid fa-book-bookmark mr-0.5"></i> ความรู้</span>
+                  <span id="simResKnowledge" class="font-black text-sm">10 ➔ 10</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="my-5 space-y-3">
+          <div id="drawResultIconBox" class="w-20 h-20 sm:w-24 sm:h-24 rounded-3xl mx-auto flex items-center justify-center text-4xl sm:text-5xl text-white shadow-2xl btn-theme-action icon-vibrant">
+            <i id="drawResultIcon" class="fa-solid fa-star"></i>
+          </div>
+          <div class="space-y-1">
+            <span id="drawResultCardId" class="text-xs sm:text-sm font-mono font-bold text-slate-400 block">ID: -</span>
+            <h3 id="drawResultTitle" class="text-xl sm:text-2xl md:text-3xl font-black text-slate-900 dark:text-white leading-snug break-words whitespace-normal" style="font-size: clamp(1.25rem, 2vw + 1rem, 1.85rem);">ชื่อการ์ด</h3>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-2 gap-3 bg-slate-50 dark:bg-slate-900/80 p-4 rounded-3xl border border-slate-200 dark:border-slate-700 text-sm sm:text-base font-mono">
+          <div class="text-left">PV: <strong id="drawResultPv" class="text-cyan-400 text-lg sm:text-xl font-black block">0</strong></div>
+          <div class="text-right flex flex-col items-end">
+            <span class="text-red-500 text-xs font-sans font-black flex items-center gap-1"><i class="fa-solid fa-coins text-red-500"></i>ราคา (ต้องจ่าย)</span>
+            <strong id="drawResultPrice" class="text-red-500 text-lg sm:text-xl font-black block">฿0</strong>
+          </div>
+          <div class="text-left pt-2 border-t border-slate-200 dark:border-slate-700">
+            <span class="text-slate-400 text-xs font-sans flex items-center gap-1"><i class="fa-solid fa-hand-holding-dollar text-emerald-400"></i>Active</span>
+            <strong id="drawResultActive" class="text-emerald-400 font-black block text-base sm:text-lg">฿0</strong>
+          </div>
+          <div class="text-right pt-2 border-t border-slate-200 dark:border-slate-700">
+            <span class="text-slate-400 text-xs font-sans flex items-center gap-1"><i class="fa-solid fa-seedling text-teal-400"></i>Passive</span>
+            <strong id="drawResultPassive" class="text-teal-400 font-black block text-base sm:text-lg">฿0</strong>
+          </div>
+        </div>
+        
+        <div id="drawResultResourceSection" class="mt-3 p-4 bg-slate-50 dark:bg-slate-900/70 rounded-3xl border border-slate-200 dark:border-slate-700 space-y-3 text-left">
+          <div class="space-y-1.5">
+            <div class="flex items-center justify-between text-xs sm:text-sm font-black text-rose-500">
+              <span>ทรัพยากรที่ต้องใช้ (Cost 1-10)</span>
+            </div>
+            <div id="drawResultCostBars" class="space-y-1.5"></div>
+          </div>
+          <div class="space-y-1.5 pt-2 border-t border-slate-200 dark:border-slate-800">
+            <div class="flex items-center justify-between text-xs sm:text-sm font-black text-emerald-500">
+              <span>รางวัลที่จะได้รับ (Reward 1-10)</span>
+            </div>
+            <div id="drawResultRewardBars" class="space-y-1.5"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="pt-4 border-t border-slate-200 dark:border-slate-800 space-y-2">
+        <div id="insufficientWarningBox" class="hidden p-2.5 rounded-2xl bg-rose-50 dark:bg-rose-950/60 border border-rose-300 dark:border-rose-800 text-rose-600 dark:text-rose-300 text-xs sm:text-sm font-bold text-center">
+          <i class="fa-solid fa-triangle-exclamation mr-1.5 text-rose-500"></i>
+          <span id="insufficientWarningText">ทรัพยากรของคุณไม่เพียงพอสำหรับการรับการ์ดใบนี้</span>
+        </div>
+
+        <div class="grid grid-cols-2 gap-3">
+          <button type="button" onclick="closeDrawResultModal()" class="w-full py-3.5 rounded-2xl text-slate-700 dark:text-slate-200 font-black text-sm sm:text-base bg-slate-100 hover:bg-slate-200 dark:bg-slate-700 dark:hover:bg-slate-600 transition active:scale-95 shadow-sm">
+            ไม่รับการ์ด
+          </button>
+          <button type="button" id="claimCardBtn" onclick="claimDrawnCard()" class="w-full py-3.5 rounded-2xl text-white font-black text-sm sm:text-base btn-theme-action shadow-xl hover:scale-[1.02] active:scale-95 transition disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100">
+            รับการ์ด
+          </button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Modal ฟอร์ม สร้าง / แก้ไข การ์ด -->
+  <div id="cardModal" class="hidden fixed inset-0 z-50 bg-slate-950/75 backdrop-blur-sm flex items-center justify-center p-3 sm:p-5 overflow-y-auto">
+    <div class="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-3xl max-w-xl w-full p-6 sm:p-7 shadow-2xl relative space-y-5 my-auto">
+      <div class="flex items-center justify-between pb-3.5 border-b border-slate-100 dark:border-slate-700">
+        <h3 id="cardModalTitle" class="font-black text-lg text-slate-900 dark:text-white flex items-center gap-2.5">
+          <i class="fa-solid fa-pen-to-square text-cyan-400 text-xl"></i><span>แก้ไขข้อมูลการ์ด</span>
+        </h3>
+        <button type="button" onclick="closeCardModal()" class="w-9 h-9 rounded-xl text-slate-400 hover:text-slate-700 dark:hover:text-white flex items-center justify-center">
+          <i class="fa-solid fa-xmark text-xl"></i>
+        </button>
+      </div>
+
+      <form id="cardForm" onsubmit="handleSaveCard(event)" class="space-y-4 text-xs sm:text-sm font-bold">
+        <input type="hidden" id="cardEditId">
+
+        <div class="space-y-1.5">
+          <label class="text-slate-600 dark:text-slate-300">ชื่อการ์ด / รายการ <span class="text-rose-500">*</span></label>
+          <input type="text" id="cardTitleInput" required placeholder="เช่น ลงทะเบียนสัมมนา..." class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded-2xl px-4 py-3 outline-none font-medium text-slate-800 dark:text-white text-sm sm:text-base">
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
+          <div class="space-y-1.5">
+            <label class="text-slate-600 dark:text-slate-300">หมวดหมู่</label>
+            <select id="cardCategorySelect" class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded-2xl px-4 py-3 outline-none text-slate-800 dark:text-white"></select>
+          </div>
+          <div class="space-y-1.5">
+            <label class="text-slate-600 dark:text-slate-300">เป้าหมาย (ใช้กับ)</label>
+            <select id="cardTargetSelect" class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded-2xl px-4 py-3 outline-none text-slate-800 dark:text-white">
+              <option value="personal">ส่วนตัว (Personal)</option>
+              <option value="A">สายงาน A</option>
+              <option value="B">สายงาน B</option>
+              <option value="C">สายงาน C</option>
+              <option value="D">สายงาน D</option>
+              <option value="E">สายงาน E</option>
+              <option value="F">สายงาน F</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 pt-1">
+          <div class="space-y-1">
+            <label class="text-cyan-500 font-black">PV</label>
+            <input type="number" id="cardPvInput" value="0" class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded-2xl px-3 py-2.5 font-mono text-right outline-none text-slate-800 dark:text-white text-sm sm:text-base">
+          </div>
+          <div class="space-y-1">
+            <label class="text-red-500 font-black flex items-center gap-1"><i class="fa-solid fa-coins text-red-500"></i>ราคา (ต้องจ่าย)</label>
+            <input type="number" id="cardPriceInput" value="0" class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded-2xl px-3 py-2.5 font-mono text-right outline-none text-red-500 font-bold text-sm sm:text-base">
+          </div>
+          <div class="space-y-1">
+            <label class="text-emerald-500 font-black flex items-center gap-1"><i class="fa-solid fa-hand-holding-dollar text-emerald-400"></i>Active</label>
+            <input type="number" id="cardActiveInput" value="0" class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded-2xl px-3 py-2.5 font-mono text-right outline-none text-slate-800 dark:text-white text-sm sm:text-base">
+          </div>
+          <div class="space-y-1">
+            <label class="text-teal-500 font-black flex items-center gap-1"><i class="fa-solid fa-seedling text-teal-400"></i>Passive</label>
+            <input type="number" id="cardPassiveInput" value="0" class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded-2xl px-3 py-2.5 font-mono text-right outline-none text-slate-800 dark:text-white text-sm sm:text-base">
+          </div>
+        </div>
+
+        <div class="p-4 bg-slate-50 dark:bg-slate-900/60 rounded-3xl border border-slate-200 dark:border-slate-700 space-y-3">
+          <span class="text-slate-400 block font-black text-xs uppercase tracking-wider">กำหนดระดับพลังทรัพยากร (0 - 10 ขีด)</span>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div class="space-y-2">
+              <span class="text-rose-500 font-black">ต้องใช้ (Cost 0-10)</span>
+              <div class="flex gap-2 items-center font-mono text-xs">
+                <span title="สุขภาพ" class="text-base"><i class="fa-solid fa-heart text-red-500"></i></span><input type="number" min="0" max="10" id="costHeart" value="0" class="w-14 p-2 border rounded-xl text-right dark:bg-slate-800 dark:border-slate-700">
+                <span title="เวลา" class="text-base"><i class="fa-solid fa-clock text-slate-800 dark:text-white"></i></span><input type="number" min="0" max="10" id="costTime" value="0" class="w-14 p-2 border rounded-xl text-right dark:bg-slate-800 dark:border-slate-700">
+                <span title="ความรู้" class="text-base"><i class="fa-solid fa-book-bookmark text-blue-600 dark:text-blue-400"></i></span><input type="number" min="0" max="10" id="costKnowledge" value="0" class="w-14 p-2 border rounded-xl text-right dark:bg-slate-800 dark:border-slate-700">
+              </div>
+            </div>
+            <div class="space-y-2">
+              <span class="text-emerald-500 font-black">ได้รับ (Reward 0-10)</span>
+              <div class="flex gap-2 items-center font-mono text-xs">
+                <span title="สุขภาพ" class="text-base"><i class="fa-solid fa-heart text-red-500"></i></span><input type="number" min="0" max="10" id="rewardHeart" value="0" class="w-14 p-2 border rounded-xl text-right dark:bg-slate-800 dark:border-slate-700">
+                <span title="เวลา" class="text-base"><i class="fa-solid fa-clock text-slate-800 dark:text-white"></i></span><input type="number" min="0" max="10" id="rewardTime" value="0" class="w-14 p-2 border rounded-xl text-right dark:bg-slate-800 dark:border-slate-700">
+                <span title="ความรู้" class="text-base"><i class="fa-solid fa-book-bookmark text-blue-600 dark:text-blue-400"></i></span><input type="number" min="0" max="10" id="rewardKnowledge" value="0" class="w-14 p-2 border rounded-xl text-right dark:bg-slate-800 dark:border-slate-700">
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="flex items-center justify-end gap-3 pt-3 border-t border-slate-100 dark:border-slate-700">
+          <button type="button" onclick="closeCardModal()" class="px-5 py-3 rounded-2xl border border-slate-300 dark:border-slate-600 text-slate-600 dark:text-slate-300 hover:bg-slate-50">ยกเลิก</button>
+          <button type="submit" class="px-6 py-3 rounded-2xl text-white font-black btn-theme-action shadow-lg hover:scale-105 transition">บันทึกข้อมูลการ์ด</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Setting Modal -->
+  <div id="settingModal" class="hidden fixed inset-0 z-50 bg-slate-950/75 backdrop-blur-sm flex items-center justify-center p-3 sm:p-5 overflow-y-auto">
+    <div class="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-[2.5rem] max-w-xl w-full p-6 sm:p-8 shadow-2xl relative space-y-5 my-auto">
+      <div class="flex items-center justify-between pb-3.5 border-b border-slate-100 dark:border-slate-700">
+        <h3 class="font-black text-lg text-slate-900 dark:text-white flex items-center gap-2.5"><i class="fa-solid fa-sliders text-amber-500"></i><span>การตั้งค่าระบบ & ฐานข้อมูล</span></h3>
+        <button onclick="closeSettingModal()" class="w-9 h-9 rounded-xl text-slate-400 hover:text-slate-700 flex items-center justify-center"><i class="fa-solid fa-xmark text-xl"></i></button>
+      </div>
+
+      <div class="grid grid-cols-2 gap-1.5 bg-slate-100 dark:bg-slate-900/60 p-1.5 rounded-2xl border border-slate-200 dark:border-slate-700 text-xs sm:text-sm font-black text-center">
+        <button type="button" id="tabSettingGeneralBtn" onclick="switchSettingTab('general')" class="py-2.5 rounded-xl transition bg-white dark:bg-slate-800 text-rose-500 dark:text-white shadow">ทั่วไป (General)</button>
+        <button type="button" id="tabSettingDatabaseBtn" onclick="switchSettingTab('database')" class="py-2.5 rounded-xl transition text-slate-500 hover:text-slate-800 dark:hover:text-white">ฐานข้อมูล (Data Base)</button>
+      </div>
+
+      <div id="settingTabContentGeneral" class="space-y-4">
+        <div class="p-4 bg-slate-50 dark:bg-slate-900/60 rounded-3xl border border-slate-200 dark:border-slate-700 space-y-2.5">
+          <span class="text-sm font-bold flex items-center gap-2 text-slate-800 dark:text-white">
+            <i class="fa-solid fa-text-height text-amber-500"></i> ปรับขนาดตัวอักษร (ช่วยการมองเห็น)
+          </span>
+          <div class="grid grid-cols-3 gap-2">
+            <button onclick="setFontSizeScale(1)" id="fontBtn1" class="py-2 px-2 rounded-xl text-xs font-black border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-800 hover:border-amber-500 transition shadow-2xs">มาตรฐาน (100%)</button>
+            <button onclick="setFontSizeScale(1.15)" id="fontBtn115" class="py-2 px-2 rounded-xl text-xs font-black border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-800 hover:border-amber-500 transition shadow-2xs">ใหญ่ (115%)</button>
+            <button onclick="setFontSizeScale(1.3)" id="fontBtn13" class="py-2 px-2 rounded-xl text-xs font-black border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-800 hover:border-amber-500 transition shadow-2xs">ใหญ่พิเศษ (130%)</button>
+          </div>
+        </div>
+
+        <div class="p-4 bg-slate-50 dark:bg-slate-900/60 rounded-3xl border border-slate-200 dark:border-slate-700 flex items-center justify-between">
+          <span class="text-sm font-bold flex items-center gap-2"><i class="fa-solid fa-moon text-indigo-400"></i>โหมดสว่าง / มืด</span>
+          <button onclick="toggleTheme()" class="px-4 py-2 rounded-xl text-xs sm:text-sm font-black border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-800 hover:scale-105 transition">สลับโหมด</button>
+        </div>
+
+        <div class="p-4 bg-slate-50 dark:bg-slate-900/60 rounded-3xl border border-slate-200 dark:border-slate-700 space-y-3">
+          <div class="flex items-center gap-2">
+            <i class="fa-solid fa-database text-amber-500"></i>
+            <span class="text-sm font-black text-slate-800 dark:text-white">สำรองและส่งออกฐานข้อมูล (Backup & Export)</span>
+          </div>
+          <div class="grid grid-cols-3 gap-2.5 pt-1">
+            <button onclick="exportDatabaseToCSV()" class="w-full py-3 px-2 rounded-2xl bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-300 text-emerald-700 dark:text-emerald-300 text-xs font-black flex flex-col items-center justify-center gap-1.5 shadow-sm hover:scale-105 transition">
+              <i class="fa-solid fa-file-excel text-xl text-emerald-500"></i>
+              <span>Sheets (.CSV)</span>
+            </button>
+            <button onclick="exportDatabase()" class="w-full py-3 px-2 rounded-2xl bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-600 text-slate-700 dark:text-slate-200 text-xs font-black flex flex-col items-center justify-center gap-1.5 shadow-sm hover:scale-105 transition">
+              <i class="fa-solid fa-file-arrow-down text-xl text-blue-500"></i>
+              <span>Backup (.JSON)</span>
+            </button>
+            <button onclick="triggerImportDatabase()" class="w-full py-3 px-2 rounded-2xl bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-600 text-slate-700 dark:text-slate-200 text-xs font-black flex flex-col items-center justify-center gap-1.5 shadow-sm hover:scale-105 transition">
+              <i class="fa-solid fa-file-arrow-up text-xl text-purple-500"></i>
+              <span>Import</span>
+            </button>
+            <input type="file" id="importFileInput" accept=".json" onchange="handleImportFile(event)" class="hidden">
+          </div>
+        </div>
+      </div>
+
+      <div id="settingTabContentDatabase" class="hidden space-y-4">
+        <div class="flex items-center justify-between">
+          <span class="text-xs sm:text-sm font-black uppercase text-slate-400">ตารางประวัติบนชีต (<span id="dbSnapTotalCount">0</span>)</span>
+          <div class="flex gap-2">
+            <button onclick="fetchFromGoogleSheets(true)" class="px-3.5 py-2 rounded-xl bg-slate-100 dark:bg-slate-700 border text-xs sm:text-sm font-bold"><i class="fa-solid fa-rotate mr-1.5 text-blue-500"></i>ซิงก์ตาราง</button>
+            <button onclick="pushSnapshotToCloudById('cloud_active')" class="px-3.5 py-2 rounded-xl bg-blue-600 hover:bg-blue-700 text-white text-xs sm:text-sm font-black shadow"><i class="fa-solid fa-cloud-arrow-up mr-1.5"></i>Push Master</button>
+          </div>
+        </div>
+
+        <div class="border border-slate-200 dark:border-slate-700 rounded-3xl overflow-hidden bg-slate-50 dark:bg-slate-900/60 max-h-72 overflow-y-auto">
+          <table class="w-full text-left text-xs sm:text-sm">
+            <thead class="bg-white dark:bg-slate-800 border-b text-slate-400 font-bold sticky top-0">
+              <tr>
+                <th class="py-3 px-3">ชื่อฐานข้อมูล</th>
+                <th class="py-3 px-2 text-center w-24">Version</th>
+                <th class="py-3 px-2 text-center w-28">วันเวลา</th>
+                <th class="py-3 px-2 text-right w-16">จำนวน</th>
+                <th class="py-3 px-3 text-center w-28">จัดการ</th>
+              </tr>
+            </thead>
+            <tbody id="databaseListTableBody" class="divide-y divide-slate-100 dark:divide-slate-800 font-medium"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Category Manager Modal -->
+  <div id="categoryModal" class="hidden fixed inset-0 z-50 bg-slate-950/70 backdrop-blur-sm flex items-center justify-center p-4 overflow-y-auto">
+    <div class="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-3xl max-w-lg w-full p-6 space-y-5">
+      <div class="flex justify-between items-center border-b pb-3.5">
+        <h3 class="font-black text-lg text-slate-900 dark:text-white flex items-center gap-2"><i class="fa-solid fa-shapes text-rose-500"></i><span>จัดการหมวดหมู่</span></h3>
+        <button onclick="closeCategoryModal()"><i class="fa-solid fa-xmark text-xl text-slate-400"></i></button>
+      </div>
+      <div class="flex gap-2">
+        <button type="button" onclick="openColorPicker(-1)" class="w-11 h-11 rounded-2xl border flex items-center justify-center shrink-0 shadow-sm" id="newCatColorBtn">
+          <span id="newCatColorPill" class="w-6 h-6 rounded-full bg-rose-500"></span>
+        </button>
+        <button type="button" onclick="openIconPicker(-1)" class="w-11 h-11 rounded-2xl border flex items-center justify-center text-lg shrink-0 shadow-sm dark:bg-slate-900">
+          <i id="newCatIconPreview" class="fa-solid fa-folder-open text-amber-500"></i>
+        </button>
+        <input type="text" id="newCategoryInput" placeholder="ชื่อหมวดหมู่ใหม่..." class="flex-1 border rounded-2xl px-4 text-sm font-bold dark:bg-slate-900 outline-none text-slate-800 dark:text-white">
+        <button onclick="handleAddCategory()" class="px-5 py-2.5 text-white rounded-2xl text-sm font-black btn-theme-action shrink-0 shadow">เพิ่ม</button>
+      </div>
+      <div id="categoryListContainer" class="divide-y max-h-64 overflow-y-auto pr-1"></div>
+    </div>
+  </div>
+
+  <!-- Color & Icon Picker Modals -->
+  <div id="colorPickerModal" class="hidden fixed inset-0 z-50 bg-slate-950/70 backdrop-blur-sm flex items-center justify-center p-4">
+    <div class="bg-white dark:bg-slate-800 border rounded-3xl max-w-lg w-full p-6 space-y-4">
+      <div class="flex justify-between items-center border-b pb-3">
+        <h4 class="font-black text-base">เลือกโทนสีประจำหมวดหมู่</h4>
+        <button onclick="closeColorPicker()"><i class="fa-solid fa-xmark text-lg text-slate-400"></i></button>
+      </div>
+      <div id="colorPickerGrid" class="space-y-2.5 max-h-80 overflow-y-auto"></div>
+    </div>
+  </div>
+
+  <div id="iconPickerModal" class="hidden fixed inset-0 z-50 bg-slate-950/70 backdrop-blur-sm flex items-center justify-center p-4">
+    <div class="bg-white dark:bg-slate-800 border rounded-3xl max-w-md w-full p-6 space-y-4">
+      <div class="flex justify-between items-center border-b pb-3">
+        <h4 class="font-black text-base">เลือกไอคอนสดใส</h4>
+        <button onclick="closeIconPicker()"><i class="fa-solid fa-xmark text-lg text-slate-400"></i></button>
+      </div>
+      <div id="iconPickerGrid" class="grid grid-cols-5 sm:grid-cols-6 gap-3 max-h-64 overflow-y-auto p-1"></div>
+    </div>
+  </div>
+
+  <!-- Toast Notification -->
+  <div id="toastNotification" class="fixed top-20 right-4 z-50 transform translate-x-full opacity-0 transition-all duration-300 bg-slate-900 text-white px-5 py-3 rounded-2xl shadow-2xl flex items-center gap-3 text-xs sm:text-sm font-black pointer-events-none">
+    <i class="fa-solid fa-circle-check text-emerald-400 text-lg"></i>
+    <span id="toastMessage">แจ้งเตือน</span>
+  </div>
+
+  <!-- JavaScript Engine -->
+  <script>
+    const GOOGLE_SHEET_API_URL = "https://script.google.com/macros/s/AKfycbzq9oD33K3nf_r2JRq5RjCafAQIvt2o9ywvJ1EvXvVg4l9QyUalIuQvxxT7zQ890nR1/exec";
+    const APP_LOGO_SRC = "logo.png";
+
+    const DEFAULT_INITIAL_CATEGORIES = [
+      { name: "ทั่วไป", icon: "fa-folder-open", color: "red" },
+      { name: "การทำงาน", icon: "fa-briefcase", color: "blue" },
+      { name: "สุขภาพ", icon: "fa-heart-pulse", color: "emerald" },
+      { name: "ความรู้", icon: "fa-brain", color: "purple" },
+      { name: "การเงิน", icon: "fa-sack-dollar", color: "amber" }
+    ];
+
+    const DEFAULT_INITIAL_ITEMS = [
+      { 
+        id: "c-1001", 
+        title: "วางแผนเป้าหมายประจำสัปดาห์", 
+        targetType: "personal", 
+        targetLeg: "", 
+        category: "การทำงาน", 
+        price: 350, 
+        pv: 500, 
+        weight: 70, 
+        activeIncome: 15000, 
+        passiveIncome: 0, 
+        syncStatus: "synced",
+        cost: { heart: 2, time: 3, knowledge: 0 },
+        reward: { heart: 4, time: 2, knowledge: 5 }
+      }
+    ];
+
+    let items = [];
+    let categories = [];
+    let selectedCategory = "ALL";
+    let historyLog = [];
+    let drawPool = [];
+    let isUniqueDrawMode = false;
+    let currentDbVersionName = "v8.0.0";
+    let dbSnapshots = [];
+    let isCloudSyncedSession = false;
+    let dataViewMode = "cards";
+    let currentDrawnCard = null;
+
+    function getNextSemVer(vStr, type = "patch") {
+      const clean = String(vStr || "v8.0.0").replace(/^v/i, "");
+      const parts = clean.split(".").map(n => parseInt(n, 10) || 0);
+      while (parts.length < 3) parts.push(0);
+      let [major, minor, patch] = parts;
+
+      if (type === "patch") {
+        patch += 1;
+      } else if (type === "minor") {
+        minor += 1;
+        patch = 0;
+      } else if (type === "major") {
+        major += 1;
+        minor = 0;
+        patch = 0;
+      }
+      return `v${major}.${minor}.${patch}`;
+    }
+
+    const COLOR_PALETTES = {
+      red: { 
+        id: "red", 
+        name: "ชมพู-แดงนีออน", 
+        hex: "#FF3366", 
+        gradient: "linear-gradient(135deg, #FF3366 0%, #FF5E62 50%, #FF9966 100%)", 
+        badge: "bg-rose-100 text-rose-800 dark:bg-rose-900/60 dark:text-rose-200 border-rose-300 dark:border-rose-500",
+        cardBgTint: "bg-gradient-to-br from-rose-500/35 via-rose-500/20 to-rose-50 dark:from-rose-950/75 dark:via-slate-900/90 dark:to-slate-950 border-rose-400/80 dark:border-rose-500/50 hover:border-rose-500"
+      },
+      blue: { 
+        id: "blue", 
+        name: "ฟ้าน้ำทะเลสดใส", 
+        hex: "#00C4FF", 
+        gradient: "linear-gradient(135deg, #00C4FF 0%, #0072FF 50%, #002288 100%)", 
+        badge: "bg-cyan-100 text-cyan-800 dark:bg-cyan-900/60 dark:text-cyan-200 border-cyan-300 dark:border-cyan-500",
+        cardBgTint: "bg-gradient-to-br from-cyan-500/35 via-cyan-500/20 to-cyan-50 dark:from-cyan-950/75 dark:via-slate-900/90 dark:to-slate-950 border-cyan-400/80 dark:border-cyan-500/50 hover:border-cyan-500"
+      },
+      purple: { 
+        id: "purple", 
+        name: "ม่วงไวโอเล็ตนีออน", 
+        hex: "#B026FF", 
+        gradient: "linear-gradient(135deg, #FF61D2 0%, #B026FF 50%, #581C87 100%)", 
+        badge: "bg-purple-100 text-purple-800 dark:bg-purple-900/60 dark:text-purple-200 border-purple-300 dark:border-purple-500",
+        cardBgTint: "bg-gradient-to-br from-purple-500/35 via-purple-500/20 to-purple-50 dark:from-purple-950/75 dark:via-slate-900/90 dark:to-slate-950 border-purple-400/80 dark:border-purple-500/50 hover:border-purple-500"
+      },
+      emerald: { 
+        id: "emerald", 
+        name: "เขียวมรกตนีออน", 
+        hex: "#00E676", 
+        gradient: "linear-gradient(135deg, #00E676 0%, #00B0FF 50%, #1DE9B6 100%)", 
+        badge: "bg-emerald-100 text-emerald-800 dark:bg-emerald-900/60 dark:text-emerald-200 border-emerald-300 dark:border-emerald-500",
+        cardBgTint: "bg-gradient-to-br from-emerald-500/35 via-emerald-500/20 to-emerald-50 dark:from-emerald-950/75 dark:via-slate-900/90 dark:to-slate-950 border-emerald-400/80 dark:border-emerald-500/50 hover:border-emerald-500"
+      },
+      amber: { 
+        id: "amber", 
+        name: "ส้ม-ทองอำพัน", 
+        hex: "#FF9100", 
+        gradient: "linear-gradient(135deg, #FFE600 0%, #FF9100 50%, #FF3D00 100%)", 
+        badge: "bg-amber-100 text-amber-800 dark:bg-amber-900/60 dark:text-amber-200 border-amber-300 dark:border-amber-500",
+        cardBgTint: "bg-gradient-to-br from-amber-500/35 via-amber-500/20 to-amber-50 dark:from-amber-950/75 dark:via-slate-900/90 dark:to-slate-950 border-amber-400/80 dark:border-amber-500/50 hover:border-amber-500"
+      }
+    };
+
+    const ICON_PRESETS = [
+      "fa-folder-open", "fa-briefcase", "fa-heart-pulse", "fa-brain", "fa-sack-dollar",
+      "fa-dice-d20", "fa-wand-magic-sparkles", "fa-trophy", "fa-fire-flame-curved", "fa-rocket",
+      "fa-gem", "fa-lightbulb", "fa-star", "fa-cart-shopping", "fa-chart-line", "fa-bullseye"
+    ];
+
+    let colorPickerTargetIdx = -1;
+    let iconPickerTargetIdx = -1;
+    let newCategorySelectedColor = "red";
+    let newCategorySelectedIcon = "fa-folder-open";
+
+    window.addEventListener('DOMContentLoaded', () => {
+      initTheme();
+      loadFontSizeScale();
+      loadLocalCache();
+      renderColorPickerGrid();
+      renderIconPickerGrid();
+      switchTab('categories');
+      updatePlayerHudWidget();
+      fetchFromGoogleSheets(true);
+    });
+
+    function setFontSizeScale(scale) {
+      document.documentElement.style.setProperty('--font-scale', scale);
+      localStorage.setItem('rnd_font_scale', scale);
+      
+      ['1', '115', '13'].forEach(k => {
+        const btn = document.getElementById(`fontBtn${k}`);
+        if (btn) {
+          btn.classList.remove('border-amber-500', 'bg-amber-500/10', 'text-amber-500');
+        }
+      });
+      const activeBtn = document.getElementById(scale === 1 ? 'fontBtn1' : (scale === 1.15 ? 'fontBtn115' : 'fontBtn13'));
+      if (activeBtn) {
+        activeBtn.classList.add('border-amber-500', 'bg-amber-500/10', 'text-amber-500');
+      }
+      showToast(`ปรับขนาดตัวอักษรเป็น ${Math.round(scale * 100)}% แล้ว`);
+    }
+
+    function loadFontSizeScale() {
+      const saved = parseFloat(localStorage.getItem('rnd_font_scale')) || 1;
+      setFontSizeScale(saved);
+    }
+
+    function showSyncBanner(title, detail, stepText = "กำลังดำเนินการ...", percent = 20) {
+      const banner = document.getElementById('syncBlockingBanner');
+      if (!banner) return;
+      const titleEl = document.getElementById('syncBannerTitle');
+      const detailEl = document.getElementById('syncBannerDetail');
+      const stepEl = document.getElementById('syncBannerStepText');
+      const errBtn = document.getElementById('syncBannerErrorBtn');
+      const icon = document.getElementById('syncBannerIcon');
+
+      if (titleEl) titleEl.innerText = title;
+      if (detailEl) detailEl.innerText = detail;
+      if (stepEl) stepEl.innerText = stepText;
+      if (errBtn) errBtn.classList.add('hidden');
+      if (icon) icon.className = "fa-solid fa-arrows-rotate animate-spin text-4xl text-rose-500";
+
+      updateSyncBannerProgress(percent);
+      banner.classList.remove('hidden');
+    }
+
+    function updateSyncBannerProgress(percent, detail = null, stepText = null) {
+      const bar = document.getElementById('syncBannerProgressBar');
+      const txt = document.getElementById('syncBannerPercentText');
+      if (bar) bar.style.width = `${percent}%`;
+      if (txt) txt.innerText = `${percent}%`;
+      if (detail) {
+        const d = document.getElementById('syncBannerDetail');
+        if (d) d.innerText = detail;
+      }
+      if (stepText) {
+        const s = document.getElementById('syncBannerStepText');
+        if (s) s.innerText = stepText;
+      }
+    }
+
+    function hideSyncBanner() {
+      const banner = document.getElementById('syncBlockingBanner');
+      if (banner) banner.classList.add('hidden');
+    }
+
+    function setSyncBannerError(errMsg) {
+      const titleEl = document.getElementById('syncBannerTitle');
+      const detailEl = document.getElementById('syncBannerDetail');
+      const icon = document.getElementById('syncBannerIcon');
+      const errBtn = document.getElementById('syncBannerErrorBtn');
+
+      if (titleEl) titleEl.innerText = "การซิงก์ไม่สำเร็จ";
+      if (detailEl) detailEl.innerText = errMsg;
+      if (icon) icon.className = "fa-solid fa-circle-xmark text-rose-500 text-4xl";
+      if (errBtn) errBtn.classList.remove('hidden');
+    }
+
+    function loadLocalCache() {
+      try {
+        const cItems = localStorage.getItem('rnd_cache_items');
+        items = cItems ? JSON.parse(cItems) : [...DEFAULT_INITIAL_ITEMS];
+        const cCats = localStorage.getItem('rnd_cache_categories');
+        categories = cCats ? JSON.parse(cCats) : [...DEFAULT_INITIAL_CATEGORIES];
+        const cHist = localStorage.getItem('rnd_cache_history');
+        historyLog = cHist ? JSON.parse(cHist) : [];
+        currentDbVersionName = localStorage.getItem('rnd_db_version_name') || "v8.0.0";
+        dataViewMode = localStorage.getItem('rnd_data_view_mode') || "cards";
+      } catch (e) {
+        items = [...DEFAULT_INITIAL_ITEMS];
+        categories = [...DEFAULT_INITIAL_CATEGORIES];
+      }
+      renderAllUI();
+      resetDrawPool();
+    }
+
+    function saveLocalCache() {
+      try {
+        localStorage.setItem('rnd_cache_items', JSON.stringify(items));
+        localStorage.setItem('rnd_cache_categories', JSON.stringify(categories));
+        localStorage.setItem('rnd_cache_history', JSON.stringify(historyLog));
+        localStorage.setItem('rnd_db_version_name', currentDbVersionName);
+        localStorage.setItem('rnd_data_view_mode', dataViewMode);
+      } catch (e) {}
+    }
+
+    function updatePlayerHudWidget() {
+      let profile = null;
+      try {
+        const rawAuth = localStorage.getItem('rnd_current_auth');
+        const auth = rawAuth ? JSON.parse(rawAuth) : null;
+        const rawAllPlayers = localStorage.getItem('rnd_all_players_db');
+        const allPlayers = rawAllPlayers ? JSON.parse(rawAllPlayers) : {};
+
+        if (auth && auth.accountId && allPlayers[auth.accountId]) {
+          profile = allPlayers[auth.accountId];
+        } else {
+          const rawProf = localStorage.getItem('rnd_cache_player_profile');
+          profile = rawProf ? JSON.parse(rawProf) : null;
+        }
+      } catch (err) {}
+
+      const hasCareer = Boolean(profile && profile.careerId && profile.career);
+      const personalActive = hasCareer ? (profile.activeIncome || 0) : 0;
+      const legsActive = hasCareer && Array.isArray(profile.legs) 
+        ? profile.legs.reduce((sum, l) => sum + (l.activeIncome || 0), 0) : 0;
+      const totalActive = personalActive + legsActive;
+
+      const personalPassive = hasCareer ? (profile.passiveIncome || 0) : 0;
+      const legsPassive = hasCareer && Array.isArray(profile.legs) 
+        ? profile.legs.reduce((sum, l) => sum + (l.passiveIncome || 0), 0) : 0;
+      const totalPassive = personalPassive + legsPassive;
+
+      const salary = hasCareer && profile.career ? (profile.career.salary || 0) : 0;
+      const expenses = hasCareer && profile.career ? (profile.career.expenses || 0) : 0;
+      const netMonthly = (totalActive + totalPassive + salary) - expenses;
+      const res = (hasCareer && profile.resources) ? profile.resources : { heart: 0, time: 0, knowledge: 0 };
+
+      const setSafeText = (id, val) => { const el = document.getElementById(id); if (el) el.innerText = val; };
+
+      setSafeText('hudPlayerName', profile?.name || "ผู้เล่นทั่วไป");
+      setSafeText('hudCareerTitle', hasCareer ? profile.career.title : "ยังไม่ได้เลือกอาชีพ");
+      setSafeText('hudCash', `฿${(hasCareer ? (profile.cash || 0) : 0).toLocaleString()}`);
+      setSafeText('hudNetMonthly', `฿${(hasCareer ? netMonthly : 0).toLocaleString()}`);
+      setSafeText('hudExpenses', `฿${(hasCareer ? expenses : 0).toLocaleString()}`);
+      setSafeText('hudTotalActive', `฿${(hasCareer ? totalActive : 0).toLocaleString()}`);
+      setSafeText('hudTotalPassive', `฿${(hasCareer ? totalPassive : 0).toLocaleString()}`);
+      setSafeText('hudResHeart', `${res.heart || 0}/10`);
+      setSafeText('hudResTime', `${res.time || 0}/10`);
+      setSafeText('hudResKnowledge', `${res.knowledge || 0}/10`);
+
+      const elAvatar = document.getElementById('hudAvatarWrapper');
+      if (elAvatar) {
+        if (hasCareer && profile.career && profile.career.avatar) {
+          elAvatar.innerHTML = `<img src="${profile.career.avatar}" class="w-full h-full object-cover">`;
+        } else if (hasCareer && profile.career && profile.career.icon) {
+          elAvatar.innerHTML = `<i class="fa-solid ${profile.career.icon}"></i>`;
+        } else {
+          elAvatar.innerHTML = `<i class="fa-solid fa-user-astronaut"></i>`;
+        }
+      }
+    }
+
+    function renderAllUI() {
+      const elCount = document.getElementById('total-badge-count');
+      if (elCount) elCount.innerText = items.length;
+      const elVer = document.getElementById('brandPillBadge');
+      if (elVer) elVer.innerText = currentDbVersionName;
+
+      renderCategoryHomeCards();
+      renderDataTable();
+      renderCategoryDropdowns();
+      renderHistoryList();
+      updatePlayerHudWidget();
+    }
+
+    function renderCategoryDropdowns() {
+      const tableSel = document.getElementById('tableCategoryFilter');
+      const modalSel = document.getElementById('cardCategorySelect');
+      const optionsHtml = `<option value="ALL">ทุกหมวดหมู่</option>` + categories.map(c => `<option value="${escapeHTML(c.name)}">${escapeHTML(c.name)}</option>`).join('');
+      if (tableSel) tableSel.innerHTML = optionsHtml;
+      if (modalSel) modalSel.innerHTML = categories.map(c => `<option value="${escapeHTML(c.name)}">${escapeHTML(c.name)}</option>`).join('');
+    }
+
+    function renderCategoryHomeCards() {
+      const grid = document.getElementById('categoryCardsGrid');
+      if (!grid) return;
+      let html = `
+        <div onclick="selectCategoryAndDraw('ALL')" class="cursor-pointer rounded-3xl p-5 sm:p-6 text-white shadow-xl flex flex-col justify-between hover:scale-[1.02] active:scale-[0.98] transition duration-300 relative overflow-hidden group" style="background: linear-gradient(135deg, #1E293B 0%, #0F172A 100%);">
+          <div class="absolute -right-6 -bottom-6 text-white/5 text-8xl font-black pointer-events-none group-hover:scale-110 transition"><i class="fa-solid fa-shapes"></i></div>
+          <div class="flex items-center justify-between mb-4">
+            <div class="w-12 h-12 rounded-2xl bg-white/15 flex items-center justify-center text-2xl icon-vibrant"><i class="fa-solid fa-dice-d20"></i></div>
+            <span class="text-xs sm:text-sm font-mono font-black px-3 py-1 rounded-full bg-white/20 shadow-sm">${items.length} รายการ</span>
+          </div>
+          <div>
+            <span class="text-xs font-bold text-slate-400 block mb-0.5">สุ่มแบบผสมผสาน</span>
+            <h3 class="font-black text-lg sm:text-xl tracking-tight">สุ่มจากทุกหมวดหมู่</h3>
+          </div>
+        </div>
+      `;
+      categories.forEach(cat => {
+        const count = items.filter(i => i.category === cat.name).length;
+        const meta = getCategoryMeta(cat.name);
+        html += `
+          <div onclick="selectCategoryAndDraw('${escapeHTML(cat.name)}')" class="cursor-pointer rounded-3xl p-5 sm:p-6 text-white shadow-xl flex flex-col justify-between hover:scale-[1.02] active:scale-[0.98] transition duration-300 relative overflow-hidden group" style="background: ${meta.theme.gradient};">
+            <div class="absolute -right-6 -bottom-6 text-white/10 text-8xl font-black pointer-events-none group-hover:scale-110 transition"><i class="fa-solid ${escapeHTML(meta.icon)}"></i></div>
+            <div class="flex items-center justify-between mb-4">
+              <div class="w-12 h-12 rounded-2xl bg-white/20 flex items-center justify-center text-2xl icon-vibrant"><i class="fa-solid ${escapeHTML(meta.icon)}"></i></div>
+              <span class="text-xs sm:text-sm font-mono font-black px-3 py-1 rounded-full bg-white/25 shadow-sm">${count} รายการ</span>
+            </div>
+            <div>
+              <span class="text-xs font-bold text-white/80 block mb-0.5">หมวดหมู่เฉพาะ</span>
+              <h3 class="font-black text-lg sm:text-xl tracking-tight">${escapeHTML(cat.name)}</h3>
+            </div>
+          </div>
+        `;
+      });
+      grid.innerHTML = html;
+    }
+
+    function getCategoryMeta(catName) {
+      const found = categories.find(c => c.name === catName);
+      const theme = COLOR_PALETTES[found?.color] || COLOR_PALETTES.red;
+      return { 
+        icon: found?.icon || "fa-shapes", 
+        theme: theme,
+        cardBgTint: theme.cardBgTint
+      };
+    }
+
+    function selectCategoryAndDraw(catName) {
+      selectedCategory = catName;
+      resetDrawPool();
+      updateStageCategoryUI();
+      switchTab('draw');
+    }
+
+    function updateStageCategoryUI() {
+      const titleEl = document.getElementById('stageCategoryTitle');
+      const iconEl = document.getElementById('stageCategoryIcon');
+      const wrapperEl = document.getElementById('stageCategoryIconWrapper');
+      
+      if (selectedCategory === 'ALL') {
+        if (titleEl) titleEl.innerText = "ทุกหมวดหมู่";
+        if (iconEl) iconEl.className = "fa-solid fa-dice-d20";
+        if (wrapperEl) wrapperEl.style.background = "linear-gradient(135deg, #1E293B 0%, #0F172A 100%)";
+      } else {
+        const meta = getCategoryMeta(selectedCategory);
+        if (titleEl) titleEl.innerText = selectedCategory;
+        if (iconEl) iconEl.className = `fa-solid ${meta.icon}`;
+        if (wrapperEl) wrapperEl.style.background = meta.theme.gradient;
+      }
+      updatePoolBadge();
+    }
+
+    function setDataViewMode(mode) {
+      dataViewMode = mode;
+      saveLocalCache();
+      renderDataTable();
+    }
+
+    function renderPowerSegmentBar(val, colorClass, emptyClass = "bg-slate-200 dark:bg-slate-700/80") {
+      const safeVal = Math.max(0, Math.min(10, parseInt(val) || 0));
+      let segments = '';
+      for (let i = 1; i <= 10; i++) {
+        const isFilled = i <= safeVal;
+        segments += `<div class="h-2 w-1 sm:w-1.5 rounded-xs transition-all ${isFilled ? colorClass : emptyClass}"></div>`;
+      }
+      return `
+        <div class="flex items-center gap-1 shrink-0">
+          <div class="flex items-center gap-0.5">${segments}</div>
+          <span class="font-mono font-black text-xs sm:text-sm pl-1">${safeVal}</span>
+        </div>
+      `;
+    }
+
+    function renderResourceMeterGroup(res, isCost = true) {
+      if (!res) res = { heart: 0, time: 0, knowledge: 0 };
+      const activeColor = isCost ? "bg-rose-500 shadow-[0_0_6px_rgba(244,63,94,0.6)]" : "bg-emerald-500 shadow-[0_0_6px_rgba(16,185,129,0.6)]";
+      const badgeTitle = isCost ? "ใช้ (Cost)" : "ได้ (Reward)";
+      const titleColor = isCost ? "text-rose-600 dark:text-rose-400" : "text-emerald-600 dark:text-emerald-400";
+
+      return `
+        <div class="space-y-1 py-0.5">
+          <div class="flex items-center justify-between text-xs font-black ${titleColor}">
+            <span>${badgeTitle}</span>
+          </div>
+          <div class="flex items-center justify-between gap-1.5 text-xs sm:text-sm">
+            <span class="flex items-center gap-1.5 text-slate-800 dark:text-slate-200 font-bold shrink-0">
+              <i class="fa-solid fa-heart text-red-500"></i> สุขภาพ
+            </span>
+            ${renderPowerSegmentBar(res.heart, activeColor)}
+          </div>
+          <div class="flex items-center justify-between gap-1.5 text-xs sm:text-sm">
+            <span class="flex items-center gap-1.5 text-slate-800 dark:text-slate-200 font-bold shrink-0">
+              <i class="fa-solid fa-clock text-slate-800 dark:text-white"></i> เวลา
+            </span>
+            ${renderPowerSegmentBar(res.time, activeColor)}
+          </div>
+          <div class="flex items-center justify-between gap-1.5 text-xs sm:text-sm">
+            <span class="flex items-center gap-1.5 text-slate-800 dark:text-slate-200 font-bold shrink-0">
+              <i class="fa-solid fa-book-bookmark text-blue-600 dark:text-blue-400"></i> ความรู้
+            </span>
+            ${renderPowerSegmentBar(res.knowledge, activeColor)}
+          </div>
+        </div>
+      `;
+    }
+
+    function renderResourceCompactInline(cost, reward) {
+      const c = cost || { heart: 0, time: 0, knowledge: 0 };
+      const r = reward || { heart: 0, time: 0, knowledge: 0 };
+      return `
+        <div class="space-y-1 text-xs sm:text-sm font-mono">
+          <div class="flex items-center gap-2 text-rose-500 font-bold">
+            <span class="text-[10px] uppercase font-sans font-black bg-rose-50 dark:bg-rose-950/60 px-1 rounded">ใช้</span>
+            <span class="flex items-center gap-0.5"><i class="fa-solid fa-heart text-red-500 text-xs"></i>${c.heart || 0}</span>
+            <span class="flex items-center gap-0.5"><i class="fa-solid fa-clock text-slate-800 dark:text-white text-xs"></i>${c.time || 0}</span>
+            <span class="flex items-center gap-0.5"><i class="fa-solid fa-book-bookmark text-blue-600 dark:text-blue-400 text-xs"></i>${c.knowledge || 0}</span>
+          </div>
+          <div class="flex items-center gap-2 text-emerald-500 font-bold">
+            <span class="text-[10px] uppercase font-sans font-black bg-emerald-50 dark:bg-emerald-950/60 px-1 rounded">ได้</span>
+            <span class="flex items-center gap-0.5"><i class="fa-solid fa-heart text-red-500 text-xs"></i>${r.heart || 0}</span>
+            <span class="flex items-center gap-0.5"><i class="fa-solid fa-clock text-slate-800 dark:text-white text-xs"></i>${r.time || 0}</span>
+            <span class="flex items-center gap-0.5"><i class="fa-solid fa-book-bookmark text-blue-600 dark:text-blue-400 text-xs"></i>${r.knowledge || 0}</span>
+          </div>
+        </div>
+      `;
+    }
+
+    function renderDataTable() {
+      const query = (document.getElementById('searchInput')?.value || '').toLowerCase().trim();
+      const filterCat = document.getElementById('tableCategoryFilter')?.value || 'ALL';
+
+      let filtered = items.filter(item => {
+        const matchesQuery = !query || 
+          (item.title && item.title.toLowerCase().includes(query)) ||
+          (item.id && item.id.toLowerCase().includes(query));
+        const matchesCat = (filterCat === 'ALL') || (item.category === filterCat);
+        return matchesQuery && matchesCat;
+      });
+
+      const cardBtn = document.getElementById('viewModeCardBtn');
+      const tableBtn = document.getElementById('viewModeTableBtn');
+      const gridContainer = document.getElementById('cardsGridContainer');
+      const tableContainer = document.getElementById('tableCompactContainer');
+
+      if (dataViewMode === 'cards') {
+        if (cardBtn) cardBtn.className = "px-3 py-1.5 rounded-xl text-xs sm:text-sm font-black transition flex items-center gap-1.5 bg-white dark:bg-slate-800 text-rose-500 shadow-xs";
+        if (tableBtn) tableBtn.className = "px-3 py-1.5 rounded-xl text-xs sm:text-sm font-black transition flex items-center gap-1.5 text-slate-500 dark:text-slate-400 hover:text-slate-800 dark:hover:text-white";
+        if (gridContainer) gridContainer.classList.remove('hidden');
+        if (tableContainer) tableContainer.classList.add('hidden');
+      } else {
+        if (cardBtn) cardBtn.className = "px-3 py-1.5 rounded-xl text-xs sm:text-sm font-black transition flex items-center gap-1.5 text-slate-500 dark:text-slate-400 hover:text-slate-800 dark:hover:text-white";
+        if (tableBtn) tableBtn.className = "px-3 py-1.5 rounded-xl text-xs sm:text-sm font-black transition flex items-center gap-1.5 bg-white dark:bg-slate-800 text-rose-500 shadow-xs";
+        if (gridContainer) gridContainer.classList.add('hidden');
+        if (tableContainer) tableContainer.classList.remove('hidden');
+      }
+
+      if (gridContainer) {
+        if (filtered.length === 0) {
+          gridContainer.innerHTML = `
+            <div class="col-span-full py-16 text-center text-slate-400 space-y-2">
+              <i class="fa-solid fa-folder-open text-4xl text-slate-300 dark:text-slate-600"></i>
+              <p class="text-sm font-bold">ไม่พบข้อมูลการ์ดที่ค้นหา</p>
+            </div>
+          `;
+        } else {
+          gridContainer.innerHTML = filtered.map((item, idx) => {
+            const meta = getCategoryMeta(item.category);
+            return `
+              <div class="p-4 sm:p-5 rounded-3xl border transition duration-200 space-y-3.5 shadow-md hover:shadow-xl ${meta.cardBgTint}">
+                <div class="flex items-center justify-between gap-2 border-b border-black/5 dark:border-white/5 pb-2">
+                  <div class="flex items-center gap-2">
+                    <span class="font-mono text-xs sm:text-sm font-bold text-slate-500 dark:text-slate-400">#${idx + 1}</span>
+                    <span class="font-mono text-xs sm:text-sm font-black px-2.5 py-0.5 rounded-lg bg-white/95 dark:bg-slate-900 text-slate-800 dark:text-slate-200 border border-slate-300/80 dark:border-slate-700 shadow-2xs">
+                      ${escapeHTML(item.id)}
+                    </span>
+                  </div>
+                  <span class="text-xs sm:text-sm px-2.5 py-0.5 rounded-full font-bold border shrink-0 ${meta.theme.badge}">
+                    ${escapeHTML(item.category)}
+                  </span>
+                </div>
+
+                <div class="py-0.5">
+                  <h4 class="font-black text-slate-950 dark:text-white text-base sm:text-lg leading-relaxed break-words whitespace-normal">
+                    ${escapeHTML(item.title)}
+                  </h4>
+                </div>
+
+                <div class="grid grid-cols-4 gap-2 text-center font-mono bg-white/95 dark:bg-slate-900/95 p-3 rounded-2xl border border-slate-300/80 dark:border-slate-800 text-xs sm:text-sm shadow-xs">
+                  <div class="overflow-hidden">
+                    <span class="text-[10px] sm:text-xs text-slate-500 dark:text-slate-400 font-sans font-bold block">สายงาน</span>
+                    <strong class="text-indigo-600 dark:text-indigo-400 font-black break-words block text-xs sm:text-sm leading-tight">
+                      ${escapeHTML(item.targetLeg ? 'สาย ' + item.targetLeg : 'ส่วนตัว')}
+                    </strong>
+                  </div>
+                  <div>
+                    <span class="text-[10px] sm:text-xs text-slate-500 dark:text-slate-400 font-sans font-bold block">PV</span>
+                    <strong class="text-cyan-600 dark:text-cyan-400 font-black text-sm sm:text-base">${(item.pv || 0).toLocaleString()}</strong>
+                  </div>
+                  <div>
+                    <span class="text-[10px] sm:text-xs text-red-500 font-sans font-black block">ราคา</span>
+                    <strong class="text-red-500 font-black text-sm sm:text-base">฿${(item.price || 0).toLocaleString()}</strong>
+                  </div>
+                  <div class="space-y-0.5">
+                    <div>
+                      <span class="text-[9px] sm:text-xs text-emerald-500 font-sans font-bold">Active:</span>
+                      <strong class="text-emerald-600 dark:text-emerald-400 font-black text-xs sm:text-sm">฿${(item.activeIncome || 0).toLocaleString()}</strong>
+                    </div>
+                    <div>
+                      <span class="text-[9px] sm:text-xs text-teal-500 font-sans font-bold">Passive:</span>
+                      <strong class="text-teal-600 dark:text-teal-400 font-black text-xs sm:text-sm">฿${(item.passiveIncome || 0).toLocaleString()}</strong>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="grid grid-cols-2 gap-2 bg-white/95 dark:bg-slate-900/95 p-3 rounded-2xl border border-slate-300/80 dark:border-slate-800 shadow-xs">
+                  <div>${renderResourceMeterGroup(item.cost, true)}</div>
+                  <div class="border-l border-slate-200 dark:border-slate-800 pl-2.5">${renderResourceMeterGroup(item.reward, false)}</div>
+                </div>
+
+                <div class="flex items-center justify-end gap-2 pt-1 border-t border-black/5 dark:border-white/5">
+                  <button type="button" onclick="openAddEditModal('${item.id}')" class="px-3.5 py-1.5 text-xs sm:text-sm font-black rounded-xl bg-white hover:bg-blue-50 dark:bg-slate-800 dark:hover:bg-slate-700 text-blue-600 dark:text-blue-400 border border-slate-300 dark:border-slate-700 flex items-center gap-1.5 active:scale-95 transition shadow-2xs">
+                    <i class="fa-solid fa-pen text-xs"></i> แก้ไข
+                  </button>
+                  <button type="button" onclick="cloneItem('${item.id}')" class="px-3.5 py-1.5 text-xs sm:text-sm font-black rounded-xl bg-white hover:bg-emerald-50 dark:bg-slate-800 dark:hover:bg-slate-700 text-emerald-600 dark:text-emerald-400 border border-slate-300 dark:border-slate-700 flex items-center gap-1.5 active:scale-95 transition shadow-2xs">
+                    <i class="fa-regular fa-copy text-xs"></i> โคลน
+                  </button>
+                  <button type="button" onclick="confirmDeleteItem('${item.id}')" class="px-3.5 py-1.5 text-xs sm:text-sm font-black rounded-xl bg-white hover:bg-rose-50 dark:bg-slate-800 dark:hover:bg-slate-700 text-rose-600 dark:text-rose-400 border border-slate-300 dark:border-slate-700 flex items-center gap-1.5 active:scale-95 transition shadow-2xs">
+                    <i class="fa-solid fa-trash text-xs"></i> ลบ
+                  </button>
+                </div>
+              </div>
+            `;
+          }).join('');
+        }
+      }
+
+      const compactTbody = document.getElementById('tableBodyCompact');
+      if (compactTbody) {
+        compactTbody.innerHTML = filtered.map((item, idx) => `
+          <tr class="hover:bg-slate-50 dark:hover:bg-slate-700/40 transition">
+            <td class="py-3 px-2.5 text-center font-mono text-xs sm:text-sm text-slate-400 font-bold">${idx + 1}</td>
+            <td class="py-3 px-2.5 text-center">
+              <span class="font-mono text-xs sm:text-sm font-black px-2 py-0.5 rounded-lg bg-slate-100 dark:bg-slate-900 text-slate-700 dark:text-slate-200 border border-slate-200 dark:border-slate-700">
+                ${escapeHTML(item.id)}
+              </span>
+            </td>
+            <td class="py-3 px-3 font-black text-slate-900 dark:text-white break-words whitespace-normal text-sm sm:text-base leading-relaxed">
+              ${escapeHTML(item.title)}
+            </td>
+            <td class="py-3 px-2.5 text-center">
+              <span class="px-2 py-0.5 rounded-lg bg-indigo-50 dark:bg-indigo-950/50 text-indigo-500 font-bold text-xs sm:text-sm border border-indigo-200 dark:border-indigo-800">
+                ${escapeHTML(item.targetLeg ? 'สาย ' + item.targetLeg : 'ส่วนตัว')}
+              </span>
+            </td>
+            <td class="py-3 px-2.5 font-mono font-black text-right text-cyan-500 text-sm sm:text-base">${(item.pv || 0).toLocaleString()}</td>
+            <td class="py-3 px-2.5 font-mono font-black text-right text-red-500 text-sm sm:text-base">฿${(item.price || 0).toLocaleString()}</td>
+            <td class="py-3 px-2.5 font-mono font-bold text-right text-emerald-500 text-sm sm:text-base">฿${(item.activeIncome || 0).toLocaleString()}</td>
+            <td class="py-3 px-2.5 font-mono font-bold text-right text-teal-400 text-sm sm:text-base">฿${(item.passiveIncome || 0).toLocaleString()}</td>
+            <td class="py-3 px-3 whitespace-nowrap">
+              ${renderResourceCompactInline(item.cost, item.reward)}
+            </td>
+            <td class="py-3 px-2.5 text-center">
+              <span class="text-xs sm:text-sm px-2.5 py-0.5 rounded-full font-bold border ${getCategoryMeta(item.category).theme.badge}">
+                ${escapeHTML(item.category)}
+              </span>
+            </td>
+            <td class="py-3 px-2.5 text-center sticky right-0 bg-white dark:bg-slate-800 shadow-l">
+              <div class="flex items-center justify-center gap-1">
+                <button type="button" onclick="openAddEditModal('${item.id}')" title="แก้ไขการ์ด" class="w-8 h-8 flex items-center justify-center text-slate-500 hover:text-blue-500 hover:bg-blue-50 dark:hover:bg-slate-700 rounded-lg transition">
+                  <i class="fa-solid fa-pen text-sm"></i>
+                </button>
+                <button type="button" onclick="cloneItem('${item.id}')" title="โคลนการ์ด" class="w-8 h-8 flex items-center justify-center text-slate-500 hover:text-emerald-500 hover:bg-emerald-50 dark:hover:bg-slate-700 rounded-lg transition">
+                  <i class="fa-regular fa-copy text-sm"></i>
+                </button>
+                <button type="button" onclick="confirmDeleteItem('${item.id}')" title="ลบการ์ด" class="w-8 h-8 flex items-center justify-center text-slate-400 hover:text-rose-500 hover:bg-rose-50 dark:hover:bg-slate-700 rounded-lg transition">
+                  <i class="fa-solid fa-trash-can text-sm"></i>
+                </button>
+              </div>
+            </td>
+          </tr>
+        `).join('');
+      }
+    }
+
+    function resetDrawPool() {
+      let pool = (selectedCategory === "ALL") ? [...items] : items.filter(i => i.category === selectedCategory);
+      drawPool = pool.map(i => i.id);
+      updatePoolBadge();
+    }
+
+    function updatePoolBadge() {
+      const badge = document.getElementById('poolRemainingBadge');
+      const total = (selectedCategory === "ALL") ? items.length : items.filter(i => i.category === selectedCategory).length;
+      if (badge) badge.innerText = `${drawPool.length}/${total}`;
+    }
+
+    function toggleUniqueDrawMode() {
+      isUniqueDrawMode = document.getElementById('uniqueDrawToggle')?.checked || false;
+      resetDrawPool();
+    }
+
+    function triggerRandomDraw() {
+      let availableCards = (selectedCategory === "ALL") ? [...items] : items.filter(i => i.category === selectedCategory);
+
+      if (availableCards.length === 0) {
+        showToast("ไม่พบการ์ดในหมวดหมู่นี้");
+        return;
+      }
+
+      if (isUniqueDrawMode) {
+        if (drawPool.length === 0) {
+          showToast("สุ่มการ์ดในกองหมดแล้ว! ทำการรีเซ็ตกองสุ่มใหม่");
+          resetDrawPool();
+        }
+        availableCards = availableCards.filter(c => drawPool.includes(c.id));
+      }
+
+      const drawnCard = availableCards[Math.floor(Math.random() * availableCards.length)];
+      currentDrawnCard = drawnCard;
+
+      if (isUniqueDrawMode) {
+        drawPool = drawPool.filter(id => id !== drawnCard.id);
+        updatePoolBadge();
+      }
+
+      historyLog.unshift({
+        id: `hist-${Date.now()}`,
+        cardId: drawnCard.id,
+        cardTitle: drawnCard.title,
+        category: drawnCard.category,
+        pv: drawnCard.pv || 0,
+        price: drawnCard.price || 0,
+        timestamp: Date.now()
+      });
+      if (historyLog.length > 50) historyLog.pop();
+      saveLocalCache();
+      renderHistoryList();
+
+      showDrawResultModal(drawnCard);
+      confetti({ particleCount: 60, spread: 80, origin: { y: 0.6 } });
+    }
+
+    function getPlayerProfileData() {
+      try {
+        const rawAuth = localStorage.getItem('rnd_current_auth');
+        const auth = rawAuth ? JSON.parse(rawAuth) : null;
+        const rawAllPlayers = localStorage.getItem('rnd_all_players_db');
+        const allPlayers = rawAllPlayers ? JSON.parse(rawAllPlayers) : {};
+
+        if (auth && auth.accountId && allPlayers[auth.accountId]) {
+          return allPlayers[auth.accountId];
+        }
+
+        const raw = localStorage.getItem('rnd_cache_player_profile');
+        if (raw) return JSON.parse(raw);
+      } catch (e) {}
+      return {
+        name: "ผู้เล่นระดับโปร",
+        cash: 50000,
+        personalPv: 0,
+        activeIncome: 25000,
+        passiveIncome: 0,
+        resources: { heart: 10, time: 10, knowledge: 10 },
+        legs: [
+          { id: "A", name: "สายงาน A", pv: 0 },
+          { id: "B", name: "สายงาน B", pv: 0 },
+          { id: "C", name: "สายงาน C", pv: 0 },
+          { id: "D", name: "สายงาน D", pv: 0 },
+          { id: "E", name: "สายงาน E", pv: 0 },
+          { id: "F", name: "สายงาน F", pv: 0 }
+        ]
+      };
+    }
+
+    function savePlayerProfileData(p) {
+      try {
+        localStorage.setItem('rnd_cache_player_profile', JSON.stringify(p));
+        const rawAuth = localStorage.getItem('rnd_current_auth');
+        const auth = rawAuth ? JSON.parse(rawAuth) : null;
+        const rawAllPlayers = localStorage.getItem('rnd_all_players_db');
+        const allPlayers = rawAllPlayers ? JSON.parse(rawAllPlayers) : {};
+        if (auth && auth.accountId) {
+          allPlayers[auth.accountId] = p;
+          localStorage.setItem('rnd_all_players_db', JSON.stringify(allPlayers));
+        }
+      } catch (e) {}
+      updatePlayerHudWidget();
+    }
+
+    function toggleSimulationPanel() {
+      const panel = document.getElementById('simulationPanel');
+      if (!panel) return;
+      panel.classList.toggle('hidden');
+    }
+
+    function showDrawResultModal(card) {
+      const meta = getCategoryMeta(card.category);
+      document.getElementById('drawResultTitle').innerText = card.title;
+      document.getElementById('drawResultCardId').innerText = `ID: ${card.id}`;
+      
+      const catBadge = document.getElementById('drawResultCategoryBadge');
+      catBadge.innerText = card.category;
+      catBadge.className = `text-xs sm:text-sm font-black px-4 py-1.5 rounded-full border shadow-sm ${meta.theme.badge}`;
+
+      document.getElementById('drawResultTargetBadge').innerText = card.targetLeg ? `สายงาน ${card.targetLeg}` : "ส่วนตัว";
+      document.getElementById('drawResultIcon').className = `fa-solid ${meta.icon}`;
+      document.getElementById('drawResultIconBox').style.background = meta.theme.gradient;
+
+      document.getElementById('drawResultPv').innerText = (card.pv || 0).toLocaleString();
+      document.getElementById('drawResultPrice').innerText = `฿${(card.price || 0).toLocaleString()}`;
+      document.getElementById('drawResultActive').innerText = `฿${(card.activeIncome || 0).toLocaleString()}`;
+      document.getElementById('drawResultPassive').innerText = `฿${(card.passiveIncome || 0).toLocaleString()}`;
+
+      document.getElementById('drawResultCostBars').innerHTML = renderResourceMeterGroup(card.cost, true);
+      document.getElementById('drawResultRewardBars').innerHTML = renderResourceMeterGroup(card.reward, false);
+
+      document.getElementById('simulationPanel').classList.add('hidden');
+      checkCardAffordability(card);
+
+      document.getElementById('drawResultModal').classList.remove('hidden');
+    }
+
+    function formatDeltaText(diff) {
+      if (diff > 0) return `<span class="text-emerald-400 font-extrabold animate-pulse">(+${diff})</span>`;
+      if (diff < 0) return `<span class="text-rose-500 font-extrabold animate-pulse">(${diff})</span>`;
+      return `<span class="text-slate-400">(0)</span>`;
+    }
+
+    function checkCardAffordability(card) {
+      const player = getPlayerProfileData();
+      const pCash = player.cash || 0;
+      const pRes = player.resources || { heart: 0, time: 0, knowledge: 0 };
+      const cCost = card.cost || { heart: 0, time: 0, knowledge: 0 };
+      const cReward = card.reward || { heart: 0, time: 0, knowledge: 0 };
+      const cPrice = card.price || 0;
+
+      let shortageReasons = [];
+      if (pCash < cPrice) shortageReasons.push(`เงินสดขาดอีก ฿${(cPrice - pCash).toLocaleString()}`);
+      if (pRes.heart < (cCost.heart || 0)) shortageReasons.push(`สุขภาพขาดอีก ${(cCost.heart - pRes.heart)} แต้ม`);
+      if (pRes.time < (cCost.time || 0)) shortageReasons.push(`เวลาขาดอีก ${(cCost.time - pRes.time)} แต้ม`);
+      if (pRes.knowledge < (cCost.knowledge || 0)) shortageReasons.push(`ความรู้ขาดอีก ${(cCost.knowledge - pRes.knowledge)} แต้ม`);
+
+      const canAfford = shortageReasons.length === 0;
+
+      document.getElementById('simCurrentCash').innerText = `฿${pCash.toLocaleString()}`;
+      document.getElementById('simResultCash').innerText = `฿${Math.max(0, pCash - cPrice).toLocaleString()}`;
+
+      const resHeartAfter = Math.min(10, Math.max(0, pRes.heart - (cCost.heart || 0) + (cReward.heart || 0)));
+      const resTimeAfter = Math.min(10, Math.max(0, pRes.time - (cCost.time || 0) + (cReward.time || 0)));
+      const resKnowAfter = Math.min(10, Math.max(0, pRes.knowledge - (cCost.knowledge || 0) + (cReward.knowledge || 0)));
+
+      const diffHeart = resHeartAfter - pRes.heart;
+      const diffTime = resTimeAfter - pRes.time;
+      const diffKnow = resKnowAfter - pRes.knowledge;
+
+      document.getElementById('simResHeart').innerHTML = `${pRes.heart} ➔ ${resHeartAfter} ${formatDeltaText(diffHeart)}`;
+      document.getElementById('simResTime').innerHTML = `${pRes.time} ➔ ${resTimeAfter} ${formatDeltaText(diffTime)}`;
+      document.getElementById('simResKnowledge').innerHTML = `${pRes.knowledge} ➔ ${resKnowAfter} ${formatDeltaText(diffKnow)}`;
+
+      const statusBadge = document.getElementById('simAffordStatusBadge');
+      const claimBtn = document.getElementById('claimCardBtn');
+      const warnBox = document.getElementById('insufficientWarningBox');
+      const warnText = document.getElementById('insufficientWarningText');
+
+      if (canAfford) {
+        statusBadge.innerText = "ทรัพยากรพอจ่าย";
+        statusBadge.className = "text-xs font-bold px-2.5 py-0.5 rounded-full bg-emerald-500 text-white";
+        claimBtn.disabled = false;
+        warnBox.classList.add('hidden');
+      } else {
+        statusBadge.innerText = "ทรัพยากรไม่พอ";
+        statusBadge.className = "text-xs font-bold px-2.5 py-0.5 rounded-full bg-rose-500 text-white";
+        claimBtn.disabled = true;
+        warnText.innerText = "ไม่สามารถรับการ์ดได้: " + shortageReasons.join(" / ");
+        warnBox.classList.remove('hidden');
+      }
+    }
+
+    function claimDrawnCard() {
+      if (!currentDrawnCard) return;
+      const card = currentDrawnCard;
+      const player = getPlayerProfileData();
+
+      const pCash = player.cash || 0;
+      const pRes = player.resources || { heart: 0, time: 0, knowledge: 0 };
+      const cCost = card.cost || { heart: 0, time: 0, knowledge: 0 };
+      const cReward = card.reward || { heart: 0, time: 0, knowledge: 0 };
+      const cPrice = card.price || 0;
+
+      if (pCash < cPrice || pRes.heart < (cCost.heart || 0) || pRes.time < (cCost.time || 0) || pRes.knowledge < (cCost.knowledge || 0)) {
+        showToast("ทรัพยากรไม่เพียงพอ ไม่สามารถรับการ์ดได้");
+        return;
+      }
+
+      player.cash = pCash - cPrice;
+      player.resources = {
+        heart: Math.min(10, Math.max(0, pRes.heart - (cCost.heart || 0) + (cReward.heart || 0))),
+        time: Math.min(10, Math.max(0, pRes.time - (cCost.time || 0) + (cReward.time || 0))),
+        knowledge: Math.min(10, Math.max(0, pRes.knowledge - (cCost.knowledge || 0) + (cReward.knowledge || 0)))
+      };
+
+      if (card.targetLeg) {
+        const targetLegObj = player.legs.find(l => l.id === card.targetLeg);
+        if (targetLegObj) {
+          targetLegObj.pv = (targetLegObj.pv || 0) + (card.pv || 0);
+        }
+      } else {
+        player.personalPv = (player.personalPv || 0) + (card.pv || 0);
+      }
+
+      player.activeIncome = (player.activeIncome || 0) + (card.activeIncome || 0);
+      player.passiveIncome = (player.passiveIncome || 0) + (card.passiveIncome || 0);
+
+      savePlayerProfileData(player);
+      closeDrawResultModal();
+      showToast(`รับการ์ด "${card.title}" เรียบร้อย! อัปเดตสถิติแล้ว 🚀`);
+      confetti({ particleCount: 70, spread: 80, origin: { y: 0.6 } });
+    }
+
+    function closeDrawResultModal() {
+      document.getElementById('drawResultModal').classList.add('hidden');
+      currentDrawnCard = null;
+    }
+
+    function viewCardDetailFromHistory(cardId) {
+      const card = items.find(i => i.id === cardId);
+      if (!card) {
+        showToast("ไม่พบข้อมูลการ์ดนี้ในคลังแล้ว (อาจถูกลบออกไป)");
+        return;
+      }
+      showDrawResultModal(card);
+    }
+
+    function renderHistoryList() {
+      const container = document.getElementById('historyListContainer');
+      if (!container) return;
+      if (historyLog.length === 0) {
+        container.innerHTML = `<li class="p-6 text-center text-sm text-slate-400">ยังไม่มีประวัติการสุ่มข้อมูล</li>`;
+        return;
+      }
+      container.innerHTML = historyLog.map(h => {
+        const cardIdDisplay = h.cardId || '-';
+        return `
+          <li class="p-4 flex items-center justify-between text-xs sm:text-sm hover:bg-slate-50 dark:hover:bg-slate-700/30 transition">
+            <div class="space-y-1">
+              <div class="flex items-center gap-2.5">
+                <button onclick="viewCardDetailFromHistory('${cardIdDisplay}')" class="font-mono text-xs sm:text-sm font-black px-2.5 py-0.5 rounded-lg bg-indigo-50 dark:bg-indigo-950/60 text-indigo-500 border border-indigo-200 dark:border-indigo-800 hover:scale-105 transition shadow-2xs" title="คลิกเพื่อดูรายละเอียดการ์ด">
+                  ${escapeHTML(cardIdDisplay)}
+                </button>
+                <span class="font-black text-slate-800 dark:text-white text-sm sm:text-base leading-snug break-words whitespace-normal">${escapeHTML(h.cardTitle)}</span>
+              </div>
+              <span class="text-xs text-slate-400 font-mono block pl-0.5">${new Date(h.timestamp).toLocaleTimeString('th-TH')}</span>
+            </div>
+            <span class="px-3 py-1 rounded-full text-xs sm:text-sm font-bold border ${getCategoryMeta(h.category).theme.badge}">${escapeHTML(h.category)}</span>
+          </li>
+        `;
+      }).join('');
+    }
+
+    function clearHistoryLog() {
+      if (!confirm("ต้องการล้างประวัติการสุ่มทั้งหมดใช่หรือไม่?")) return;
+      historyLog = [];
+      saveLocalCache();
+      renderHistoryList();
+      showToast("ล้างประวัติเรียบร้อยแล้ว");
+    }
+
+    function openAddEditModal(id = null) {
+      renderCategoryDropdowns();
+      const modal = document.getElementById('cardModal');
+      const title = document.getElementById('cardModalTitle');
+      
+      if (id) {
+        const item = items.find(i => i.id === id);
+        if (!item) return;
+        title.innerHTML = `<i class="fa-solid fa-pen-to-square text-cyan-400 text-xl"></i><span>แก้ไขข้อมูลการ์ด (${item.id})</span>`;
+        document.getElementById('cardEditId').value = item.id;
+        document.getElementById('cardTitleInput').value = item.title;
+        document.getElementById('cardCategorySelect').value = item.category;
+        document.getElementById('cardTargetSelect').value = item.targetLeg || "personal";
+        document.getElementById('cardPvInput').value = item.pv || 0;
+        document.getElementById('cardPriceInput').value = item.price || 0;
+        document.getElementById('cardActiveInput').value = item.activeIncome || 0;
+        document.getElementById('cardPassiveInput').value = item.passiveIncome || 0;
+
+        document.getElementById('costHeart').value = item.cost?.heart || 0;
+        document.getElementById('costTime').value = item.cost?.time || 0;
+        document.getElementById('costKnowledge').value = item.cost?.knowledge || 0;
+
+        document.getElementById('rewardHeart').value = item.reward?.heart || 0;
+        document.getElementById('rewardTime').value = item.reward?.time || 0;
+        document.getElementById('rewardKnowledge').value = item.reward?.knowledge || 0;
+      } else {
+        title.innerHTML = `<i class="fa-solid fa-plus-circle text-rose-500 text-xl"></i><span>สร้างการ์ดใหม่</span>`;
+        document.getElementById('cardEditId').value = "";
+        document.getElementById('cardTitleInput').value = "";
+        document.getElementById('cardCategorySelect').value = categories[0]?.name || "ทั่วไป";
+        document.getElementById('cardTargetSelect').value = "personal";
+        document.getElementById('cardPvInput').value = 0;
+        document.getElementById('cardPriceInput').value = 0;
+        document.getElementById('cardActiveInput').value = 0;
+        document.getElementById('cardPassiveInput').value = 0;
+
+        document.getElementById('costHeart').value = 0;
+        document.getElementById('costTime').value = 0;
+        document.getElementById('costKnowledge').value = 0;
+
+        document.getElementById('rewardHeart').value = 0;
+        document.getElementById('rewardTime').value = 0;
+        document.getElementById('rewardKnowledge').value = 0;
+      }
+      modal.classList.remove('hidden');
+    }
+
+    function closeCardModal() {
+      document.getElementById('cardModal').classList.add('hidden');
+    }
+
+    async function handleSaveCard(e) {
+      e.preventDefault();
+      const id = document.getElementById('cardEditId').value;
+      const title = document.getElementById('cardTitleInput').value.trim();
+      const category = document.getElementById('cardCategorySelect').value;
+      const targetVal = document.getElementById('cardTargetSelect').value;
+      const pv = parseFloat(document.getElementById('cardPvInput').value) || 0;
+      const price = parseFloat(document.getElementById('cardPriceInput').value) || 0;
+      const activeIncome = parseFloat(document.getElementById('cardActiveInput').value) || 0;
+      const passiveIncome = parseFloat(document.getElementById('cardPassiveInput').value) || 0;
+
+      const cost = {
+        heart: parseInt(document.getElementById('costHeart').value) || 0,
+        time: parseInt(document.getElementById('costTime').value) || 0,
+        knowledge: parseInt(document.getElementById('costKnowledge').value) || 0
+      };
+
+      const reward = {
+        heart: parseInt(document.getElementById('rewardHeart').value) || 0,
+        time: parseInt(document.getElementById('rewardTime').value) || 0,
+        knowledge: parseInt(document.getElementById('rewardKnowledge').value) || 0
+      };
+
+      const targetType = (targetVal === 'personal') ? 'personal' : 'leg';
+      const targetLeg = (targetVal === 'personal') ? '' : targetVal;
+
+      const cardObj = {
+        id: id || `c-${Date.now().toString().slice(-6)}`,
+        title, category, targetType, targetLeg, pv, price, activeIncome, passiveIncome,
+        cost, reward, syncStatus: "synced", updatedAt: Date.now()
+      };
+
+      if (id) {
+        const index = items.findIndex(i => i.id === id);
+        if (index !== -1) items[index] = cardObj;
+      } else {
+        items.unshift(cardObj);
+      }
+
+      currentDbVersionName = getNextSemVer(currentDbVersionName, "patch");
+      saveLocalCache();
+      renderAllUI();
+      resetDrawPool();
+      closeCardModal();
+
+      showSyncBanner("กำลังซิงก์การ์ดขึ้น Cloud", `กำลังบันทึก "${cardObj.title}" (${currentDbVersionName})...`, "ขั้นตอน: ปรับเวอร์ชัน Patch", 40);
+
+      try {
+        const res = await fetch(GOOGLE_SHEET_API_URL, {
+          method: "POST",
+          headers: { "Content-Type": "text/plain;charset=utf-8" },
+          body: JSON.stringify({
+            action: "upsertItem",
+            item: cardObj,
+            timestamp: Date.now()
+          })
+        });
+
+        const result = await res.json();
+        if (result && result.status === "success") {
+          currentDbVersionName = result.dbVersionName;
+          saveLocalCache();
+          renderAllUI();
+          updateSyncBannerProgress(100, `บันทึกเวอร์ชัน ${currentDbVersionName} เรียบร้อย!`, "เสร็จสิ้น");
+          setTimeout(hideSyncBanner, 500);
+          showToast(`บันทึก "${cardObj.title}" (${currentDbVersionName}) สำเร็จ ☁️`);
+        } else {
+          throw new Error(result?.message || "บันทึกไม่สำเร็จ");
+        }
+      } catch (err) {
+        setSyncBannerError(err.message);
+      }
+    }
+
+    async function cloneItem(id) {
+      const original = items.find(i => i.id === id);
+      if (!original) return;
+
+      const clonedCard = {
+        ...JSON.parse(JSON.stringify(original)),
+        id: `c-${Date.now().toString().slice(-6)}`,
+        title: `${original.title} (Copy)`,
+        syncStatus: "synced",
+        updatedAt: Date.now()
+      };
+
+      const originalIndex = items.findIndex(i => i.id === id);
+      items.splice(originalIndex + 1, 0, clonedCard);
+
+      currentDbVersionName = getNextSemVer(currentDbVersionName, "patch");
+      saveLocalCache();
+      renderAllUI();
+      resetDrawPool();
+
+      showSyncBanner("กำลังโคลนการ์ดขึ้น Cloud", `กำลังบันทึก "${clonedCard.title}" (${currentDbVersionName})...`, "ขั้นตอน: ปรับเวอร์ชัน Patch", 40);
+      try {
+        const res = await fetch(GOOGLE_SHEET_API_URL, {
+          method: "POST",
+          headers: { "Content-Type": "text/plain;charset=utf-8" },
+          body: JSON.stringify({
+            action: "upsertItem",
+            item: clonedCard,
+            timestamp: Date.now()
+          })
+        });
+        const result = await res.json();
+        if (result && result.status === "success") {
+          currentDbVersionName = result.dbVersionName;
+          saveLocalCache();
+          renderAllUI();
+          updateSyncBannerProgress(100, `โคลนการ์ดสำเร็จ (${currentDbVersionName})!`, "เสร็จสิ้น");
+          setTimeout(hideSyncBanner, 500);
+          showToast(`โคลน "${clonedCard.title}" เรียบร้อยแล้ว 📋`);
+        }
+      } catch (err) {
+        setSyncBannerError(err.message);
+      }
+    }
+
+    async function confirmDeleteItem(id) {
+      const item = items.find(i => i.id === id);
+      if (!item) return;
+      if (!confirm(`คุณต้องการลบการ์ด "${item.title}" ใช่หรือไม่?`)) return;
+
+      items = items.filter(i => i.id !== id);
+      currentDbVersionName = getNextSemVer(currentDbVersionName, "patch");
+      saveLocalCache();
+      renderAllUI();
+      resetDrawPool();
+
+      showSyncBanner("กำลังลบการ์ดบน Cloud", `กำลังลบ "${item.title}"...`, "ขั้นตอน: ปรับเวอร์ชัน Patch", 40);
+      try {
+        const res = await fetch(GOOGLE_SHEET_API_URL, {
+          method: "POST",
+          headers: { "Content-Type": "text/plain;charset=utf-8" },
+          body: JSON.stringify({
+            action: "deleteItem",
+            id: id,
+            timestamp: Date.now()
+          })
+        });
+        const result = await res.json();
+        if (result && result.status === "success") {
+          currentDbVersionName = result.dbVersionName;
+          saveLocalCache();
+          renderAllUI();
+          updateSyncBannerProgress(100, `ลบข้อมูลสำเร็จ (${currentDbVersionName})!`, "เสร็จสิ้น");
+          setTimeout(hideSyncBanner, 500);
+          showToast('ลบการ์ดออกจาก Cloud สำเร็จ');
+        }
+      } catch (err) {
+        setSyncBannerError(err.message);
+      }
+    }
+
+    async function pushSnapshotToCloudById(snapId) {
+      let targetSnap = dbSnapshots.find(s => s.id === snapId);
+      if (!targetSnap || snapId === 'cloud_active') {
+        targetSnap = {
+          name: `Database Master (${items.length} ใบ)`,
+          version: currentDbVersionName,
+          items: items,
+          categories: categories
+        };
+      }
+
+      const defaultVer = getNextSemVer(currentDbVersionName, "minor");
+      const inputVersion = prompt("ระบุชื่อ Version สำหรับอัปโหลดขึ้น Google Sheets:", defaultVer);
+      if (!inputVersion || !inputVersion.trim()) return;
+
+      const inputTitle = prompt("ระบุชื่อฐานข้อมูลชุดนี้:", targetSnap.name || `Database Master (${items.length} ใบ)`);
+      if (!inputTitle || !inputTitle.trim()) return;
+
+      const newVerName = inputVersion.trim();
+      const newTitleName = inputTitle.trim();
+
+      closeSettingModal();
+      showSyncBanner(`กำลังอัปโหลด ${newVerName} ขึ้น Cloud`, `กำลังตรวจสอบ Conflict Guard...`, "ขั้นตอน 1/3: ตรวจสอบความถูกต้อง", 20);
+
+      try {
+        const payload = {
+          action: 'saveData',
+          saveSnapshot: true,
+          items: items.map(it => ({ ...it, syncStatus: "synced" })),
+          categories: categories,
+          historyLog: historyLog.slice(0, 20),
+          dbVersionName: newVerName,
+          dbTitle: newTitleName,
+          timestamp: Date.now()
+        };
+
+        updateSyncBannerProgress(55, "กำลังส่งข้อมูลไปยัง Google Sheets...", "ขั้นตอน 2/3: ส่งข้อมูลขึ้น Cloud");
+
+        const response = await fetch(GOOGLE_SHEET_API_URL, {
+          method: 'POST',
+          headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+          body: JSON.stringify(payload)
+        });
+
+        const result = await response.json();
+
+        if (result && result.status === 'conflict') {
+          setSyncBannerError(result.message);
+          alert(result.message);
+          return;
+        }
+
+        if (result && result.status === 'success') {
+          currentDbVersionName = result.dbVersionName;
+          saveLocalCache();
+          renderAllUI();
+          updateSyncBannerProgress(85, "กำลังตรวจสอบผลลัพธ์และยืนยันข้อมูลจากชีต...", "ขั้นตอน 3/3: ดึงข้อมูลยืนยันผล");
+          await fetchFromGoogleSheets(false);
+
+          updateSyncBannerProgress(100, `บันทึกเวอร์ชัน ${newVerName} สำเร็จ 100%!`, "เสร็จสมบูรณ์");
+          confetti({ particleCount: 50, spread: 60, origin: { y: 0.6 } });
+          showToast(`อัปโหลด "${newTitleName}" (${newVerName}) ขึ้นชีตสำเร็จ ☁️`);
+          setTimeout(hideSyncBanner, 1000);
+        } else {
+          throw new Error(result?.message || 'เซิร์ฟเวอร์ปฏิเสธการบันทึก');
+        }
+
+      } catch (err) {
+        setSyncBannerError(`ผิดพลาด: ${err.message}`);
+        showToast('อัปโหลดไม่สำเร็จ กรุณาดูข้อความแจ้งเตือน');
+      }
+    }
+
+    async function fetchFromGoogleSheets(isManual = false) {
+      if (!GOOGLE_SHEET_API_URL || GOOGLE_SHEET_API_URL.includes("PLACEHOLDER")) return;
+      const syncIcon = document.getElementById('syncIcon');
+      if (syncIcon) syncIcon.classList.add('animate-spin');
+
+      if (isManual) {
+        showSyncBanner("กำลังซิงก์ข้อมูลกับ Cloud", "กำลังเชื่อมต่อ Google Sheets...", "ขั้นตอน 1/2: กำลังดาวน์โหลด", 35);
+      }
+
+      try {
+        const freshUrl = `${GOOGLE_SHEET_API_URL}${GOOGLE_SHEET_API_URL.includes('?') ? '&' : '?'}nocache=${Date.now()}`;
+        const res = await fetch(freshUrl, { method: 'GET', cache: 'no-store' });
+        const data = await res.json();
+
+        if (isManual) {
+          updateSyncBannerProgress(75, "ประมวลผลข้อมูลและอัปเดตแคชในเครื่อง...", "ขั้นตอน 2/2: จัดเรียงข้อมูล");
+        }
+
+        if (data && Array.isArray(data.items)) {
+          currentDbVersionName = data.dbVersionName || "v8.0.0";
+          items = data.items.map(it => ({ ...it, syncStatus: "synced" }));
+          if (Array.isArray(data.categories)) categories = data.categories;
+
+          dbSnapshots = Array.isArray(data.snapshotsHistory) ? data.snapshotsHistory : [];
+          const nowTime = data.timestamp || Date.now();
+          dbSnapshots.unshift({
+            id: "cloud_active",
+            name: data.dbTitle || "Google Sheets (Cloud Master)",
+            version: currentDbVersionName,
+            timestamp: nowTime + 1000,
+            dateStr: data.lastUpdated || new Date(nowTime).toLocaleString('th-TH'),
+            count: items.length
+          });
+
+          isCloudSyncedSession = true;
+          saveLocalCache();
+          renderAllUI();
+          resetDrawPool();
+          renderDbSnapshotsTable();
+
+          document.getElementById('cloudSyncStatus').innerHTML = `<i class="fa-solid fa-circle text-[9px] text-emerald-400"></i> ออนไลน์ (${currentDbVersionName} | ${items.length} ใบ)`;
+          
+          if (isManual) {
+            updateSyncBannerProgress(100, "ซิงก์ข้อมูลสมบูรณ์แล้ว!", "เสร็จสิ้น");
+            setTimeout(hideSyncBanner, 600);
+            showToast(`ซิงก์สำเร็จ! (${items.length} รายการ) ☁️`);
+          }
+        }
+      } catch (err) {
+        document.getElementById('cloudSyncStatus').innerHTML = `<i class="fa-solid fa-circle text-[9px] text-rose-500"></i> ออฟไลน์`;
+        if (isManual) setSyncBannerError(`ไม่สามารถดึงข้อมูลได้: ${err.message}`);
+      } finally {
+        if (syncIcon) syncIcon.classList.remove('animate-spin');
+      }
+    }
+
+    async function forceSyncFromCloud() {
+      if (!confirm("ต้องการล้างแคชในเครื่องนี้ แล้วดึงข้อมูลล่าสุดจาก Cloud มาแทนที่ 100% ใช่หรือไม่?")) return;
+      localStorage.removeItem('rnd_cache_items');
+      localStorage.removeItem('rnd_cache_categories');
+      await fetchFromGoogleSheets(true);
+    }
+
+    function renderDbSnapshotsTable() {
+      const tbody = document.getElementById('databaseListTableBody');
+      const countEl = document.getElementById('dbSnapTotalCount');
+      if (!tbody) return;
+      if (countEl) countEl.innerText = dbSnapshots.length;
+
+      tbody.innerHTML = dbSnapshots.map(s => {
+        const isActive = s.id === 'cloud_active';
+        return `
+          <tr class="hover:bg-slate-50 dark:hover:bg-slate-800/80">
+            <td class="py-3 px-3 font-bold">${escapeHTML(s.name)}</td>
+            <td class="py-3 px-2 text-center font-mono font-bold text-indigo-400">${escapeHTML(s.version)}</td>
+            <td class="py-3 px-2 text-center text-xs text-slate-400">${escapeHTML(s.dateStr || '-')}</td>
+            <td class="py-3 px-2 text-right font-mono font-bold">${(s.count || 0).toLocaleString()}</td>
+            <td class="py-3 px-3 text-center whitespace-nowrap">
+              ${isActive ? '<span class="text-emerald-400 font-black">ใช้อยู่</span>' : `<button onclick="pushSnapshotToCloudById('${s.id}')" class="px-2.5 py-1 rounded-xl bg-blue-600 text-white font-black text-xs shadow">Push</button>`}
+            </td>
+          </tr>
+        `;
+      }).join('');
+    }
+
+    function openSettingModal() { document.getElementById('settingModal').classList.remove('hidden'); }
+    function closeSettingModal() { document.getElementById('settingModal').classList.add('hidden'); }
+    function switchSettingTab(tab) {
+      document.getElementById('settingTabContentGeneral').classList.toggle('hidden', tab !== 'general');
+      document.getElementById('settingTabContentDatabase').classList.toggle('hidden', tab !== 'database');
+    }
+    function openCategoryModal() {
+      renderCategoryModalList();
+      document.getElementById('categoryModal').classList.remove('hidden');
+    }
+    function closeCategoryModal() { document.getElementById('categoryModal').classList.add('hidden'); }
+
+    function renderCategoryModalList() {
+      const container = document.getElementById('categoryListContainer');
+      if (!container) return;
+
+      container.innerHTML = categories.map((cat, idx) => {
+        const count = items.filter(i => i.category === cat.name).length;
+        const meta = getCategoryMeta(cat.name);
+        const isFirst = idx === 0;
+        const isLast = idx === categories.length - 1;
+
+        return `
+          <div class="py-3 flex items-center justify-between gap-2 hover:bg-slate-50 dark:hover:bg-slate-700/40 px-3 rounded-2xl transition">
+            <div class="flex items-center gap-3 flex-1 min-w-0">
+              <button type="button" onclick="openColorPicker(${idx})" class="w-8 h-8 rounded-xl shadow border border-slate-300 dark:border-slate-600 hover:scale-105 transition shrink-0" style="background: ${meta.theme.gradient};"></button>
+              <button type="button" onclick="openIconPicker(${idx})" class="w-9 h-9 rounded-xl bg-slate-100 dark:bg-slate-700 border border-slate-200 dark:border-slate-600 flex items-center justify-center text-base text-slate-700 dark:text-slate-200 hover:scale-105 transition shrink-0">
+                <i class="fa-solid ${escapeHTML(meta.icon)}"></i>
+              </button>
+              <span class="text-sm font-black text-slate-800 dark:text-white truncate">${escapeHTML(cat.name)}</span>
+              <span class="text-xs text-slate-400 font-mono font-bold">(${count})</span>
+            </div>
+
+            <div class="flex items-center gap-1.5 shrink-0">
+              <button type="button" onclick="moveCategoryOrder(${idx}, -1)" ${isFirst ? 'disabled class="p-1.5 text-slate-300 dark:text-slate-600 cursor-not-allowed"' : 'class="p-1.5 text-slate-400 hover:text-rose-500"'}>
+                <i class="fa-solid fa-arrow-up text-sm"></i>
+              </button>
+              <button type="button" onclick="moveCategoryOrder(${idx}, 1)" ${isLast ? 'disabled class="p-1.5 text-slate-300 dark:text-slate-600 cursor-not-allowed"' : 'class="p-1.5 text-slate-400 hover:text-rose-500"'}>
+                <i class="fa-solid fa-arrow-down text-sm"></i>
+              </button>
+              <button type="button" onclick="promptRenameCategory(${idx})" class="p-1.5 text-slate-400 hover:text-cyan-400 transition">
+                <i class="fa-solid fa-pen text-sm"></i>
+              </button>
+              <button type="button" onclick="deleteCategory(${idx})" class="p-1.5 text-slate-400 hover:text-rose-500 transition">
+                <i class="fa-solid fa-trash-can text-sm"></i>
+              </button>
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    function promptRenameCategory(index) {
+      const oldName = categories[index].name;
+      const newName = prompt('ระบุชื่อหมวดหมู่ใหม่:', oldName);
+      if (!newName || !newName.trim() || newName.trim() === oldName) return;
+
+      const cleanNew = newName.trim();
+      if (categories.some((c, i) => i !== index && c.name === cleanNew)) {
+        showToast('มีหมวดหมู่นี้อยู่แล้ว');
+        return;
+      }
+
+      categories[index].name = cleanNew;
+      items.forEach(it => { if (it.category === oldName) it.category = cleanNew; });
+      saveLocalCache();
+      renderAllUI();
+      renderCategoryModalList();
+      showToast(`เปลี่ยนชื่อเป็น "${cleanNew}" เรียบร้อยแล้ว`);
+    }
+
+    function moveCategoryOrder(index, direction) {
+      const targetIndex = index + direction;
+      if (targetIndex < 0 || targetIndex >= categories.length) return;
+      const temp = categories[index];
+      categories[index] = categories[targetIndex];
+      categories[targetIndex] = temp;
+      saveLocalCache();
+      renderAllUI();
+      renderCategoryModalList();
+    }
+
+    function handleAddCategory() {
+      const val = document.getElementById('newCategoryInput').value.trim();
+      if (!val) return;
+      categories.push({ name: val, icon: newCategorySelectedIcon, color: newCategorySelectedColor });
+      document.getElementById('newCategoryInput').value = '';
+      saveLocalCache();
+      renderAllUI();
+      renderCategoryModalList();
+    }
+
+    function deleteCategory(idx) {
+      if (categories.length <= 1) {
+        showToast('ต้องมีหมวดหมู่อย่างน้อย 1 หมวด');
+        return;
+      }
+      if (!confirm(`คุณต้องการลบหมวดหมู่ "${categories[idx].name}" ใช่หรือไม่?`)) return;
+      const oldName = categories[idx].name;
+      categories.splice(idx, 1);
+      const fallback = categories[0].name;
+      items.forEach(it => { if (it.category === oldName) it.category = fallback; });
+      saveLocalCache();
+      renderAllUI();
+      renderCategoryModalList();
+      showToast('ลบหมวดหมู่เรียบร้อยแล้ว');
+    }
+
+    function exportDatabaseToCSV() {
+      if (!items || items.length === 0) {
+        showToast('ไม่มีข้อมูลการ์ดในระบบสำหรับส่งออก');
+        return;
+      }
+      const headers = ["ID", "ชื่อการ์ด (Title)", "เป้าหมาย (Target)", "PV", "ราคา", "หมวดหมู่", "Active", "Passive"];
+      const rows = items.map(item => [
+        `"${item.id || ''}"`,
+        `"${(item.title || '').replace(/"/g, '""')}"`,
+        `"${item.targetLeg ? 'สายงาน ' + item.targetLeg : 'ส่วนตัว'}"`,
+        item.pv || 0,
+        item.price || 0,
+        `"${item.category || ''}"`,
+        item.activeIncome || 0,
+        item.passiveIncome || 0
+      ].join(","));
+
+      const csvContent = "\uFEFF" + [headers.join(","), ...rows].join("\r\n");
+      const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement("a");
+      link.setAttribute("href", url);
+      link.setAttribute("download", `Cards_Database_${currentDbVersionName}_${new Date().toISOString().slice(0, 10)}.csv`);
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      URL.revokeObjectURL(url);
+      showToast('ส่งออกไฟล์ CSV สำเร็จ 📊');
+    }
+
+    function exportDatabase() {
+      const dbPayload = {
+        app: "RandomDataCardHub",
+        version: "1.0",
+        dbVersionName: currentDbVersionName,
+        exportDate: new Date().toISOString(),
+        categories: categories,
+        items: items,
+        historyLog: historyLog
+      };
+
+      const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(dbPayload, null, 2));
+      const downloadAnchor = document.createElement('a');
+      downloadAnchor.setAttribute("href", dataStr);
+      downloadAnchor.setAttribute("download", `database_backup_${currentDbVersionName}_${new Date().toISOString().slice(0,10)}.json`);
+      document.body.appendChild(downloadAnchor);
+      downloadAnchor.click();
+      downloadAnchor.remove();
+      showToast('ส่งออกไฟล์สำรองฐานข้อมูลสำเร็จ 📥');
+    }
+
+    function triggerImportDatabase() {
+      document.getElementById('importFileInput').click();
+    }
+
+    function handleImportFile(event) {
+      const file = event.target.files[0];
+      if (!file) return;
+
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        try {
+          const importedData = JSON.parse(e.target.result);
+          if (!importedData || !Array.isArray(importedData.items)) {
+            showToast('รูปแบบไฟล์สำรองไม่ถูกต้อง');
+            return;
+          }
+
+          if (confirm(`พบข้อมูล ${importedData.items.length} รายการ ต้องการนำเข้าข้อมูลใช่หรือไม่?`)) {
+            items = importedData.items;
+            if (Array.isArray(importedData.categories) && importedData.categories.length > 0) {
+              categories = importedData.categories;
+            }
+            if (Array.isArray(importedData.historyLog)) {
+              historyLog = importedData.historyLog;
+            }
+            if (importedData.dbVersionName) {
+              currentDbVersionName = importedData.dbVersionName;
+            }
+
+            isCloudSyncedSession = true;
+            saveLocalCache();
+            renderAllUI();
+            resetDrawPool();
+            closeSettingModal();
+            showToast('นำเข้าฐานข้อมูลสำเร็จแล้ว! 📤✅');
+          }
+        } catch (err) {
+          showToast('ไม่สามารถอ่านไฟล์ JSON ได้');
+        }
+      };
+      reader.readAsText(file);
+      event.target.value = '';
+    }
+
+    function renderColorPickerGrid() {
+      const g = document.getElementById('colorPickerGrid');
+      if (!g) return;
+      g.innerHTML = Object.values(COLOR_PALETTES).map(p => `
+        <button onclick="selectColor('${p.id}')" class="w-full p-3 border rounded-2xl flex items-center gap-3.5 hover:scale-[1.01] transition">
+          <span class="w-7 h-7 rounded-full shadow-md" style="background: ${p.hex}"></span>
+          <span class="text-sm font-black">${p.name}</span>
+        </button>
+      `).join('');
+    }
+    function openColorPicker(idx) { colorPickerTargetIdx = idx; document.getElementById('colorPickerModal').classList.remove('hidden'); }
+    function closeColorPicker() { document.getElementById('colorPickerModal').classList.add('hidden'); }
+    function selectColor(id) {
+      if (colorPickerTargetIdx === -1) {
+        newCategorySelectedColor = id;
+        document.getElementById('newCatColorPill').style.backgroundColor = COLOR_PALETTES[id].hex;
+      } else {
+        categories[colorPickerTargetIdx].color = id;
+        saveLocalCache();
+        renderAllUI();
+        renderCategoryModalList();
+      }
+      closeColorPicker();
+    }
+
+    function renderIconPickerGrid() {
+      const g = document.getElementById('iconPickerGrid');
+      if (!g) return;
+      g.innerHTML = ICON_PRESETS.map(i => `<button onclick="selectIcon('${i}')" class="w-12 h-12 border rounded-2xl flex items-center justify-center text-xl text-slate-700 dark:text-slate-200 hover:scale-110 transition shadow-sm"><i class="fa-solid ${i}"></i></button>`).join('');
+    }
+    function openIconPicker(idx) { iconPickerTargetIdx = idx; document.getElementById('iconPickerModal').classList.remove('hidden'); }
+    function closeIconPicker() { document.getElementById('iconPickerModal').classList.add('hidden'); }
+    function selectIcon(icon) {
+      if (iconPickerTargetIdx === -1) {
+        newCategorySelectedIcon = icon;
+        document.getElementById('newCatIconPreview').className = `fa-solid ${icon}`;
+      } else {
+        categories[iconPickerTargetIdx].icon = icon;
+        saveLocalCache();
+        renderAllUI();
+        renderCategoryModalList();
+      }
+      closeIconPicker();
+    }
+
+    function switchTab(t) {
+      ['categories', 'draw', 'data', 'history'].forEach(v => {
+        const el = document.getElementById(`view-${v}`);
+        if (el) el.classList.toggle('hidden', v !== t);
+        
+        const mBtn = document.getElementById(`m-nav-${v}`);
+        if (mBtn) {
+          if (v === t) {
+            mBtn.className = "flex flex-col items-center gap-1 text-rose-500 scale-105 transition";
+          } else {
+            mBtn.className = "flex flex-col items-center gap-1 text-slate-400";
+          }
+        }
+      });
+      if (t === 'draw') {
+        updateStageCategoryUI();
+      }
+    }
+    function initTheme() {
+      const isDark = localStorage.getItem('rnd_theme_dark') !== 'false';
+      document.documentElement.classList.toggle('dark', isDark);
+    }
+    function toggleTheme() {
+      const isDark = document.documentElement.classList.toggle('dark');
+      localStorage.setItem('rnd_theme_dark', isDark ? 'true' : 'false');
+    }
+    function showToast(msg) {
+      const t = document.getElementById('toastNotification');
+      document.getElementById('toastMessage').innerText = msg;
+      t.classList.remove('translate-x-full', 'opacity-0');
+      setTimeout(() => t.classList.add('translate-x-full', 'opacity-0'), 3000);
+    }
+    function escapeHTML(str) { return String(str || '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;'); }
+  </script>
+</body>
+</html>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Prompt:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
