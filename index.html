@@ -183,13 +183,12 @@
     </div>
   </header>
 
-  <!-- TOP BAR SECTION: แถบ HUD ทางซ้าย + ป้ายหมวดหมู่แบบกะทัดรัดย้ายไปอยู่มุมขวาบนใต้ปุ่ม Setting -->
+  <!-- TOP BAR SECTION -->
   <div class="max-w-7xl w-full mx-auto px-3 sm:px-6 lg:px-8 pt-3">
     <div class="flex flex-col lg:flex-row items-start justify-between gap-3">
       
-      <!-- แถบแสดงข้อมูลอาชีพ & ทรัพยากรตัวละคร (Player Career HUD Widget) ทางซ้ายบนใต้ Logo -->
+      <!-- Player Career HUD Widget -->
       <div id="playerHudWidget" class="w-full lg:max-w-xl p-3.5 sm:p-4 rounded-3xl bg-white/95 dark:bg-slate-800/95 border border-slate-200 dark:border-slate-700 shadow-md card-vibrant-glow space-y-2.5 animate-pop-in">
-        
         <div class="flex items-center justify-between gap-3 border-b border-slate-100 dark:border-slate-700/80 pb-2">
           <div class="flex items-center gap-2.5 min-w-0">
             <div id="hudAvatarWrapper" class="w-10 h-10 sm:w-11 sm:h-11 rounded-2xl bg-gradient-to-tr from-rose-500 via-amber-500 to-emerald-400 text-white flex items-center justify-center text-lg sm:text-xl shadow-md shrink-0 overflow-hidden icon-vibrant">
@@ -255,10 +254,9 @@
             </div>
           </div>
         </div>
-
       </div>
 
-      <!-- ป้ายหมวดหมู่การ์ดกิจกรรม ย้ายไปอยู่มุมขวาบนใต้กลุ่มปุ่ม Setting -->
+      <!-- ป้ายหมวดหมู่การ์ดกิจกรรม -->
       <div class="w-full lg:w-auto flex items-center justify-between lg:justify-end gap-2.5 p-2.5 sm:px-4 sm:py-2.5 rounded-2xl bg-white/90 dark:bg-slate-800/90 border border-slate-200 dark:border-slate-700 shadow-sm animate-pop-in shrink-0 self-stretch lg:self-start">
         <div class="flex items-center gap-2">
           <div class="w-8 h-8 rounded-xl bg-rose-500/10 text-rose-500 flex items-center justify-center text-sm shrink-0">
@@ -298,9 +296,7 @@
 
       <div class="relative max-w-2xl mx-auto">
         <div class="relative bg-white dark:bg-slate-800/90 rounded-[2.5rem] border border-slate-200 dark:border-slate-700 card-vibrant-glow p-8 sm:p-14 text-center shadow-2xl space-y-8 overflow-hidden">
-          
           <img src="logo.png" alt="Watermark" class="app-logo-img absolute -right-12 -bottom-12 w-52 h-52 object-contain opacity-5 dark:opacity-10 pointer-events-none select-none animate-spin-slow">
-
           <div class="space-y-4 relative z-10">
             <div class="inline-flex items-center justify-center p-5 rounded-3xl shadow-xl text-4xl sm:text-5xl text-white icon-vibrant transform hover:scale-110 transition duration-300" id="stageCategoryIconWrapper">
               <i id="stageCategoryIcon" class="fa-solid fa-dice-d20"></i>
@@ -356,10 +352,8 @@
         </div>
       </div>
 
-      <!-- โหมดการ์ด -->
       <div id="cardsGridContainer" class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-3.5 sm:gap-4.5"></div>
 
-      <!-- โหมดตารางกระชับ -->
       <div id="tableCompactContainer" class="hidden bg-white dark:bg-slate-800/90 border border-slate-200 dark:border-slate-700 rounded-3xl shadow-sm overflow-hidden">
         <div class="overflow-x-auto">
           <table class="w-full text-left text-xs sm:text-sm border-collapse">
@@ -420,121 +414,122 @@
     </a>
   </nav>
 
-  <!-- MODAL สุ่มการ์ด (อัปเดตระบบจำลองผลให้เปรียบเทียบข้อมูลปัจจุบันกับหลังรับการ์ด) -->
-  <div id="drawResultModal" class="hidden fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-md flex items-center justify-center p-3 sm:p-4 overflow-y-auto">
-    <div class="relative max-w-sm sm:max-w-md w-full bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-[2.5rem] p-5 sm:p-7 text-center shadow-2xl animate-card-flip space-y-4 my-auto">
+  <!-- MODAL ผลการสุ่มการ์ด (ปรับขนาดเต็มจอสูงสุด max-w-4xl w-[95vw] h-[90vh] และจัด Layout ชัดเจน ตัวอักษรไม่ต่ำกว่า 20px ในจุดสำคัญ) -->
+  <div id="drawResultModal" class="hidden fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-md flex items-center justify-center p-2 sm:p-4 overflow-y-auto">
+    <div class="relative max-w-4xl w-[95vw] h-[90vh] sm:h-[88vh] bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-[2.5rem] p-5 sm:p-8 shadow-2xl animate-card-flip flex flex-col justify-between my-auto overflow-y-auto">
       
-      <div class="flex items-center justify-between border-b pb-3 border-slate-100 dark:border-slate-700 gap-2">
-        <div class="flex items-center gap-2">
-          <span id="drawResultCategoryBadge" class="text-xs sm:text-sm font-black px-3.5 py-1 rounded-full border shadow-sm">หมวดหมู่</span>
-          <span id="drawResultTargetBadge" class="text-xs sm:text-sm font-bold text-indigo-500 bg-indigo-50 dark:bg-indigo-950/60 px-2.5 py-0.5 rounded-xl border border-indigo-200 dark:border-indigo-800">ส่วนตัว</span>
-        </div>
-        <button type="button" id="toggleSimulationBtn" onclick="toggleSimulationPanel()" title="จำลองผลกระทบเมื่อรับการ์ด" class="px-2.5 py-1 rounded-xl text-xs font-black bg-purple-50 dark:bg-purple-950/60 text-purple-600 dark:text-purple-300 border border-purple-200 dark:border-purple-800 flex items-center gap-1.5 shadow-2xs hover:scale-105 active:scale-95 transition">
-          <i class="fa-solid fa-calculator text-amber-500"></i>
-          <span>จำลองผล</span>
-        </button>
-      </div>
-
-      <!-- Simulation Panel: แสดงสถานะปัจจุบันเทียบกับหลังรับการ์ด -->
-      <div id="simulationPanel" class="hidden bg-slate-900/95 text-white p-3.5 rounded-2xl border border-purple-500/40 text-left space-y-2.5 animate-pop-in font-mono">
-        <div class="flex items-center justify-between border-b border-slate-700 pb-1.5">
-          <span class="text-xs font-black text-amber-400 flex items-center gap-1.5">
-            <i class="fa-solid fa-chart-line"></i> จำลองสถานะหลังรับการ์ด
-          </span>
-          <span id="simAffordStatusBadge" class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-emerald-500 text-white">พอจ่าย</span>
+      <!-- ส่วนหัว Modal -->
+      <div>
+        <div class="flex items-center justify-between border-b pb-3.5 border-slate-200 dark:border-slate-800 gap-2">
+          <div class="flex items-center gap-2.5">
+            <span id="drawResultCategoryBadge" class="text-sm sm:text-base font-black px-4 py-1 rounded-full border shadow-sm">หมวดหมู่</span>
+            <span id="drawResultTargetBadge" class="text-xs sm:text-sm font-bold text-indigo-500 bg-indigo-50 dark:bg-indigo-950/60 px-3 py-1 rounded-xl border border-indigo-200 dark:border-indigo-800">ส่วนตัว</span>
+          </div>
+          <button type="button" id="toggleSimulationBtn" onclick="toggleSimulationPanel()" class="px-3.5 py-1.5 rounded-xl text-xs sm:text-sm font-black bg-purple-50 dark:bg-purple-950/60 text-purple-600 dark:text-purple-300 border border-purple-200 dark:border-purple-800 flex items-center gap-2 shadow-sm hover:scale-105 active:scale-95 transition">
+            <i class="fa-solid fa-calculator text-amber-500 text-sm"></i>
+            <span>จำลองผล</span>
+          </button>
         </div>
 
-        <div class="space-y-2 text-xs">
-          <!-- ข้อมูลเงินสด -->
-          <div class="bg-slate-800/80 p-2.5 rounded-xl border border-slate-700 space-y-1">
-            <span class="text-[10px] font-sans font-black text-slate-400 block">เงินสด (Cash)</span>
-            <div class="flex justify-between items-center text-xs">
-              <span>ปัจจุบัน: <strong class="text-amber-400" id="simCurrentCash">฿0</strong></span>
-              <span><i class="fa-solid fa-arrow-right text-slate-500 mx-1"></i> หลังรับ: <strong class="text-emerald-400" id="simResultCash">฿0</strong></span>
-            </div>
+        <!-- Simulation Panel: Layout ชัดเจน เกจพลังกระพริบเขียว/แดง -->
+        <div id="simulationPanel" class="hidden mt-4 bg-slate-900/95 text-white p-4 sm:p-5 rounded-3xl border border-purple-500/40 text-left space-y-3 animate-pop-in font-mono shadow-xl">
+          <div class="flex items-center justify-between border-b border-slate-800 pb-2">
+            <span class="text-xs sm:text-sm font-black text-amber-400 flex items-center gap-2">
+              <i class="fa-solid fa-chart-line text-base"></i> จำลองสถานะเปรียบเทียบหลังรับการ์ด
+            </span>
+            <span id="simAffordStatusBadge" class="text-xs font-bold px-2.5 py-0.5 rounded-full bg-emerald-500 text-white">พอจ่าย</span>
           </div>
 
-          <!-- ข้อมูลทรัพยากร -->
-          <div class="bg-slate-800/80 p-2.5 rounded-xl border border-slate-700 space-y-1">
-            <span class="text-[10px] font-sans font-black text-slate-400 block">ทรัพยากร (❤️ สุขภาพ | ⏳ เวลา | 💡 ความรู้)</span>
-            <div class="grid grid-cols-3 gap-1 text-center text-[11px]">
-              <div class="bg-slate-900/60 p-1.5 rounded-lg border border-slate-800">
-                <span class="text-red-400 block text-[9px]">สุขภาพ</span>
-                <span id="simResHeart" class="font-bold text-white">10 ➔ 10</span>
-              </div>
-              <div class="bg-slate-900/60 p-1.5 rounded-lg border border-slate-800">
-                <span class="text-slate-300 block text-[9px]">เวลา</span>
-                <span id="simResTime" class="font-bold text-white">10 ➔ 10</span>
-              </div>
-              <div class="bg-slate-900/60 p-1.5 rounded-lg border border-slate-800">
-                <span class="text-blue-400 block text-[9px]">ความรู้</span>
-                <span id="simResKnowledge" class="font-bold text-white">10 ➔ 10</span>
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-3 text-xs sm:text-sm">
+            <!-- เงินสดเดิม vs หลังรับ -->
+            <div class="bg-slate-800/90 p-3 rounded-2xl border border-slate-700 space-y-1">
+              <span class="text-xs font-sans font-black text-slate-400 block"><i class="fa-solid fa-coins text-amber-400 mr-1"></i> เงินสด (Cash)</span>
+              <div class="flex items-center justify-between pt-1">
+                <span class="text-slate-300 text-xs">เดิม: <strong id="simCurrentCash" class="text-amber-400 text-sm">฿0</strong></span>
+                <i class="fa-solid fa-arrow-right text-slate-500"></i>
+                <span class="text-slate-300 text-xs">หลังรับ: <strong id="simResultCash" class="text-emerald-400 text-sm">฿0</strong></span>
               </div>
             </div>
+
+            <!-- ทรัพยากร 3 ชนิดเดิม ➔ หลังรับ (+/- กระพริบ) -->
+            <div class="bg-slate-800/90 p-3 rounded-2xl border border-slate-700 space-y-1.5 md:col-span-2">
+              <span class="text-xs font-sans font-black text-slate-400 block">ทรัพยากร (❤️ สุขภาพ | ⏳ เวลา | 💡 ความรู้) 1-10</span>
+              <div class="grid grid-cols-3 gap-2 text-center text-xs">
+                <div class="bg-slate-900/80 p-2 rounded-xl border border-slate-800">
+                  <span class="text-red-400 block text-[10px] font-bold"><i class="fa-solid fa-heart mr-0.5"></i> สุขภาพ</span>
+                  <span id="simResHeart" class="font-black text-sm">10 ➔ 10</span>
+                </div>
+                <div class="bg-slate-900/80 p-2 rounded-xl border border-slate-800">
+                  <span class="text-slate-300 block text-[10px] font-bold"><i class="fa-solid fa-clock mr-0.5"></i> เวลา</span>
+                  <span id="simResTime" class="font-black text-sm">10 ➔ 10</span>
+                </div>
+                <div class="bg-slate-900/80 p-2 rounded-xl border border-slate-800">
+                  <span class="text-blue-400 block text-[10px] font-bold"><i class="fa-solid fa-book-bookmark mr-0.5"></i> ความรู้</span>
+                  <span id="simResKnowledge" class="font-black text-sm">10 ➔ 10</span>
+                </div>
+              </div>
+            </div>
           </div>
+        </div>
 
-          <!-- ผลตอบแทนที่จะได้รับ -->
-          <div class="bg-emerald-950/40 p-2.5 rounded-xl border border-emerald-500/30 space-y-0.5">
-            <span class="text-[10px] font-sans font-black text-emerald-400 block">🔺 รางวัลที่จะได้รับ (Reward)</span>
-            <div id="simGainPv" class="text-cyan-400 text-xs">PV: +0</div>
-            <div id="simGainIncome" class="text-emerald-400 text-[11px]">+Active / +Passive</div>
+        <!-- รายละเอียดการ์ด (ขนาดตัวอักษรไม่ต่ำกว่า 20px ในจุดสำคัญ) -->
+        <div class="my-5 space-y-3">
+          <div id="drawResultIconBox" class="w-20 h-20 sm:w-24 sm:h-24 rounded-3xl mx-auto flex items-center justify-center text-4xl sm:text-5xl text-white shadow-2xl btn-theme-action icon-vibrant">
+            <i id="drawResultIcon" class="fa-solid fa-star"></i>
+          </div>
+          <div class="space-y-1">
+            <span id="drawResultCardId" class="text-xs sm:text-sm font-mono font-bold text-slate-400 block">ID: -</span>
+            <h3 id="drawResultTitle" class="text-xl sm:text-2xl md:text-3xl font-black text-slate-900 dark:text-white leading-snug break-words whitespace-normal" style="font-size: clamp(1.25rem, 2vw + 1rem, 1.85rem);">ชื่อการ์ด</h3>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-2 gap-3 bg-slate-50 dark:bg-slate-900/80 p-4 rounded-3xl border border-slate-200 dark:border-slate-700 text-sm sm:text-base font-mono">
+          <div class="text-left">PV: <strong id="drawResultPv" class="text-cyan-400 text-lg sm:text-xl font-black block">0</strong></div>
+          <div class="text-right flex flex-col items-end">
+            <span class="text-red-500 text-xs font-sans font-black flex items-center gap-1"><i class="fa-solid fa-coins text-red-500"></i>ราคา (ต้องจ่าย)</span>
+            <strong id="drawResultPrice" class="text-red-500 text-lg sm:text-xl font-black block">฿0</strong>
+          </div>
+          <div class="text-left pt-2 border-t border-slate-200 dark:border-slate-700">
+            <span class="text-slate-400 text-xs font-sans flex items-center gap-1"><i class="fa-solid fa-hand-holding-dollar text-emerald-400"></i>Active</span>
+            <strong id="drawResultActive" class="text-emerald-400 font-black block text-base sm:text-lg">฿0</strong>
+          </div>
+          <div class="text-right pt-2 border-t border-slate-200 dark:border-slate-700">
+            <span class="text-slate-400 text-xs font-sans flex items-center gap-1"><i class="fa-solid fa-seedling text-teal-400"></i>Passive</span>
+            <strong id="drawResultPassive" class="text-teal-400 font-black block text-base sm:text-lg">฿0</strong>
+          </div>
+        </div>
+        
+        <div id="drawResultResourceSection" class="mt-3 p-4 bg-slate-50 dark:bg-slate-900/70 rounded-3xl border border-slate-200 dark:border-slate-700 space-y-3 text-left">
+          <div class="space-y-1.5">
+            <div class="flex items-center justify-between text-xs sm:text-sm font-black text-rose-500">
+              <span>ทรัพยากรที่ต้องใช้ (Cost 1-10)</span>
+            </div>
+            <div id="drawResultCostBars" class="space-y-1.5"></div>
+          </div>
+          <div class="space-y-1.5 pt-2 border-t border-slate-200 dark:border-slate-800">
+            <div class="flex items-center justify-between text-xs sm:text-sm font-black text-emerald-500">
+              <span>รางวัลที่จะได้รับ (Reward 1-10)</span>
+            </div>
+            <div id="drawResultRewardBars" class="space-y-1.5"></div>
           </div>
         </div>
       </div>
 
-      <div class="space-y-2">
-        <div id="drawResultIconBox" class="w-16 h-16 sm:w-20 sm:h-20 rounded-3xl mx-auto flex items-center justify-center text-3xl sm:text-4xl text-white shadow-xl btn-theme-action icon-vibrant">
-          <i id="drawResultIcon" class="fa-solid fa-star"></i>
+      <!-- ส่วนท้าย Modal: ปุ่มกดรับ / ไม่รับ -->
+      <div class="pt-4 border-t border-slate-200 dark:border-slate-800 space-y-2">
+        <div id="insufficientWarningBox" class="hidden p-2.5 rounded-2xl bg-rose-50 dark:bg-rose-950/60 border border-rose-300 dark:border-rose-800 text-rose-600 dark:text-rose-300 text-xs sm:text-sm font-bold text-center">
+          <i class="fa-solid fa-triangle-exclamation mr-1.5 text-rose-500"></i>
+          <span id="insufficientWarningText">ทรัพยากรของคุณไม่เพียงพอสำหรับการรับการ์ดใบนี้</span>
         </div>
-        <div class="space-y-0.5">
-          <span id="drawResultCardId" class="text-xs font-mono font-bold text-slate-400 block">ID: -</span>
-          <h3 id="drawResultTitle" class="text-lg sm:text-xl font-black text-slate-900 dark:text-white leading-snug break-words whitespace-normal">ชื่อการ์ด</h3>
-        </div>
-      </div>
 
-      <div class="grid grid-cols-2 gap-2.5 bg-slate-50 dark:bg-slate-900/70 p-3 rounded-2xl border border-slate-200 dark:border-slate-700 text-xs sm:text-sm font-mono">
-        <div class="text-left">PV: <strong id="drawResultPv" class="text-cyan-400 text-base sm:text-lg font-black block">0</strong></div>
-        <div class="text-right flex flex-col items-end">
-          <span class="text-red-500 text-[11px] font-sans font-black flex items-center gap-1"><i class="fa-solid fa-coins text-red-500"></i>ราคา (ต้องจ่าย)</span>
-          <strong id="drawResultPrice" class="text-red-500 text-base sm:text-lg font-black block">฿0</strong>
+        <div class="grid grid-cols-2 gap-3">
+          <button type="button" onclick="closeDrawResultModal()" class="w-full py-3.5 rounded-2xl text-slate-700 dark:text-slate-200 font-black text-sm sm:text-base bg-slate-100 hover:bg-slate-200 dark:bg-slate-700 dark:hover:bg-slate-600 transition active:scale-95 shadow-sm">
+            ไม่รับการ์ด
+          </button>
+          <button type="button" id="claimCardBtn" onclick="claimDrawnCard()" class="w-full py-3.5 rounded-2xl text-white font-black text-sm sm:text-base btn-theme-action shadow-xl hover:scale-[1.02] active:scale-95 transition disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100">
+            รับการ์ด
+          </button>
         </div>
-        <div class="text-left pt-1.5 border-t border-slate-200 dark:border-slate-700">
-          <span class="text-slate-400 text-[11px] font-sans flex items-center gap-1"><i class="fa-solid fa-hand-holding-dollar text-emerald-400"></i>Active</span>
-          <strong id="drawResultActive" class="text-emerald-400 font-black block text-sm sm:text-base">฿0</strong>
-        </div>
-        <div class="text-right pt-1.5 border-t border-slate-200 dark:border-slate-700">
-          <span class="text-slate-400 text-[11px] font-sans flex items-center gap-1"><i class="fa-solid fa-seedling text-teal-400"></i>Passive</span>
-          <strong id="drawResultPassive" class="text-teal-400 font-black block text-sm sm:text-base">฿0</strong>
-        </div>
-      </div>
-      
-      <div id="drawResultResourceSection" class="p-3 bg-slate-50 dark:bg-slate-900/60 rounded-2xl border border-slate-200 dark:border-slate-700 space-y-2 text-left">
-        <div class="space-y-1">
-          <div class="flex items-center justify-between text-xs font-black text-rose-500">
-            <span>ทรัพยากรที่ต้องใช้ (Cost)</span>
-          </div>
-          <div id="drawResultCostBars" class="space-y-1"></div>
-        </div>
-        <div class="space-y-1 pt-1.5 border-t border-slate-200 dark:border-slate-800">
-          <div class="flex items-center justify-between text-xs font-black text-emerald-500">
-            <span>รางวัลที่จะได้รับ (Reward)</span>
-          </div>
-          <div id="drawResultRewardBars" class="space-y-1"></div>
-        </div>
-      </div>
-
-      <div id="insufficientWarningBox" class="hidden p-2 rounded-xl bg-rose-50 dark:bg-rose-950/60 border border-rose-300 dark:border-rose-800 text-rose-600 dark:text-rose-300 text-xs font-bold text-center">
-        <i class="fa-solid fa-triangle-exclamation mr-1 text-rose-500"></i>
-        <span id="insufficientWarningText">ทรัพยากรของคุณไม่เพียงพอสำหรับการรับการ์ดใบนี้</span>
-      </div>
-
-      <div class="grid grid-cols-2 gap-2.5 pt-1">
-        <button type="button" onclick="closeDrawResultModal()" class="w-full py-3 rounded-2xl text-slate-700 dark:text-slate-200 font-black text-sm bg-slate-100 hover:bg-slate-200 dark:bg-slate-700 dark:hover:bg-slate-600 transition active:scale-95 shadow-sm">
-          ไม่รับการ์ด
-        </button>
-        <button type="button" id="claimCardBtn" onclick="claimDrawnCard()" class="w-full py-3 rounded-2xl text-white font-black text-sm btn-theme-action shadow-lg hover:scale-[1.02] active:scale-95 transition disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100">
-          รับการ์ด
-        </button>
       </div>
 
     </div>
@@ -919,7 +914,7 @@
       if (titleEl) titleEl.innerText = "การซิงก์ไม่สำเร็จ";
       if (detailEl) detailEl.innerText = errMsg;
       if (icon) icon.className = "fa-solid fa-circle-xmark text-rose-500 text-4xl";
-      if (errBtn) errBtn.classList.remove('hidden');
+      if (errBtn) errBtn.classList.add('hidden');
     }
 
     function loadLocalCache() {
@@ -1472,13 +1467,19 @@
       document.getElementById('drawResultModal').classList.remove('hidden');
     }
 
+    function formatDeltaText(diff) {
+      if (diff > 0) return `<span class="text-emerald-400 font-bold animate-pulse">(+${diff})</span>`;
+      if (diff < 0) return `<span class="text-rose-500 font-bold animate-pulse">(${diff})</span>`;
+      return `<span class="text-slate-400">(0)</span>`;
+    }
+
     function checkCardAffordability(card) {
       const player = getPlayerProfileData();
       const pCash = player.cash || 0;
       const pRes = player.resources || { heart: 0, time: 0, knowledge: 0 };
       const cCost = card.cost || { heart: 0, time: 0, knowledge: 0 };
-      const cPrice = card.price || 0;
       const cReward = card.reward || { heart: 0, time: 0, knowledge: 0 };
+      const cPrice = card.price || 0;
 
       let shortageReasons = [];
       if (pCash < cPrice) shortageReasons.push(`เงินสดขาดอีก ฿${(cPrice - pCash).toLocaleString()}`);
@@ -1488,7 +1489,6 @@
 
       const canAfford = shortageReasons.length === 0;
 
-      // แสดงผลใน Simulation Panel
       document.getElementById('simCurrentCash').innerText = `฿${pCash.toLocaleString()}`;
       document.getElementById('simResultCash').innerText = `฿${Math.max(0, pCash - cPrice).toLocaleString()}`;
 
@@ -1496,9 +1496,13 @@
       const resTimeAfter = Math.min(10, Math.max(0, pRes.time - (cCost.time || 0) + (cReward.time || 0)));
       const resKnowAfter = Math.min(10, Math.max(0, pRes.knowledge - (cCost.knowledge || 0) + (cReward.knowledge || 0)));
 
-      document.getElementById('simResHeart').innerText = `${pRes.heart} ➔ ${resHeartAfter}`;
-      document.getElementById('simResTime').innerText = `${pRes.time} ➔ ${resTimeAfter}`;
-      document.getElementById('simResKnowledge').innerText = `${pRes.knowledge} ➔ ${resKnowAfter}`;
+      const diffHeart = resHeartAfter - pRes.heart;
+      const diffTime = resTimeAfter - pRes.time;
+      const diffKnow = resKnowAfter - pRes.knowledge;
+
+      document.getElementById('simResHeart').innerHTML = `${pRes.heart} ➔ ${resHeartAfter} ${formatDeltaText(diffHeart)}`;
+      document.getElementById('simResTime').innerHTML = `${pRes.time} ➔ ${resTimeAfter} ${formatDeltaText(diffTime)}`;
+      document.getElementById('simResKnowledge').innerHTML = `${pRes.knowledge} ➔ ${resKnowAfter} ${formatDeltaText(diffKnow)}`;
 
       document.getElementById('simGainPv').innerText = `PV: +${(card.pv || 0).toLocaleString()} (${card.targetLeg ? 'สาย ' + card.targetLeg : 'ส่วนตัว'})`;
       document.getElementById('simGainIncome').innerText = `+Act ฿${(card.activeIncome || 0).toLocaleString()} | +Pass ฿${(card.passiveIncome || 0).toLocaleString()}`;
@@ -1510,12 +1514,12 @@
 
       if (canAfford) {
         statusBadge.innerText = "ทรัพยากรพอจ่าย";
-        statusBadge.className = "text-[10px] font-bold px-2 py-0.5 rounded-full bg-emerald-500 text-white";
+        statusBadge.className = "text-xs font-bold px-2.5 py-0.5 rounded-full bg-emerald-500 text-white";
         claimBtn.disabled = false;
         warnBox.classList.add('hidden');
       } else {
         statusBadge.innerText = "ทรัพยากรไม่พอ";
-        statusBadge.className = "text-[10px] font-bold px-2 py-0.5 rounded-full bg-rose-500 text-white";
+        statusBadge.className = "text-xs font-bold px-2.5 py-0.5 rounded-full bg-rose-500 text-white";
         claimBtn.disabled = true;
         warnText.innerText = "ไม่สามารถรับการ์ดได้: " + shortageReasons.join(" / ");
         warnBox.classList.remove('hidden');
