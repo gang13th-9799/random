@@ -182,6 +182,109 @@
     </div>
   </header>
 
+  <!-- ==============================================================
+       แถบแสดงข้อมูลอาชีพ & ทรัพยากรตัวละคร (Player Career HUD Widget)
+       ตำแหน่ง: ใต้ Logo ทางด้านซ้ายบน จัดสัดส่วนให้ดูง่ายทั้งมือถือและคอมพิวเตอร์
+       ============================================================== -->
+  <div class="max-w-7xl w-full mx-auto px-3 sm:px-6 lg:px-8 pt-3">
+    <div id="playerHudWidget" class="w-full lg:max-w-xl p-3.5 sm:p-4 rounded-3xl bg-white/95 dark:bg-slate-800/95 border border-slate-200 dark:border-slate-700 shadow-md card-vibrant-glow space-y-2.5 animate-pop-in">
+      
+      <!-- ส่วนบน: Avatar / ชื่อผู้เล่น / ชื่ออาชีพ / ปุ่มไป Profile -->
+      <div class="flex items-center justify-between gap-3 border-b border-slate-100 dark:border-slate-700/80 pb-2">
+        <div class="flex items-center gap-2.5 min-w-0">
+          <div id="hudAvatarWrapper" class="w-10 h-10 sm:w-11 sm:h-11 rounded-2xl bg-gradient-to-tr from-rose-500 via-amber-500 to-emerald-400 text-white flex items-center justify-center text-lg sm:text-xl shadow-md shrink-0 overflow-hidden icon-vibrant">
+            <i class="fa-solid fa-user-astronaut"></i>
+          </div>
+          <div class="min-w-0">
+            <div class="flex items-center gap-1.5">
+              <h4 id="hudPlayerName" class="font-black text-xs sm:text-sm text-slate-900 dark:text-white truncate">ผู้เล่นทั่วไป</h4>
+              <span id="hudRoleBadge" class="text-[9px] font-black px-1.5 py-0.2 rounded-full bg-rose-500 text-white uppercase tracking-wider">PLAYER</span>
+            </div>
+            <span id="hudCareerTitle" class="text-[11px] font-bold text-rose-500 dark:text-rose-400 truncate block">ยังไม่ได้เลือกอาชีพ</span>
+          </div>
+        </div>
+
+        <a href="profile.html" class="px-2.5 py-1 rounded-xl text-[11px] font-black bg-purple-50 dark:bg-purple-950/60 text-purple-600 dark:text-purple-300 border border-purple-200 dark:border-purple-800 hover:scale-105 transition flex items-center gap-1 shrink-0" title="ไปหน้าจัดการโปรไฟล์">
+          <i class="fa-solid fa-id-card"></i>
+          <span class="hidden sm:inline">โปรไฟล์</span>
+        </a>
+      </div>
+
+      <!-- ส่วนกลาง: ข้อมูลการเงิน (เงินสด, เงินเหลือ/เดือน, รายจ่าย, Active รวม, Passive รวม) -->
+      <div class="grid grid-cols-2 sm:grid-cols-5 gap-1.5 font-mono text-center">
+        <!-- เงินสด -->
+        <div class="p-1.5 rounded-xl bg-amber-50 dark:bg-amber-950/30 border border-amber-200 dark:border-amber-800/60">
+          <span class="text-[9px] font-sans font-bold text-amber-600 dark:text-amber-400 block truncate">
+            <i class="fa-solid fa-coins mr-0.5"></i>เงินสด
+          </span>
+          <strong id="hudCash" class="text-[11px] sm:text-xs font-black text-amber-500 block truncate">฿0</strong>
+        </div>
+
+        <!-- เงินคงเหลือต่อเดือน -->
+        <div class="p-1.5 rounded-xl bg-emerald-50 dark:bg-emerald-950/30 border border-emerald-200 dark:border-emerald-800/60">
+          <span class="text-[9px] font-sans font-bold text-emerald-600 dark:text-emerald-400 block truncate" title="(Active + Passive + เงินเดือน) - รายจ่าย">
+            <i class="fa-solid fa-sack-dollar mr-0.5"></i>เหลือ/เดือน
+          </span>
+          <strong id="hudNetMonthly" class="text-[11px] sm:text-xs font-black text-emerald-500 block truncate">฿0</strong>
+        </div>
+
+        <!-- รายจ่ายประจำ -->
+        <div class="p-1.5 rounded-xl bg-rose-50 dark:bg-rose-950/30 border border-rose-200 dark:border-rose-900/60">
+          <span class="text-[9px] font-sans font-bold text-rose-600 dark:text-rose-400 block truncate">
+            <i class="fa-solid fa-receipt mr-0.5"></i>รายจ่ายประจำ
+          </span>
+          <strong id="hudExpenses" class="text-[11px] sm:text-xs font-black text-rose-500 block truncate">฿0</strong>
+        </div>
+
+        <!-- Active Income รวม -->
+        <div class="p-1.5 rounded-xl bg-slate-100 dark:bg-slate-900/70 border border-slate-200 dark:border-slate-700">
+          <span class="text-[9px] font-sans font-bold text-slate-500 dark:text-slate-400 block truncate">
+            <i class="fa-solid fa-hand-holding-dollar text-emerald-400 mr-0.5"></i>Active รวม
+          </span>
+          <strong id="hudTotalActive" class="text-[11px] sm:text-xs font-black text-emerald-500 block truncate">฿0</strong>
+        </div>
+
+        <!-- Passive Income รวม -->
+        <div class="p-1.5 rounded-xl bg-slate-100 dark:bg-slate-900/70 border border-slate-200 dark:border-slate-700 col-span-2 sm:col-span-1">
+          <span class="text-[9px] font-sans font-bold text-slate-500 dark:text-slate-400 block truncate">
+            <i class="fa-solid fa-seedling text-teal-400 mr-0.5"></i>Passive รวม
+          </span>
+          <strong id="hudTotalPassive" class="text-[11px] sm:text-xs font-black text-teal-400 block truncate">฿0</strong>
+        </div>
+      </div>
+
+      <!-- ส่วนล่าง: ทรัพยากรตัวละคร (สุขภาพ ❤️, เวลา ⏳, ความรู้ 💡) -->
+      <div class="pt-1.5 border-t border-slate-100 dark:border-slate-700/80">
+        <div class="grid grid-cols-3 gap-1.5 text-center font-mono">
+          <!-- สุขภาพ -->
+          <div class="py-1 px-1 rounded-xl bg-rose-50/70 dark:bg-rose-950/20 border border-rose-200/60 dark:border-rose-900/40 flex items-center justify-center gap-1.5">
+            <span class="text-[10px] font-sans font-bold text-red-500 flex items-center gap-1">
+              <i class="fa-solid fa-heart"></i> สุขภาพ
+            </span>
+            <strong id="hudResHeart" class="text-xs font-black text-slate-800 dark:text-white">0/10</strong>
+          </div>
+
+          <!-- เวลา -->
+          <div class="py-1 px-1 rounded-xl bg-slate-100/70 dark:bg-slate-900/60 border border-slate-200 dark:border-slate-700/80 flex items-center justify-center gap-1.5">
+            <span class="text-[10px] font-sans font-bold text-slate-700 dark:text-slate-300 flex items-center gap-1">
+              <i class="fa-solid fa-clock"></i> เวลา
+            </span>
+            <strong id="hudResTime" class="text-xs font-black text-slate-800 dark:text-white">0/10</strong>
+          </div>
+
+          <!-- ความรู้ -->
+          <div class="py-1 px-1 rounded-xl bg-blue-50/70 dark:bg-blue-950/20 border border-blue-200/60 dark:border-blue-900/40 flex items-center justify-center gap-1.5">
+            <span class="text-[10px] font-sans font-bold text-blue-600 dark:text-blue-400 flex items-center gap-1">
+              <i class="fa-solid fa-book-bookmark"></i> ความรู้
+            </span>
+            <strong id="hudResKnowledge" class="text-xs font-black text-slate-800 dark:text-white">0/10</strong>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
   <!-- Main Container -->
   <main class="flex-1 max-w-7xl w-full mx-auto px-3 sm:px-6 lg:px-8 py-5">
     
@@ -759,6 +862,7 @@
       renderColorPickerGrid();
       renderIconPickerGrid();
       switchTab('categories');
+      updatePlayerHudWidget();
       fetchFromGoogleSheets(true);
     });
 
@@ -819,6 +923,67 @@
       } catch (e) {}
     }
 
+    /* ------------------------------------------------------------------------
+       อัปเดตข้อมูลใน Player Career HUD Widget
+       ------------------------------------------------------------------------ */
+    function updatePlayerHudWidget() {
+      let profile = null;
+      try {
+        const rawAuth = localStorage.getItem('rnd_current_auth');
+        const auth = rawAuth ? JSON.parse(rawAuth) : null;
+        const rawAllPlayers = localStorage.getItem('rnd_all_players_db');
+        const allPlayers = rawAllPlayers ? JSON.parse(rawAllPlayers) : {};
+
+        if (auth && auth.accountId && allPlayers[auth.accountId]) {
+          profile = allPlayers[auth.accountId];
+        } else {
+          const rawProf = localStorage.getItem('rnd_cache_player_profile');
+          profile = rawProf ? JSON.parse(rawProf) : null;
+        }
+      } catch (err) {}
+
+      const hasCareer = Boolean(profile && profile.careerId && profile.career);
+
+      const personalActive = hasCareer ? (profile.activeIncome || 0) : 0;
+      const legsActive = hasCareer && Array.isArray(profile.legs) 
+        ? profile.legs.reduce((sum, l) => sum + (l.activeIncome || 0), 0) : 0;
+      const totalActive = personalActive + legsActive;
+
+      const personalPassive = hasCareer ? (profile.passiveIncome || 0) : 0;
+      const legsPassive = hasCareer && Array.isArray(profile.legs) 
+        ? profile.legs.reduce((sum, l) => sum + (l.passiveIncome || 0), 0) : 0;
+      const totalPassive = personalPassive + legsPassive;
+
+      const salary = hasCareer && profile.career ? (profile.career.salary || 0) : 0;
+      const expenses = hasCareer && profile.career ? (profile.career.expenses || 0) : 0;
+      const netMonthly = (totalActive + totalPassive + salary) - expenses;
+      const res = (hasCareer && profile.resources) ? profile.resources : { heart: 0, time: 0, knowledge: 0 };
+
+      const setSafeText = (id, val) => { const el = document.getElementById(id); if (el) el.innerText = val; };
+
+      setSafeText('hudPlayerName', profile?.name || "ผู้เล่นทั่วไป");
+      setSafeText('hudCareerTitle', hasCareer ? profile.career.title : "ยังไม่ได้เลือกอาชีพ");
+      setSafeText('hudCash', `฿${(hasCareer ? (profile.cash || 0) : 0).toLocaleString()}`);
+      setSafeText('hudNetMonthly', `฿${(hasCareer ? netMonthly : 0).toLocaleString()}`);
+      setSafeText('hudExpenses', `฿${(hasCareer ? expenses : 0).toLocaleString()}`);
+      setSafeText('hudTotalActive', `฿${(hasCareer ? totalActive : 0).toLocaleString()}`);
+      setSafeText('hudTotalPassive', `฿${(hasCareer ? totalPassive : 0).toLocaleString()}`);
+      setSafeText('hudResHeart', `${res.heart || 0}/10`);
+      setSafeText('hudResTime', `${res.time || 0}/10`);
+      setSafeText('hudResKnowledge', `${res.knowledge || 0}/10`);
+
+      const elAvatar = document.getElementById('hudAvatarWrapper');
+      if (elAvatar) {
+        if (hasCareer && profile.career && profile.career.avatar) {
+          elAvatar.innerHTML = `<img src="${profile.career.avatar}" class="w-full h-full object-cover">`;
+        } else if (hasCareer && profile.career && profile.career.icon) {
+          elAvatar.innerHTML = `<i class="fa-solid ${profile.career.icon}"></i>`;
+        } else {
+          elAvatar.innerHTML = `<i class="fa-solid fa-user-astronaut"></i>`;
+        }
+      }
+    }
+
     function renderAllUI() {
       const elCount = document.getElementById('total-badge-count');
       if (elCount) elCount.innerText = items.length;
@@ -829,6 +994,7 @@
       renderDataTable();
       renderCategoryDropdowns();
       renderHistoryList();
+      updatePlayerHudWidget();
     }
 
     function renderCategoryDropdowns() {
@@ -931,7 +1097,6 @@
       `;
     }
 
-    /* การแสดงผลหลัก: แถบค่าพลัง 0 - 10 ช่อง พร้อมไอคอนและคำบรรยายมาตรฐานใหม่ */
     function renderResourceMeterGroup(res, isCost = true) {
       if (!res) res = { heart: 0, time: 0, knowledge: 0 };
       const activeColor = isCost ? "bg-rose-500 shadow-[0_0_6px_rgba(244,63,94,0.6)]" : "bg-emerald-500 shadow-[0_0_6px_rgba(16,185,129,0.6)]";
@@ -943,21 +1108,18 @@
           <div class="flex items-center justify-between text-[11px] font-black ${titleColor}">
             <span>${badgeTitle}</span>
           </div>
-          <!-- สุขภาพ: หัวใจสีแดง -->
           <div class="flex items-center justify-between gap-1.5 text-xs">
             <span class="flex items-center gap-1.5 text-slate-800 dark:text-slate-200 font-bold shrink-0">
               <i class="fa-solid fa-heart text-red-500 text-sm"></i> สุขภาพ
             </span>
             ${renderPowerSegmentBar(res.heart, activeColor)}
           </div>
-          <!-- เวลา: นาฬิกาสีขาว/ดำ -->
           <div class="flex items-center justify-between gap-1.5 text-xs">
             <span class="flex items-center gap-1.5 text-slate-800 dark:text-slate-200 font-bold shrink-0">
               <i class="fa-solid fa-clock text-slate-800 dark:text-white text-xs"></i> เวลา
             </span>
             ${renderPowerSegmentBar(res.time, activeColor)}
           </div>
-          <!-- ความรู้: สมุดสีน้ำเงิน/ขาว -->
           <div class="flex items-center justify-between gap-1.5 text-xs">
             <span class="flex items-center gap-1.5 text-slate-800 dark:text-slate-200 font-bold shrink-0">
               <i class="fa-solid fa-book-bookmark text-blue-600 dark:text-blue-400 text-xs"></i> ความรู้
@@ -968,7 +1130,6 @@
       `;
     }
 
-    /* การแสดงผลแบบย่อ: แสดงแค่ไอคอนกับตัวเลข */
     function renderResourceCompactInline(cost, reward) {
       const c = cost || { heart: 0, time: 0, knowledge: 0 };
       const r = reward || { heart: 0, time: 0, knowledge: 0 };
@@ -990,7 +1151,6 @@
       `;
     }
 
-    /* เรนเดอร์คลังข้อมูล */
     function renderDataTable() {
       const query = (document.getElementById('searchInput')?.value || '').toLowerCase().trim();
       const filterCat = document.getElementById('tableCategoryFilter')?.value || 'ALL';
@@ -1020,7 +1180,6 @@
         if (tableContainer) tableContainer.classList.remove('hidden');
       }
 
-      // 1. โหมดการ์ด
       if (gridContainer) {
         if (filtered.length === 0) {
           gridContainer.innerHTML = `
@@ -1079,7 +1238,6 @@
                   </div>
                 </div>
 
-                <!-- การแสดงผลหลัก: แถบค่าพลัง 0 - 10 ช่อง -->
                 <div class="grid grid-cols-2 gap-2 bg-white/95 dark:bg-slate-900/95 p-3 rounded-2xl border border-slate-300/80 dark:border-slate-800 shadow-xs">
                   <div>${renderResourceMeterGroup(item.cost, true)}</div>
                   <div class="border-l border-slate-200 dark:border-slate-800 pl-2.5">${renderResourceMeterGroup(item.reward, false)}</div>
@@ -1102,7 +1260,6 @@
         }
       }
 
-      // 2. โหมดตารางกระชับ (การแสดงผลแบบย่อ: ไอคอน + ตัวเลข)
       const compactTbody = document.getElementById('tableBodyCompact');
       if (compactTbody) {
         compactTbody.innerHTML = filtered.map((item, idx) => `
@@ -1210,6 +1367,15 @@
 
     function getPlayerProfileData() {
       try {
+        const rawAuth = localStorage.getItem('rnd_current_auth');
+        const auth = rawAuth ? JSON.parse(rawAuth) : null;
+        const rawAllPlayers = localStorage.getItem('rnd_all_players_db');
+        const allPlayers = rawAllPlayers ? JSON.parse(rawAllPlayers) : {};
+
+        if (auth && auth.accountId && allPlayers[auth.accountId]) {
+          return allPlayers[auth.accountId];
+        }
+
         const raw = localStorage.getItem('rnd_cache_player_profile');
         if (raw) return JSON.parse(raw);
       } catch (e) {}
@@ -1234,7 +1400,16 @@
     function savePlayerProfileData(p) {
       try {
         localStorage.setItem('rnd_cache_player_profile', JSON.stringify(p));
+        const rawAuth = localStorage.getItem('rnd_current_auth');
+        const auth = rawAuth ? JSON.parse(rawAuth) : null;
+        const rawAllPlayers = localStorage.getItem('rnd_all_players_db');
+        const allPlayers = rawAllPlayers ? JSON.parse(rawAllPlayers) : {};
+        if (auth && auth.accountId) {
+          allPlayers[auth.accountId] = p;
+          localStorage.setItem('rnd_all_players_db', JSON.stringify(allPlayers));
+        }
       } catch (e) {}
+      updatePlayerHudWidget();
     }
 
     function toggleSimulationPanel() {
