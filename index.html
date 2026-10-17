@@ -62,20 +62,18 @@
   <style>
     :root {
       --theme-btn-gradient: linear-gradient(135deg, #FF3366 0%, #FF6B4A 50%, #FFA033 100%);
-      --fluid-title: clamp(1.35rem, 2.5vw + 0.8rem, 2.25rem);
-      --fluid-body: clamp(0.92rem, 0.8vw + 0.75rem, 1.15rem);
-      --font-scale: 1; /* ตัวแปรควบคุมขนาดตัวอักษรทั้งหน้า */
+      --font-scale: 1.25; /* ปรับฐานฟอนต์ให้ใหญ่ขึ้นเป็นค่าเริ่มต้นสำหรับสายตา (ไม่ต่ำกว่า 20px ในจุดสำคัญ) */
     }
     html {
-      font-size: calc(16px * var(--font-scale));
-      line-height: 1.5;
+      font-size: calc(18px * var(--font-scale));
+      line-height: 1.6;
       -webkit-text-size-adjust: 100%;
     }
     body {
       touch-action: manipulation;
       -webkit-tap-highlight-color: transparent;
       background-color: #F8FAFC;
-      font-size: var(--fluid-body);
+      font-size: 1.15rem; /* กำหนดขนาดตัวอักษรพื้นฐานใหญ่พิเศษ */
     }
     .dark body {
       background-color: #080E1A;
@@ -85,10 +83,21 @@
       word-break: break-word;
       overflow-wrap: break-word;
     }
-    .responsive-title {
-      font-size: var(--fluid-title) !important;
-      line-height: 1.35 !important;
+    /* บังคับทุกข้อความทั่วไปและในตารางไม่ให้เล็กกว่า 20px (ประมาณ 1.25rem) */
+    p, span, a, label, input, select, button, th, td, li {
+      font-size: clamp(1.15rem, 1.2vw + 0.95rem, 1.35rem) !important;
     }
+    /* บังคับหัวข้อและตัวเลขสำคัญให้ใหญ่เด่นชัด */
+    h1, h2, h3, h4, .text-xl, .text-2xl, .text-3xl {
+      font-size: clamp(1.35rem, 1.8vw + 1.1rem, 2rem) !important;
+    }
+    .text-xs, .text-sm {
+      font-size: 1.1rem !important;
+    }
+    .text-[10px], .text-[11px], .text-[9px] {
+      font-size: 1rem !important;
+    }
+
     .card-vibrant-glow {
       box-shadow: 0 10px 30px -5px rgba(0, 0, 0, 0.08), 0 0 0 1px rgba(226, 232, 240, 0.8);
     }
@@ -103,35 +112,31 @@
     }
   </style>
 </head>
-<body class="text-slate-800 dark:text-slate-100 min-h-screen flex flex-col font-sans transition-colors duration-200 pb-24 md:pb-8">
+<body class="text-slate-800 dark:text-slate-100 min-h-screen flex flex-col font-sans transition-colors duration-200 pb-28 md:pb-12">
 
   <!-- BLOCKING SYNC OVERLAY BANNER -->
   <div id="syncBlockingBanner" class="hidden fixed inset-0 z-50 bg-slate-950/85 backdrop-blur-md flex flex-col items-center justify-center p-4 select-none pointer-events-auto">
-    <div class="relative max-w-md w-full bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl p-6 sm:p-8 text-center shadow-2xl space-y-6">
-      <div class="relative w-24 h-24 mx-auto flex items-center justify-center">
+    <div class="relative max-w-lg w-full bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl p-8 text-center shadow-2xl space-y-6">
+      <div class="relative w-28 h-28 mx-auto flex items-center justify-center">
         <div class="absolute inset-0 rounded-3xl bg-amber-400/20 dark:bg-amber-400/10 animate-ping"></div>
-        <div id="syncBannerIconWrapper" class="relative w-20 h-20 rounded-2xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 flex items-center justify-center p-2.5 shadow-xl icon-vibrant">
-          <i id="syncBannerIcon" class="fa-solid fa-arrows-rotate animate-spin text-4xl text-rose-500"></i>
+        <div id="syncBannerIconWrapper" class="relative w-24 h-24 rounded-2xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 flex items-center justify-center p-3 shadow-xl icon-vibrant">
+          <i id="syncBannerIcon" class="fa-solid fa-arrows-rotate animate-spin text-5xl text-rose-500"></i>
         </div>
       </div>
-      <div class="space-y-2">
-        <h3 id="syncBannerTitle" class="text-xl sm:text-2xl font-black text-slate-900 dark:text-white tracking-tight">กำลังซิงก์ข้อมูลกับ Cloud...</h3>
-        <p id="syncBannerDetail" class="text-sm text-slate-500 dark:text-slate-400 font-medium">ระบบกำลังดึงข้อมูลล่าสุดจาก Google Sheets กรุณารอสักครู่</p>
+      <div class="space-y-3">
+        <h3 id="syncBannerTitle" class="text-2xl font-black text-slate-900 dark:text-white tracking-tight">กำลังซิงก์ข้อมูลกับ Cloud...</h3>
+        <p id="syncBannerDetail" class="text-lg text-slate-500 dark:text-slate-400 font-medium">ระบบกำลังดึงข้อมูลล่าสุดจาก Google Sheets กรุณารอสักครู่</p>
       </div>
       <div class="space-y-2">
-        <div class="w-full bg-slate-100 dark:bg-slate-800 rounded-full h-3.5 p-0.5 overflow-hidden border border-slate-200 dark:border-slate-700">
+        <div class="w-full bg-slate-100 dark:bg-slate-800 rounded-full h-4 p-0.5 overflow-hidden border border-slate-200 dark:border-slate-700">
           <div id="syncBannerProgressBar" class="h-full rounded-full bg-gradient-to-r from-rose-500 via-amber-400 to-emerald-400 transition-all duration-300" style="width: 25%;"></div>
         </div>
-        <div class="flex items-center justify-between text-xs sm:text-sm font-mono font-bold text-slate-400 px-1">
+        <div class="flex items-center justify-between font-mono font-bold text-slate-400 px-1">
           <span id="syncBannerStepText">ขั้นตอน: ดาวน์โหลดข้อมูล</span>
           <span id="syncBannerPercentText" class="text-rose-500 dark:text-rose-400 font-black">25%</span>
         </div>
       </div>
-      <div class="inline-flex items-center gap-2 px-3.5 py-2 rounded-xl bg-amber-50 dark:bg-amber-950/50 border border-amber-300 dark:border-amber-700 text-amber-800 dark:text-amber-200 text-xs font-bold">
-        <i class="fa-solid fa-shield-halved text-amber-500 text-sm"></i>
-        <span>ระบบถูกล็อกชั่วคราว เพื่อป้องกันข้อมูลทับซ้อน</span>
-      </div>
-      <button type="button" id="syncBannerErrorBtn" onclick="hideSyncBanner()" class="hidden w-full py-3 rounded-2xl text-sm font-black bg-rose-600 hover:bg-rose-700 text-white transition shadow-lg">
+      <button type="button" id="syncBannerErrorBtn" onclick="hideSyncBanner()" class="hidden w-full py-4 rounded-2xl font-black bg-rose-600 hover:bg-rose-700 text-white transition shadow-lg">
         ปิดหน้าต่างนี้
       </button>
     </div>
@@ -139,134 +144,134 @@
 
   <!-- Header -->
   <header class="sticky top-0 z-40 bg-white/95 dark:bg-slate-900/95 backdrop-blur-md border-b border-slate-200 dark:border-slate-800 shadow-sm transition-colors">
-    <div class="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 h-18 py-2 flex items-center justify-between gap-2">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3 flex items-center justify-between gap-3">
       <div class="flex items-center space-x-3 cursor-pointer group shrink-0" onclick="switchTab('categories')">
-        <div class="w-12 h-12 rounded-2xl flex items-center justify-center p-1.5 bg-white dark:bg-slate-800 border border-slate-200/80 dark:border-slate-700 shadow-md transform transition group-hover:scale-105 shrink-0 icon-vibrant">
+        <div class="w-14 h-14 rounded-2xl flex items-center justify-center p-2 bg-white dark:bg-slate-800 border border-slate-200/80 dark:border-slate-700 shadow-md transform transition group-hover:scale-105 shrink-0 icon-vibrant">
           <img src="logo.png" alt="Game Logo" class="app-logo-img w-full h-full object-contain">
         </div>
         <div>
           <div class="flex items-center space-x-2">
-            <span class="font-black text-xl sm:text-2xl tracking-tight text-slate-900 dark:text-white">RANDOM HUB</span>
-            <span id="brandPillBadge" class="text-[11px] font-black px-2 py-0.5 rounded-full text-white uppercase tracking-wider btn-theme-action shadow-sm">v8.0.0</span>
+            <span class="font-black text-2xl tracking-tight text-slate-900 dark:text-white">RANDOM HUB</span>
+            <span id="brandPillBadge" class="font-black px-2.5 py-0.5 rounded-full text-white uppercase tracking-wider btn-theme-action shadow-sm">v8.0.0</span>
           </div>
-          <p id="cloudSyncStatus" class="text-xs text-slate-500 dark:text-slate-400 font-semibold flex items-center gap-1.5 pt-0.5">
-            <i class="fa-solid fa-circle text-[9px] text-emerald-400 shadow-[0_0_8px_rgba(52,211,153,0.8)]"></i> ออนไลน์พร้อมใช้งาน
+          <p id="cloudSyncStatus" class="text-slate-500 dark:text-slate-400 font-semibold flex items-center gap-2 pt-0.5">
+            <i class="fa-solid fa-circle text-[10px] text-emerald-400 shadow-[0_0_8px_rgba(52,211,153,0.8)]"></i> ออนไลน์พร้อมใช้งาน
           </p>
         </div>
       </div>
 
-      <nav class="hidden lg:flex items-center space-x-1.5 bg-slate-100 dark:bg-slate-800/80 p-1.5 rounded-2xl border border-slate-200 dark:border-slate-700">
-        <button id="nav-btn-categories" onclick="switchTab('categories')" class="px-4 py-2 rounded-xl text-sm font-bold transition-all flex items-center space-x-2.5 bg-white dark:bg-slate-700 shadow text-rose-500 dark:text-white">
-          <i class="fa-solid fa-folder-open text-base text-amber-500 icon-vibrant"></i><span>หมวดหมู่การ์ด</span>
+      <nav class="hidden lg:flex items-center space-x-2 bg-slate-100 dark:bg-slate-800/80 p-2 rounded-2xl border border-slate-200 dark:border-slate-700">
+        <button id="nav-btn-categories" onclick="switchTab('categories')" class="px-5 py-2.5 rounded-xl font-bold transition-all flex items-center space-x-2.5 bg-white dark:bg-slate-700 shadow text-rose-500 dark:text-white">
+          <i class="fa-solid fa-folder-open text-amber-500 icon-vibrant"></i><span>หมวดหมู่การ์ด</span>
         </button>
-        <button id="nav-btn-draw" onclick="switchTab('draw')" class="px-4 py-2 rounded-xl text-sm font-bold transition-all flex items-center space-x-2.5 text-slate-600 dark:text-slate-300 hover:text-rose-500">
-          <i class="fa-solid fa-dice-d20 text-base text-purple-500 icon-vibrant"></i><span>หน้าสุ่ม</span>
+        <button id="nav-btn-draw" onclick="switchTab('draw')" class="px-5 py-2.5 rounded-xl font-bold transition-all flex items-center space-x-2.5 text-slate-600 dark:text-slate-300 hover:text-rose-500">
+          <i class="fa-solid fa-dice-d20 text-purple-500 icon-vibrant"></i><span>หน้าสุ่ม</span>
         </button>
-        <button id="nav-btn-data" onclick="switchTab('data')" class="px-4 py-2 rounded-xl text-sm font-bold transition-all flex items-center space-x-2.5 text-slate-600 dark:text-slate-300 hover:text-rose-500">
-          <i class="fa-solid fa-layer-group text-base text-cyan-500 icon-vibrant"></i><span>คลังข้อมูล (<span id="total-badge-count">0</span>)</span>
+        <button id="nav-btn-data" onclick="switchTab('data')" class="px-5 py-2.5 rounded-xl font-bold transition-all flex items-center space-x-2.5 text-slate-600 dark:text-slate-300 hover:text-rose-500">
+          <i class="fa-solid fa-layer-group text-cyan-500 icon-vibrant"></i><span>คลังข้อมูล (<span id="total-badge-count">0</span>)</span>
         </button>
-        <button id="nav-btn-history" onclick="switchTab('history')" class="px-4 py-2 rounded-xl text-sm font-bold transition-all flex items-center space-x-2.5 text-slate-600 dark:text-slate-300 hover:text-rose-500">
-          <i class="fa-solid fa-clock-rotate-left text-base text-emerald-500 icon-vibrant"></i><span>ประวัติ</span>
+        <button id="nav-btn-history" onclick="switchTab('history')" class="px-5 py-2.5 rounded-xl font-bold transition-all flex items-center space-x-2.5 text-slate-600 dark:text-slate-300 hover:text-rose-500">
+          <i class="fa-solid fa-clock-rotate-left text-emerald-500 icon-vibrant"></i><span>ประวัติ</span>
         </button>
-        <a href="profile.html" class="px-4 py-2 rounded-xl text-sm font-bold transition-all flex items-center space-x-2.5 text-slate-600 dark:text-slate-300 hover:text-rose-500 border-l border-slate-200 dark:border-slate-700 ml-1">
-          <i class="fa-solid fa-circle-user text-lg text-rose-500 icon-vibrant"></i><span>โปรไฟล์</span>
+        <a href="profile.html" class="px-5 py-2.5 rounded-xl font-bold transition-all flex items-center space-x-2.5 text-slate-600 dark:text-slate-300 hover:text-rose-500 border-l border-slate-200 dark:border-slate-700 ml-1">
+          <i class="fa-solid fa-circle-user text-rose-500 icon-vibrant"></i><span>โปรไฟล์</span>
         </a>
       </nav>
 
-      <div class="flex items-center space-x-2 shrink-0">
-        <button onclick="forceSyncFromCloud()" title="ดึงข้อมูลล่าสุดจาก Cloud 100%" class="px-3.5 py-2.5 rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-200 hover:bg-slate-50 text-xs sm:text-sm font-black transition flex items-center gap-2 shadow-sm">
-          <i id="syncIcon" class="fa-solid fa-cloud-arrow-down text-blue-500 text-sm sm:text-base"></i><span class="hidden sm:inline">Sync Cloud</span>
+      <div class="flex items-center space-x-3 shrink-0">
+        <button onclick="forceSyncFromCloud()" title="ดึงข้อมูลล่าสุดจาก Cloud 100%" class="px-4 py-3 rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-200 hover:bg-slate-50 font-black transition flex items-center gap-2 shadow-sm">
+          <i id="syncIcon" class="fa-solid fa-cloud-arrow-down text-blue-500"></i><span class="hidden sm:inline">Sync Cloud</span>
         </button>
-        <button onclick="openSettingModal()" class="w-10 h-10 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:text-rose-500 flex items-center justify-center transition shadow-sm">
-          <i class="fa-solid fa-gear text-lg text-amber-500"></i>
+        <button onclick="openSettingModal()" class="w-12 h-12 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:text-rose-500 flex items-center justify-center transition shadow-sm" title="ตั้งค่าระบบ">
+          <i class="fa-solid fa-gear text-xl text-amber-500"></i>
         </button>
       </div>
     </div>
   </header>
 
-  <!-- TOP BAR SECTION: แถบ HUD ทางซ้าย + ป้ายหมวดหมู่การ์ดแบบย่อมุมขวาบน -->
-  <div class="max-w-7xl w-full mx-auto px-3 sm:px-6 lg:px-8 pt-3">
-    <div class="flex flex-col lg:flex-row items-start justify-between gap-3">
+  <!-- TOP BAR SECTION: HUD + ป้ายหมวดหมู่ -->
+  <div class="max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 pt-4">
+    <div class="flex flex-col lg:flex-row items-start justify-between gap-4">
       
       <!-- Player Career HUD Widget -->
-      <div id="playerHudWidget" class="w-full lg:max-w-xl p-3.5 sm:p-4 rounded-3xl bg-white/95 dark:bg-slate-800/95 border border-slate-200 dark:border-slate-700 shadow-md card-vibrant-glow space-y-2.5 animate-pop-in">
-        <div class="flex items-center justify-between gap-3 border-b border-slate-100 dark:border-slate-700/80 pb-2">
-          <div class="flex items-center gap-2.5 min-w-0">
-            <div id="hudAvatarWrapper" class="w-10 h-10 sm:w-11 sm:h-11 rounded-2xl bg-gradient-to-tr from-rose-500 via-amber-500 to-emerald-400 text-white flex items-center justify-center text-lg sm:text-xl shadow-md shrink-0 overflow-hidden icon-vibrant">
+      <div id="playerHudWidget" class="w-full lg:max-w-2xl p-4 sm:p-5 rounded-3xl bg-white/95 dark:bg-slate-800/95 border border-slate-200 dark:border-slate-700 shadow-md card-vibrant-glow space-y-3 animate-pop-in">
+        <div class="flex items-center justify-between gap-3 border-b border-slate-100 dark:border-slate-700/80 pb-3">
+          <div class="flex items-center gap-3 min-w-0">
+            <div id="hudAvatarWrapper" class="w-12 h-12 sm:w-14 sm:h-14 rounded-2xl bg-gradient-to-tr from-rose-500 via-amber-500 to-emerald-400 text-white flex items-center justify-center text-2xl shadow-md shrink-0 overflow-hidden icon-vibrant">
               <i class="fa-solid fa-user-astronaut"></i>
             </div>
             <div class="min-w-0">
-              <div class="flex items-center gap-1.5">
-                <h4 id="hudPlayerName" class="font-black text-xs sm:text-sm text-slate-900 dark:text-white truncate">ผู้เล่นทั่วไป</h4>
-                <span id="hudRoleBadge" class="text-[9px] font-black px-1.5 py-0.2 rounded-full bg-rose-500 text-white uppercase tracking-wider">PLAYER</span>
+              <div class="flex items-center gap-2">
+                <h4 id="hudPlayerName" class="font-black text-slate-900 dark:text-white truncate">ผู้เล่นทั่วไป</h4>
+                <span id="hudRoleBadge" class="font-black px-2 py-0.5 rounded-full bg-rose-500 text-white uppercase tracking-wider">PLAYER</span>
               </div>
-              <span id="hudCareerTitle" class="text-[11px] font-bold text-rose-500 dark:text-rose-400 truncate block">ยังไม่ได้เลือกอาชีพ</span>
+              <span id="hudCareerTitle" class="font-bold text-rose-500 dark:text-rose-400 truncate block pt-0.5">ยังไม่ได้เลือกอาชีพ</span>
             </div>
           </div>
 
-          <a href="profile.html" class="px-2.5 py-1 rounded-xl text-[11px] font-black bg-purple-50 dark:bg-purple-950/60 text-purple-600 dark:text-purple-300 border border-purple-200 dark:border-purple-800 hover:scale-105 transition flex items-center gap-1 shrink-0" title="ไปหน้าจัดการโปรไฟล์">
+          <a href="profile.html" class="px-3.5 py-2 rounded-xl font-black bg-purple-50 dark:bg-purple-950/60 text-purple-600 dark:text-purple-300 border border-purple-200 dark:border-purple-800 hover:scale-105 transition flex items-center gap-2 shrink-0" title="ไปหน้าจัดการโปรไฟล์">
             <i class="fa-solid fa-id-card"></i>
             <span class="hidden sm:inline">โปรไฟล์</span>
           </a>
         </div>
 
-        <div class="grid grid-cols-2 sm:grid-cols-5 gap-1.5 font-mono text-center">
-          <div class="p-1.5 rounded-xl bg-amber-50 dark:bg-amber-950/30 border border-amber-200 dark:border-amber-800/60">
-            <span class="text-[9px] font-sans font-bold text-amber-600 dark:text-amber-400 block truncate"><i class="fa-solid fa-coins mr-0.5"></i>เงินสด</span>
-            <strong id="hudCash" class="text-[11px] sm:text-xs font-black text-amber-500 block truncate">฿0</strong>
+        <div class="grid grid-cols-2 sm:grid-cols-5 gap-2 font-mono text-center">
+          <div class="p-2 rounded-2xl bg-amber-50 dark:bg-amber-950/30 border border-amber-200 dark:border-amber-800/60">
+            <span class="font-sans font-bold text-amber-600 dark:text-amber-400 block truncate"><i class="fa-solid fa-coins mr-1"></i>เงินสด</span>
+            <strong id="hudCash" class="font-black text-amber-500 block truncate">฿0</strong>
           </div>
 
-          <div class="p-1.5 rounded-xl bg-emerald-50 dark:bg-emerald-950/30 border border-emerald-200 dark:border-emerald-800/60">
-            <span class="text-[9px] font-sans font-bold text-emerald-600 dark:text-emerald-400 block truncate" title="(Active + Passive + เงินเดือน) - รายจ่าย"><i class="fa-solid fa-sack-dollar mr-0.5"></i>เหลือ/เดือน</span>
-            <strong id="hudNetMonthly" class="text-[11px] sm:text-xs font-black text-emerald-500 block truncate">฿0</strong>
+          <div class="p-2 rounded-2xl bg-emerald-50 dark:bg-emerald-950/30 border border-emerald-200 dark:border-emerald-800/60">
+            <span class="font-sans font-bold text-emerald-600 dark:text-emerald-400 block truncate" title="(Active + Passive + เงินเดือน) - รายจ่าย"><i class="fa-solid fa-sack-dollar mr-1"></i>เหลือ/เดือน</span>
+            <strong id="hudNetMonthly" class="font-black text-emerald-500 block truncate">฿0</strong>
           </div>
 
-          <div class="p-1.5 rounded-xl bg-rose-50 dark:bg-rose-950/30 border border-rose-200 dark:border-rose-900/60">
-            <span class="text-[9px] font-sans font-bold text-rose-600 dark:text-rose-400 block truncate"><i class="fa-solid fa-receipt mr-0.5"></i>รายจ่ายประจำ</span>
-            <strong id="hudExpenses" class="text-[11px] sm:text-xs font-black text-rose-500 block truncate">฿0</strong>
+          <div class="p-2 rounded-2xl bg-rose-50 dark:bg-rose-950/30 border border-rose-200 dark:border-rose-900/60">
+            <span class="font-sans font-bold text-rose-600 dark:text-rose-400 block truncate"><i class="fa-solid fa-receipt mr-1"></i>รายจ่ายประจำ</span>
+            <strong id="hudExpenses" class="font-black text-rose-500 block truncate">฿0</strong>
           </div>
 
-          <div class="p-1.5 rounded-xl bg-slate-100 dark:bg-slate-900/70 border border-slate-200 dark:border-slate-700">
-            <span class="text-[9px] font-sans font-bold text-slate-500 dark:text-slate-400 block truncate"><i class="fa-solid fa-hand-holding-dollar text-emerald-400 mr-0.5"></i>Active รวม</span>
-            <strong id="hudTotalActive" class="text-[11px] sm:text-xs font-black text-emerald-500 block truncate">฿0</strong>
+          <div class="p-2 rounded-2xl bg-slate-100 dark:bg-slate-900/70 border border-slate-200 dark:border-slate-700">
+            <span class="font-sans font-bold text-slate-500 dark:text-slate-400 block truncate"><i class="fa-solid fa-hand-holding-dollar text-emerald-400 mr-1"></i>Active รวม</span>
+            <strong id="hudTotalActive" class="font-black text-emerald-500 block truncate">฿0</strong>
           </div>
 
-          <div class="p-1.5 rounded-xl bg-slate-100 dark:bg-slate-900/70 border border-slate-200 dark:border-slate-700 col-span-2 sm:col-span-1">
-            <span class="text-[9px] font-sans font-bold text-slate-500 dark:text-slate-400 block truncate"><i class="fa-solid fa-seedling text-teal-400 mr-0.5"></i>Passive รวม</span>
-            <strong id="hudTotalPassive" class="text-[11px] sm:text-xs font-black text-teal-400 block truncate">฿0</strong>
+          <div class="p-2 rounded-2xl bg-slate-100 dark:bg-slate-900/70 border border-slate-200 dark:border-slate-700 col-span-2 sm:col-span-1">
+            <span class="font-sans font-bold text-slate-500 dark:text-slate-400 block truncate"><i class="fa-solid fa-seedling text-teal-400 mr-1"></i>Passive รวม</span>
+            <strong id="hudTotalPassive" class="font-black text-teal-400 block truncate">฿0</strong>
           </div>
         </div>
 
-        <div class="pt-1.5 border-t border-slate-100 dark:border-slate-700/80">
-          <div class="grid grid-cols-3 gap-1.5 text-center font-mono">
-            <div class="py-1 px-1 rounded-xl bg-rose-50/70 dark:bg-rose-950/20 border border-rose-200/60 dark:border-rose-900/40 flex items-center justify-center gap-1.5">
-              <span class="text-[10px] font-sans font-bold text-red-500 flex items-center gap-1"><i class="fa-solid fa-heart"></i> สุขภาพ</span>
-              <strong id="hudResHeart" class="text-xs font-black text-slate-800 dark:text-white">0/10</strong>
+        <div class="pt-2 border-t border-slate-100 dark:border-slate-700/80">
+          <div class="grid grid-cols-3 gap-2 text-center font-mono">
+            <div class="py-2 px-2 rounded-2xl bg-rose-50/70 dark:bg-rose-950/20 border border-rose-200/60 dark:border-rose-900/40 flex items-center justify-center gap-2">
+              <span class="font-sans font-bold text-red-500 flex items-center gap-1.5"><i class="fa-solid fa-heart"></i> สุขภาพ</span>
+              <strong id="hudResHeart" class="font-black text-slate-800 dark:text-white">0/10</strong>
             </div>
 
-            <div class="py-1 px-1 rounded-xl bg-slate-100/70 dark:bg-slate-900/60 border border-slate-200 dark:border-slate-700/80 flex items-center justify-center gap-1.5">
-              <span class="text-[10px] font-sans font-bold text-slate-700 dark:text-slate-300 flex items-center gap-1"><i class="fa-solid fa-clock"></i> เวลา</span>
-              <strong id="hudResTime" class="text-xs font-black text-slate-800 dark:text-white">0/10</strong>
+            <div class="py-2 px-2 rounded-2xl bg-slate-100/70 dark:bg-slate-900/60 border border-slate-200 dark:border-slate-700/80 flex items-center justify-center gap-2">
+              <span class="font-sans font-bold text-slate-700 dark:text-slate-300 flex items-center gap-1.5"><i class="fa-solid fa-clock"></i> เวลา</span>
+              <strong id="hudResTime" class="font-black text-slate-800 dark:text-white">0/10</strong>
             </div>
 
-            <div class="py-1 px-1 rounded-xl bg-blue-50/70 dark:bg-blue-950/20 border border-blue-200/60 dark:border-blue-900/40 flex items-center justify-center gap-1.5">
-              <span class="text-[10px] font-sans font-bold text-blue-600 dark:text-blue-400 flex items-center gap-1"><i class="fa-solid fa-book-bookmark"></i> ความรู้</span>
-              <strong id="hudResKnowledge" class="text-xs font-black text-slate-800 dark:text-white">0/10</strong>
+            <div class="py-2 px-2 rounded-2xl bg-blue-50/70 dark:bg-blue-950/20 border border-blue-200/60 dark:border-blue-900/40 flex items-center justify-center gap-2">
+              <span class="font-sans font-bold text-blue-600 dark:text-blue-400 flex items-center gap-1.5"><i class="fa-solid fa-book-bookmark"></i> ความรู้</span>
+              <strong id="hudResKnowledge" class="font-black text-slate-800 dark:text-white">0/10</strong>
             </div>
           </div>
         </div>
       </div>
 
       <!-- ป้ายหมวดหมู่การ์ดกิจกรรม -->
-      <div class="w-full lg:w-auto flex items-center justify-between lg:justify-end gap-2.5 p-2.5 sm:px-4 sm:py-2.5 rounded-2xl bg-white/90 dark:bg-slate-800/90 border border-slate-200 dark:border-slate-700 shadow-sm animate-pop-in shrink-0 self-stretch lg:self-start">
-        <div class="flex items-center gap-2">
-          <div class="w-8 h-8 rounded-xl bg-rose-500/10 text-rose-500 flex items-center justify-center text-sm shrink-0">
+      <div class="w-full lg:w-auto flex items-center justify-between lg:justify-end gap-3 p-3.5 sm:px-5 sm:py-3.5 rounded-2xl bg-white/90 dark:bg-slate-800/90 border border-slate-200 dark:border-slate-700 shadow-sm animate-pop-in shrink-0 self-stretch lg:self-start">
+        <div class="flex items-center gap-2.5">
+          <div class="w-10 h-10 rounded-xl bg-rose-500/10 text-rose-500 flex items-center justify-center text-lg shrink-0">
             <i class="fa-solid fa-shapes"></i>
           </div>
-          <span class="font-black text-xs sm:text-sm text-slate-800 dark:text-white whitespace-nowrap">หมวดหมู่การ์ดกิจกรรม</span>
+          <span class="font-black text-slate-800 dark:text-white whitespace-nowrap">หมวดหมู่การ์ดกิจกรรม</span>
         </div>
-        <button onclick="openCategoryModal()" class="text-xs font-black px-3 py-1.5 rounded-xl bg-slate-100 hover:bg-slate-200 dark:bg-slate-700 dark:hover:bg-slate-600 text-slate-700 dark:text-slate-200 transition border border-slate-300 dark:border-slate-600 flex items-center gap-1.5 shadow-2xs shrink-0" title="จัดการหมวดหมู่">
-          <i class="fa-solid fa-sliders text-rose-500 text-xs"></i>
+        <button onclick="openCategoryModal()" class="font-black px-4 py-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 dark:bg-slate-700 dark:hover:bg-slate-600 text-slate-700 dark:text-slate-200 transition border border-slate-300 dark:border-slate-600 flex items-center gap-2 shadow-2xs shrink-0" title="จัดการหมวดหมู่">
+          <i class="fa-solid fa-sliders text-rose-500"></i>
           <span>จัดการ</span>
         </button>
       </div>
@@ -275,45 +280,45 @@
   </div>
 
   <!-- Main Container -->
-  <main class="flex-1 max-w-7xl w-full mx-auto px-3 sm:px-6 lg:px-8 py-5">
+  <main class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6">
     
     <!-- VIEW 1: หมวดหมู่การ์ด -->
     <section id="view-categories" class="space-y-6 animate-pop-in">
-      <div id="categoryCardsGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5"></div>
+      <div id="categoryCardsGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5"></div>
     </section>
 
     <!-- VIEW 2: RANDOM DRAW VIEW -->
     <section id="view-draw" class="hidden space-y-6 animate-pop-in">
       <div class="max-w-2xl mx-auto flex items-center justify-between gap-3">
-        <button onclick="switchTab('categories')" class="px-4 py-2.5 text-xs sm:text-sm font-black text-slate-700 dark:text-slate-200 bg-white dark:bg-slate-800 hover:bg-slate-100 dark:hover:bg-slate-700 rounded-2xl transition flex items-center gap-2.5 border border-slate-200 dark:border-slate-700 shadow-sm">
+        <button onclick="switchTab('categories')" class="px-5 py-3 font-black text-slate-700 dark:text-slate-200 bg-white dark:bg-slate-800 hover:bg-slate-100 dark:hover:bg-slate-700 rounded-2xl transition flex items-center gap-3 border border-slate-200 dark:border-slate-700 shadow-sm">
           <i class="fa-solid fa-chevron-left text-rose-500"></i><span>กลับไปเลือกหมวดหมู่</span>
         </button>
-        <label class="flex items-center gap-2.5 cursor-pointer select-none bg-white dark:bg-slate-800 px-4 py-2.5 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm">
+        <label class="flex items-center gap-3 cursor-pointer select-none bg-white dark:bg-slate-800 px-5 py-3 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm">
           <input type="checkbox" id="uniqueDrawToggle" onchange="toggleUniqueDrawMode()" class="sr-only peer">
-          <div class="w-10 h-5 bg-slate-300 rounded-full peer dark:bg-slate-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-emerald-500 relative"></div>
-          <span class="text-xs sm:text-sm font-black text-slate-700 dark:text-slate-300">สุ่มไม่ซ้ำ</span>
+          <div class="w-12 h-6 bg-slate-300 rounded-full peer dark:bg-slate-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-emerald-500 relative"></div>
+          <span class="font-black text-slate-700 dark:text-slate-300">สุ่มไม่ซ้ำ</span>
         </label>
       </div>
 
       <div class="relative max-w-2xl mx-auto">
-        <div class="relative bg-white dark:bg-slate-800/90 rounded-[2.5rem] border border-slate-200 dark:border-slate-700 card-vibrant-glow p-8 sm:p-14 text-center shadow-2xl space-y-8 overflow-hidden">
+        <div class="relative bg-white dark:bg-slate-800/90 rounded-[2.5rem] border border-slate-200 dark:border-slate-700 card-vibrant-glow p-10 sm:p-16 text-center shadow-2xl space-y-8 overflow-hidden">
           <img src="logo.png" alt="Watermark" class="app-logo-img absolute -right-12 -bottom-12 w-52 h-52 object-contain opacity-5 dark:opacity-10 pointer-events-none select-none animate-spin-slow">
           <div class="space-y-4 relative z-10">
-            <div class="inline-flex items-center justify-center p-5 rounded-3xl shadow-xl text-4xl sm:text-5xl text-white icon-vibrant transform hover:scale-110 transition duration-300" id="stageCategoryIconWrapper">
+            <div class="inline-flex items-center justify-center p-6 rounded-3xl shadow-xl text-5xl text-white icon-vibrant transform hover:scale-110 transition duration-300" id="stageCategoryIconWrapper">
               <i id="stageCategoryIcon" class="fa-solid fa-dice-d20"></i>
             </div>
             <div>
-              <span class="text-xs sm:text-sm font-black uppercase tracking-widest text-slate-400 block mb-1">หมวดหมู่ที่พร้อมสุ่ม</span>
+              <span class="font-black uppercase tracking-widest text-slate-400 block mb-1">หมวดหมู่ที่พร้อมสุ่ม</span>
               <h2 id="stageCategoryTitle" class="responsive-title font-black text-slate-900 dark:text-white">ทุกหมวดหมู่</h2>
             </div>
-            <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-slate-100 dark:bg-slate-700/80 text-xs sm:text-sm font-mono font-bold text-slate-600 dark:text-slate-300 shadow-inner">
+            <div class="inline-flex items-center gap-3 px-5 py-2.5 rounded-full bg-slate-100 dark:bg-slate-700/80 font-mono font-bold text-slate-600 dark:text-slate-300 shadow-inner">
               <i class="fa-solid fa-layer-group text-amber-500"></i>
-              <span>คงเหลือในกอง: <strong id="poolRemainingBadge" class="text-rose-500 font-black text-sm sm:text-base">0/0</strong></span>
+              <span>คงเหลือในกอง: <strong id="poolRemainingBadge" class="text-rose-500 font-black">0/0</strong></span>
             </div>
           </div>
           <div class="relative z-10">
-            <button onclick="triggerRandomDraw()" class="w-full btn-theme-action text-white py-5 sm:py-6 px-8 rounded-3xl font-black text-xl sm:text-2xl shadow-xl hover:scale-[1.02] active:scale-[0.98] transition-all flex items-center justify-center gap-3.5 icon-vibrant">
-              <i class="fa-solid fa-wand-magic-sparkles text-2xl sm:text-3xl animate-bounce"></i>
+            <button onclick="triggerRandomDraw()" class="w-full btn-theme-action text-white py-6 px-8 rounded-3xl font-black text-2xl shadow-xl hover:scale-[1.02] active:scale-[0.98] transition-all flex items-center justify-center gap-4 icon-vibrant">
+              <i class="fa-solid fa-wand-magic-sparkles text-3xl animate-bounce"></i>
               <span>สุ่มข้อมูลการ์ด</span>
             </button>
           </div>
@@ -322,57 +327,57 @@
     </section>
 
     <!-- VIEW 3: คลังข้อมูลการ์ด -->
-    <section id="view-data" class="hidden space-y-5 animate-pop-in">
-      <div class="bg-white/90 dark:bg-slate-800/90 backdrop-blur border border-slate-200 dark:border-slate-700 rounded-3xl p-4 sm:p-5 shadow-sm flex flex-col lg:flex-row items-stretch lg:items-center justify-between gap-3">
-        <div class="flex flex-wrap items-center gap-2.5 flex-1">
-          <div class="relative flex-1 min-w-[180px]">
-            <input type="text" id="searchInput" oninput="renderDataTable()" placeholder="ค้นหาชื่อการ์ด หรือ ID..." class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-300 dark:border-slate-700 text-sm sm:text-base rounded-2xl pl-11 pr-4 py-2.5 outline-none font-medium text-slate-800 dark:text-white">
-            <i class="fa-solid fa-magnifying-glass absolute left-4 top-3.5 text-slate-400 text-base"></i>
+    <section id="view-data" class="hidden space-y-6 animate-pop-in">
+      <div class="bg-white/90 dark:bg-slate-800/90 backdrop-blur border border-slate-200 dark:border-slate-700 rounded-3xl p-5 shadow-sm flex flex-col lg:flex-row items-stretch lg:items-center justify-between gap-4">
+        <div class="flex flex-wrap items-center gap-3 flex-1">
+          <div class="relative flex-1 min-w-[220px]">
+            <input type="text" id="searchInput" oninput="renderDataTable()" placeholder="ค้นหาชื่อการ์ด หรือ ID..." class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded-2xl pl-12 pr-4 py-3 outline-none font-medium text-slate-800 dark:text-white">
+            <i class="fa-solid fa-magnifying-glass absolute left-4 top-4 text-slate-400"></i>
           </div>
-          <div class="relative w-full sm:w-48">
-            <select id="tableCategoryFilter" onchange="renderDataTable()" class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-300 dark:border-slate-700 text-sm sm:text-base rounded-2xl px-4 py-2.5 pr-8 outline-none font-bold text-slate-800 dark:text-white"></select>
+          <div class="relative w-full sm:w-56">
+            <select id="tableCategoryFilter" onchange="renderDataTable()" class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded-2xl px-4 py-3 pr-8 outline-none font-bold text-slate-800 dark:text-white"></select>
           </div>
         </div>
 
-        <div class="flex items-center gap-2 justify-between sm:justify-end">
-          <div class="inline-flex p-1 bg-slate-100 dark:bg-slate-900/80 rounded-2xl border border-slate-200 dark:border-slate-700">
-            <button type="button" id="viewModeCardBtn" onclick="setDataViewMode('cards')" class="px-3 py-1.5 rounded-xl text-xs sm:text-sm font-black transition flex items-center gap-1.5 bg-white dark:bg-slate-800 text-rose-500 shadow-xs">
+        <div class="flex items-center gap-3 justify-between sm:justify-end">
+          <div class="inline-flex p-1.5 bg-slate-100 dark:bg-slate-900/80 rounded-2xl border border-slate-200 dark:border-slate-700">
+            <button type="button" id="viewModeCardBtn" onclick="setDataViewMode('cards')" class="px-4 py-2 rounded-xl font-black transition flex items-center gap-2 bg-white dark:bg-slate-800 text-rose-500 shadow-xs">
               <i class="fa-solid fa-table-cells-large"></i><span>การ์ด</span>
             </button>
-            <button type="button" id="viewModeTableBtn" onclick="setDataViewMode('table')" class="px-3 py-1.5 rounded-xl text-xs sm:text-sm font-black transition flex items-center gap-1.5 text-slate-500 dark:text-slate-400 hover:text-slate-800 dark:hover:text-white">
+            <button type="button" id="viewModeTableBtn" onclick="setDataViewMode('table')" class="px-4 py-2 rounded-xl font-black transition flex items-center gap-2 text-slate-500 dark:text-slate-400 hover:text-slate-800 dark:hover:text-white">
               <i class="fa-solid fa-table-list"></i><span>ตาราง</span>
             </button>
           </div>
 
-          <button onclick="openAddEditModal()" class="px-4 sm:px-5 py-2.5 text-white font-black text-xs sm:text-sm rounded-2xl shadow-md btn-theme-action flex items-center gap-2 hover:scale-105 transition shrink-0">
-            <i class="fa-solid fa-plus-circle text-base"></i><span>สร้างการ์ดใหม่</span>
+          <button onclick="openAddEditModal()" class="px-6 py-3 text-white font-black rounded-2xl shadow-md btn-theme-action flex items-center gap-2.5 hover:scale-105 transition shrink-0">
+            <i class="fa-solid fa-plus-circle"></i><span>สร้างการ์ดใหม่</span>
           </button>
-          <button onclick="forceSyncFromCloud()" class="p-3 bg-slate-100 dark:bg-slate-700 border border-slate-300 dark:border-slate-600 text-sm font-bold rounded-2xl hover:bg-slate-200 transition shrink-0">
-            <i class="fa-solid fa-arrows-rotate text-blue-500"></i>
+          <button onclick="forceSyncFromCloud()" class="p-3.5 bg-slate-100 dark:bg-slate-700 border border-slate-300 dark:border-slate-600 font-bold rounded-2xl hover:bg-slate-200 transition shrink-0">
+            <i class="fa-solid fa-arrows-rotate text-blue-500 text-lg"></i>
           </button>
         </div>
       </div>
 
       <!-- โหมดการ์ด -->
-      <div id="cardsGridContainer" class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-3.5 sm:gap-4.5"></div>
+      <div id="cardsGridContainer" class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-5"></div>
 
       <!-- โหมดตารางกระชับ -->
       <div id="tableCompactContainer" class="hidden bg-white dark:bg-slate-800/90 border border-slate-200 dark:border-slate-700 rounded-3xl shadow-sm overflow-hidden">
         <div class="overflow-x-auto">
-          <table class="w-full text-left text-xs sm:text-sm border-collapse">
-            <thead class="bg-slate-50 dark:bg-slate-900 border-b border-slate-200 dark:border-slate-700 text-[11px] uppercase font-black text-slate-400 whitespace-nowrap">
+          <table class="w-full text-left border-collapse">
+            <thead class="bg-slate-50 dark:bg-slate-900 border-b border-slate-200 dark:border-slate-700 uppercase font-black text-slate-400 whitespace-nowrap">
               <tr>
-                <th class="py-3 px-2.5 text-center w-10">#</th>
-                <th class="py-3 px-2.5 w-24 text-center">ID</th>
-                <th class="py-3 px-3 min-w-[160px]">ชื่อการ์ด</th>
-                <th class="py-3 px-2.5 text-indigo-400 text-center min-w-[90px]">สายงาน</th>
-                <th class="py-3 px-2.5 text-cyan-500 text-right min-w-[70px]">PV</th>
-                <th class="py-3 px-2.5 text-red-500 text-right min-w-[85px]"><i class="fa-solid fa-coins mr-1"></i>ราคา</th>
-                <th class="py-3 px-2.5 text-emerald-500 text-right min-w-[90px]"><i class="fa-solid fa-hand-holding-dollar mr-1"></i>Active</th>
-                <th class="py-3 px-2.5 text-teal-400 text-right min-w-[90px]"><i class="fa-solid fa-seedling mr-1"></i>Passive</th>
-                <th class="py-3 px-3 min-w-[190px]">ทรัพยากร (ใช้ / ได้)</th>
-                <th class="py-3 px-2.5 text-center min-w-[90px]">หมวดหมู่</th>
-                <th class="py-3 px-2.5 text-center w-28 sticky right-0 bg-slate-50 dark:bg-slate-900 shadow-l">จัดการ</th>
+                <th class="py-4 px-3 text-center w-12">#</th>
+                <th class="py-4 px-3 w-28 text-center">ID</th>
+                <th class="py-4 px-4 min-w-[180px]">ชื่อการ์ด</th>
+                <th class="py-4 px-3 text-indigo-400 text-center min-w-[100px]">สายงาน</th>
+                <th class="py-4 px-3 text-cyan-500 text-right min-w-[80px]">PV</th>
+                <th class="py-4 px-3 text-red-500 text-right min-w-[100px]"><i class="fa-solid fa-coins mr-1"></i>ราคา</th>
+                <th class="py-4 px-3 text-emerald-500 text-right min-w-[100px]"><i class="fa-solid fa-hand-holding-dollar mr-1"></i>Active</th>
+                <th class="py-4 px-3 text-teal-400 text-right min-w-[100px]"><i class="fa-solid fa-seedling mr-1"></i>Passive</th>
+                <th class="py-4 px-4 min-w-[210px]">ทรัพยากร (ใช้ / ได้)</th>
+                <th class="py-4 px-3 text-center min-w-[100px]">หมวดหมู่</th>
+                <th class="py-4 px-3 text-center w-32 sticky right-0 bg-slate-50 dark:bg-slate-900 shadow-l">จัดการ</th>
               </tr>
             </thead>
             <tbody id="tableBodyCompact" class="divide-y divide-slate-100 dark:divide-slate-700/60 font-medium"></tbody>
@@ -381,15 +386,15 @@
       </div>
     </section>
 
-    <!-- VIEW 4: ประวัติการสุ่ม (คลิกที่เลขที่การ์ดเพื่อเปิดดูข้อมูลการ์ดใបนั้นๆ ได้ทันที) -->
-    <section id="view-history" class="hidden space-y-4 animate-pop-in">
-      <div class="bg-white/90 dark:bg-slate-800/90 backdrop-blur border border-slate-200 dark:border-slate-700 rounded-3xl p-4 sm:p-5 shadow-sm flex items-center justify-between">
-        <h3 class="font-black text-lg text-slate-800 dark:text-white flex items-center gap-2.5">
-          <i class="fa-solid fa-clock-rotate-left text-emerald-500 text-xl icon-vibrant"></i>
+    <!-- VIEW 4: ประวัติการสุ่ม -->
+    <section id="view-history" class="hidden space-y-5 animate-pop-in">
+      <div class="bg-white/90 dark:bg-slate-800/90 backdrop-blur border border-slate-200 dark:border-slate-700 rounded-3xl p-5 shadow-sm flex items-center justify-between">
+        <h3 class="font-black text-xl text-slate-800 dark:text-white flex items-center gap-3">
+          <i class="fa-solid fa-clock-rotate-left text-emerald-500 text-2xl icon-vibrant"></i>
           <span>บันทึกประวัติการสุ่ม (คลิก ID เพื่อดูการ์ด)</span>
         </h3>
-        <button onclick="clearHistoryLog()" class="px-4 py-2 text-xs sm:text-sm font-black text-rose-600 dark:text-rose-400 hover:bg-rose-50 dark:hover:bg-rose-950/40 rounded-xl transition border border-rose-200 dark:border-rose-800">
-          <i class="fa-solid fa-trash-can mr-1.5"></i>ล้างประวัติ
+        <button onclick="clearHistoryLog()" class="px-5 py-2.5 font-black text-rose-600 dark:text-rose-400 hover:bg-rose-50 dark:hover:bg-rose-950/40 rounded-2xl transition border border-rose-200 dark:border-rose-800">
+          <i class="fa-solid fa-trash-can mr-2"></i>ล้างประวัติ
         </button>
       </div>
       <div class="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-3xl shadow-sm overflow-hidden">
@@ -399,132 +404,132 @@
   </main>
 
   <!-- Mobile Bottom Nav Bar -->
-  <nav class="lg:hidden fixed bottom-0 left-0 right-0 z-40 bg-white/95 dark:bg-slate-900/95 backdrop-blur-md border-t border-slate-200 dark:border-slate-800 px-3 py-2 flex items-center justify-around shadow-lg">
+  <nav class="lg:hidden fixed bottom-0 left-0 right-0 z-40 bg-white/95 dark:bg-slate-900/95 backdrop-blur-md border-t border-slate-200 dark:border-slate-800 px-3 py-3 flex items-center justify-around shadow-lg">
     <button onclick="switchTab('categories')" id="m-nav-categories" class="flex flex-col items-center gap-1 text-slate-400">
-      <i class="fa-solid fa-shapes text-xl"></i><span class="text-[10px] font-black">หมวดหมู่</span>
+      <i class="fa-solid fa-shapes text-2xl"></i><span class="font-black">หมวดหมู่</span>
     </button>
     <button onclick="switchTab('draw')" id="m-nav-draw" class="flex flex-col items-center gap-1 text-slate-400">
-      <i class="fa-solid fa-dice-d20 text-xl"></i><span class="text-[10px] font-black">หน้าสุ่ม</span>
+      <i class="fa-solid fa-dice-d20 text-2xl"></i><span class="font-black">หน้าสุ่ม</span>
     </button>
     <button onclick="switchTab('data')" id="m-nav-data" class="flex flex-col items-center gap-1 text-rose-500">
-      <i class="fa-solid fa-layer-group text-xl"></i><span class="text-[10px] font-black">คลังข้อมูล</span>
+      <i class="fa-solid fa-layer-group text-2xl"></i><span class="font-black">คลังข้อมูล</span>
     </button>
     <button onclick="switchTab('history')" id="m-nav-history" class="flex flex-col items-center gap-1 text-slate-400">
-      <i class="fa-solid fa-clock-rotate-left text-xl"></i><span class="text-[10px] font-black">ประวัติ</span>
+      <i class="fa-solid fa-clock-rotate-left text-2xl"></i><span class="font-black">ประวัติ</span>
     </button>
     <a href="profile.html" class="flex flex-col items-center gap-1 text-slate-400">
-      <i class="fa-solid fa-circle-user text-xl"></i><span class="text-[10px] font-black">โปรไฟล์</span>
+      <i class="fa-solid fa-circle-user text-2xl"></i><span class="font-black">โปรไฟล์</span>
     </a>
   </nav>
 
-  <!-- MODAL ผลการสุ่มการ์ด (ขนาดใหญ่ max-w-4xl h-[90vh] ฟอนต์ใหญ่ชัดเจน) -->
-  <div id="drawResultModal" class="hidden fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-md flex items-center justify-center p-2 sm:p-4 overflow-y-auto">
-    <div class="relative max-w-4xl w-[95vw] h-[90vh] sm:h-[88vh] bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-[2.5rem] p-5 sm:p-8 shadow-2xl animate-card-flip flex flex-col justify-between my-auto overflow-y-auto">
+  <!-- MODAL ผลการสุ่มการ์ด (ขนาดเต็มจอสูงสุดชัดเจน) -->
+  <div id="drawResultModal" class="hidden fixed inset-0 z-50 bg-slate-950/85 backdrop-blur-md flex items-center justify-center p-2 sm:p-5 overflow-y-auto">
+    <div class="relative max-w-5xl w-[96vw] h-[92vh] sm:h-[88vh] bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-[3rem] p-6 sm:p-10 shadow-2xl animate-card-flip flex flex-col justify-between my-auto overflow-y-auto">
       
       <div>
-        <div class="flex items-center justify-between border-b pb-3.5 border-slate-200 dark:border-slate-800 gap-2">
-          <div class="flex items-center gap-2.5">
-            <span id="drawResultCategoryBadge" class="text-sm sm:text-base font-black px-4 py-1 rounded-full border shadow-sm">หมวดหมู่</span>
-            <span id="drawResultTargetBadge" class="text-xs sm:text-sm font-bold text-indigo-500 bg-indigo-50 dark:bg-indigo-950/60 px-3 py-1 rounded-xl border border-indigo-200 dark:border-indigo-800">ส่วนตัว</span>
+        <div class="flex items-center justify-between border-b pb-4 border-slate-200 dark:border-slate-800 gap-3">
+          <div class="flex items-center gap-3">
+            <span id="drawResultCategoryBadge" class="font-black px-5 py-1.5 rounded-full border shadow-sm">หมวดหมู่</span>
+            <span id="drawResultTargetBadge" class="font-bold text-indigo-500 bg-indigo-50 dark:bg-indigo-950/60 px-4 py-1.5 rounded-2xl border border-indigo-200 dark:border-indigo-800">ส่วนตัว</span>
           </div>
-          <button type="button" id="toggleSimulationBtn" onclick="toggleSimulationPanel()" class="px-3.5 py-1.5 rounded-xl text-xs sm:text-sm font-black bg-purple-50 dark:bg-purple-950/60 text-purple-600 dark:text-purple-300 border border-purple-200 dark:border-purple-800 flex items-center gap-2 shadow-sm hover:scale-105 active:scale-95 transition">
-            <i class="fa-solid fa-calculator text-amber-500 text-sm"></i>
+          <button type="button" id="toggleSimulationBtn" onclick="toggleSimulationPanel()" class="px-4 py-2 rounded-2xl font-black bg-purple-50 dark:bg-purple-950/60 text-purple-600 dark:text-purple-300 border border-purple-200 dark:border-purple-800 flex items-center gap-2.5 shadow-sm hover:scale-105 active:scale-95 transition">
+            <i class="fa-solid fa-calculator text-amber-500"></i>
             <span>จำลองผล</span>
           </button>
         </div>
 
-        <!-- Simulation Panel -->
-        <div id="simulationPanel" class="hidden mt-4 bg-slate-900/95 text-white p-4 sm:p-5 rounded-3xl border border-purple-500/40 text-left space-y-3 animate-pop-in font-mono shadow-xl">
-          <div class="flex items-center justify-between border-b border-slate-800 pb-2">
-            <span class="text-xs sm:text-sm font-black text-amber-400 flex items-center gap-2">
-              <i class="fa-solid fa-chart-line text-base"></i> จำลองสถานะเปรียบเทียบหลังรับการ์ด
+        <!-- Simulation Panel: แสดงผลเปรียบเทียบและการกระพริบเขียว/แดง -->
+        <div id="simulationPanel" class="hidden mt-5 bg-slate-900/95 text-white p-5 sm:p-6 rounded-3xl border border-purple-500/40 text-left space-y-4 animate-pop-in font-mono shadow-xl">
+          <div class="flex items-center justify-between border-b border-slate-800 pb-3">
+            <span class="font-black text-amber-400 flex items-center gap-2.5">
+              <i class="fa-solid fa-chart-line text-lg"></i> จำลองสถานะเปรียบเทียบหลังรับการ์ด
             </span>
-            <span id="simAffordStatusBadge" class="text-xs font-bold px-2.5 py-0.5 rounded-full bg-emerald-500 text-white">พอจ่าย</span>
+            <span id="simAffordStatusBadge" class="font-bold px-3 py-1 rounded-full bg-emerald-500 text-white">พอจ่าย</span>
           </div>
 
-          <div class="grid grid-cols-1 md:grid-cols-3 gap-3 text-xs sm:text-sm">
-            <div class="bg-slate-800/90 p-3 rounded-2xl border border-slate-700 space-y-1">
-              <span class="text-xs font-sans font-black text-slate-400 block"><i class="fa-solid fa-coins text-amber-400 mr-1"></i> เงินสด (Cash)</span>
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div class="bg-slate-800/90 p-4 rounded-2xl border border-slate-700 space-y-1.5">
+              <span class="font-sans font-black text-slate-400 block"><i class="fa-solid fa-coins text-amber-400 mr-1.5"></i> เงินสด (Cash)</span>
               <div class="flex items-center justify-between pt-1">
-                <span class="text-slate-300 text-xs">เดิม: <strong id="simCurrentCash" class="text-amber-400 text-sm">฿0</strong></span>
+                <span class="text-slate-300">เดิม: <strong id="simCurrentCash" class="text-amber-400">฿0</strong></span>
                 <i class="fa-solid fa-arrow-right text-slate-500"></i>
-                <span class="text-slate-300 text-xs">หลังรับ: <strong id="simResultCash" class="text-emerald-400 text-sm">฿0</strong></span>
+                <span class="text-slate-300">หลังรับ: <strong id="simResultCash" class="text-emerald-400">฿0</strong></span>
               </div>
             </div>
 
-            <div class="bg-slate-800/90 p-3 rounded-2xl border border-slate-700 space-y-1.5 md:col-span-2">
-              <span class="text-xs font-sans font-black text-slate-400 block">ทรัพยากร (❤️ สุขภาพ | ⏳ เวลา | 💡 ความรู้) 1-10</span>
-              <div class="grid grid-cols-3 gap-2 text-center text-xs">
-                <div class="bg-slate-900/80 p-2 rounded-xl border border-slate-800">
-                  <span class="text-red-400 block text-[10px] font-bold"><i class="fa-solid fa-heart mr-0.5"></i> สุขภาพ</span>
-                  <span id="simResHeart" class="font-black text-sm">10 ➔ 10</span>
+            <div class="bg-slate-800/90 p-4 rounded-2xl border border-slate-700 space-y-2 md:col-span-2">
+              <span class="font-sans font-black text-slate-400 block">ทรัพยากร (❤️ สุขภาพ | ⏳ เวลา | 💡 ความรู้) 1-10</span>
+              <div class="grid grid-cols-3 gap-3 text-center">
+                <div class="bg-slate-900/80 p-2.5 rounded-xl border border-slate-800">
+                  <span class="text-red-400 block font-bold"><i class="fa-solid fa-heart mr-1"></i> สุขภาพ</span>
+                  <span id="simResHeart" class="font-black">10 ➔ 10</span>
                 </div>
-                <div class="bg-slate-900/80 p-2 rounded-xl border border-slate-800">
-                  <span class="text-slate-300 block text-[10px] font-bold"><i class="fa-solid fa-clock mr-0.5"></i> เวลา</span>
-                  <span id="simResTime" class="font-black text-sm">10 ➔ 10</span>
+                <div class="bg-slate-900/80 p-2.5 rounded-xl border border-slate-800">
+                  <span class="text-slate-300 block font-bold"><i class="fa-solid fa-clock mr-1"></i> เวลา</span>
+                  <span id="simResTime" class="font-black">10 ➔ 10</span>
                 </div>
-                <div class="bg-slate-900/80 p-2 rounded-xl border border-slate-800">
-                  <span class="text-blue-400 block text-[10px] font-bold"><i class="fa-solid fa-book-bookmark mr-0.5"></i> ความรู้</span>
-                  <span id="simResKnowledge" class="font-black text-sm">10 ➔ 10</span>
+                <div class="bg-slate-900/80 p-2.5 rounded-xl border border-slate-800">
+                  <span class="text-blue-400 block font-bold"><i class="fa-solid fa-book-bookmark mr-1"></i> ความรู้</span>
+                  <span id="simResKnowledge" class="font-black">10 ➔ 10</span>
                 </div>
               </div>
             </div>
           </div>
         </div>
 
-        <div class="my-5 space-y-3">
-          <div id="drawResultIconBox" class="w-20 h-20 sm:w-24 sm:h-24 rounded-3xl mx-auto flex items-center justify-center text-4xl sm:text-5xl text-white shadow-2xl btn-theme-action icon-vibrant">
+        <div class="my-6 space-y-4 text-center">
+          <div id="drawResultIconBox" class="w-24 h-24 sm:w-28 sm:h-28 rounded-3xl mx-auto flex items-center justify-center text-5xl text-white shadow-2xl btn-theme-action icon-vibrant">
             <i id="drawResultIcon" class="fa-solid fa-star"></i>
           </div>
-          <div class="space-y-1">
-            <span id="drawResultCardId" class="text-xs sm:text-sm font-mono font-bold text-slate-400 block">ID: -</span>
-            <h3 id="drawResultTitle" class="text-xl sm:text-2xl md:text-3xl font-black text-slate-900 dark:text-white leading-snug break-words whitespace-normal" style="font-size: clamp(1.25rem, 2vw + 1rem, 1.85rem);">ชื่อการ์ด</h3>
+          <div class="space-y-1.5">
+            <span id="drawResultCardId" class="font-mono font-bold text-slate-400 block">ID: -</span>
+            <h3 id="drawResultTitle" class="font-black text-slate-900 dark:text-white leading-snug break-words whitespace-normal" style="font-size: clamp(1.5rem, 2.5vw + 1.2rem, 2.2rem);">ชื่อการ์ด</h3>
           </div>
         </div>
 
-        <div class="grid grid-cols-2 gap-3 bg-slate-50 dark:bg-slate-900/80 p-4 rounded-3xl border border-slate-200 dark:border-slate-700 text-sm sm:text-base font-mono">
-          <div class="text-left">PV: <strong id="drawResultPv" class="text-cyan-400 text-lg sm:text-xl font-black block">0</strong></div>
+        <div class="grid grid-cols-2 gap-4 bg-slate-50 dark:bg-slate-900/80 p-5 rounded-3xl border border-slate-200 dark:border-slate-700 font-mono">
+          <div class="text-left">PV: <strong id="drawResultPv" class="text-cyan-400 font-black block" style="font-size: 1.5rem;">0</strong></div>
           <div class="text-right flex flex-col items-end">
-            <span class="text-red-500 text-xs font-sans font-black flex items-center gap-1"><i class="fa-solid fa-coins text-red-500"></i>ราคา (ต้องจ่าย)</span>
-            <strong id="drawResultPrice" class="text-red-500 text-lg sm:text-xl font-black block">฿0</strong>
+            <span class="text-red-500 font-sans font-black flex items-center gap-1.5"><i class="fa-solid fa-coins text-red-500"></i>ราคา (ต้องจ่าย)</span>
+            <strong id="drawResultPrice" class="text-red-500 font-black block" style="font-size: 1.5rem;">฿0</strong>
           </div>
-          <div class="text-left pt-2 border-t border-slate-200 dark:border-slate-700">
-            <span class="text-slate-400 text-xs font-sans flex items-center gap-1"><i class="fa-solid fa-hand-holding-dollar text-emerald-400"></i>Active</span>
-            <strong id="drawResultActive" class="text-emerald-400 font-black block text-base sm:text-lg">฿0</strong>
+          <div class="text-left pt-3 border-t border-slate-200 dark:border-slate-700">
+            <span class="text-slate-400 font-sans flex items-center gap-1.5"><i class="fa-solid fa-hand-holding-dollar text-emerald-400"></i>Active</span>
+            <strong id="drawResultActive" class="text-emerald-400 font-black block" style="font-size: 1.3rem;">฿0</strong>
           </div>
-          <div class="text-right pt-2 border-t border-slate-200 dark:border-slate-700">
-            <span class="text-slate-400 text-xs font-sans flex items-center gap-1"><i class="fa-solid fa-seedling text-teal-400"></i>Passive</span>
-            <strong id="drawResultPassive" class="text-teal-400 font-black block text-base sm:text-lg">฿0</strong>
+          <div class="text-right pt-3 border-t border-slate-200 dark:border-slate-700">
+            <span class="text-slate-400 font-sans flex items-center gap-1.5 justify-end"><i class="fa-solid fa-seedling text-teal-400"></i>Passive</span>
+            <strong id="drawResultPassive" class="text-teal-400 font-black block" style="font-size: 1.3rem;">฿0</strong>
           </div>
         </div>
         
-        <div id="drawResultResourceSection" class="mt-3 p-4 bg-slate-50 dark:bg-slate-900/70 rounded-3xl border border-slate-200 dark:border-slate-700 space-y-3 text-left">
-          <div class="space-y-1.5">
-            <div class="flex items-center justify-between text-xs sm:text-sm font-black text-rose-500">
+        <div id="drawResultResourceSection" class="mt-4 p-5 bg-slate-50 dark:bg-slate-900/70 rounded-3xl border border-slate-200 dark:border-slate-700 space-y-4 text-left">
+          <div class="space-y-2">
+            <div class="flex items-center justify-between font-black text-rose-500">
               <span>ทรัพยากรที่ต้องใช้ (Cost 1-10)</span>
             </div>
-            <div id="drawResultCostBars" class="space-y-1.5"></div>
+            <div id="drawResultCostBars" class="space-y-2"></div>
           </div>
-          <div class="space-y-1.5 pt-2 border-t border-slate-200 dark:border-slate-800">
-            <div class="flex items-center justify-between text-xs sm:text-sm font-black text-emerald-500">
+          <div class="space-y-2 pt-3 border-t border-slate-200 dark:border-slate-800">
+            <div class="flex items-center justify-between font-black text-emerald-500">
               <span>รางวัลที่จะได้รับ (Reward 1-10)</span>
             </div>
-            <div id="drawResultRewardBars" class="space-y-1.5"></div>
+            <div id="drawResultRewardBars" class="space-y-2"></div>
           </div>
         </div>
       </div>
 
-      <div class="pt-4 border-t border-slate-200 dark:border-slate-800 space-y-2">
-        <div id="insufficientWarningBox" class="hidden p-2.5 rounded-2xl bg-rose-50 dark:bg-rose-950/60 border border-rose-300 dark:border-rose-800 text-rose-600 dark:text-rose-300 text-xs sm:text-sm font-bold text-center">
-          <i class="fa-solid fa-triangle-exclamation mr-1.5 text-rose-500"></i>
+      <div class="pt-6 border-t border-slate-200 dark:border-slate-800 space-y-3">
+        <div id="insufficientWarningBox" class="hidden p-3.5 rounded-2xl bg-rose-50 dark:bg-rose-950/60 border border-rose-300 dark:border-rose-800 text-rose-600 dark:text-rose-300 font-bold text-center">
+          <i class="fa-solid fa-triangle-exclamation mr-2 text-rose-500 text-xl"></i>
           <span id="insufficientWarningText">ทรัพยากรของคุณไม่เพียงพอสำหรับการรับการ์ดใบนี้</span>
         </div>
 
-        <div class="grid grid-cols-2 gap-3">
-          <button type="button" onclick="closeDrawResultModal()" class="w-full py-3.5 rounded-2xl text-slate-700 dark:text-slate-200 font-black text-sm sm:text-base bg-slate-100 hover:bg-slate-200 dark:bg-slate-700 dark:hover:bg-slate-600 transition active:scale-95 shadow-sm">
+        <div class="grid grid-cols-2 gap-4">
+          <button type="button" onclick="closeDrawResultModal()" class="w-full py-4 rounded-2xl text-slate-700 dark:text-slate-200 font-black bg-slate-100 hover:bg-slate-200 dark:bg-slate-700 dark:hover:bg-slate-600 transition active:scale-95 shadow-sm">
             ไม่รับการ์ด
           </button>
-          <button type="button" id="claimCardBtn" onclick="claimDrawnCard()" class="w-full py-3.5 rounded-2xl text-white font-black text-sm sm:text-base btn-theme-action shadow-xl hover:scale-[1.02] active:scale-95 transition disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100">
+          <button type="button" id="claimCardBtn" onclick="claimDrawnCard()" class="w-full py-4 rounded-2xl text-white font-black btn-theme-action shadow-xl hover:scale-[1.02] active:scale-95 transition disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100">
             รับการ์ด
           </button>
         </div>
@@ -535,32 +540,32 @@
 
   <!-- Modal ฟอร์ม สร้าง / แก้ไข การ์ด -->
   <div id="cardModal" class="hidden fixed inset-0 z-50 bg-slate-950/75 backdrop-blur-sm flex items-center justify-center p-3 sm:p-5 overflow-y-auto">
-    <div class="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-3xl max-w-xl w-full p-6 sm:p-7 shadow-2xl relative space-y-5 my-auto">
-      <div class="flex items-center justify-between pb-3.5 border-b border-slate-100 dark:border-slate-700">
-        <h3 id="cardModalTitle" class="font-black text-lg text-slate-900 dark:text-white flex items-center gap-2.5">
-          <i class="fa-solid fa-pen-to-square text-cyan-400 text-xl"></i><span>แก้ไขข้อมูลการ์ด</span>
+    <div class="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-3xl max-w-xl w-full p-6 sm:p-8 shadow-2xl relative space-y-5 my-auto">
+      <div class="flex items-center justify-between pb-4 border-b border-slate-100 dark:border-slate-700">
+        <h3 id="cardModalTitle" class="font-black text-xl text-slate-900 dark:text-white flex items-center gap-3">
+          <i class="fa-solid fa-pen-to-square text-cyan-400 text-2xl"></i><span>แก้ไขข้อมูลการ์ด</span>
         </h3>
-        <button type="button" onclick="closeCardModal()" class="w-9 h-9 rounded-xl text-slate-400 hover:text-slate-700 dark:hover:text-white flex items-center justify-center">
-          <i class="fa-solid fa-xmark text-xl"></i>
+        <button type="button" onclick="closeCardModal()" class="w-10 h-10 rounded-xl text-slate-400 hover:text-slate-700 dark:hover:text-white flex items-center justify-center">
+          <i class="fa-solid fa-xmark text-2xl"></i>
         </button>
       </div>
 
-      <form id="cardForm" onsubmit="handleSaveCard(event)" class="space-y-4 text-xs sm:text-sm font-bold">
+      <form id="cardForm" onsubmit="handleSaveCard(event)" class="space-y-4 font-bold">
         <input type="hidden" id="cardEditId">
 
-        <div class="space-y-1.5">
+        <div class="space-y-2">
           <label class="text-slate-600 dark:text-slate-300">ชื่อการ์ด / รายการ <span class="text-rose-500">*</span></label>
-          <input type="text" id="cardTitleInput" required placeholder="เช่น ลงทะเบียนสัมมนา..." class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded-2xl px-4 py-3 outline-none font-medium text-slate-800 dark:text-white text-sm sm:text-base">
+          <input type="text" id="cardTitleInput" required placeholder="เช่น ลงทะเบียนสัมมนา..." class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded-2xl px-4 py-3.5 outline-none font-medium text-slate-800 dark:text-white">
         </div>
 
-        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
-          <div class="space-y-1.5">
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div class="space-y-2">
             <label class="text-slate-600 dark:text-slate-300">หมวดหมู่</label>
-            <select id="cardCategorySelect" class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded-2xl px-4 py-3 outline-none text-slate-800 dark:text-white"></select>
+            <select id="cardCategorySelect" class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded-2xl px-4 py-3.5 outline-none text-slate-800 dark:text-white"></select>
           </div>
-          <div class="space-y-1.5">
+          <div class="space-y-2">
             <label class="text-slate-600 dark:text-slate-300">เป้าหมาย (ใช้กับ)</label>
-            <select id="cardTargetSelect" class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded-2xl px-4 py-3 outline-none text-slate-800 dark:text-white">
+            <select id="cardTargetSelect" class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded-2xl px-4 py-3.5 outline-none text-slate-800 dark:text-white">
               <option value="personal">ส่วนตัว (Personal)</option>
               <option value="A">สายงาน A</option>
               <option value="B">สายงาน B</option>
@@ -573,101 +578,101 @@
         </div>
 
         <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 pt-1">
-          <div class="space-y-1">
+          <div class="space-y-1.5">
             <label class="text-cyan-500 font-black">PV</label>
-            <input type="number" id="cardPvInput" value="0" class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded-2xl px-3 py-2.5 font-mono text-right outline-none text-slate-800 dark:text-white text-sm sm:text-base">
+            <input type="number" id="cardPvInput" value="0" class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded-2xl px-3.5 py-3 font-mono text-right outline-none text-slate-800 dark:text-white">
           </div>
-          <div class="space-y-1">
-            <label class="text-red-500 font-black flex items-center gap-1"><i class="fa-solid fa-coins text-red-500"></i>ราคา (ต้องจ่าย)</label>
-            <input type="number" id="cardPriceInput" value="0" class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded-2xl px-3 py-2.5 font-mono text-right outline-none text-red-500 font-bold text-sm sm:text-base">
+          <div class="space-y-1.5">
+            <label class="text-red-500 font-black flex items-center gap-1"><i class="fa-solid fa-coins text-red-500"></i>ราคา</label>
+            <input type="number" id="cardPriceInput" value="0" class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded-2xl px-3.5 py-3 font-mono text-right outline-none text-red-500 font-bold">
           </div>
-          <div class="space-y-1">
+          <div class="space-y-1.5">
             <label class="text-emerald-500 font-black flex items-center gap-1"><i class="fa-solid fa-hand-holding-dollar text-emerald-400"></i>Active</label>
-            <input type="number" id="cardActiveInput" value="0" class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded-2xl px-3 py-2.5 font-mono text-right outline-none text-slate-800 dark:text-white text-sm sm:text-base">
+            <input type="number" id="cardActiveInput" value="0" class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded-2xl px-3.5 py-3 font-mono text-right outline-none text-slate-800 dark:text-white">
           </div>
-          <div class="space-y-1">
+          <div class="space-y-1.5">
             <label class="text-teal-500 font-black flex items-center gap-1"><i class="fa-solid fa-seedling text-teal-400"></i>Passive</label>
-            <input type="number" id="cardPassiveInput" value="0" class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded-2xl px-3 py-2.5 font-mono text-right outline-none text-slate-800 dark:text-white text-sm sm:text-base">
+            <input type="number" id="cardPassiveInput" value="0" class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded-2xl px-3.5 py-3 font-mono text-right outline-none text-slate-800 dark:text-white">
           </div>
         </div>
 
         <div class="p-4 bg-slate-50 dark:bg-slate-900/60 rounded-3xl border border-slate-200 dark:border-slate-700 space-y-3">
-          <span class="text-slate-400 block font-black text-xs uppercase tracking-wider">กำหนดระดับพลังทรัพยากร (0 - 10 ขีด)</span>
+          <span class="text-slate-400 block font-black uppercase tracking-wider">กำหนดระดับพลังทรัพยากร (0 - 10 ขีด)</span>
           <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div class="space-y-2">
               <span class="text-rose-500 font-black">ต้องใช้ (Cost 0-10)</span>
-              <div class="flex gap-2 items-center font-mono text-xs">
-                <span title="สุขภาพ" class="text-base"><i class="fa-solid fa-heart text-red-500"></i></span><input type="number" min="0" max="10" id="costHeart" value="0" class="w-14 p-2 border rounded-xl text-right dark:bg-slate-800 dark:border-slate-700">
-                <span title="เวลา" class="text-base"><i class="fa-solid fa-clock text-slate-800 dark:text-white"></i></span><input type="number" min="0" max="10" id="costTime" value="0" class="w-14 p-2 border rounded-xl text-right dark:bg-slate-800 dark:border-slate-700">
-                <span title="ความรู้" class="text-base"><i class="fa-solid fa-book-bookmark text-blue-600 dark:text-blue-400"></i></span><input type="number" min="0" max="10" id="costKnowledge" value="0" class="w-14 p-2 border rounded-xl text-right dark:bg-slate-800 dark:border-slate-700">
+              <div class="flex gap-2 items-center font-mono">
+                <span title="สุขภาพ" class="text-lg"><i class="fa-solid fa-heart text-red-500"></i></span><input type="number" min="0" max="10" id="costHeart" value="0" class="w-16 p-2.5 border rounded-xl text-right dark:bg-slate-800 dark:border-slate-700">
+                <span title="เวลา" class="text-lg"><i class="fa-solid fa-clock text-slate-800 dark:text-white"></i></span><input type="number" min="0" max="10" id="costTime" value="0" class="w-16 p-2.5 border rounded-xl text-right dark:bg-slate-800 dark:border-slate-700">
+                <span title="ความรู้" class="text-lg"><i class="fa-solid fa-book-bookmark text-blue-600 dark:text-blue-400"></i></span><input type="number" min="0" max="10" id="costKnowledge" value="0" class="w-16 p-2.5 border rounded-xl text-right dark:bg-slate-800 dark:border-slate-700">
               </div>
             </div>
             <div class="space-y-2">
               <span class="text-emerald-500 font-black">ได้รับ (Reward 0-10)</span>
-              <div class="flex gap-2 items-center font-mono text-xs">
-                <span title="สุขภาพ" class="text-base"><i class="fa-solid fa-heart text-red-500"></i></span><input type="number" min="0" max="10" id="rewardHeart" value="0" class="w-14 p-2 border rounded-xl text-right dark:bg-slate-800 dark:border-slate-700">
-                <span title="เวลา" class="text-base"><i class="fa-solid fa-clock text-slate-800 dark:text-white"></i></span><input type="number" min="0" max="10" id="rewardTime" value="0" class="w-14 p-2 border rounded-xl text-right dark:bg-slate-800 dark:border-slate-700">
-                <span title="ความรู้" class="text-base"><i class="fa-solid fa-book-bookmark text-blue-600 dark:text-blue-400"></i></span><input type="number" min="0" max="10" id="rewardKnowledge" value="0" class="w-14 p-2 border rounded-xl text-right dark:bg-slate-800 dark:border-slate-700">
+              <div class="flex gap-2 items-center font-mono">
+                <span title="สุขภาพ" class="text-lg"><i class="fa-solid fa-heart text-red-500"></i></span><input type="number" min="0" max="10" id="rewardHeart" value="0" class="w-16 p-2.5 border rounded-xl text-right dark:bg-slate-800 dark:border-slate-700">
+                <span title="เวลา" class="text-lg"><i class="fa-solid fa-clock text-slate-800 dark:text-white"></i></span><input type="number" min="0" max="10" id="rewardTime" value="0" class="w-16 p-2.5 border rounded-xl text-right dark:bg-slate-800 dark:border-slate-700">
+                <span title="ความรู้" class="text-lg"><i class="fa-solid fa-book-bookmark text-blue-600 dark:text-blue-400"></i></span><input type="number" min="0" max="10" id="rewardKnowledge" value="0" class="w-16 p-2.5 border rounded-xl text-right dark:bg-slate-800 dark:border-slate-700">
               </div>
             </div>
           </div>
         </div>
 
         <div class="flex items-center justify-end gap-3 pt-3 border-t border-slate-100 dark:border-slate-700">
-          <button type="button" onclick="closeCardModal()" class="px-5 py-3 rounded-2xl border border-slate-300 dark:border-slate-600 text-slate-600 dark:text-slate-300 hover:bg-slate-50">ยกเลิก</button>
-          <button type="submit" class="px-6 py-3 rounded-2xl text-white font-black btn-theme-action shadow-lg hover:scale-105 transition">บันทึกข้อมูลการ์ด</button>
+          <button type="button" onclick="closeCardModal()" class="px-6 py-3.5 rounded-2xl border border-slate-300 dark:border-slate-600 text-slate-600 dark:text-slate-300 hover:bg-slate-50 font-black">ยกเลิก</button>
+          <button type="submit" class="px-7 py-3.5 rounded-2xl text-white font-black btn-theme-action shadow-lg hover:scale-105 transition">บันทึกข้อมูลการ์ด</button>
         </div>
       </form>
     </div>
   </div>
 
-  <!-- Setting Modal (เพิ่มเครื่องมือปรับขนาดตัวอักษรสำหรับผู้มีปัญหาด้านสายตา) -->
+  <!-- Setting Modal (พร้อมปุ่มปรับขนาดตัวอักษร) -->
   <div id="settingModal" class="hidden fixed inset-0 z-50 bg-slate-950/75 backdrop-blur-sm flex items-center justify-center p-3 sm:p-5 overflow-y-auto">
-    <div class="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-[2.5rem] max-w-xl w-full p-6 sm:p-8 shadow-2xl relative space-y-5 my-auto">
-      <div class="flex items-center justify-between pb-3.5 border-b border-slate-100 dark:border-slate-700">
-        <h3 class="font-black text-lg text-slate-900 dark:text-white flex items-center gap-2.5"><i class="fa-solid fa-sliders text-amber-500"></i><span>การตั้งค่าระบบ & ฐานข้อมูล</span></h3>
-        <button onclick="closeSettingModal()" class="w-9 h-9 rounded-xl text-slate-400 hover:text-slate-700 flex items-center justify-center"><i class="fa-solid fa-xmark text-xl"></i></button>
+    <div class="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-[2.5rem] max-w-xl w-full p-6 sm:p-8 shadow-2xl relative space-y-6 my-auto">
+      <div class="flex items-center justify-between pb-4 border-b border-slate-100 dark:border-slate-700">
+        <h3 class="font-black text-xl text-slate-900 dark:text-white flex items-center gap-3"><i class="fa-solid fa-sliders text-amber-500 text-2xl"></i><span>การตั้งค่าระบบ & ฐานข้อมูล</span></h3>
+        <button onclick="closeSettingModal()" class="w-10 h-10 rounded-xl text-slate-400 hover:text-slate-700 flex items-center justify-center"><i class="fa-solid fa-xmark text-2xl"></i></button>
       </div>
 
-      <div class="grid grid-cols-2 gap-1.5 bg-slate-100 dark:bg-slate-900/60 p-1.5 rounded-2xl border border-slate-200 dark:border-slate-700 text-xs sm:text-sm font-black text-center">
-        <button type="button" id="tabSettingGeneralBtn" onclick="switchSettingTab('general')" class="py-2.5 rounded-xl transition bg-white dark:bg-slate-800 text-rose-500 dark:text-white shadow">ทั่วไป (General)</button>
-        <button type="button" id="tabSettingDatabaseBtn" onclick="switchSettingTab('database')" class="py-2.5 rounded-xl transition text-slate-500 hover:text-slate-800 dark:hover:text-white">ฐานข้อมูล (Data Base)</button>
+      <div class="grid grid-cols-2 gap-2 bg-slate-100 dark:bg-slate-900/60 p-2 rounded-2xl border border-slate-200 dark:border-slate-700 font-black text-center">
+        <button type="button" id="tabSettingGeneralBtn" onclick="switchSettingTab('general')" class="py-3 rounded-xl transition bg-white dark:bg-slate-800 text-rose-500 dark:text-white shadow">ทั่วไป (General)</button>
+        <button type="button" id="tabSettingDatabaseBtn" onclick="switchSettingTab('database')" class="py-3 rounded-xl transition text-slate-500 hover:text-slate-800 dark:hover:text-white">ฐานข้อมูล (Data Base)</button>
       </div>
 
-      <div id="settingTabContentGeneral" class="space-y-4">
-        <!-- เครื่องมือปรับขนาดตัวอักษรสำหรับช่วยการมองเห็น -->
-        <div class="p-4 bg-slate-50 dark:bg-slate-900/60 rounded-3xl border border-slate-200 dark:border-slate-700 space-y-2.5">
-          <span class="text-sm font-bold flex items-center gap-2 text-slate-800 dark:text-white">
-            <i class="fa-solid fa-text-height text-amber-500"></i> ปรับขนาดตัวอักษร (ช่วยการมองเห็น)
+      <div id="settingTabContentGeneral" class="space-y-5">
+        <!-- เครื่องมือปรับขนาดตัวอักษร -->
+        <div class="p-5 bg-slate-50 dark:bg-slate-900/60 rounded-3xl border border-slate-200 dark:border-slate-700 space-y-3">
+          <span class="font-bold flex items-center gap-2.5 text-slate-800 dark:text-white">
+            <i class="fa-solid fa-text-height text-amber-500 text-xl"></i> ปรับขนาดตัวอักษร (ช่วยการมองเห็น)
           </span>
-          <div class="grid grid-cols-3 gap-2">
-            <button onclick="setFontSizeScale(1)" id="fontBtn1" class="py-2 px-2 rounded-xl text-xs font-black border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-800 hover:border-amber-500 transition shadow-2xs">มาตรฐาน (100%)</button>
-            <button onclick="setFontSizeScale(1.15)" id="fontBtn115" class="py-2 px-2 rounded-xl text-xs font-black border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-800 hover:border-amber-500 transition shadow-2xs">ใหญ่ (115%)</button>
-            <button onclick="setFontSizeScale(1.3)" id="fontBtn13" class="py-2 px-2 rounded-xl text-xs font-black border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-800 hover:border-amber-500 transition shadow-2xs">ใหญ่พิเศษ (130%)</button>
+          <div class="grid grid-cols-3 gap-2.5">
+            <button onclick="setFontSizeScale(1)" id="fontBtn1" class="py-3 px-2 rounded-2xl font-black border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-800 hover:border-amber-500 transition shadow-2xs">มาตรฐาน (100%)</button>
+            <button onclick="setFontSizeScale(1.15)" id="fontBtn115" class="py-3 px-2 rounded-2xl font-black border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-800 hover:border-amber-500 transition shadow-2xs">ใหญ่ (115%)</button>
+            <button onclick="setFontSizeScale(1.3)" id="fontBtn13" class="py-3 px-2 rounded-2xl font-black border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-800 hover:border-amber-500 transition shadow-2xs">ใหญ่พิเศษ (130%)</button>
           </div>
         </div>
 
-        <div class="p-4 bg-slate-50 dark:bg-slate-900/60 rounded-3xl border border-slate-200 dark:border-slate-700 flex items-center justify-between">
-          <span class="text-sm font-bold flex items-center gap-2"><i class="fa-solid fa-moon text-indigo-400"></i>โหมดสว่าง / มืด</span>
-          <button onclick="toggleTheme()" class="px-4 py-2 rounded-xl text-xs sm:text-sm font-black border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-800 hover:scale-105 transition">สลับโหมด</button>
+        <div class="p-5 bg-slate-50 dark:bg-slate-900/60 rounded-3xl border border-slate-200 dark:border-slate-700 flex items-center justify-between">
+          <span class="font-bold flex items-center gap-3"><i class="fa-solid fa-moon text-indigo-400 text-xl"></i>โหมดสว่าง / มืด</span>
+          <button onclick="toggleTheme()" class="px-5 py-2.5 rounded-xl font-black border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-800 hover:scale-105 transition">สลับโหมด</button>
         </div>
 
-        <div class="p-4 bg-slate-50 dark:bg-slate-900/60 rounded-3xl border border-slate-200 dark:border-slate-700 space-y-3">
-          <div class="flex items-center gap-2">
-            <i class="fa-solid fa-database text-amber-500"></i>
-            <span class="text-sm font-black text-slate-800 dark:text-white">สำรองและส่งออกฐานข้อมูล (Backup & Export)</span>
+        <div class="p-5 bg-slate-50 dark:bg-slate-900/60 rounded-3xl border border-slate-200 dark:border-slate-700 space-y-4">
+          <div class="flex items-center gap-2.5">
+            <i class="fa-solid fa-database text-amber-500 text-xl"></i>
+            <span class="font-black text-slate-800 dark:text-white">สำรองและส่งออกฐานข้อมูล (Backup & Export)</span>
           </div>
-          <div class="grid grid-cols-3 gap-2.5 pt-1">
-            <button onclick="exportDatabaseToCSV()" class="w-full py-3 px-2 rounded-2xl bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-300 text-emerald-700 dark:text-emerald-300 text-xs font-black flex flex-col items-center justify-center gap-1.5 shadow-sm hover:scale-105 transition">
-              <i class="fa-solid fa-file-excel text-xl text-emerald-500"></i>
+          <div class="grid grid-cols-3 gap-3">
+            <button onclick="exportDatabaseToCSV()" class="w-full py-3.5 px-2 rounded-2xl bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-300 text-emerald-700 dark:text-emerald-300 font-black flex flex-col items-center justify-center gap-1.5 shadow-sm hover:scale-105 transition">
+              <i class="fa-solid fa-file-excel text-2xl text-emerald-500"></i>
               <span>Sheets (.CSV)</span>
             </button>
-            <button onclick="exportDatabase()" class="w-full py-3 px-2 rounded-2xl bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-600 text-slate-700 dark:text-slate-200 text-xs font-black flex flex-col items-center justify-center gap-1.5 shadow-sm hover:scale-105 transition">
-              <i class="fa-solid fa-file-arrow-down text-xl text-blue-500"></i>
+            <button onclick="exportDatabase()" class="w-full py-3.5 px-2 rounded-2xl bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-600 text-slate-700 dark:text-slate-200 font-black flex flex-col items-center justify-center gap-1.5 shadow-sm hover:scale-105 transition">
+              <i class="fa-solid fa-file-arrow-down text-2xl text-blue-500"></i>
               <span>Backup (.JSON)</span>
             </button>
-            <button onclick="triggerImportDatabase()" class="w-full py-3 px-2 rounded-2xl bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-600 text-slate-700 dark:text-slate-200 text-xs font-black flex flex-col items-center justify-center gap-1.5 shadow-sm hover:scale-105 transition">
-              <i class="fa-solid fa-file-arrow-up text-xl text-purple-500"></i>
+            <button onclick="triggerImportDatabase()" class="w-full py-3.5 px-2 rounded-2xl bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-600 text-slate-700 dark:text-slate-200 font-black flex flex-col items-center justify-center gap-1.5 shadow-sm hover:scale-105 transition">
+              <i class="fa-solid fa-file-arrow-up text-2xl text-purple-500"></i>
               <span>Import</span>
             </button>
             <input type="file" id="importFileInput" accept=".json" onchange="handleImportFile(event)" class="hidden">
@@ -677,22 +682,22 @@
 
       <div id="settingTabContentDatabase" class="hidden space-y-4">
         <div class="flex items-center justify-between">
-          <span class="text-xs sm:text-sm font-black uppercase text-slate-400">ตารางประวัติบนชีต (<span id="dbSnapTotalCount">0</span>)</span>
+          <span class="font-black uppercase text-slate-400">ตารางประวัติบนชีต (<span id="dbSnapTotalCount">0</span>)</span>
           <div class="flex gap-2">
-            <button onclick="fetchFromGoogleSheets(true)" class="px-3.5 py-2 rounded-xl bg-slate-100 dark:bg-slate-700 border text-xs sm:text-sm font-bold"><i class="fa-solid fa-rotate mr-1.5 text-blue-500"></i>ซิงก์ตาราง</button>
-            <button onclick="pushSnapshotToCloudById('cloud_active')" class="px-3.5 py-2 rounded-xl bg-blue-600 hover:bg-blue-700 text-white text-xs sm:text-sm font-black shadow"><i class="fa-solid fa-cloud-arrow-up mr-1.5"></i>Push Master</button>
+            <button onclick="fetchFromGoogleSheets(true)" class="px-4 py-2.5 rounded-xl bg-slate-100 dark:bg-slate-700 border font-bold"><i class="fa-solid fa-rotate mr-1.5 text-blue-500"></i>ซิงก์ตาราง</button>
+            <button onclick="pushSnapshotToCloudById('cloud_active')" class="px-4 py-2.5 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-black shadow"><i class="fa-solid fa-cloud-arrow-up mr-1.5"></i>Push Master</button>
           </div>
         </div>
 
         <div class="border border-slate-200 dark:border-slate-700 rounded-3xl overflow-hidden bg-slate-50 dark:bg-slate-900/60 max-h-72 overflow-y-auto">
-          <table class="w-full text-left text-xs sm:text-sm">
+          <table class="w-full text-left">
             <thead class="bg-white dark:bg-slate-800 border-b text-slate-400 font-bold sticky top-0">
               <tr>
-                <th class="py-3 px-3">ชื่อฐานข้อมูล</th>
-                <th class="py-3 px-2 text-center w-24">Version</th>
-                <th class="py-3 px-2 text-center w-28">วันเวลา</th>
-                <th class="py-3 px-2 text-right w-16">จำนวน</th>
-                <th class="py-3 px-3 text-center w-28">จัดการ</th>
+                <th class="py-3.5 px-4">ชื่อฐานข้อมูล</th>
+                <th class="py-3 px-3 text-center w-28">Version</th>
+                <th class="py-3 px-3 text-center w-32">วันเวลา</th>
+                <th class="py-3 px-3 text-right w-20">จำนวน</th>
+                <th class="py-3.5 px-4 text-center w-28">จัดการ</th>
               </tr>
             </thead>
             <tbody id="databaseListTableBody" class="divide-y divide-slate-100 dark:divide-slate-800 font-medium"></tbody>
@@ -705,19 +710,19 @@
   <!-- Category Manager Modal -->
   <div id="categoryModal" class="hidden fixed inset-0 z-50 bg-slate-950/70 backdrop-blur-sm flex items-center justify-center p-4 overflow-y-auto">
     <div class="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-3xl max-w-lg w-full p-6 space-y-5">
-      <div class="flex justify-between items-center border-b pb-3.5">
-        <h3 class="font-black text-lg text-slate-900 dark:text-white flex items-center gap-2"><i class="fa-solid fa-shapes text-rose-500"></i><span>จัดการหมวดหมู่</span></h3>
-        <button onclick="closeCategoryModal()"><i class="fa-solid fa-xmark text-xl text-slate-400"></i></button>
+      <div class="flex justify-between items-center border-b pb-4">
+        <h3 class="font-black text-xl text-slate-900 dark:text-white flex items-center gap-3"><i class="fa-solid fa-shapes text-rose-500 text-2xl"></i><span>จัดการหมวดหมู่</span></h3>
+        <button onclick="closeCategoryModal()"><i class="fa-solid fa-xmark text-2xl text-slate-400"></i></button>
       </div>
-      <div class="flex gap-2">
-        <button type="button" onclick="openColorPicker(-1)" class="w-11 h-11 rounded-2xl border flex items-center justify-center shrink-0 shadow-sm" id="newCatColorBtn">
-          <span id="newCatColorPill" class="w-6 h-6 rounded-full bg-rose-500"></span>
+      <div class="flex gap-3">
+        <button type="button" onclick="openColorPicker(-1)" class="w-12 h-12 rounded-2xl border flex items-center justify-center shrink-0 shadow-sm" id="newCatColorBtn">
+          <span id="newCatColorPill" class="w-7 h-7 rounded-full bg-rose-500"></span>
         </button>
-        <button type="button" onclick="openIconPicker(-1)" class="w-11 h-11 rounded-2xl border flex items-center justify-center text-lg shrink-0 shadow-sm dark:bg-slate-900">
+        <button type="button" onclick="openIconPicker(-1)" class="w-12 h-12 rounded-2xl border flex items-center justify-center text-xl shrink-0 shadow-sm dark:bg-slate-900">
           <i id="newCatIconPreview" class="fa-solid fa-folder-open text-amber-500"></i>
         </button>
-        <input type="text" id="newCategoryInput" placeholder="ชื่อหมวดหมู่ใหม่..." class="flex-1 border rounded-2xl px-4 text-sm font-bold dark:bg-slate-900 outline-none text-slate-800 dark:text-white">
-        <button onclick="handleAddCategory()" class="px-5 py-2.5 text-white rounded-2xl text-sm font-black btn-theme-action shrink-0 shadow">เพิ่ม</button>
+        <input type="text" id="newCategoryInput" placeholder="ชื่อหมวดหมู่ใหม่..." class="flex-1 border rounded-2xl px-4 font-bold dark:bg-slate-900 outline-none text-slate-800 dark:text-white">
+        <button onclick="handleAddCategory()" class="px-6 py-3 text-white rounded-2xl font-black btn-theme-action shrink-0 shadow">เพิ่ม</button>
       </div>
       <div id="categoryListContainer" class="divide-y max-h-64 overflow-y-auto pr-1"></div>
     </div>
@@ -727,26 +732,26 @@
   <div id="colorPickerModal" class="hidden fixed inset-0 z-50 bg-slate-950/70 backdrop-blur-sm flex items-center justify-center p-4">
     <div class="bg-white dark:bg-slate-800 border rounded-3xl max-w-lg w-full p-6 space-y-4">
       <div class="flex justify-between items-center border-b pb-3">
-        <h4 class="font-black text-base">เลือกโทนสีประจำหมวดหมู่</h4>
-        <button onclick="closeColorPicker()"><i class="fa-solid fa-xmark text-lg text-slate-400"></i></button>
+        <h4 class="font-black text-lg">เลือกโทนสีประจำหมวดหมู่</h4>
+        <button onclick="closeColorPicker()"><i class="fa-solid fa-xmark text-xl text-slate-400"></i></button>
       </div>
-      <div id="colorPickerGrid" class="space-y-2.5 max-h-80 overflow-y-auto"></div>
+      <div id="colorPickerGrid" class="space-y-3 max-h-80 overflow-y-auto"></div>
     </div>
   </div>
 
   <div id="iconPickerModal" class="hidden fixed inset-0 z-50 bg-slate-950/70 backdrop-blur-sm flex items-center justify-center p-4">
     <div class="bg-white dark:bg-slate-800 border rounded-3xl max-w-md w-full p-6 space-y-4">
       <div class="flex justify-between items-center border-b pb-3">
-        <h4 class="font-black text-base">เลือกไอคอนสดใส</h4>
-        <button onclick="closeIconPicker()"><i class="fa-solid fa-xmark text-lg text-slate-400"></i></button>
+        <h4 class="font-black text-lg">เลือกไอคอนสดใส</h4>
+        <button onclick="closeIconPicker()"><i class="fa-solid fa-xmark text-xl text-slate-400"></i></button>
       </div>
       <div id="iconPickerGrid" class="grid grid-cols-5 sm:grid-cols-6 gap-3 max-h-64 overflow-y-auto p-1"></div>
     </div>
   </div>
 
   <!-- Toast Notification -->
-  <div id="toastNotification" class="fixed top-20 right-4 z-50 transform translate-x-full opacity-0 transition-all duration-300 bg-slate-900 text-white px-5 py-3 rounded-2xl shadow-2xl flex items-center gap-3 text-xs sm:text-sm font-black pointer-events-none">
-    <i class="fa-solid fa-circle-check text-emerald-400 text-lg"></i>
+  <div id="toastNotification" class="fixed top-24 right-4 z-50 transform translate-x-full opacity-0 transition-all duration-300 bg-slate-900 text-white px-6 py-4 rounded-2xl shadow-2xl flex items-center gap-3 font-black pointer-events-none">
+    <i class="fa-solid fa-circle-check text-emerald-400 text-2xl"></i>
     <span id="toastMessage">แจ้งเตือน</span>
   </div>
 
@@ -877,13 +882,11 @@
       fetchFromGoogleSheets(true);
     });
 
-    // ระบบจัดการขนาดตัวอักษรเพื่อช่วยการมองเห็น
     function setFontSizeScale(scale) {
       document.documentElement.style.setProperty('--font-scale', scale);
       localStorage.setItem('rnd_font_scale', scale);
       
-      // ปรับแต่ง Active State ของปุ่มเลือกขนาดฟอนต์
-      ['1', '115', '13'.replace('.', '')].forEach(k => {
+      ['1', '115', '13'].forEach(k => {
         const btn = document.getElementById(`fontBtn${k}`);
         if (btn) {
           btn.classList.remove('border-amber-500', 'bg-amber-500/10', 'text-amber-500');
@@ -897,7 +900,7 @@
     }
 
     function loadFontSizeScale() {
-      const saved = parseFloat(localStorage.getItem('rnd_font_scale')) || 1;
+      const saved = parseFloat(localStorage.getItem('rnd_font_scale')) || 1.25;
       setFontSizeScale(saved);
     }
 
@@ -914,7 +917,7 @@
       if (detailEl) detailEl.innerText = detail;
       if (stepEl) stepEl.innerText = stepText;
       if (errBtn) errBtn.classList.add('hidden');
-      if (icon) icon.className = "fa-solid fa-arrows-rotate animate-spin text-4xl text-rose-500";
+      if (icon) icon.className = "fa-solid fa-arrows-rotate animate-spin text-5xl text-rose-500";
 
       updateSyncBannerProgress(percent);
       banner.classList.remove('hidden');
@@ -948,7 +951,7 @@
 
       if (titleEl) titleEl.innerText = "การซิงก์ไม่สำเร็จ";
       if (detailEl) detailEl.innerText = errMsg;
-      if (icon) icon.className = "fa-solid fa-circle-xmark text-rose-500 text-4xl";
+      if (icon) icon.className = "fa-solid fa-circle-xmark text-rose-500 text-5xl";
       if (errBtn) errBtn.classList.remove('hidden');
     }
 
@@ -1062,15 +1065,15 @@
       const grid = document.getElementById('categoryCardsGrid');
       if (!grid) return;
       let html = `
-        <div onclick="selectCategoryAndDraw('ALL')" class="cursor-pointer rounded-3xl p-5 sm:p-6 text-white shadow-xl flex flex-col justify-between hover:scale-[1.02] active:scale-[0.98] transition duration-300 relative overflow-hidden group" style="background: linear-gradient(135deg, #1E293B 0%, #0F172A 100%);">
-          <div class="absolute -right-6 -bottom-6 text-white/5 text-8xl font-black pointer-events-none group-hover:scale-110 transition"><i class="fa-solid fa-shapes"></i></div>
-          <div class="flex items-center justify-between mb-4">
-            <div class="w-12 h-12 rounded-2xl bg-white/15 flex items-center justify-center text-2xl icon-vibrant"><i class="fa-solid fa-dice-d20"></i></div>
-            <span class="text-xs sm:text-sm font-mono font-black px-3 py-1 rounded-full bg-white/20 shadow-sm">${items.length} รายการ</span>
+        <div onclick="selectCategoryAndDraw('ALL')" class="cursor-pointer rounded-3xl p-6 sm:p-8 text-white shadow-xl flex flex-col justify-between hover:scale-[1.02] active:scale-[0.98] transition duration-300 relative overflow-hidden group" style="background: linear-gradient(135deg, #1E293B 0%, #0F172A 100%);">
+          <div class="absolute -right-6 -bottom-6 text-white/5 text-9xl font-black pointer-events-none group-hover:scale-110 transition"><i class="fa-solid fa-shapes"></i></div>
+          <div class="flex items-center justify-between mb-6">
+            <div class="w-14 h-14 rounded-2xl bg-white/15 flex items-center justify-center text-3xl icon-vibrant"><i class="fa-solid fa-dice-d20"></i></div>
+            <span class="font-mono font-black px-4 py-1.5 rounded-full bg-white/20 shadow-sm">${items.length} รายการ</span>
           </div>
           <div>
-            <span class="text-[11px] font-bold text-slate-400 block mb-0.5">สุ่มแบบผสมผสาน</span>
-            <h3 class="font-black text-lg sm:text-xl tracking-tight">สุ่มจากทุกหมวดหมู่</h3>
+            <span class="font-bold text-slate-400 block mb-1">สุ่มแบบผสมผสาน</span>
+            <h3 class="font-black text-2xl tracking-tight">สุ่มจากทุกหมวดหมู่</h3>
           </div>
         </div>
       `;
@@ -1078,15 +1081,15 @@
         const count = items.filter(i => i.category === cat.name).length;
         const meta = getCategoryMeta(cat.name);
         html += `
-          <div onclick="selectCategoryAndDraw('${escapeHTML(cat.name)}')" class="cursor-pointer rounded-3xl p-5 sm:p-6 text-white shadow-xl flex flex-col justify-between hover:scale-[1.02] active:scale-[0.98] transition duration-300 relative overflow-hidden group" style="background: ${meta.theme.gradient};">
-            <div class="absolute -right-6 -bottom-6 text-white/10 text-8xl font-black pointer-events-none group-hover:scale-110 transition"><i class="fa-solid ${escapeHTML(meta.icon)}"></i></div>
-            <div class="flex items-center justify-between mb-4">
-              <div class="w-12 h-12 rounded-2xl bg-white/20 flex items-center justify-center text-2xl icon-vibrant"><i class="fa-solid ${escapeHTML(meta.icon)}"></i></div>
-              <span class="text-xs sm:text-sm font-mono font-black px-3 py-1 rounded-full bg-white/25 shadow-sm">${count} รายการ</span>
+          <div onclick="selectCategoryAndDraw('${escapeHTML(cat.name)}')" class="cursor-pointer rounded-3xl p-6 sm:p-8 text-white shadow-xl flex flex-col justify-between hover:scale-[1.02] active:scale-[0.98] transition duration-300 relative overflow-hidden group" style="background: ${meta.theme.gradient};">
+            <div class="absolute -right-6 -bottom-6 text-white/10 text-9xl font-black pointer-events-none group-hover:scale-110 transition"><i class="fa-solid ${escapeHTML(meta.icon)}"></i></div>
+            <div class="flex items-center justify-between mb-6">
+              <div class="w-14 h-14 rounded-2xl bg-white/20 flex items-center justify-center text-3xl icon-vibrant"><i class="fa-solid ${escapeHTML(meta.icon)}"></i></div>
+              <span class="font-mono font-black px-4 py-1.5 rounded-full bg-white/25 shadow-sm">${count} รายการ</span>
             </div>
             <div>
-              <span class="text-[11px] font-bold text-white/80 block mb-0.5">หมวดหมู่เฉพาะ</span>
-              <h3 class="font-black text-lg sm:text-xl tracking-tight">${escapeHTML(cat.name)}</h3>
+              <span class="font-bold text-white/80 block mb-1">หมวดหมู่เฉพาะ</span>
+              <h3 class="font-black text-2xl tracking-tight">${escapeHTML(cat.name)}</h3>
             </div>
           </div>
         `;
@@ -1140,42 +1143,42 @@
       let segments = '';
       for (let i = 1; i <= 10; i++) {
         const isFilled = i <= safeVal;
-        segments += `<div class="h-2 w-1 sm:w-1.5 rounded-xs transition-all ${isFilled ? colorClass : emptyClass}"></div>`;
+        segments += `<div class="h-3 w-2 sm:w-2.5 rounded-xs transition-all ${isFilled ? colorClass : emptyClass}"></div>`;
       }
       return `
-        <div class="flex items-center gap-1 shrink-0">
-          <div class="flex items-center gap-0.5">${segments}</div>
-          <span class="font-mono font-black text-[11px] sm:text-xs pl-0.5">${safeVal}</span>
+        <div class="flex items-center gap-2 shrink-0">
+          <div class="flex items-center gap-1">${segments}</div>
+          <span class="font-mono font-black pl-1" style="font-size: 1.25rem;">${safeVal}/10</span>
         </div>
       `;
     }
 
     function renderResourceMeterGroup(res, isCost = true) {
       if (!res) res = { heart: 0, time: 0, knowledge: 0 };
-      const activeColor = isCost ? "bg-rose-500 shadow-[0_0_6px_rgba(244,63,94,0.6)]" : "bg-emerald-500 shadow-[0_0_6px_rgba(16,185,129,0.6)]";
+      const activeColor = isCost ? "bg-rose-500 shadow-[0_0_8px_rgba(244,63,94,0.7)]" : "bg-emerald-500 shadow-[0_0_8px_rgba(16,185,129,0.7)]";
       const badgeTitle = isCost ? "ใช้ (Cost)" : "ได้ (Reward)";
       const titleColor = isCost ? "text-rose-600 dark:text-rose-400" : "text-emerald-600 dark:text-emerald-400";
 
       return `
-        <div class="space-y-1 py-0.5">
-          <div class="flex items-center justify-between text-[11px] font-black ${titleColor}">
+        <div class="space-y-2 py-1">
+          <div class="flex items-center justify-between font-black ${titleColor}" style="font-size: 1.15rem;">
             <span>${badgeTitle}</span>
           </div>
-          <div class="flex items-center justify-between gap-1.5 text-xs">
-            <span class="flex items-center gap-1.5 text-slate-800 dark:text-slate-200 font-bold shrink-0">
-              <i class="fa-solid fa-heart text-red-500 text-sm"></i> สุขภาพ
+          <div class="flex items-center justify-between gap-3">
+            <span class="flex items-center gap-2 text-slate-800 dark:text-slate-200 font-bold shrink-0">
+              <i class="fa-solid fa-heart text-red-500 text-lg"></i> สุขภาพ
             </span>
             ${renderPowerSegmentBar(res.heart, activeColor)}
           </div>
-          <div class="flex items-center justify-between gap-1.5 text-xs">
-            <span class="flex items-center gap-1.5 text-slate-800 dark:text-slate-200 font-bold shrink-0">
-              <i class="fa-solid fa-clock text-slate-800 dark:text-white text-xs"></i> เวลา
+          <div class="flex items-center justify-between gap-3">
+            <span class="flex items-center gap-2 text-slate-800 dark:text-slate-200 font-bold shrink-0">
+              <i class="fa-solid fa-clock text-slate-800 dark:text-white text-lg"></i> เวลา
             </span>
             ${renderPowerSegmentBar(res.time, activeColor)}
           </div>
-          <div class="flex items-center justify-between gap-1.5 text-xs">
-            <span class="flex items-center gap-1.5 text-slate-800 dark:text-slate-200 font-bold shrink-0">
-              <i class="fa-solid fa-book-bookmark text-blue-600 dark:text-blue-400 text-xs"></i> ความรู้
+          <div class="flex items-center justify-between gap-3">
+            <span class="flex items-center gap-2 text-slate-800 dark:text-slate-200 font-bold shrink-0">
+              <i class="fa-solid fa-book-bookmark text-blue-600 dark:text-blue-400 text-lg"></i> ความรู้
             </span>
             ${renderPowerSegmentBar(res.knowledge, activeColor)}
           </div>
@@ -1187,18 +1190,18 @@
       const c = cost || { heart: 0, time: 0, knowledge: 0 };
       const r = reward || { heart: 0, time: 0, knowledge: 0 };
       return `
-        <div class="space-y-1 text-xs font-mono">
-          <div class="flex items-center gap-2 text-rose-500 font-bold">
-            <span class="text-[10px] uppercase font-sans font-black bg-rose-50 dark:bg-rose-950/60 px-1 rounded">ใช้</span>
-            <span class="flex items-center gap-0.5"><i class="fa-solid fa-heart text-red-500 text-[10px]"></i>${c.heart || 0}</span>
-            <span class="flex items-center gap-0.5"><i class="fa-solid fa-clock text-slate-800 dark:text-white text-[10px]"></i>${c.time || 0}</span>
-            <span class="flex items-center gap-0.5"><i class="fa-solid fa-book-bookmark text-blue-600 dark:text-blue-400 text-[10px]"></i>${c.knowledge || 0}</span>
+        <div class="space-y-1.5 font-mono">
+          <div class="flex items-center gap-3 text-rose-500 font-bold">
+            <span class="uppercase font-sans font-black bg-rose-50 dark:bg-rose-950/60 px-1.5 py-0.5 rounded">ใช้</span>
+            <span class="flex items-center gap-1"><i class="fa-solid fa-heart text-red-500"></i>${c.heart || 0}</span>
+            <span class="flex items-center gap-1"><i class="fa-solid fa-clock text-slate-800 dark:text-white"></i>${c.time || 0}</span>
+            <span class="flex items-center gap-1"><i class="fa-solid fa-book-bookmark text-blue-600 dark:text-blue-400"></i>${c.knowledge || 0}</span>
           </div>
-          <div class="flex items-center gap-2 text-emerald-500 font-bold">
-            <span class="text-[10px] uppercase font-sans font-black bg-emerald-50 dark:bg-emerald-950/60 px-1 rounded">ได้</span>
-            <span class="flex items-center gap-0.5"><i class="fa-solid fa-heart text-red-500 text-[10px]"></i>${r.heart || 0}</span>
-            <span class="flex items-center gap-0.5"><i class="fa-solid fa-clock text-slate-800 dark:text-white text-[10px]"></i>${r.time || 0}</span>
-            <span class="flex items-center gap-0.5"><i class="fa-solid fa-book-bookmark text-blue-600 dark:text-blue-400 text-[10px]"></i>${r.knowledge || 0}</span>
+          <div class="flex items-center gap-3 text-emerald-500 font-bold">
+            <span class="uppercase font-sans font-black bg-emerald-50 dark:bg-emerald-950/60 px-1.5 py-0.5 rounded">ได้</span>
+            <span class="flex items-center gap-1"><i class="fa-solid fa-heart text-red-500"></i>${r.heart || 0}</span>
+            <span class="flex items-center gap-1"><i class="fa-solid fa-clock text-slate-800 dark:text-white"></i>${r.time || 0}</span>
+            <span class="flex items-center gap-1"><i class="fa-solid fa-book-bookmark text-blue-600 dark:text-blue-400"></i>${r.knowledge || 0}</span>
           </div>
         </div>
       `;
@@ -1222,13 +1225,13 @@
       const tableContainer = document.getElementById('tableCompactContainer');
 
       if (dataViewMode === 'cards') {
-        if (cardBtn) cardBtn.className = "px-3 py-1.5 rounded-xl text-xs sm:text-sm font-black transition flex items-center gap-1.5 bg-white dark:bg-slate-800 text-rose-500 shadow-xs";
-        if (tableBtn) tableBtn.className = "px-3 py-1.5 rounded-xl text-xs sm:text-sm font-black transition flex items-center gap-1.5 text-slate-500 dark:text-slate-400 hover:text-slate-800 dark:hover:text-white";
+        if (cardBtn) cardBtn.className = "px-5 py-2.5 rounded-xl font-black transition flex items-center gap-2 bg-white dark:bg-slate-800 text-rose-500 shadow-xs";
+        if (tableBtn) tableBtn.className = "px-5 py-2.5 rounded-xl font-black transition flex items-center gap-2 text-slate-500 dark:text-slate-400 hover:text-slate-800 dark:hover:text-white";
         if (gridContainer) gridContainer.classList.remove('hidden');
         if (tableContainer) tableContainer.classList.add('hidden');
       } else {
-        if (cardBtn) cardBtn.className = "px-3 py-1.5 rounded-xl text-xs sm:text-sm font-black transition flex items-center gap-1.5 text-slate-500 dark:text-slate-400 hover:text-slate-800 dark:hover:text-white";
-        if (tableBtn) tableBtn.className = "px-3 py-1.5 rounded-xl text-xs sm:text-sm font-black transition flex items-center gap-1.5 bg-white dark:bg-slate-800 text-rose-500 shadow-xs";
+        if (cardBtn) cardBtn.className = "px-5 py-2.5 rounded-xl font-black transition flex items-center gap-2 text-slate-500 dark:text-slate-400 hover:text-slate-800 dark:hover:text-white";
+        if (tableBtn) tableBtn.className = "px-5 py-2.5 rounded-xl font-black transition flex items-center gap-2 bg-white dark:bg-slate-800 text-rose-500 shadow-xs";
         if (gridContainer) gridContainer.classList.add('hidden');
         if (tableContainer) tableContainer.classList.remove('hidden');
       }
@@ -1236,75 +1239,75 @@
       if (gridContainer) {
         if (filtered.length === 0) {
           gridContainer.innerHTML = `
-            <div class="col-span-full py-16 text-center text-slate-400 space-y-2">
-              <i class="fa-solid fa-folder-open text-4xl text-slate-300 dark:text-slate-600"></i>
-              <p class="text-sm font-bold">ไม่พบข้อมูลการ์ดที่ค้นหา</p>
+            <div class="col-span-full py-20 text-center text-slate-400 space-y-3">
+              <i class="fa-solid fa-folder-open text-5xl text-slate-300 dark:text-slate-600"></i>
+              <p class="font-bold text-xl">ไม่พบข้อมูลการ์ดที่ค้นหา</p>
             </div>
           `;
         } else {
           gridContainer.innerHTML = filtered.map((item, idx) => {
             const meta = getCategoryMeta(item.category);
             return `
-              <div class="p-4 sm:p-5 rounded-3xl border transition duration-200 space-y-3.5 shadow-md hover:shadow-xl ${meta.cardBgTint}">
-                <div class="flex items-center justify-between gap-2 border-b border-black/5 dark:border-white/5 pb-2">
-                  <div class="flex items-center gap-2">
-                    <span class="font-mono text-xs font-bold text-slate-500 dark:text-slate-400">#${idx + 1}</span>
-                    <span class="font-mono text-xs font-black px-2.5 py-0.5 rounded-lg bg-white/95 dark:bg-slate-900 text-slate-800 dark:text-slate-200 border border-slate-300/80 dark:border-slate-700 shadow-2xs">
+              <div class="p-6 rounded-3xl border transition duration-200 space-y-4 shadow-md hover:shadow-xl ${meta.cardBgTint}">
+                <div class="flex items-center justify-between gap-3 border-b border-black/5 dark:border-white/5 pb-3">
+                  <div class="flex items-center gap-2.5">
+                    <span class="font-mono font-bold text-slate-500 dark:text-slate-400">#${idx + 1}</span>
+                    <span class="font-mono font-black px-3 py-1 rounded-xl bg-white/95 dark:bg-slate-900 text-slate-800 dark:text-slate-200 border border-slate-300/80 dark:border-slate-700 shadow-2xs">
                       ${escapeHTML(item.id)}
                     </span>
                   </div>
-                  <span class="text-xs px-2.5 py-0.5 rounded-full font-bold border shrink-0 ${meta.theme.badge}">
+                  <span class="px-4 py-1 rounded-full font-bold border shrink-0 ${meta.theme.badge}">
                     ${escapeHTML(item.category)}
                   </span>
                 </div>
 
-                <div class="py-0.5">
-                  <h4 class="font-black text-slate-950 dark:text-white text-base sm:text-lg leading-relaxed break-words whitespace-normal">
+                <div class="py-1">
+                  <h4 class="font-black text-slate-950 dark:text-white leading-relaxed break-words whitespace-normal" style="font-size: 1.35rem;">
                     ${escapeHTML(item.title)}
                   </h4>
                 </div>
 
-                <div class="grid grid-cols-4 gap-2 text-center font-mono bg-white/95 dark:bg-slate-900/95 p-3 rounded-2xl border border-slate-300/80 dark:border-slate-800 text-xs shadow-xs">
+                <div class="grid grid-cols-4 gap-2 text-center font-mono bg-white/95 dark:bg-slate-900/95 p-4 rounded-2xl border border-slate-300/80 dark:border-slate-800 shadow-xs">
                   <div class="overflow-hidden">
-                    <span class="text-[10px] text-slate-500 dark:text-slate-400 font-sans font-bold block">สายงาน</span>
-                    <strong class="text-indigo-600 dark:text-indigo-400 font-black break-words block text-xs leading-tight">
+                    <span class="text-slate-500 dark:text-slate-400 font-sans font-bold block text-xs">สายงาน</span>
+                    <strong class="text-indigo-600 dark:text-indigo-400 font-black break-words block leading-tight" style="font-size: 1.15rem;">
                       ${escapeHTML(item.targetLeg ? 'สาย ' + item.targetLeg : 'ส่วนตัว')}
                     </strong>
                   </div>
                   <div>
-                    <span class="text-[10px] text-slate-500 dark:text-slate-400 font-sans font-bold block">PV</span>
-                    <strong class="text-cyan-600 dark:text-cyan-400 font-black text-xs sm:text-sm">${(item.pv || 0).toLocaleString()}</strong>
+                    <span class="text-slate-500 dark:text-slate-400 font-sans font-bold block text-xs">PV</span>
+                    <strong class="text-cyan-600 dark:text-cyan-400 font-black" style="font-size: 1.25rem;">${(item.pv || 0).toLocaleString()}</strong>
                   </div>
                   <div>
-                    <span class="text-[10px] text-red-500 font-sans font-black block">ราคา</span>
-                    <strong class="text-red-500 font-black text-xs sm:text-sm">฿${(item.price || 0).toLocaleString()}</strong>
+                    <span class="text-red-500 font-sans font-black block text-xs">ราคา</span>
+                    <strong class="text-red-500 font-black" style="font-size: 1.25rem;">฿${(item.price || 0).toLocaleString()}</strong>
                   </div>
-                  <div class="space-y-0.5">
+                  <div class="space-y-1">
                     <div>
-                      <span class="text-[9px] text-emerald-500 font-sans font-bold">Active:</span>
-                      <strong class="text-emerald-600 dark:text-emerald-400 font-black text-xs">฿${(item.activeIncome || 0).toLocaleString()}</strong>
+                      <span class="text-emerald-500 font-sans font-bold text-xs">Active:</span>
+                      <strong class="text-emerald-600 dark:text-emerald-400 font-black" style="font-size: 1.15rem;">฿${(item.activeIncome || 0).toLocaleString()}</strong>
                     </div>
                     <div>
-                      <span class="text-[9px] text-teal-500 font-sans font-bold">Passive:</span>
-                      <strong class="text-teal-600 dark:text-teal-400 font-black text-xs">฿${(item.passiveIncome || 0).toLocaleString()}</strong>
+                      <span class="text-teal-500 font-sans font-bold text-xs">Passive:</span>
+                      <strong class="text-teal-600 dark:text-teal-400 font-black" style="font-size: 1.15rem;">฿${(item.passiveIncome || 0).toLocaleString()}</strong>
                     </div>
                   </div>
                 </div>
 
-                <div class="grid grid-cols-2 gap-2 bg-white/95 dark:bg-slate-900/95 p-3 rounded-2xl border border-slate-300/80 dark:border-slate-800 shadow-xs">
+                <div class="grid grid-cols-2 gap-3 bg-white/95 dark:bg-slate-900/95 p-4 rounded-2xl border border-slate-300/80 dark:border-slate-800 shadow-xs">
                   <div>${renderResourceMeterGroup(item.cost, true)}</div>
-                  <div class="border-l border-slate-200 dark:border-slate-800 pl-2.5">${renderResourceMeterGroup(item.reward, false)}</div>
+                  <div class="border-l border-slate-200 dark:border-slate-800 pl-3">${renderResourceMeterGroup(item.reward, false)}</div>
                 </div>
 
-                <div class="flex items-center justify-end gap-2 pt-1 border-t border-black/5 dark:border-white/5">
-                  <button type="button" onclick="openAddEditModal('${item.id}')" class="px-3.5 py-1.5 text-xs font-black rounded-xl bg-white hover:bg-blue-50 dark:bg-slate-800 dark:hover:bg-slate-700 text-blue-600 dark:text-blue-400 border border-slate-300 dark:border-slate-700 flex items-center gap-1.5 active:scale-95 transition shadow-2xs">
-                    <i class="fa-solid fa-pen text-[10px]"></i> แก้ไข
+                <div class="flex items-center justify-end gap-3 pt-2 border-t border-black/5 dark:border-white/5">
+                  <button type="button" onclick="openAddEditModal('${item.id}')" class="px-4 py-2 font-black rounded-xl bg-white hover:bg-blue-50 dark:bg-slate-800 dark:hover:bg-slate-700 text-blue-600 dark:text-blue-400 border border-slate-300 dark:border-slate-700 flex items-center gap-2 active:scale-95 transition shadow-2xs">
+                    <i class="fa-solid fa-pen"></i> แก้ไข
                   </button>
-                  <button type="button" onclick="cloneItem('${item.id}')" class="px-3.5 py-1.5 text-xs font-black rounded-xl bg-white hover:bg-emerald-50 dark:bg-slate-800 dark:hover:bg-slate-700 text-emerald-600 dark:text-emerald-400 border border-slate-300 dark:border-slate-700 flex items-center gap-1.5 active:scale-95 transition shadow-2xs">
-                    <i class="fa-regular fa-copy text-[10px]"></i> โคลน
+                  <button type="button" onclick="cloneItem('${item.id}')" class="px-4 py-2 font-black rounded-xl bg-white hover:bg-emerald-50 dark:bg-slate-800 dark:hover:bg-slate-700 text-emerald-600 dark:text-emerald-400 border border-slate-300 dark:border-slate-700 flex items-center gap-2 active:scale-95 transition shadow-2xs">
+                    <i class="fa-regular fa-copy"></i> โคลน
                   </button>
-                  <button type="button" onclick="confirmDeleteItem('${item.id}')" class="px-3.5 py-1.5 text-xs font-black rounded-xl bg-white hover:bg-rose-50 dark:bg-slate-800 dark:hover:bg-slate-700 text-rose-600 dark:text-rose-400 border border-slate-300 dark:border-slate-700 flex items-center gap-1.5 active:scale-95 transition shadow-2xs">
-                    <i class="fa-solid fa-trash text-[10px]"></i> ลบ
+                  <button type="button" onclick="confirmDeleteItem('${item.id}')" class="px-4 py-2 font-black rounded-xl bg-white hover:bg-rose-50 dark:bg-slate-800 dark:hover:bg-slate-700 text-rose-600 dark:text-rose-400 border border-slate-300 dark:border-slate-700 flex items-center gap-2 active:scale-95 transition shadow-2xs">
+                    <i class="fa-solid fa-trash"></i> ลบ
                   </button>
                 </div>
               </div>
@@ -1317,42 +1320,42 @@
       if (compactTbody) {
         compactTbody.innerHTML = filtered.map((item, idx) => `
           <tr class="hover:bg-slate-50 dark:hover:bg-slate-700/40 transition">
-            <td class="py-3 px-2.5 text-center font-mono text-xs text-slate-400 font-bold">${idx + 1}</td>
-            <td class="py-3 px-2.5 text-center">
-              <span class="font-mono text-xs font-black px-2 py-0.5 rounded-lg bg-slate-100 dark:bg-slate-900 text-slate-700 dark:text-slate-200 border border-slate-200 dark:border-slate-700">
+            <td class="py-4 px-3 text-center font-mono font-bold text-slate-400">${idx + 1}</td>
+            <td class="py-4 px-3 text-center">
+              <span class="font-mono font-black px-3 py-1 rounded-xl bg-slate-100 dark:bg-slate-900 text-slate-700 dark:text-slate-200 border border-slate-200 dark:border-slate-700">
                 ${escapeHTML(item.id)}
               </span>
             </td>
-            <td class="py-3 px-3 font-black text-slate-900 dark:text-white break-words whitespace-normal text-sm leading-relaxed">
+            <td class="py-4 px-4 font-black text-slate-900 dark:text-white break-words whitespace-normal leading-relaxed" style="font-size: 1.25rem;">
               ${escapeHTML(item.title)}
             </td>
-            <td class="py-3 px-2.5 text-center">
-              <span class="px-2 py-0.5 rounded-lg bg-indigo-50 dark:bg-indigo-950/50 text-indigo-500 font-bold text-xs border border-indigo-200 dark:border-indigo-800">
+            <td class="py-4 px-3 text-center">
+              <span class="px-3 py-1 rounded-xl bg-indigo-50 dark:bg-indigo-950/50 text-indigo-500 font-bold border border-indigo-200 dark:border-indigo-800">
                 ${escapeHTML(item.targetLeg ? 'สาย ' + item.targetLeg : 'ส่วนตัว')}
               </span>
             </td>
-            <td class="py-3 px-2.5 font-mono font-black text-right text-cyan-500">${(item.pv || 0).toLocaleString()}</td>
-            <td class="py-3 px-2.5 font-mono font-black text-right text-red-500">฿${(item.price || 0).toLocaleString()}</td>
-            <td class="py-3 px-2.5 font-mono font-bold text-right text-emerald-500">฿${(item.activeIncome || 0).toLocaleString()}</td>
-            <td class="py-3 px-2.5 font-mono font-bold text-right text-teal-400">฿${(item.passiveIncome || 0).toLocaleString()}</td>
-            <td class="py-3 px-3 whitespace-nowrap">
+            <td class="py-4 px-3 font-mono font-black text-right text-cyan-500" style="font-size: 1.25rem;">${(item.pv || 0).toLocaleString()}</td>
+            <td class="py-4 px-3 font-mono font-black text-right text-red-500" style="font-size: 1.25rem;">฿${(item.price || 0).toLocaleString()}</td>
+            <td class="py-4 px-3 font-mono font-bold text-right text-emerald-500" style="font-size: 1.15rem;">฿${(item.activeIncome || 0).toLocaleString()}</td>
+            <td class="py-4 px-3 font-mono font-bold text-right text-teal-400" style="font-size: 1.15rem;">฿${(item.passiveIncome || 0).toLocaleString()}</td>
+            <td class="py-4 px-4 whitespace-nowrap">
               ${renderResourceCompactInline(item.cost, item.reward)}
             </td>
-            <td class="py-3 px-2.5 text-center">
-              <span class="text-xs px-2.5 py-0.5 rounded-full font-bold border ${getCategoryMeta(item.category).theme.badge}">
+            <td class="py-4 px-3 text-center">
+              <span class="px-4 py-1 rounded-full font-bold border ${getCategoryMeta(item.category).theme.badge}">
                 ${escapeHTML(item.category)}
               </span>
             </td>
-            <td class="py-3 px-2.5 text-center sticky right-0 bg-white dark:bg-slate-800 shadow-l">
-              <div class="flex items-center justify-center gap-1">
-                <button type="button" onclick="openAddEditModal('${item.id}')" title="แก้ไขการ์ด" class="w-7 h-7 flex items-center justify-center text-slate-500 hover:text-blue-500 hover:bg-blue-50 dark:hover:bg-slate-700 rounded-lg transition">
-                  <i class="fa-solid fa-pen text-xs"></i>
+            <td class="py-4 px-3 text-center sticky right-0 bg-white dark:bg-slate-800 shadow-l">
+              <div class="flex items-center justify-center gap-2">
+                <button type="button" onclick="openAddEditModal('${item.id}')" title="แก้ไขการ์ด" class="w-9 h-9 flex items-center justify-center text-slate-500 hover:text-blue-500 hover:bg-blue-50 dark:hover:bg-slate-700 rounded-xl transition">
+                  <i class="fa-solid fa-pen"></i>
                 </button>
-                <button type="button" onclick="cloneItem('${item.id}')" title="โคลนการ์ด" class="w-7 h-7 flex items-center justify-center text-slate-500 hover:text-emerald-500 hover:bg-emerald-50 dark:hover:bg-slate-700 rounded-lg transition">
-                  <i class="fa-regular fa-copy text-xs"></i>
+                <button type="button" onclick="cloneItem('${item.id}')" title="โคลนการ์ด" class="w-9 h-9 flex items-center justify-center text-slate-500 hover:text-emerald-500 hover:bg-emerald-50 dark:hover:bg-slate-700 rounded-xl transition">
+                  <i class="fa-regular fa-copy"></i>
                 </button>
-                <button type="button" onclick="confirmDeleteItem('${item.id}')" title="ลบการ์ด" class="w-7 h-7 flex items-center justify-center text-slate-400 hover:text-rose-500 hover:bg-rose-50 dark:hover:bg-slate-700 rounded-lg transition">
-                  <i class="fa-solid fa-trash-can text-xs"></i>
+                <button type="button" onclick="confirmDeleteItem('${item.id}')" title="ลบการ์ด" class="w-9 h-9 flex items-center justify-center text-slate-400 hover:text-rose-500 hover:bg-rose-50 dark:hover:bg-slate-700 rounded-xl transition">
+                  <i class="fa-solid fa-trash-can"></i>
                 </button>
               </div>
             </td>
@@ -1479,7 +1482,7 @@
       
       const catBadge = document.getElementById('drawResultCategoryBadge');
       catBadge.innerText = card.category;
-      catBadge.className = `text-xs sm:text-sm font-black px-4 py-1.5 rounded-full border shadow-sm ${meta.theme.badge}`;
+      catBadge.className = `font-black px-5 py-2 rounded-full border shadow-sm ${meta.theme.badge}`;
 
       document.getElementById('drawResultTargetBadge').innerText = card.targetLeg ? `สายงาน ${card.targetLeg}` : "ส่วนตัว";
       document.getElementById('drawResultIcon').className = `fa-solid ${meta.icon}`;
@@ -1500,8 +1503,8 @@
     }
 
     function formatDeltaText(diff) {
-      if (diff > 0) return `<span class="text-emerald-400 font-bold animate-pulse">(+${diff})</span>`;
-      if (diff < 0) return `<span class="text-rose-500 font-bold animate-pulse">(${diff})</span>`;
+      if (diff > 0) return `<span class="text-emerald-400 font-extrabold animate-pulse">(+${diff})</span>`;
+      if (diff < 0) return `<span class="text-rose-500 font-extrabold animate-pulse">(${diff})</span>`;
       return `<span class="text-slate-400">(0)</span>`;
     }
 
@@ -1543,12 +1546,12 @@
 
       if (canAfford) {
         statusBadge.innerText = "ทรัพยากรพอจ่าย";
-        statusBadge.className = "text-xs font-bold px-2.5 py-0.5 rounded-full bg-emerald-500 text-white";
+        statusBadge.className = "font-bold px-3 py-1 rounded-full bg-emerald-500 text-white";
         claimBtn.disabled = false;
         warnBox.classList.add('hidden');
       } else {
         statusBadge.innerText = "ทรัพยากรไม่พอ";
-        statusBadge.className = "text-xs font-bold px-2.5 py-0.5 rounded-full bg-rose-500 text-white";
+        statusBadge.className = "font-bold px-3 py-1 rounded-full bg-rose-500 text-white";
         claimBtn.disabled = true;
         warnText.innerText = "ไม่สามารถรับการ์ดได้: " + shortageReasons.join(" / ");
         warnBox.classList.remove('hidden');
@@ -1614,23 +1617,23 @@
       const container = document.getElementById('historyListContainer');
       if (!container) return;
       if (historyLog.length === 0) {
-        container.innerHTML = `<li class="p-6 text-center text-sm text-slate-400">ยังไม่มีประวัติการสุ่มข้อมูล</li>`;
+        container.innerHTML = `<li class="p-8 text-center text-slate-400 font-bold" style="font-size: 1.2rem;">ยังไม่มีประวัติการสุ่มข้อมูล</li>`;
         return;
       }
       container.innerHTML = historyLog.map(h => {
         const cardIdDisplay = h.cardId || '-';
         return `
-          <li class="p-4 flex items-center justify-between text-sm hover:bg-slate-50 dark:hover:bg-slate-700/30 transition">
-            <div class="space-y-1">
-              <div class="flex items-center gap-2">
-                <button onclick="viewCardDetailFromHistory('${cardIdDisplay}')" class="font-mono text-xs font-black px-2 py-0.5 rounded-lg bg-indigo-50 dark:bg-indigo-950/60 text-indigo-500 border border-indigo-200 dark:border-indigo-800 hover:scale-105 transition shadow-2xs" title="คลิกเพื่อดูรายละเอียดการ์ด">
+          <li class="p-5 flex items-center justify-between hover:bg-slate-50 dark:hover:bg-slate-700/30 transition">
+            <div class="space-y-1.5">
+              <div class="flex items-center gap-3">
+                <button onclick="viewCardDetailFromHistory('${cardIdDisplay}')" class="font-mono font-black px-3 py-1 rounded-xl bg-indigo-50 dark:bg-indigo-950/60 text-indigo-500 border border-indigo-200 dark:border-indigo-800 hover:scale-105 transition shadow-2xs" style="font-size: 1.15rem;" title="คลิกเพื่อดูรายละเอียดการ์ด">
                   ${escapeHTML(cardIdDisplay)}
                 </button>
-                <span class="font-black text-slate-800 dark:text-white text-base leading-snug break-words whitespace-normal">${escapeHTML(h.cardTitle)}</span>
+                <span class="font-black text-slate-800 dark:text-white leading-snug break-words whitespace-normal" style="font-size: 1.25rem;">${escapeHTML(h.cardTitle)}</span>
               </div>
-              <span class="text-xs text-slate-400 font-mono block pl-1">${new Date(h.timestamp).toLocaleTimeString('th-TH')}</span>
+              <span class="text-slate-400 font-mono block pl-1 text-sm">${new Date(h.timestamp).toLocaleTimeString('th-TH')}</span>
             </div>
-            <span class="px-3 py-1 rounded-full text-xs font-bold border ${getCategoryMeta(h.category).theme.badge}">${escapeHTML(h.category)}</span>
+            <span class="px-4 py-1.5 rounded-full font-bold border ${getCategoryMeta(h.category).theme.badge}">${escapeHTML(h.category)}</span>
           </li>
         `;
       }).join('');
@@ -1652,7 +1655,7 @@
       if (id) {
         const item = items.find(i => i.id === id);
         if (!item) return;
-        title.innerHTML = `<i class="fa-solid fa-pen-to-square text-cyan-400 text-xl"></i><span>แก้ไขข้อมูลการ์ด (${item.id})</span>`;
+        title.innerHTML = `<i class="fa-solid fa-pen-to-square text-cyan-400 text-2xl"></i><span>แก้ไขข้อมูลการ์ด (${item.id})</span>`;
         document.getElementById('cardEditId').value = item.id;
         document.getElementById('cardTitleInput').value = item.title;
         document.getElementById('cardCategorySelect').value = item.category;
@@ -1670,7 +1673,7 @@
         document.getElementById('rewardTime').value = item.reward?.time || 0;
         document.getElementById('rewardKnowledge').value = item.reward?.knowledge || 0;
       } else {
-        title.innerHTML = `<i class="fa-solid fa-plus-circle text-rose-500 text-xl"></i><span>สร้างการ์ดใหม่</span>`;
+        title.innerHTML = `<i class="fa-solid fa-plus-circle text-rose-500 text-2xl"></i><span>สร้างการ์ดใหม่</span>`;
         document.getElementById('cardEditId').value = "";
         document.getElementById('cardTitleInput').value = "";
         document.getElementById('cardCategorySelect').value = categories[0]?.name || "ทั่วไป";
@@ -1963,7 +1966,7 @@
           resetDrawPool();
           renderDbSnapshotsTable();
 
-          document.getElementById('cloudSyncStatus').innerHTML = `<i class="fa-solid fa-circle text-[9px] text-emerald-400"></i> ออนไลน์ (${currentDbVersionName} | ${items.length} ใบ)`;
+          document.getElementById('cloudSyncStatus').innerHTML = `<i class="fa-solid fa-circle text-[10px] text-emerald-400"></i> ออนไลน์ (${currentDbVersionName} | ${items.length} ใบ)`;
           
           if (isManual) {
             updateSyncBannerProgress(100, "ซิงก์ข้อมูลสมบูรณ์แล้ว!", "เสร็จสิ้น");
@@ -1972,7 +1975,7 @@
           }
         }
       } catch (err) {
-        document.getElementById('cloudSyncStatus').innerHTML = `<i class="fa-solid fa-circle text-[9px] text-rose-500"></i> ออฟไลน์`;
+        document.getElementById('cloudSyncStatus').innerHTML = `<i class="fa-solid fa-circle text-[10px] text-rose-500"></i> ออฟไลน์`;
         if (isManual) setSyncBannerError(`ไม่สามารถดึงข้อมูลได้: ${err.message}`);
       } finally {
         if (syncIcon) syncIcon.classList.remove('animate-spin');
@@ -1996,12 +1999,12 @@
         const isActive = s.id === 'cloud_active';
         return `
           <tr class="hover:bg-slate-50 dark:hover:bg-slate-800/80">
-            <td class="py-3 px-3 font-bold">${escapeHTML(s.name)}</td>
-            <td class="py-3 px-2 text-center font-mono font-bold text-indigo-400">${escapeHTML(s.version)}</td>
-            <td class="py-3 px-2 text-center text-xs text-slate-400">${escapeHTML(s.dateStr || '-')}</td>
-            <td class="py-3 px-2 text-right font-mono font-bold">${(s.count || 0).toLocaleString()}</td>
-            <td class="py-3 px-3 text-center whitespace-nowrap">
-              ${isActive ? '<span class="text-emerald-400 font-black">ใช้อยู่</span>' : `<button onclick="pushSnapshotToCloudById('${s.id}')" class="px-2.5 py-1 rounded-xl bg-blue-600 text-white font-black text-xs shadow">Push</button>`}
+            <td class="py-4 px-4 font-bold">${escapeHTML(s.name)}</td>
+            <td class="py-4 px-3 text-center font-mono font-bold text-indigo-400">${escapeHTML(s.version)}</td>
+            <td class="py-4 px-3 text-center text-slate-400">${escapeHTML(s.dateStr || '-')}</td>
+            <td class="py-4 px-3 text-right font-mono font-bold">${(s.count || 0).toLocaleString()}</td>
+            <td class="py-4 px-4 text-center whitespace-nowrap">
+              ${isActive ? '<span class="text-emerald-400 font-black">ใช้อยู่</span>' : `<button onclick="pushSnapshotToCloudById('${s.id}')" class="px-3 py-1.5 rounded-xl bg-blue-600 text-white font-black shadow">Push</button>`}
             </td>
           </tr>
         `;
@@ -2031,28 +2034,28 @@
         const isLast = idx === categories.length - 1;
 
         return `
-          <div class="py-3 flex items-center justify-between gap-2 hover:bg-slate-50 dark:hover:bg-slate-700/40 px-3 rounded-2xl transition">
-            <div class="flex items-center gap-3 flex-1 min-w-0">
-              <button type="button" onclick="openColorPicker(${idx})" class="w-8 h-8 rounded-xl shadow border border-slate-300 dark:border-slate-600 hover:scale-105 transition shrink-0" style="background: ${meta.theme.gradient};"></button>
-              <button type="button" onclick="openIconPicker(${idx})" class="w-9 h-9 rounded-xl bg-slate-100 dark:bg-slate-700 border border-slate-200 dark:border-slate-600 flex items-center justify-center text-base text-slate-700 dark:text-slate-200 hover:scale-105 transition shrink-0">
+          <div class="py-3 flex items-center justify-between gap-3 hover:bg-slate-50 dark:hover:bg-slate-700/40 px-3 rounded-2xl transition">
+            <div class="flex items-center gap-3.5 flex-1 min-w-0">
+              <button type="button" onclick="openColorPicker(${idx})" class="w-9 h-9 rounded-xl shadow border border-slate-300 dark:border-slate-600 hover:scale-105 transition shrink-0" style="background: ${meta.theme.gradient};"></button>
+              <button type="button" onclick="openIconPicker(${idx})" class="w-10 h-10 rounded-xl bg-slate-100 dark:bg-slate-700 border border-slate-200 dark:border-slate-600 flex items-center justify-center text-lg text-slate-700 dark:text-slate-200 hover:scale-105 transition shrink-0">
                 <i class="fa-solid ${escapeHTML(meta.icon)}"></i>
               </button>
-              <span class="text-sm font-black text-slate-800 dark:text-white truncate">${escapeHTML(cat.name)}</span>
-              <span class="text-xs text-slate-400 font-mono font-bold">(${count})</span>
+              <span class="font-black text-slate-800 dark:text-white truncate">${escapeHTML(cat.name)}</span>
+              <span class="text-slate-400 font-mono font-bold">(${count})</span>
             </div>
 
-            <div class="flex items-center gap-1.5 shrink-0">
-              <button type="button" onclick="moveCategoryOrder(${idx}, -1)" ${isFirst ? 'disabled class="p-1.5 text-slate-300 dark:text-slate-600 cursor-not-allowed"' : 'class="p-1.5 text-slate-400 hover:text-rose-500"'}>
-                <i class="fa-solid fa-arrow-up text-sm"></i>
+            <div class="flex items-center gap-2 shrink-0">
+              <button type="button" onclick="moveCategoryOrder(${idx}, -1)" ${isFirst ? 'disabled class="p-2 text-slate-300 dark:text-slate-600 cursor-not-allowed"' : 'class="p-2 text-slate-400 hover:text-rose-500"'}>
+                <i class="fa-solid fa-arrow-up"></i>
               </button>
-              <button type="button" onclick="moveCategoryOrder(${idx}, 1)" ${isLast ? 'disabled class="p-1.5 text-slate-300 dark:text-slate-600 cursor-not-allowed"' : 'class="p-1.5 text-slate-400 hover:text-rose-500"'}>
-                <i class="fa-solid fa-arrow-down text-sm"></i>
+              <button type="button" onclick="moveCategoryOrder(${idx}, 1)" ${isLast ? 'disabled class="p-2 text-slate-300 dark:text-slate-600 cursor-not-allowed"' : 'class="p-2 text-slate-400 hover:text-rose-500"'}>
+                <i class="fa-solid fa-arrow-down"></i>
               </button>
-              <button type="button" onclick="promptRenameCategory(${idx})" class="p-1.5 text-slate-400 hover:text-cyan-400 transition">
-                <i class="fa-solid fa-pen text-sm"></i>
+              <button type="button" onclick="promptRenameCategory(${idx})" class="p-2 text-slate-400 hover:text-cyan-400 transition">
+                <i class="fa-solid fa-pen"></i>
               </button>
-              <button type="button" onclick="deleteCategory(${idx})" class="p-1.5 text-slate-400 hover:text-rose-500 transition">
-                <i class="fa-solid fa-trash-can text-sm"></i>
+              <button type="button" onclick="deleteCategory(${idx})" class="p-2 text-slate-400 hover:text-rose-500 transition">
+                <i class="fa-solid fa-trash-can"></i>
               </button>
             </div>
           </div>
@@ -2215,9 +2218,9 @@
       const g = document.getElementById('colorPickerGrid');
       if (!g) return;
       g.innerHTML = Object.values(COLOR_PALETTES).map(p => `
-        <button onclick="selectColor('${p.id}')" class="w-full p-3 border rounded-2xl flex items-center gap-3.5 hover:scale-[1.01] transition">
-          <span class="w-7 h-7 rounded-full shadow-md" style="background: ${p.hex}"></span>
-          <span class="text-sm font-black">${p.name}</span>
+        <button onclick="selectColor('${p.id}')" class="w-full p-4 border rounded-2xl flex items-center gap-4 hover:scale-[1.01] transition">
+          <span class="w-8 h-8 rounded-full shadow-md" style="background: ${p.hex}"></span>
+          <span class="font-black">${p.name}</span>
         </button>
       `).join('');
     }
@@ -2239,7 +2242,7 @@
     function renderIconPickerGrid() {
       const g = document.getElementById('iconPickerGrid');
       if (!g) return;
-      g.innerHTML = ICON_PRESETS.map(i => `<button onclick="selectIcon('${i}')" class="w-12 h-12 border rounded-2xl flex items-center justify-center text-xl text-slate-700 dark:text-slate-200 hover:scale-110 transition shadow-sm"><i class="fa-solid ${i}"></i></button>`).join('');
+      g.innerHTML = ICON_PRESETS.map(i => `<button onclick="selectIcon('${i}')" class="w-14 h-14 border rounded-2xl flex items-center justify-center text-2xl text-slate-700 dark:text-slate-200 hover:scale-110 transition shadow-sm"><i class="fa-solid ${i}"></i></button>`).join('');
     }
     function openIconPicker(idx) { iconPickerTargetIdx = idx; document.getElementById('iconPickerModal').classList.remove('hidden'); }
     function closeIconPicker() { document.getElementById('iconPickerModal').classList.add('hidden'); }
@@ -2286,7 +2289,7 @@
       const t = document.getElementById('toastNotification');
       document.getElementById('toastMessage').innerText = msg;
       t.classList.remove('translate-x-full', 'opacity-0');
-      setTimeout(() => t.classList.add('translate-x-full', 'opacity-0'), 2500);
+      setTimeout(() => t.classList.add('translate-x-full', 'opacity-0'), 3000);
     }
     function escapeHTML(str) { return String(str || '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;'); }
   </script>
